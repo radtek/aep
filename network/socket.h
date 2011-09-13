@@ -20,7 +20,7 @@ public:
     // void SendCommand(SockChipCommand Command);
 
     UINT08 Recv08();
-    void Send08(NvU008 Data);
+    void Send08(UINT08 Data);
 
     NvU016 Recv16();
     void Send16(NvU016 Data);
