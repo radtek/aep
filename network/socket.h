@@ -22,8 +22,8 @@ public:
     UINT08 Recv08();
     void Send08(UINT08 Data);
 
-    NvU016 Recv16();
-    void Send16(NvU016 Data);
+    UINT16 Recv16();
+    void Send16(UINT16 Data);
 
     NvU032 Recv32();
     void Send32(NvU032 Data);
