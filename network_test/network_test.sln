@@ -1,8 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 9.00
 # Visual Studio 2005
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "server_listen_test", "server_listen_test\server_listen_test.vcproj", "{717C8C70-CEAC-4716-990C-62148F3F5E9C}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "connect_test", "connect_test\connect_test.vcproj", "{717C8C70-CEAC-4716-990C-62148F3F5E9C}"
 	ProjectSection(ProjectDependencies) = postProject
+		{5409F9B8-7EE0-42E4-A3D4-717CD868C406} = {5409F9B8-7EE0-42E4-A3D4-717CD868C406}
 		{98C1C30D-EDA3-4088-B424-0021A7F2A74D} = {98C1C30D-EDA3-4088-B424-0021A7F2A74D}
 	EndProjectSection
 EndProject

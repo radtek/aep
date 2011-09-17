@@ -169,15 +169,15 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath=".\net_socket.h"
+				RelativePath="..\include\net_socket.h"
 				>
 			</File>
 			<File
-				RelativePath=".\serial_socket.h"
+				RelativePath="..\include\serial_socket.h"
 				>
 			</File>
 			<File
-				RelativePath=".\socket.h"
+				RelativePath="..\include\socket.h"
 				>
 			</File>
 			<File
