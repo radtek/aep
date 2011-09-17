@@ -53,7 +53,6 @@ private:
 
 Socket *CreateSerialSocket(const char *port);
 Socket *CreateServerNetSocket(int port);
-Socket *CreateServerNetSocket(const char *fileName, int sessionId);
 Socket *CreateClientNetSocket(const char *hostName, int port);
 
 #endif // __SOCKET_H__

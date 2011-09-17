@@ -5,6 +5,12 @@
 
 class TestClient
 {
+public:
+    TestClient(const char *hostName, int port);
+    ~TestClient();
+
+private:
+    Socket *m_Socket;
 };
 
 #endif // __TEST_CLIENT_H__

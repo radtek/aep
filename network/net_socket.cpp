@@ -234,43 +234,6 @@ Socket *CreateServerNetSocket(int port)
     return pSocket;
 }
 
-Socket *CreateServerNetSocket(const char *fileName, int sessionId)
-{
-    NetSocket *pSocket = new NetSocket;
-    pSocket->Listen(0);
-
-    int port = pSocket->GetPortNumber();
-    char hostName[128] = "";
-    gethostname(hostName, sizeof(hostName));
-
-    int FileWriteAttempt = 0;
-
-    while (FileWriteAttempt < 10)
-    {
-        FILE *file = fopen(fileName, "w");
-        if (file != NULL)
-        {
-            char buf[128];
-            if (strlen(hostName) > 0)
-            {
-                sprintf(buf, "host=%s\n", hostName);
-                fwrite(buf, 1, strlen(buf), file);
-            }
-            sprintf(buf, "port=%d\n", port);
-            fwrite(buf, 1, strlen(buf), file);
-            sprintf(buf, "session=%d\n", sessionId);
-            fwrite(buf, 1, strlen(buf), file);
-            fclose(file);
-            break;
-        }
-        time_t CurTime = time(NULL);
-        while (CurTime == time(NULL));
-        FileWriteAttempt++;
-    }
-
-    return pSocket;
-}
-
 Socket *CreateClientNetSocket(const char *hostname, int port)
 {
     NetSocket *pSocket = new NetSocket;
