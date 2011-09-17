@@ -26,8 +26,6 @@ NetSocket::NetSocket()
     WSADATA wsaData;
     WSAStartup(MAKEWORD(1,1), &wsaData);
 
-    // FIXME: add error handle.
-
     m_Socket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
     if (m_Socket == INVALID_SOCKET)
     {
