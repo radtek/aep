@@ -2,9 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="8.00"
-	Name="network"
-	ProjectGUID="{5C99B807-8987-4F6D-AACF-DBBD50371873}"
-	RootNamespace="network"
+	Name="test_server"
+	ProjectGUID="{98C1C30D-EDA3-4088-B424-0021A7F2A74D}"
+	RootNamespace="test_server"
 	Keyword="Win32Proj"
 	>
 	<Platforms>
@@ -40,7 +40,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\include"
+				AdditionalIncludeDirectories="..\..\include"
 				PreprocessorDefinitions="WIN32;_DEBUG;_LIB"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -104,7 +104,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="..\include"
+				AdditionalIncludeDirectories="..\..\include"
 				PreprocessorDefinitions="WIN32;NDEBUG;_LIB"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="0"
@@ -151,15 +151,7 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\net_socket.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\serial_socket.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\socket.cpp"
+				RelativePath=".\test_server.cpp"
 				>
 			</File>
 		</Filter>
@@ -169,19 +161,7 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath=".\net_socket.h"
-				>
-			</File>
-			<File
-				RelativePath=".\serial_socket.h"
-				>
-			</File>
-			<File
-				RelativePath=".\socket.h"
-				>
-			</File>
-			<File
-				RelativePath="..\include\types.h"
+				RelativePath=".\test_server.h"
 				>
 			</File>
 		</Filter>
