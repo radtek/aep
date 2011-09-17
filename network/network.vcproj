@@ -153,6 +153,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\serial_socket.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\socket.cpp"
 				>
 			</File>
@@ -164,6 +168,10 @@
 			>
 			<File
 				RelativePath=".\net_socket.h"
+				>
+			</File>
+			<File
+				RelativePath=".\serial_socket.h"
 				>
 			</File>
 			<File
