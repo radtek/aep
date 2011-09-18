@@ -13,16 +13,19 @@ class Socket
 {
 public:
     Socket();
+    virtual ~Socket();
+
+    virtual int Initialize() = 0;
+    virtual int Shutdown() = 0;
 
     // These functions are specific to a particular socket implementation.
-    virtual void WaitForConnection() {}
-    virtual void Recv(void *buf, size_t size) = 0;
-    virtual void Send(const void *buf, size_t size) = 0;
+    virtual int Listen(int port) = 0;
+    virtual int Connect(const char *hostname, int port) = 0;
+    virtual int Accept(Socket &clientSocket) = 0;
+    virtual int Recv(void *buf, size_t size) = 0;
+    virtual int Send(const void *buf, size_t size) = 0;
 
     // These functions are common to all socket implementations
-    // SockChipCommand RecvCommand();
-    // void SendCommand(SockChipCommand Command);
-
     UINT08 Recv08();
     void Send08(UINT08 data);
 
@@ -41,18 +44,13 @@ public:
     string RecvString();
     void SendString(const char *str);
 
-    void InstallErrorHandler(ErrorHandlerFunc func, void *args);
+    void InstallErrorHandler(ErrorHandlerFunc func);
 
 protected:
-    void CallErrorHandler();
+    void CallErrorHandler(void *socket);
 
 private:
     ErrorHandlerFunc m_ErrorHandler;
-    void *m_ErrorHandlerArgs;
 };
-
-Socket *CreateSerialSocket(const char *port);
-Socket *CreateServerNetSocket(int port);
-Socket *CreateClientNetSocket(const char *hostName, int port);
 
 #endif // __SOCKET_H__
