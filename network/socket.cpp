@@ -6,6 +6,10 @@ m_ErrorHandler(NULL)
 {
 }
 
+Socket::~Socket()
+{
+}
+
 UINT08 Socket::Recv08()
 {
     UINT08 data = 0;
@@ -117,14 +121,13 @@ void Socket::SendString(const char *str)
     Send(str, length);
 }
 
-void Socket::InstallErrorHandler(ErrorHandlerFunc func, void *args)
+void Socket::InstallErrorHandler(ErrorHandlerFunc func)
 {
     m_ErrorHandler = func;
-    m_ErrorHandlerArgs = args;
 }
 
-void Socket::CallErrorHandler()
+void Socket::CallErrorHandler(void *error)
 {
     if (m_ErrorHandler)
-        m_ErrorHandler(m_ErrorHandlerArgs);
+        m_ErrorHandler(error);
 }

@@ -1,16 +1,23 @@
 #ifndef __TEST_CLIENT_H__
 #define __TEST_CLIENT_H__
 
-#include "socket.h"
+#include "net_socket.h"
 
 class TestClient
 {
 public:
-    TestClient(const char *hostName, int port);
+    TestClient();
     ~TestClient();
 
+    int Initialize();
+    int Shutdown();
+
+    int Run(const char *hostName, int port);
+
+    static void Print(NetSocket *socket);
+
 private:
-    Socket *m_Socket;
+    Socket *m_ClientSocket;
 };
 
 #endif // __TEST_CLIENT_H__
