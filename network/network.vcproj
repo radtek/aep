@@ -153,11 +153,19 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\net_socket.cpp"
+				RelativePath="..\utility\massert.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\utility\rc.cpp"
 				>
 			</File>
 			<File
 				RelativePath=".\socket.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\tcp_socket.cpp"
 				>
 			</File>
 		</Filter>
@@ -167,11 +175,23 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath="..\include\net_socket.h"
+				RelativePath="..\include\errors.h"
+				>
+			</File>
+			<File
+				RelativePath="..\include\massert.h"
+				>
+			</File>
+			<File
+				RelativePath="..\include\rc.h"
 				>
 			</File>
 			<File
 				RelativePath="..\include\socket.h"
+				>
+			</File>
+			<File
+				RelativePath=".\tcp_socket.h"
 				>
 			</File>
 			<File
