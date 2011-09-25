@@ -29,17 +29,17 @@ Socket::~Socket()
 {
 }
 
-RC Socket::Recv(UINT08 &data)
+RC Socket::Recv08(UINT08 &data)
 {
     return Recv(&data, 1);
 }
 
-RC Socket::Send(UINT08 data)
+RC Socket::Send08(UINT08 data)
 {
     return Send(&data, 1);
 }
 
-RC Socket::Recv(UINT16 &data)
+RC Socket::Recv16(UINT16 &data)
 {
     RC rc;
     UINT08 bytes[2] = { 0, };
@@ -49,7 +49,7 @@ RC Socket::Recv(UINT16 &data)
     return rc;
 }
 
-RC Socket::Send(UINT16 data)
+RC Socket::Send16(UINT16 data)
 {
     UINT08 bytes[2];
     bytes[0] = (UINT08)(data & 0xFF);
@@ -57,7 +57,7 @@ RC Socket::Send(UINT16 data)
     return Send(bytes, sizeof(bytes));
 }
 
-RC Socket::Recv(UINT32 &data)
+RC Socket::Recv32(UINT32 &data)
 {
     RC rc;
     UINT08 bytes[4] = { 0, };
@@ -69,7 +69,7 @@ RC Socket::Recv(UINT32 &data)
     return rc;
 }
 
-RC Socket::Send(UINT32 data)
+RC Socket::Send32(UINT32 data)
 {
     UINT08 bytes[4];
     bytes[0] = (UINT08)(data & 0xFF);
@@ -79,7 +79,7 @@ RC Socket::Send(UINT32 data)
     return Send(bytes, sizeof(bytes));
 }
 
-RC Socket::Recv(UINT64 &data)
+RC Socket::Recv64(UINT64 &data)
 {
     RC rc;
     UINT08 bytes[8] = { 0, };
@@ -95,7 +95,7 @@ RC Socket::Recv(UINT64 &data)
     return rc;
 }
 
-RC Socket::Send(UINT64 data)
+RC Socket::Send64(UINT64 data)
 {
     UINT08 bytes[8];
     bytes[0] = (UINT08)(data & 0xFF);
@@ -109,34 +109,39 @@ RC Socket::Send(UINT64 data)
     return Send(bytes, sizeof(bytes));
 }
 
-RC Socket::Recv(double &data)
+RC Socket::RecvDouble(double &data)
 {
     RC rc;
     UINT64 temp;
-    CHECK_RC(Recv(temp));
+    CHECK_RC(Recv64(temp));
     data = static_cast<double>(temp);
 }
 
-RC Socket::Send(double data)
+RC Socket::SendDouble(double data)
 {
     UINT64 temp = static_cast<UINT64>(data);
-    return Send(temp);
+    return Send64(temp);
 }
 
-RC Socket::RecvStr(string &str)
+RC Socket::RecvString(string &str)
 {
     RC rc;
     UINT32 length;
-    CHECK_RC(Recv(length));
+    CHECK_RC(Recv32(length));
     str.resize(length);
     return Recv(&str[0], length);
 }
 
-RC Socket::SendStr(const char *str)
+RC Socket::SendString(const char *str)
 {
     RC rc;
     MASSERT(str != 0);
     UINT32 length = (UINT32)strlen(str);
-    CHECK_RC(Send(length));
+    CHECK_RC(Send32(length));
     CHECK_RC(Send(str, length));
+}
+
+int Socket::GetLastError()
+{
+    return WSAGetLastError();
 }

@@ -13,8 +13,6 @@ public:
     RC Shut();
 
     RC Listen(int port);
-    bool IsListening();
-    void Stop();
 
 protected:
     struct ThreadInfo
@@ -28,8 +26,6 @@ protected:
 
     TcpSocket *m_TcpSocket;
     int m_Port;
-    bool m_Continue;
-    bool m_Listening;
 };
 
 #endif // __TEST_TCP_SERVER_H__

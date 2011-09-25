@@ -12,10 +12,10 @@ RC ConnectTestClient::Run()
 
     string question = "Am I connected?";
     printf("[Client] %u - Asking server: %s\n", m_Id, question.c_str());
-    m_TcpSocket->SendStr(question.c_str());
+    m_TcpSocket->SendString(question.c_str());
     string answer;
-    m_TcpSocket->RecvStr(answer);
-    printf("[Client] %u - Server said: %s.\n", m_Id, answer.c_str());
+    m_TcpSocket->RecvString(answer);
+    printf("[Client] %u - Server said: %s\n", m_Id, answer.c_str());
     if (answer == "Yes!")
     {
         printf("[Client] %u - I am connected.\n", m_Id);

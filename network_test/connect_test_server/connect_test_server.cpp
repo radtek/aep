@@ -9,19 +9,19 @@ RC ConnectTestServer::Service(TcpSocket *clientSocket, DWORD threadId)
         return OK;
     }
     string question;
-    clientSocket->RecvStr(question);
+    clientSocket->RecvString(question);
     printf("[Server] %ul - Client said: %s\n", threadId, question.c_str());
     if (question == "Am I connected?")
     {
         string answer = "Yes!";
-        printf("[Server] %ul - Answering client: %s.\n", threadId, answer.c_str());
-        clientSocket->SendStr(answer.c_str());
+        printf("[Server] %ul - Answering client: %s\n", threadId, answer.c_str());
+        clientSocket->SendString(answer.c_str());
     }
     else
     {
         string answer = "I don't know what you are asking.\n";
-        printf("[Server] %ul - Answering client: %s.\n", threadId, answer.c_str());
-        clientSocket->SendStr(answer.c_str());
+        printf("[Server] %ul - Answering client: %s\n", threadId, answer.c_str());
+        clientSocket->SendString(answer.c_str());
     }
 
     clientSocket->Shut();
