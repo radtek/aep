@@ -33,8 +33,8 @@ public:
     RC Recv(double &data);
     RC Send(double data);
 
-    RC Recv(string &str);
-    RC Send(const char *str);
+    RC RecvStr(string &str);
+    RC SendStr(const char *str);
 };
 
 #endif // __SOCKET_H__

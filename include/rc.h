@@ -35,16 +35,10 @@ private:
     INT32 m_Rc;
 };
 
-#define CHECK_RC(rc) \
+#define CHECK_RC(f) \
     do \
     { \
-        return rc; \
-    } while(0)
-
-#define MCHECK_RC(rc) \
-    do \
-    { \
-        printf("%s\n", rc.Message()); \
+        if (OK != (rc = (f))) \
         return rc; \
     } while(0)
 

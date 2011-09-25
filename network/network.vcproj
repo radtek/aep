@@ -191,7 +191,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\tcp_socket.h"
+				RelativePath="..\include\tcp_socket.h"
 				>
 			</File>
 			<File

@@ -9,12 +9,12 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "connect_test", "connect_tes
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "network", "..\network\network.vcproj", "{5C99B807-8987-4F6D-AACF-DBBD50371873}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test_server", "test_server\test_server.vcproj", "{98C1C30D-EDA3-4088-B424-0021A7F2A74D}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test_tcp_server", "test_tcp_server\test_tcp_server.vcproj", "{98C1C30D-EDA3-4088-B424-0021A7F2A74D}"
 	ProjectSection(ProjectDependencies) = postProject
 		{5C99B807-8987-4F6D-AACF-DBBD50371873} = {5C99B807-8987-4F6D-AACF-DBBD50371873}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test_client", "test_client\test_client.vcproj", "{5409F9B8-7EE0-42E4-A3D4-717CD868C406}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test_tcp_client", "test_tcp_client\test_tcp_client.vcproj", "{5409F9B8-7EE0-42E4-A3D4-717CD868C406}"
 	ProjectSection(ProjectDependencies) = postProject
 		{5C99B807-8987-4F6D-AACF-DBBD50371873} = {5C99B807-8987-4F6D-AACF-DBBD50371873}
 	EndProjectSection

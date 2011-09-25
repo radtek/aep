@@ -123,7 +123,7 @@ RC Socket::Send(double data)
     return Send(temp);
 }
 
-RC Socket::Recv(string &str)
+RC Socket::RecvStr(string &str)
 {
     RC rc;
     UINT32 length;
@@ -132,7 +132,7 @@ RC Socket::Recv(string &str)
     return Recv(&str[0], length);
 }
 
-RC Socket::Send(const char *str)
+RC Socket::SendStr(const char *str)
 {
     RC rc;
     MASSERT(str != 0);
