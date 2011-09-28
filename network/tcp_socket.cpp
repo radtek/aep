@@ -58,8 +58,7 @@ RC TcpSocket::Listen(int port)
 
     // Listen for a connection; this sets the incoming queue length
     // for remote connections.  Multiple connections aren't req'd.
-    if (SOCKET_ERROR == listen(m_Socket,
-        1))
+    if (SOCKET_ERROR == listen(m_Socket, 1))
     {
         return RC::SOCK_LISTEN_ERROR;
     }
@@ -96,9 +95,8 @@ RC TcpSocket::Connect(const char *hostname, int port)
 RC TcpSocket::Accept(TcpSocket &clientSocket)
 {
     SOCKADDR_IN clientSIN;
-    int clientSINLen;
+    int clientSINLen = sizeof(clientSIN);
 
-    clientSINLen = sizeof(clientSIN);
     clientSocket.m_Socket = accept(m_Socket,
         (struct sockaddr *)&clientSIN,
         &clientSINLen);

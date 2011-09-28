@@ -6,6 +6,7 @@
 class ConnectTestServer : public TestTcpServer
 {
 public:
+    ConnectTestServer(int port, const char *logFileName, UINT32 maxClientNum = 1);
     virtual RC Service(TcpSocket *clientSocket, DWORD threadId = 0);
 };
 

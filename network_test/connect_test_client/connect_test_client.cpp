@@ -1,8 +1,8 @@
 #include "connect_test_client.h"
 
-ConnectTestClient::ConnectTestClient(UINT32 id)
+ConnectTestClient::ConnectTestClient(const char *hostName, int port, const char *logFileName, UINT32 id)
 :
-m_Id(id)
+TestTcpClient(hostName, port, logFileName, id)
 {
 }
 

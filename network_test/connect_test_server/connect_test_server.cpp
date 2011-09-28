@@ -1,5 +1,11 @@
 #include "connect_test_server.h"
 
+ConnectTestServer::ConnectTestServer(int port, const char *logFileName, UINT32 maxClientNum)
+:
+TestTcpServer(port, logFileName, maxClientNum)
+{
+}
+
 RC ConnectTestServer::Service(TcpSocket *clientSocket, DWORD threadId)
 {
     printf("[Server] Thread %ul executing...\n", threadId);

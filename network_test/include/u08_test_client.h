@@ -6,10 +6,8 @@
 class U08TestClient : public TestTcpClient
 {
 public:
-    U08TestClient(UINT32 id);
+    U08TestClient(const char *hostName, int port, const char *logFileName, UINT32 id = 0);
     virtual RC Run();
-private:
-    UINT32 m_Id;
 };
 
 #endif // __U08_TEST_CLIENT_H__

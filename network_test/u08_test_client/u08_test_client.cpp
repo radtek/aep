@@ -1,24 +1,26 @@
 #include "u08_test_client.h"
 
-U08TestClient::U08TestClient(UINT32 id)
+U08TestClient::U08TestClient(const char *hostName, int port, const char *logFileName, UINT32 id)
 :
-m_Id(id)
+TestTcpClient(hostName, port, logFileName, id)
 {
 }
 
 RC U08TestClient::Run()
 {
-    printf("[Client] Client %u executing...\n", m_Id);
+    RC rc;
 
-    UINT08 min = 0, max = 255;
+    printf("[Client] Client %u executing...\n", m_Id);
+    UINT08 min = 0, max = UINT08_MAX;
     UINT08 data = min;
     while (true)
     {
         printf("[Client] %u - Sending UINT08: %u\n", m_Id, data);
-        m_TcpSocket->Send08(data);
+        CHECK_RC(m_TcpSocket->Send08(data));
         UINT08 temp;
-        m_TcpSocket->Recv08(temp);
+        CHECK_RC(m_TcpSocket->Recv08(temp));
         printf("[Client] %u - Recieved UINT08: %u\n", m_Id, temp);
+        m_Logger<<data<<endl;
         if (data == max)
         {
             break;

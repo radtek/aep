@@ -2,17 +2,20 @@
 #define __TEST_TCP_SERVER_H__
 
 #include "tcp_socket.h"
+#include <fstream>
+
+using namespace std;
 
 class TestTcpServer
 {
 public:
-    TestTcpServer();
+    TestTcpServer(int port, const char *logFileName, UINT32 maxClientNum = 1);
     ~TestTcpServer();
 
     RC Init();
     RC Shut();
 
-    RC Listen(int port);
+    RC Listen();
 
 protected:
     struct ThreadInfo
@@ -26,6 +29,8 @@ protected:
 
     TcpSocket *m_TcpSocket;
     int m_Port;
+    UINT32 m_MaxClientNum;
+    ofstream m_Logger;
 };
 
 #endif // __TEST_TCP_SERVER_H__

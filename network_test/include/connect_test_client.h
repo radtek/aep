@@ -6,7 +6,7 @@
 class ConnectTestClient : public TestTcpClient
 {
 public:
-    ConnectTestClient(UINT32 id);
+    ConnectTestClient(const char *hostName, int port, const char *logFileName, UINT32 id = 0);
     virtual RC Run();
 private:
     UINT32 m_Id;

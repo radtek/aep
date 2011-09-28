@@ -6,6 +6,7 @@
 class U08TestServer : public TestTcpServer
 {
 public:
+    U08TestServer(int port, const char *logFileName, UINT32 maxClientNum = 1);
     virtual RC Service(TcpSocket *clientSocket, DWORD threadId = 0);
 };
 

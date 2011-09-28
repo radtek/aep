@@ -16,4 +16,7 @@ DEFINE_ERROR(SOCK_CONNECT_ERROR, "Socket connect failed.")
 DEFINE_ERROR(SOCK_ACCEPT_ERROR, "Socket accept failed.")
 DEFINE_ERROR(SOCK_RECV_ERROR, "Socket recieve data failed.")
 DEFINE_ERROR(SOCK_SEND_ERROR, "Socket send data failed.")
+
+#ifdef __NETWORK_TEST__
 DEFINE_ERROR(THREAD_CREATE_ERROR, "Create thread failed.")
+#endif
