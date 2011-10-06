@@ -19,6 +19,8 @@ RC TcpServerTest::Run()
 
     CHECK_RC(m_Server->Listen());
 
+    CHECK_RC(m_Server->Hold());
+
     CHECK_RC(m_Server->Shut());
 
     return rc;

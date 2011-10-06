@@ -16,6 +16,7 @@ public:
     RC Shut();
 
     RC Listen();
+    RC Hold();
 
 protected:
     struct ThreadInfo
@@ -30,6 +31,7 @@ protected:
     TcpSocket *m_TcpSocket;
     int m_Port;
     UINT32 m_MaxClientNum;
+    volatile UINT32 m_RunningClientNum;
     ofstream m_Logger;
 };
 

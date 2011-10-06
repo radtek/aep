@@ -83,8 +83,8 @@ RC TcpSocket::Connect(const char *hostname, int port)
     memcpy(&serverSIN.sin_addr, host->h_addr, host->h_length);
 
     if (SOCKET_ERROR == connect(m_Socket,
-                          (struct sockaddr *)&serverSIN,
-                          sizeof(serverSIN)))
+        (struct sockaddr *)&serverSIN,
+        sizeof(serverSIN)))
     {
         return RC::SOCK_CONNECT_ERROR;
     }

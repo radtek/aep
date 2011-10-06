@@ -4,7 +4,8 @@ TestTcpServer::TestTcpServer(int port, const char *logFileName, UINT32 maxClient
 :
 m_Port(port),
 m_Logger(logFileName),
-m_MaxClientNum(maxClientNum)
+m_MaxClientNum(maxClientNum),
+m_RunningClientNum(0)
 {
     m_TcpSocket = new TcpSocket;
 }
@@ -52,18 +53,17 @@ RC TestTcpServer::Listen()
         CHECK_RC(m_TcpSocket->Accept(*clientSocket));
 
         HANDLE thread;
-        ThreadInfo info =
-        {
-            0,
-            this,
-            clientSocket
-        };
+        ThreadInfo *info = new ThreadInfo;
+        info->ThreadId = 0;
+        info->Server = this;
+        info->ClientSocket = clientSocket;
+        m_RunningClientNum++;
         thread = CreateThread(NULL,
             NULL,
             Dispatch,
-            (LPVOID)&info,
+            (LPVOID)info,
             0,
-            &info.ThreadId);
+            &info->ThreadId);
         if(thread == NULL)
         {
             return RC::THREAD_CREATE_ERROR;
@@ -73,9 +73,22 @@ RC TestTcpServer::Listen()
     return OK;
 }
 
+RC TestTcpServer::Hold()
+{
+    while (m_RunningClientNum > 0);
+    return OK;
+}
+
 DWORD WINAPI TestTcpServer::Dispatch(LPVOID lparam)
 {
     ThreadInfo *info = (ThreadInfo *)lparam;
+
     info->Server->Service(info->ClientSocket, info->ThreadId);
+
+    info->Server->m_RunningClientNum--;
+
+    delete info->ClientSocket;
+    delete info;
+
     return 0;
 }
