@@ -1,8 +1,27 @@
 #include "socket.h"
+#include "massert.h"
+#include <winsock2.h>
+
+RC Socket::Init()
+{
+    WSADATA wsaData;
+    if (SOCKET_ERROR == WSAStartup(MAKEWORD(2,2), &wsaData))
+    {
+        return RC::WINSOCK_INIT_ERROR;
+    }
+    return OK;
+}
+
+RC Socket::Shut()
+{
+    if (SOCKET_ERROR == WSACleanup())
+    {
+        return RC::WINSOCK_SHUT_ERROR;
+    }
+    return OK;
+}
 
 Socket::Socket()
-:
-m_ErrorHandler(NULL)
 {
 }
 
@@ -10,63 +29,61 @@ Socket::~Socket()
 {
 }
 
-UINT08 Socket::Recv08()
+RC Socket::Recv08(UINT08 &data)
 {
-    UINT08 data = 0;
-    Recv(&data, 1);
-    return data;
+    return Recv(&data, 1);
 }
 
-void Socket::Send08(UINT08 data)
+RC Socket::Send08(UINT08 data)
 {
-    Send(&data, 1);
+    return Send(&data, 1);
 }
 
-UINT16 Socket::Recv16()
+RC Socket::Recv16(UINT16 &data)
 {
+    RC rc;
     UINT08 bytes[2] = { 0, };
-    UINT16 data;
-    Recv(bytes, sizeof(bytes));
+    CHECK_RC(Recv(bytes, sizeof(bytes)));
     data  = bytes[0];
     data |= bytes[1] << 8;
-    return data;
+    return rc;
 }
 
-void Socket::Send16(UINT16 data)
+RC Socket::Send16(UINT16 data)
 {
     UINT08 bytes[2];
     bytes[0] = (UINT08)(data & 0xFF);
     bytes[1] = (UINT08)(data >> 8);
-    Send(bytes, sizeof(bytes));
+    return Send(bytes, sizeof(bytes));
 }
 
-UINT32 Socket::Recv32()
+RC Socket::Recv32(UINT32 &data)
 {
+    RC rc;
     UINT08 bytes[4] = { 0, };
-    UINT32 data;
-    Recv(bytes, sizeof(bytes));
+    CHECK_RC(Recv(bytes, sizeof(bytes)));
     data  = bytes[0];
     data |= bytes[1] << 8;
     data |= bytes[2] << 16;
     data |= bytes[3] << 24;
-    return data;
+    return rc;
 }
 
-void Socket::Send32(UINT32 data)
+RC Socket::Send32(UINT32 data)
 {
     UINT08 bytes[4];
     bytes[0] = (UINT08)(data & 0xFF);
     bytes[1] = (UINT08)((data >> 8) & 0xFF);
     bytes[2] = (UINT08)((data >> 16) & 0xFF);
     bytes[3] = (UINT08)(data >> 24);
-    Send(bytes, sizeof(bytes));
+    return Send(bytes, sizeof(bytes));
 }
 
-UINT64 Socket::Recv64()
+RC Socket::Recv64(UINT64 &data)
 {
+    RC rc;
     UINT08 bytes[8] = { 0, };
-    UINT64 data;
-    Recv(bytes, sizeof(bytes));
+    CHECK_RC(Recv(bytes, sizeof(bytes)));
     data  = (UINT64)bytes[0];
     data |= (UINT64)bytes[1] << 8;
     data |= (UINT64)bytes[2] << 16;
@@ -75,10 +92,10 @@ UINT64 Socket::Recv64()
     data |= (UINT64)bytes[5] << 40;
     data |= (UINT64)bytes[6] << 48;
     data |= (UINT64)bytes[7] << 56;
-    return data;
+    return rc;
 }
 
-void Socket::Send64(UINT64 data)
+RC Socket::Send64(UINT64 data)
 {
     UINT08 bytes[8];
     bytes[0] = (UINT08)(data & 0xFF);
@@ -89,45 +106,42 @@ void Socket::Send64(UINT64 data)
     bytes[5] = (UINT08)((data >> 40) & 0xFF);
     bytes[6] = (UINT08)((data >> 48) & 0xFF);
     bytes[7] = (UINT08)(data >> 56);
-    Send(bytes, sizeof(bytes));
+    return Send(bytes, sizeof(bytes));
 }
 
-double Socket::RecvDouble()
+RC Socket::RecvDouble(double &data)
 {
-    UINT64 data = Recv64();
-    return *(double *)&data;
+    RC rc;
+    UINT64 temp;
+    CHECK_RC(Recv64(temp));
+    data = static_cast<double>(temp);
 }
 
-void Socket::SendDouble(double data)
+RC Socket::SendDouble(double data)
 {
-    Send64(*(UINT64 *)&data);
+    UINT64 temp = static_cast<UINT64>(data);
+    return Send64(temp);
 }
 
-// We could use null-terminated strings, but sending the length is more
-// efficient for the receiver.
-string Socket::RecvString()
+RC Socket::RecvString(string &str)
 {
-    UINT32 length = Recv32();
-    string str;
+    RC rc;
+    UINT32 length;
+    CHECK_RC(Recv32(length));
     str.resize(length);
-    Recv(&str[0], length);
-    return str;
+    return Recv(&str[0], length);
 }
 
-void Socket::SendString(const char *str)
+RC Socket::SendString(const char *str)
 {
+    RC rc;
+    MASSERT(str != 0);
     UINT32 length = (UINT32)strlen(str);
-    Send32(length);
-    Send(str, length);
+    CHECK_RC(Send32(length));
+    CHECK_RC(Send(str, length));
 }
 
-void Socket::InstallErrorHandler(ErrorHandlerFunc func)
+int Socket::GetLastError()
 {
-    m_ErrorHandler = func;
-}
-
-void Socket::CallErrorHandler(void *error)
-{
-    if (m_ErrorHandler)
-        m_ErrorHandler(error);
+    return WSAGetLastError();
 }
