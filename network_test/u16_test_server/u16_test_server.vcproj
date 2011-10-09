@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="8.00"
 	Name="u16_test_server"
-	ProjectGUID="{A7151915-8A44-45CE-88B3-D3CE16E6E72B}"
+	ProjectGUID="{B827AC97-A305-41E8-9826-0DA62FB73005}"
 	RootNamespace="u16_test_server"
 	Keyword="Win32Proj"
 	>

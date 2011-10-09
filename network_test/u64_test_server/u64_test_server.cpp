@@ -1,12 +1,12 @@
-#include "u08_test_server.h"
+#include "u64_test_server.h"
 
-U08TestServer::U08TestServer(int port, const char *logFileName, UINT32 maxClientNum)
+U64TestServer::U64TestServer(int port, const char *logFileName, UINT32 maxClientNum)
 :
 TestTcpServer(port, logFileName, maxClientNum)
 {
 }
 
-RC U08TestServer::Service(TcpSocket *clientSocket, DWORD threadId)
+RC U64TestServer::Service(TcpSocket *clientSocket, DWORD threadId)
 {
     RC rc;
 
@@ -16,15 +16,15 @@ RC U08TestServer::Service(TcpSocket *clientSocket, DWORD threadId)
         printf("[Server] %ul - Client socket is NULL.\n", threadId);
         return OK;
     }
-    UINT08 max = UINT08_MAX;
-    UINT08 data;
+    UINT64 max = UINT64_MAX;
+    UINT64 data;
     do
     {
-        clientSocket->Recv08(data);
-        printf("[Server] %ul - Recieved UINT08: %u\n", threadId, data);
+        clientSocket->Recv64(data);
+        printf("[Server] %ul - Recieved UINT64: %u\n", threadId, data);
         m_Logger<<data<<endl;
-        printf("[Server] %ul - Sending UINT08: %u\n", threadId, data);
-        clientSocket->Send08(data);
+        printf("[Server] %ul - Sending UINT64: %u\n", threadId, data);
+        clientSocket->Send64(data);
     }
     while (data != max);
 
