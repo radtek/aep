@@ -10,10 +10,10 @@ RC U16TestServer::Service(TcpSocket *clientSocket, DWORD threadId)
 {
     RC rc;
 
-    printf("[Server] Thread %ul executing...\n", threadId);
+    printf("[Server] Thread %u executing...\n", threadId);
     if (!clientSocket)
     {
-        printf("[Server] %ul - Client socket is NULL.\n", threadId);
+        printf("[Server] %u - Client socket is NULL.\n", threadId);
         return OK;
     }
     UINT16 max = UINT16_MAX;
@@ -21,9 +21,9 @@ RC U16TestServer::Service(TcpSocket *clientSocket, DWORD threadId)
     do
     {
         clientSocket->Recv16(data);
-        printf("[Server] %ul - Recieved UINT16: %u\n", threadId, data);
+        printf("[Server] %u - Recieved UINT16: %u\n", threadId, data);
         m_Logger<<(UINT32)data<<endl;
-        printf("[Server] %ul - Sending UINT16: %u\n", threadId, data);
+        printf("[Server] %u - Sending UINT16: %u\n", threadId, data);
         clientSocket->Send16(data);
     }
     while (data != max);

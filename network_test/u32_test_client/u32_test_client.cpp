@@ -11,7 +11,7 @@ RC U32TestClient::Run()
     RC rc;
 
     printf("[Client] Client %u executing...\n", m_Id);
-    UINT32 min = 0, max = UINT32_MAX;
+    UINT32 min = UINT32_MAX - UINT16_MAX, max = UINT32_MAX;
     UINT32 data = min;
     while (true)
     {

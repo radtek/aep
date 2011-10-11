@@ -8,5 +8,27 @@ TcpServerTest(testName, server)
 
 NetworkTest::TestResult U32ServerTest::Check()
 {
-    return PASS;
+    TestResult result = PASS;
+
+    ifstream ifs(m_Server->GetLogFileName());
+    UINT32 min = UINT32_MAX - UINT16_MAX, max = UINT32_MAX;
+    UINT32 data = min;
+    while (true)
+    {
+        UINT32 temp;
+        ifs>>temp;
+        if (temp != data)
+        {
+            result = FAIL;
+            break;
+        }
+        if (data == max)
+        {
+            break;
+        }
+        ++data;
+    }
+    ifs.close();
+
+    return result;
 }

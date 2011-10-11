@@ -10,10 +10,10 @@ RC U64TestServer::Service(TcpSocket *clientSocket, DWORD threadId)
 {
     RC rc;
 
-    printf("[Server] Thread %ul executing...\n", threadId);
+    printf("[Server] Thread %u executing...\n", threadId);
     if (!clientSocket)
     {
-        printf("[Server] %ul - Client socket is NULL.\n", threadId);
+        printf("[Server] %u - Client socket is NULL.\n", threadId);
         return OK;
     }
     UINT64 max = UINT64_MAX;
@@ -21,9 +21,9 @@ RC U64TestServer::Service(TcpSocket *clientSocket, DWORD threadId)
     do
     {
         clientSocket->Recv64(data);
-        printf("[Server] %ul - Recieved UINT64: %u\n", threadId, data);
+        printf("[Server] %u - Recieved UINT64: %llu\n", threadId, data);
         m_Logger<<data<<endl;
-        printf("[Server] %ul - Sending UINT64: %u\n", threadId, data);
+        printf("[Server] %u - Sending UINT64: %llu\n", threadId, data);
         clientSocket->Send64(data);
     }
     while (data != max);

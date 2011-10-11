@@ -10,10 +10,10 @@ RC U08TestServer::Service(TcpSocket *clientSocket, DWORD threadId)
 {
     RC rc;
 
-    printf("[Server] Thread %ul executing...\n", threadId);
+    printf("[Server] Thread %u executing...\n", threadId);
     if (!clientSocket)
     {
-        printf("[Server] %ul - Client socket is NULL.\n", threadId);
+        printf("[Server] %u - Client socket is NULL.\n", threadId);
         return OK;
     }
     UINT08 max = UINT08_MAX;
@@ -21,9 +21,9 @@ RC U08TestServer::Service(TcpSocket *clientSocket, DWORD threadId)
     do
     {
         clientSocket->Recv08(data);
-        printf("[Server] %ul - Recieved UINT08: %u\n", threadId, data);
+        printf("[Server] %u - Recieved UINT08: %u\n", threadId, data);
         m_Logger<<(UINT32)data<<endl;
-        printf("[Server] %ul - Sending UINT08: %u\n", threadId, data);
+        printf("[Server] %u - Sending UINT08: %u\n", threadId, data);
         clientSocket->Send08(data);
     }
     while (data != max);
