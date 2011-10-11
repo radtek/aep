@@ -20,7 +20,7 @@ RC U16TestClient::Run()
         UINT16 temp;
         CHECK_RC(m_TcpSocket->Recv16(temp));
         printf("[Client] %u - Recieved UINT16: %u\n", m_Id, temp);
-        m_Logger<<data<<endl;
+        m_Logger<<(UINT32)data<<endl;
         if (data == max)
         {
             break;

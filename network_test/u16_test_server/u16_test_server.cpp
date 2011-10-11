@@ -22,7 +22,7 @@ RC U16TestServer::Service(TcpSocket *clientSocket, DWORD threadId)
     {
         clientSocket->Recv16(data);
         printf("[Server] %ul - Recieved UINT16: %u\n", threadId, data);
-        m_Logger<<data<<endl;
+        m_Logger<<(UINT32)data<<endl;
         printf("[Server] %ul - Sending UINT16: %u\n", threadId, data);
         clientSocket->Send16(data);
     }

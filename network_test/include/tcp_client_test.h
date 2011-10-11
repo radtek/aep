@@ -11,19 +11,19 @@ public:
     virtual ~TcpClientTest();
 
     virtual RC Run();
-    virtual TestResult Check();
+    virtual TestResult Check() = 0;
 
 protected:
     TestTcpClient *m_Client;
 };
 
-#define MAKE_CLIENT_TEST(clientClass, testName, id) \
+#define MAKE_CLIENT_TEST(clientClass, testClass, testName, id) \
 int main(int argc,char* argv[]) \
 { \
     const char *hostName = argv[1]; \
     int port = atoi(argv[2]); \
     clientClass client(hostName, port, #testName".log", id); \
-    TcpClientTest test(#testName, &client); \
+    testClass test(#testName, &client); \
     MASSERT(test.Run() == OK); \
     MASSERT(test.Check() == NetworkTest::PASS); \
     return 0; \

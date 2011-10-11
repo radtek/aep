@@ -19,10 +19,13 @@ public:
 
     virtual RC Run() = 0;
 
+    const char *GetLogFileName();
+
 protected:
     TcpSocket *m_TcpSocket;
     const char *m_HostName;
     int m_Port;
+    const char *m_LogFileName;
     ofstream m_Logger;
     UINT32 m_Id;
 };

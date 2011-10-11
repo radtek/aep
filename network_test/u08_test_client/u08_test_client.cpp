@@ -20,7 +20,7 @@ RC U08TestClient::Run()
         UINT08 temp;
         CHECK_RC(m_TcpSocket->Recv08(temp));
         printf("[Client] %u - Recieved UINT08: %u\n", m_Id, temp);
-        m_Logger<<data<<endl;
+        m_Logger<<(UINT32)data<<endl;
         if (data == max)
         {
             break;

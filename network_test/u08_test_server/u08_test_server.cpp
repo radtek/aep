@@ -22,7 +22,7 @@ RC U08TestServer::Service(TcpSocket *clientSocket, DWORD threadId)
     {
         clientSocket->Recv08(data);
         printf("[Server] %ul - Recieved UINT08: %u\n", threadId, data);
-        m_Logger<<data<<endl;
+        m_Logger<<(UINT32)data<<endl;
         printf("[Server] %ul - Sending UINT08: %u\n", threadId, data);
         clientSocket->Send08(data);
     }

@@ -115,6 +115,7 @@ RC Socket::RecvDouble(double &data)
     UINT64 temp;
     CHECK_RC(Recv64(temp));
     data = static_cast<double>(temp);
+    return rc;
 }
 
 RC Socket::SendDouble(double data)
@@ -139,6 +140,7 @@ RC Socket::SendString(const char *str)
     UINT32 length = (UINT32)strlen(str);
     CHECK_RC(Send32(length));
     CHECK_RC(Send(str, length));
+    return rc;
 }
 
 int Socket::GetLastError()

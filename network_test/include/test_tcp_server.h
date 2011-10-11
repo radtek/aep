@@ -18,6 +18,8 @@ public:
     RC Listen();
     RC Hold();
 
+    const char *GetLogFileName();
+
 protected:
     struct ThreadInfo
     {
@@ -32,6 +34,7 @@ protected:
     int m_Port;
     UINT32 m_MaxClientNum;
     volatile UINT32 m_RunningClientNum;
+    const char *m_LogFileName;
     ofstream m_Logger;
 };
 

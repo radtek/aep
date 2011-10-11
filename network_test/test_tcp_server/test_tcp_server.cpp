@@ -3,6 +3,7 @@
 TestTcpServer::TestTcpServer(int port, const char *logFileName, UINT32 maxClientNum)
 :
 m_Port(port),
+m_LogFileName(logFileName),
 m_Logger(logFileName),
 m_MaxClientNum(maxClientNum),
 m_RunningClientNum(0)
@@ -77,6 +78,11 @@ RC TestTcpServer::Hold()
 {
     while (m_RunningClientNum > 0);
     return OK;
+}
+
+const char *TestTcpServer::GetLogFileName()
+{
+    return m_LogFileName;
 }
 
 DWORD WINAPI TestTcpServer::Dispatch(LPVOID lparam)

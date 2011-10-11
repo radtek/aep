@@ -183,6 +183,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\u08_server_test.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\u08_test_server.cpp"
 				>
 			</File>
@@ -192,6 +196,10 @@
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
+			<File
+				RelativePath="..\include\u08_server_test.h"
+				>
+			</File>
 			<File
 				RelativePath="..\include\u08_test_server.h"
 				>

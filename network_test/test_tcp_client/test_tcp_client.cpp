@@ -4,6 +4,7 @@ TestTcpClient::TestTcpClient(const char *hostName, int port, const char *logFile
 :
 m_HostName(hostName),
 m_Port(port),
+m_LogFileName(logFileName),
 m_Logger(logFileName),
 m_Id(id)
 {
@@ -45,4 +46,9 @@ RC TestTcpClient::Connect()
     CHECK_RC(m_TcpSocket->Connect(m_HostName, m_Port));
 
     return rc;
+}
+
+const char *TestTcpClient::GetLogFileName()
+{
+    return m_LogFileName;
 }

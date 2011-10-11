@@ -11,18 +11,18 @@ public:
     virtual ~TcpServerTest();
 
     virtual RC Run();
-    virtual TestResult Check();
+    virtual TestResult Check() = 0;
 
 protected:
     TestTcpServer *m_Server;
 };
 
-#define MAKE_SERVER_TEST(serverClass, testName, maxClientNum) \
+#define MAKE_SERVER_TEST(serverClass, testClass, testName, maxClientNum) \
 int main(int argc,char* argv[]) \
 { \
     int port = atoi(argv[1]); \
     serverClass server(port, #testName".log", maxClientNum); \
-    TcpServerTest test(#testName, &server); \
+    testClass test(#testName, &server); \
     MASSERT(test.Run() == OK); \
     MASSERT(test.Check() == NetworkTest::PASS); \
     return 0; \

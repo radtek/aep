@@ -18,6 +18,7 @@ RC ConnectTestClient::Run()
     printf("[Client] %u - Server said: %s\n", m_Id, answer.c_str());
     if (answer == "Yes!")
     {
+        m_Logger<<"Yes!"<<endl;
         printf("[Client] %u - I am connected.\n", m_Id);
     }
     else

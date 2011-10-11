@@ -22,6 +22,7 @@ RC ConnectTestServer::Service(TcpSocket *clientSocket, DWORD threadId)
         string answer = "Yes!";
         printf("[Server] %ul - Answering client: %s\n", threadId, answer.c_str());
         clientSocket->SendString(answer.c_str());
+        m_Logger<<answer<<endl;
     }
     else
     {

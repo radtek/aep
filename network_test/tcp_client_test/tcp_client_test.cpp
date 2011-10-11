@@ -25,8 +25,3 @@ RC TcpClientTest::Run()
 
     return rc;
 }
-
-NetworkTest::TestResult TcpClientTest::Check()
-{
-    return PASS;
-}
