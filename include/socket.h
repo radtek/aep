@@ -1,3 +1,13 @@
+/*
+ * @file
+ * @brief Socket接口类
+ * @author ruoxi
+ * @date
+ * @version
+ * @note
+ * 定义了Socket的基本接口，包括初始化、关闭、收发特定类型的数据以及查询错误等功能
+ */
+
 #ifndef __SOCKET_H__
 #define __SOCKET_H__
 
@@ -6,6 +16,16 @@
 
 using namespace std;
 
+//--------------------------------------------------------------------
+//! \brief Container for a series of actions
+//!
+//! This container holds a series of actions.  It's the PolicyManager
+//! equivalent of a subroutine.  An action block get executed as the
+//! result of a trigger.
+//!
+//! Every PmActionBlock should be owned by the PmEventManager, and
+//! automatically gets deleted with the PmEventManager.
+//!
 class Socket
 {
 public:

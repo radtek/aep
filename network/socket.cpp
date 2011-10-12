@@ -12,6 +12,12 @@ RC Socket::Init()
     return OK;
 }
 
+//--------------------------------------------------------------------
+//! \brief Container for a series of actions
+//!
+//! This container holds a series of actions.  It's the PolicyManager
+//! equivalent of a subroutine.  An action block get executed as the
+//! result of a trigger.
 RC Socket::Shut()
 {
     if (SOCKET_ERROR == WSACleanup())
