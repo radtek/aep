@@ -8,6 +8,13 @@ TcpSocket::~TcpSocket()
 {
 }
 
+/**
+* @return 结果代码.
+*
+* TcpSocket初始化.
+* 创建真正的winsock SOCKET对象,
+* 并对其设置必要的属性.
+*/
 RC TcpSocket::Init()
 {
     m_Socket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
@@ -30,6 +37,12 @@ RC TcpSocket::Init()
     return OK;
 }
 
+/**
+* @return 结果代码.
+*
+* TcpSocket清理.
+* 关闭真正的winsock SOCKET对象.
+*/
 RC TcpSocket::Shut()
 {
     if (SOCKET_ERROR == closesocket(m_Socket))
@@ -39,16 +52,21 @@ RC TcpSocket::Shut()
     return OK;
 }
 
+/**
+* @param port 要监听的端口号.
+* @return 结果代码.
+*
+* 绑定该TcpSocket至port端口,
+* 之后进入监听状态.
+*/
 RC TcpSocket::Listen(int port)
 {
     SOCKADDR_IN serverSIN;
 
-    // Define local address and port to listen on.
     serverSIN.sin_family = AF_INET;
     serverSIN.sin_port = htons(port);
     serverSIN.sin_addr.s_addr = htonl(INADDR_ANY);
 
-    // Bind the address "name" to the socket
     if (SOCKET_ERROR == bind(m_Socket,
         (struct sockaddr *)&serverSIN,
         sizeof(serverSIN)))
@@ -56,8 +74,6 @@ RC TcpSocket::Listen(int port)
         return RC::SOCK_BIND_ERROR;
     }
 
-    // Listen for a connection; this sets the incoming queue length
-    // for remote connections.  Multiple connections aren't req'd.
     if (SOCKET_ERROR == listen(m_Socket, 1))
     {
         return RC::SOCK_LISTEN_ERROR;
@@ -66,12 +82,20 @@ RC TcpSocket::Listen(int port)
     return OK;
 }
 
-RC TcpSocket::Connect(const char *hostname, int port)
+/**
+* @param hostName 要连接的远程主机名.
+* @param port 要监听的端口号.
+* @return 结果代码.
+*
+* 根据远程主机名和端口号获得远程主机地址信息,
+* 然后连接至该远程主机.
+*/
+RC TcpSocket::Connect(const char *hostName, int port)
 {   
     SOCKADDR_IN serverSIN;
     struct hostent *host;
     
-    host = gethostbyname(hostname);
+    host = gethostbyname(hostName);
 
     if (host == NULL)
     {
@@ -92,6 +116,15 @@ RC TcpSocket::Connect(const char *hostname, int port)
     return OK;
 }
 
+/**
+* @param clientSocket 用来存储接受到的客户端TcpSocket.
+* @return 结果代码.
+*
+* 接受一个客户端TcpSocket.
+* 在有客户端TcpSocket连接成功后,
+* 服务端创建一个用于服务该客户端的TcpSocket,
+* 存储至clientSocket.
+*/
 RC TcpSocket::Accept(TcpSocket &clientSocket)
 {
     SOCKADDR_IN clientSIN;
@@ -109,6 +142,14 @@ RC TcpSocket::Accept(TcpSocket &clientSocket)
     return OK;
 }
 
+/**
+* @param buf 要接收的数据缓冲区指针.
+* @param size 要接收的数据字节数.
+* @return 结果代码.
+*
+* 基于TCP协议的字节流接收函数.
+* 使用winsock SOCKET对象实现了Socket中的纯虚函数Recv.
+*/
 RC TcpSocket::Recv(void *buf, size_t size)
 {
     size_t totalLen = 0;
@@ -129,6 +170,14 @@ RC TcpSocket::Recv(void *buf, size_t size)
     return OK;
 }
 
+/**
+* @param buf 要发送的数据缓冲区指针.
+* @param size 要发送的数据字节数.
+* @return 结果代码.
+*
+* 基于TCP协议的字节流发送函数.
+* 使用winsock SOCKET对象实现了Socket中的纯虚函数Send.
+*/
 RC TcpSocket::Send(const void *buf, size_t size)
 {
     size_t totalLen = 0;
