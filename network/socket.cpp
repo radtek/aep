@@ -13,7 +13,7 @@ RC Socket::Init()
 }
 
 //--------------------------------------------------------------------
-//! \brief Container for a series of actions
+//! \brief ¹Ø±ÕSocket
 //!
 //! This container holds a series of actions.  It's the PolicyManager
 //! equivalent of a subroutine.  An action block get executed as the
