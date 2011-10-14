@@ -17,7 +17,6 @@ using namespace std;
 /**
 * @class Socket
 * @brief Socket接口类.
-* @author ruoxi
 *
 * Socket接口类抽象出了关于Socket的各种操作,
 * 包括初始化, 清理, 字节流的收发及特定数据类型的收发等等.

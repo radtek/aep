@@ -15,7 +15,6 @@
 /**
 * @class TcpSocket
 * @brief 基于TCP协议实现的Socket.
-* @author ruoxi
 *
 * TcpSocket类是基于TCP协议实现的Socket.
 * 包括创建, 关闭, 监听端口, 连接远程主机, 接受客户端以及在此基础上的字节流的收发.

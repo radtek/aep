@@ -1,3 +1,11 @@
+/**
+* @file
+* @brief TcpSocket类cpp文件.
+* @author ruoxi
+*
+* 实现了TcpSocket类.
+*/
+
 #include "tcp_socket.h"
 
 TcpSocket::TcpSocket()

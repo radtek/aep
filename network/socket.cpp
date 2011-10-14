@@ -1,3 +1,11 @@
+/**
+* @file
+* @brief Socket接口类cpp文件.
+* @author ruoxi
+*
+* 实现了Socket接口类.
+*/
+
 #include "socket.h"
 #include "massert.h"
 #include <winsock2.h>
