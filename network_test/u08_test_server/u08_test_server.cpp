@@ -1,3 +1,11 @@
+/**
+* @file
+* @brief U08TestServer类cpp文件.
+* @author ruoxi
+*
+* 实现了U08TestServer类.
+*/
+
 #include "u08_test_server.h"
 
 U08TestServer::U08TestServer(int port, const char *logFileName, UINT32 maxClientNum)

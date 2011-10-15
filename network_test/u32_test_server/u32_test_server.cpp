@@ -1,3 +1,11 @@
+/**
+* @file
+* @brief U32TestServer类cpp文件.
+* @author ruoxi
+*
+* 实现了U32TestServer类.
+*/
+
 #include "u32_test_server.h"
 
 U32TestServer::U32TestServer(int port, const char *logFileName, UINT32 maxClientNum)

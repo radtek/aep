@@ -1,3 +1,11 @@
+/**
+* @file
+* @brief U08ClientTest类cpp文件.
+* @author ruoxi
+*
+* 实现了U08ClientTest类.
+*/
+
 #include "u08_client_test.h"
 
 U08ClientTest::U08ClientTest(const char *testName, TestTcpClient *client)

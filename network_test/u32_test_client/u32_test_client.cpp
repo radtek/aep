@@ -1,3 +1,11 @@
+/**
+* @file
+* @brief U32TestClient类cpp文件.
+* @author ruoxi
+*
+* 实现了U32TestClient类.
+*/
+
 #include "u32_test_client.h"
 
 U32TestClient::U32TestClient(const char *hostName, int port, const char *logFileName, UINT32 id)

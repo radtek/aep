@@ -1,3 +1,11 @@
+/**
+* @file
+* @brief U16ServerTest类cpp文件.
+* @author ruoxi
+*
+* 实现了U16ServerTest类.
+*/
+
 #include "u16_server_test.h"
 
 U16ServerTest::U16ServerTest(const char *testName, TestTcpServer *server)

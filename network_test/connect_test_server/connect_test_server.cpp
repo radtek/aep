@@ -1,3 +1,11 @@
+/**
+* @file
+* @brief ConnectTestServer类cpp文件.
+* @author ruoxi
+*
+* 实现了ConnectTestServer类.
+*/
+
 #include "connect_test_server.h"
 
 ConnectTestServer::ConnectTestServer(int port, const char *logFileName, UINT32 maxClientNum)

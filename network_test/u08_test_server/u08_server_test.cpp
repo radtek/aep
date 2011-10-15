@@ -1,3 +1,11 @@
+/**
+* @file
+* @brief U08ServerTest类cpp文件.
+* @author ruoxi
+*
+* 实现了U08ServerTest类.
+*/
+
 #include "u08_server_test.h"
 
 U08ServerTest::U08ServerTest(const char *testName, TestTcpServer *server)

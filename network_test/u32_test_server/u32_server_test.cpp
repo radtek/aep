@@ -1,3 +1,11 @@
+/**
+* @file
+* @brief U32ServerTest类cpp文件.
+* @author ruoxi
+*
+* 实现了U32ServerTest类.
+*/
+
 #include "u32_server_test.h"
 
 U32ServerTest::U32ServerTest(const char *testName, TestTcpServer *server)

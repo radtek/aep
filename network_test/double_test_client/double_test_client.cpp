@@ -1,3 +1,11 @@
+/**
+* @file
+* @brief DoubleTestClient类cpp文件.
+* @author ruoxi
+*
+* 实现了DoubleTestClient类.
+*/
+
 #include "double_test_client.h"
 #include <iomanip>
 #include <math.h>

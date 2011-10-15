@@ -1,3 +1,11 @@
+/**
+* @file
+* @brief U16ClientTest类cpp文件.
+* @author ruoxi
+*
+* 实现了U16ClientTest类.
+*/
+
 #include "u16_client_test.h"
 
 U16ClientTest::U16ClientTest(const char *testName, TestTcpClient *client)

@@ -1,3 +1,11 @@
+/**
+* @file
+* @brief U32ClientTest类cpp文件.
+* @author ruoxi
+*
+* 实现了U32ClientTest类.
+*/
+
 #include "u32_client_test.h"
 
 U32ClientTest::U32ClientTest(const char *testName, TestTcpClient *client)

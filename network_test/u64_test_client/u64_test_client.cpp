@@ -1,3 +1,11 @@
+/**
+* @file
+* @brief U64TestClient类cpp文件.
+* @author ruoxi
+*
+* 实现了U64TestClient类.
+*/
+
 #include "u64_test_client.h"
 
 U64TestClient::U64TestClient(const char *hostName, int port, const char *logFileName, UINT32 id)

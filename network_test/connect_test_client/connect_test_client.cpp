@@ -1,3 +1,11 @@
+/**
+* @file
+* @brief ConnectTestClient类cpp文件.
+* @author ruoxi
+*
+* 实现了ConnectTestClient类.
+*/
+
 #include "connect_test_client.h"
 
 ConnectTestClient::ConnectTestClient(const char *hostName, int port, const char *logFileName, UINT32 id)

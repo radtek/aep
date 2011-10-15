@@ -1,3 +1,11 @@
+/**
+* @file
+* @brief U16TestClient类cpp文件.
+* @author ruoxi
+*
+* 实现了U16TestClient类.
+*/
+
 #include "u16_test_client.h"
 
 U16TestClient::U16TestClient(const char *hostName, int port, const char *logFileName, UINT32 id)

@@ -1,3 +1,11 @@
+/**
+* @file
+* @brief DoubleServerTest类cpp文件.
+* @author ruoxi
+*
+* 实现了DoubleServerTest类.
+*/
+
 #include "double_server_test.h"
 #include <math.h>
 

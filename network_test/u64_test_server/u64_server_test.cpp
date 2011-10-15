@@ -1,3 +1,11 @@
+/**
+* @file
+* @brief U64ServerTest类cpp文件.
+* @author ruoxi
+*
+* 实现了U64ServerTest类.
+*/
+
 #include "u64_server_test.h"
 
 U64ServerTest::U64ServerTest(const char *testName, TestTcpServer *server)

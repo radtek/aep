@@ -1,3 +1,11 @@
+/**
+* @file
+* @brief U64TestServer类cpp文件.
+* @author ruoxi
+*
+* 实现了U64TestServer类.
+*/
+
 #include "u64_test_server.h"
 
 U64TestServer::U64TestServer(int port, const char *logFileName, UINT32 maxClientNum)

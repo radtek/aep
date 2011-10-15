@@ -1,3 +1,11 @@
+/**
+* @file
+* @brief U16TestServer类cpp文件.
+* @author ruoxi
+*
+* 实现了U16TestServer类.
+*/
+
 #include "u16_test_server.h"
 
 U16TestServer::U16TestServer(int port, const char *logFileName, UINT32 maxClientNum)

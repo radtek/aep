@@ -1,3 +1,11 @@
+/**
+* @file
+* @brief U08TestClient类cpp文件.
+* @author ruoxi
+*
+* 实现了U08TestClient类.
+*/
+
 #include "u08_test_client.h"
 
 U08TestClient::U08TestClient(const char *hostName, int port, const char *logFileName, UINT32 id)
