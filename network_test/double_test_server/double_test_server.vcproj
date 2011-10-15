@@ -2,9 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="8.00"
-	Name="u16_test_server"
-	ProjectGUID="{B827AC97-A305-41E8-9826-0DA62FB73005}"
-	RootNamespace="u16_test_server"
+	Name="double_test_server"
+	ProjectGUID="{BF5BA202-5016-4319-B9FC-C39AAFD77AF0}"
+	RootNamespace="double_test_server"
 	Keyword="Win32Proj"
 	>
 	<Platforms>
@@ -183,15 +183,15 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
+				RelativePath=".\double_server_test.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\double_test_server.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\main.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\u16_server_test.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\u16_test_server.cpp"
 				>
 			</File>
 		</Filter>
@@ -201,11 +201,11 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath="..\include\u16_server_test.h"
+				RelativePath="..\include\double_server_test.h"
 				>
 			</File>
 			<File
-				RelativePath="..\include\u16_test_server.h"
+				RelativePath="..\include\double_test_server.h"
 				>
 			</File>
 		</Filter>

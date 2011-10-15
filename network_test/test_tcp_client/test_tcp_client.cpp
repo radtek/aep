@@ -1,5 +1,21 @@
+/**
+* @file
+* @brief TestTcpClient类cpp文件.
+* @author ruoxi
+*
+* 实现了TestTcpClient类.
+*/
+
 #include "test_tcp_client.h"
 
+/**
+* @param hostName 测试用TCP服务端主机名.
+* @param port 测试用TCP服务端主机端口.
+* @param logFileName 日志文件名.
+* @param id 客户端ID, 默认值为0.
+*
+* TestTcpClient构造函数. 接受测试用TCP服务端主机名, 端口, 日志文件名及客户端ID.
+*/
 TestTcpClient::TestTcpClient(const char *hostName, int port, const char *logFileName, UINT32 id)
 :
 m_HostName(hostName),
@@ -15,6 +31,11 @@ TestTcpClient::~TestTcpClient()
 {
 }
 
+/**
+* @return 结果代码.
+*
+* TestTcpClient初始化. 初始化Socket环境, 初始化客户端用TcpSocket.
+*/
 RC TestTcpClient::Init()
 {
     RC rc;
@@ -26,6 +47,11 @@ RC TestTcpClient::Init()
     return rc;
 }
 
+/**
+* @return 结果代码.
+*
+* TestTcpClient清理. 清理客户端用TcpSocket, 清理Socket环境.
+*/
 RC TestTcpClient::Shut()
 {
     RC rc;
@@ -39,6 +65,9 @@ RC TestTcpClient::Shut()
     return rc;
 }
 
+/**
+* @return 结果代码.
+*/
 RC TestTcpClient::Connect()
 {
     RC rc;
@@ -48,6 +77,9 @@ RC TestTcpClient::Connect()
     return rc;
 }
 
+/**
+* @return 日志文件名.
+*/
 const char *TestTcpClient::GetLogFileName()
 {
     return m_LogFileName;

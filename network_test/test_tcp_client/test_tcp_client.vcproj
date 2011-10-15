@@ -143,6 +143,10 @@
 		</Configuration>
 	</Configurations>
 	<References>
+		<ProjectReference
+			ReferencedProjectIdentifier="{5C99B807-8987-4F6D-AACF-DBBD50371873}"
+			RelativePathToProject="..\network\network.vcproj"
+		/>
 	</References>
 	<Files>
 		<Filter

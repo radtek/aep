@@ -213,7 +213,7 @@ RC Socket::RecvDouble(double &data)
     RC rc;
     UINT64 temp;
     CHECK_RC(Recv64(temp));
-    data = static_cast<double>(temp);
+    data = *((double *)(&temp));
     return rc;
 }
 
@@ -226,7 +226,7 @@ RC Socket::RecvDouble(double &data)
 */
 RC Socket::SendDouble(double data)
 {
-    UINT64 temp = static_cast<UINT64>(data);
+    UINT64 temp = *((UINT64 *)(&data));
     return Send64(temp);
 }
 

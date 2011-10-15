@@ -4,68 +4,30 @@ Microsoft Visual Studio Solution File, Format Version 9.00
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "network", "..\network\network.vcproj", "{5C99B807-8987-4F6D-AACF-DBBD50371873}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test_tcp_server", "test_tcp_server\test_tcp_server.vcproj", "{98C1C30D-EDA3-4088-B424-0021A7F2A74D}"
-	ProjectSection(ProjectDependencies) = postProject
-		{5C99B807-8987-4F6D-AACF-DBBD50371873} = {5C99B807-8987-4F6D-AACF-DBBD50371873}
-	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test_tcp_client", "test_tcp_client\test_tcp_client.vcproj", "{5409F9B8-7EE0-42E4-A3D4-717CD868C406}"
-	ProjectSection(ProjectDependencies) = postProject
-		{5C99B807-8987-4F6D-AACF-DBBD50371873} = {5C99B807-8987-4F6D-AACF-DBBD50371873}
-	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "connect_test_client", "connect_test_client\connect_test_client.vcproj", "{D88374BB-B355-4F2E-9DED-F5867B76F457}"
-	ProjectSection(ProjectDependencies) = postProject
-		{36C9DE2D-C8A6-449A-9038-6E74EDF0D696} = {36C9DE2D-C8A6-449A-9038-6E74EDF0D696}
-	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "connect_test_server", "connect_test_server\connect_test_server.vcproj", "{E7D050E8-F260-42F3-BFFF-EFF417D84F66}"
-	ProjectSection(ProjectDependencies) = postProject
-		{719FC6D7-D641-44BC-AD8D-725D5489DE31} = {719FC6D7-D641-44BC-AD8D-725D5489DE31}
-	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "u08_test_client", "u08_test_client\u08_test_client.vcproj", "{F79B9BC0-F2CA-4A56-9A02-EF7E2D609A97}"
-	ProjectSection(ProjectDependencies) = postProject
-		{36C9DE2D-C8A6-449A-9038-6E74EDF0D696} = {36C9DE2D-C8A6-449A-9038-6E74EDF0D696}
-	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "u08_test_server", "u08_test_server\u08_test_server.vcproj", "{A7151915-8A44-45CE-88B3-D3CE16E6E72B}"
-	ProjectSection(ProjectDependencies) = postProject
-		{719FC6D7-D641-44BC-AD8D-725D5489DE31} = {719FC6D7-D641-44BC-AD8D-725D5489DE31}
-	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "network_test", "network_test\network_test.vcproj", "{12615C15-568A-4112-948E-0746BF452581}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tcp_client_test", "tcp_client_test\tcp_client_test.vcproj", "{36C9DE2D-C8A6-449A-9038-6E74EDF0D696}"
-	ProjectSection(ProjectDependencies) = postProject
-		{5409F9B8-7EE0-42E4-A3D4-717CD868C406} = {5409F9B8-7EE0-42E4-A3D4-717CD868C406}
-		{12615C15-568A-4112-948E-0746BF452581} = {12615C15-568A-4112-948E-0746BF452581}
-	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tcp_server_test", "tcp_server_test\tcp_server_test.vcproj", "{719FC6D7-D641-44BC-AD8D-725D5489DE31}"
-	ProjectSection(ProjectDependencies) = postProject
-		{12615C15-568A-4112-948E-0746BF452581} = {12615C15-568A-4112-948E-0746BF452581}
-		{98C1C30D-EDA3-4088-B424-0021A7F2A74D} = {98C1C30D-EDA3-4088-B424-0021A7F2A74D}
-	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "u16_test_client", "u16_test_client\u16_test_client.vcproj", "{B2A1D931-1027-4E60-A7F5-B2514F8CA678}"
-	ProjectSection(ProjectDependencies) = postProject
-		{36C9DE2D-C8A6-449A-9038-6E74EDF0D696} = {36C9DE2D-C8A6-449A-9038-6E74EDF0D696}
-	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "u16_test_server", "u16_test_server\u16_test_server.vcproj", "{B827AC97-A305-41E8-9826-0DA62FB73005}"
-	ProjectSection(ProjectDependencies) = postProject
-		{719FC6D7-D641-44BC-AD8D-725D5489DE31} = {719FC6D7-D641-44BC-AD8D-725D5489DE31}
-	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "u32_test_client", "u32_test_client\u32_test_client.vcproj", "{0A3F304B-CC95-4157-A9DD-99039BF78705}"
-	ProjectSection(ProjectDependencies) = postProject
-		{36C9DE2D-C8A6-449A-9038-6E74EDF0D696} = {36C9DE2D-C8A6-449A-9038-6E74EDF0D696}
-	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "u32_test_server", "u32_test_server\u32_test_server.vcproj", "{D2BDF98A-ABB8-4140-AF83-D3D765A42CA6}"
-	ProjectSection(ProjectDependencies) = postProject
-		{719FC6D7-D641-44BC-AD8D-725D5489DE31} = {719FC6D7-D641-44BC-AD8D-725D5489DE31}
-	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "u64_test_client", "u64_test_client\u64_test_client.vcproj", "{ECCE3A7E-3EA8-4B32-8C7D-D1C964BD02E0}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -73,9 +35,10 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "u64_test_client", "u64_test
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "u64_test_server", "u64_test_server\u64_test_server.vcproj", "{9F49B667-292B-4008-A46E-92EBE92A0BD5}"
-	ProjectSection(ProjectDependencies) = postProject
-		{719FC6D7-D641-44BC-AD8D-725D5489DE31} = {719FC6D7-D641-44BC-AD8D-725D5489DE31}
-	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "double_test_client", "double_test_client\double_test_client.vcproj", "{FF3C654B-F9C0-43B9-87BF-86C774FEACA8}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "double_test_server", "double_test_server\double_test_server.vcproj", "{BF5BA202-5016-4319-B9FC-C39AAFD77AF0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -147,6 +110,14 @@ Global
 		{9F49B667-292B-4008-A46E-92EBE92A0BD5}.Debug|Win32.Build.0 = Debug|Win32
 		{9F49B667-292B-4008-A46E-92EBE92A0BD5}.Release|Win32.ActiveCfg = Release|Win32
 		{9F49B667-292B-4008-A46E-92EBE92A0BD5}.Release|Win32.Build.0 = Release|Win32
+		{FF3C654B-F9C0-43B9-87BF-86C774FEACA8}.Debug|Win32.ActiveCfg = Debug|Win32
+		{FF3C654B-F9C0-43B9-87BF-86C774FEACA8}.Debug|Win32.Build.0 = Debug|Win32
+		{FF3C654B-F9C0-43B9-87BF-86C774FEACA8}.Release|Win32.ActiveCfg = Release|Win32
+		{FF3C654B-F9C0-43B9-87BF-86C774FEACA8}.Release|Win32.Build.0 = Release|Win32
+		{BF5BA202-5016-4319-B9FC-C39AAFD77AF0}.Debug|Win32.ActiveCfg = Debug|Win32
+		{BF5BA202-5016-4319-B9FC-C39AAFD77AF0}.Debug|Win32.Build.0 = Debug|Win32
+		{BF5BA202-5016-4319-B9FC-C39AAFD77AF0}.Release|Win32.ActiveCfg = Release|Win32
+		{BF5BA202-5016-4319-B9FC-C39AAFD77AF0}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

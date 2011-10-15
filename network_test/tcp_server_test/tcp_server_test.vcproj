@@ -143,6 +143,14 @@
 		</Configuration>
 	</Configurations>
 	<References>
+		<ProjectReference
+			ReferencedProjectIdentifier="{12615C15-568A-4112-948E-0746BF452581}"
+			RelativePathToProject=".\network_test\network_test.vcproj"
+		/>
+		<ProjectReference
+			ReferencedProjectIdentifier="{98C1C30D-EDA3-4088-B424-0021A7F2A74D}"
+			RelativePathToProject=".\test_tcp_server\test_tcp_server.vcproj"
+		/>
 	</References>
 	<Files>
 		<Filter

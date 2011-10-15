@@ -171,6 +171,10 @@
 		</Configuration>
 	</Configurations>
 	<References>
+		<ProjectReference
+			ReferencedProjectIdentifier="{719FC6D7-D641-44BC-AD8D-725D5489DE31}"
+			RelativePathToProject=".\tcp_server_test\tcp_server_test.vcproj"
+		/>
 	</References>
 	<Files>
 		<Filter
