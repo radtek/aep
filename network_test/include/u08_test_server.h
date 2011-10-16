@@ -13,7 +13,7 @@
 
 /**
 * @class U08TestServer
-* @brief 测试收发8位无符号类型的TC服务端.
+* @brief 测试收发8位无符号类型的TCP服务端.
 *
 * U08TestServer类是用来测试TCP收发8位无符号类型功能的服务端.
 * 与客户端互相收发一组8位无符号数.

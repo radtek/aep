@@ -13,7 +13,7 @@
 
 /**
 * @class DoubleTestServer
-* @brief 测试收发双精度浮点类型的TC服务端.
+* @brief 测试收发双精度浮点类型的TCP服务端.
 *
 * DoubleTestServer类是用来测试TCP收发双精度浮点类型功能的服务端.
 * 与客户端互相收发一组双精度浮点数.
