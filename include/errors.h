@@ -12,6 +12,8 @@
 #undef __USE_ERRORS__
 
 DEFINE_ERROR(UNKNOWN_ERROR, "Unknown error occured.")
+DEFINE_ERROR(FILE_OPEN_ERROR, "File open failed.")
+DEFINE_ERROR(FILE_WRITE_ERROR, "File write failed.")
 DEFINE_ERROR(WINSOCK_INIT_ERROR, "Winsock initialize failed.")
 DEFINE_ERROR(WINSOCK_SHUT_ERROR, "Winsock cleanup failed.")
 DEFINE_ERROR(SOCK_CREATE_ERROR, "Socket create failed.")
@@ -24,6 +26,8 @@ DEFINE_ERROR(SOCK_CONNECT_ERROR, "Socket connect failed.")
 DEFINE_ERROR(SOCK_ACCEPT_ERROR, "Socket accept failed.")
 DEFINE_ERROR(SOCK_RECV_ERROR, "Socket recieve data failed.")
 DEFINE_ERROR(SOCK_SEND_ERROR, "Socket send data failed.")
+DEFINE_ERROR(SOCK_SEND_FILE_ERROR, "Socket send file failed.")
+DEFINE_ERROR(COMPONENT_QUERYINTERFACE_ERROR, "Component query interface error.")
 
 #ifdef __NETWORK_TEST__
 DEFINE_ERROR(THREAD_CREATE_ERROR, "Create thread failed.")

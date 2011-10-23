@@ -7,6 +7,7 @@
 */
 
 #include "tcp_socket.h"
+#include <mswsock.h>
 
 TcpSocket::TcpSocket()
 {
@@ -202,4 +203,72 @@ RC TcpSocket::Send(const void *buf, size_t size)
         totalLen += retLen;
     }
     return OK;
+}
+
+/**
+* @param fileName 将接收到的文件内容保存到的文件名.
+* @return 结果代码.
+*/
+RC TcpSocket::RecvFile(const char *fileName)
+{
+    RC rc;
+    FILE *file = fopen(fileName, "wb");
+    if (NULL == file)
+    {
+        return RC::FILE_OPEN_ERROR;
+    }
+    UINT32 length;
+    CHECK_RC(Recv32(length));
+    char *buf = new char[length];
+    CHECK_RC(Recv(buf, length));
+    if (fwrite(buf, 1, length, file) != length)
+    {
+        return RC::FILE_WRITE_ERROR;
+    }
+    delete[] buf;
+    fclose(file);
+    return rc;
+}
+
+/**
+* @param fileName 要发送文件的文件名.
+* @return 结果代码.
+*/
+
+RC TcpSocket::SendFile(const char *fileName)
+{
+    RC rc;
+    UINT32 length = strlen(fileName) + 1;
+    wchar_t *wFileName = (wchar_t *)malloc(length * sizeof(wchar_t));
+    UINT32 converted;
+    mbstowcs_s(&converted, wFileName, length, fileName, _TRUNCATE);
+    HANDLE file = CreateFile(
+        wFileName,
+        GENERIC_READ,
+        FILE_SHARE_READ,
+        NULL,
+        OPEN_EXISTING,
+        FILE_ATTRIBUTE_NORMAL,
+        NULL);
+    if (file == INVALID_HANDLE_VALUE)
+    {
+        INT32 e = GetLastError();
+        return RC::FILE_OPEN_ERROR;
+    }
+    length = GetFileSize(file, NULL);
+    CHECK_RC(Send32(length));
+    if (!TransmitFile(
+        m_Socket,
+        file,
+        0,
+        0,
+        NULL,
+        NULL,
+        TF_USE_KERNEL_APC
+        ))
+    {
+        return RC::SOCK_SEND_FILE_ERROR;
+    }
+    CloseHandle(file);
+    return rc;
 }

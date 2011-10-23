@@ -40,6 +40,10 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "double_test_client", "doubl
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "double_test_server", "double_test_server\double_test_server.vcproj", "{BF5BA202-5016-4319-B9FC-C39AAFD77AF0}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "file_test_client", "file_test_client\file_test_client.vcproj", "{3BEFACD3-631F-42A5-9E98-D84B0B666F4B}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "file_test_server", "file_test_server\file_test_server.vcproj", "{E2F7A742-1508-4898-8D42-59371E1739EB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -118,6 +122,14 @@ Global
 		{BF5BA202-5016-4319-B9FC-C39AAFD77AF0}.Debug|Win32.Build.0 = Debug|Win32
 		{BF5BA202-5016-4319-B9FC-C39AAFD77AF0}.Release|Win32.ActiveCfg = Release|Win32
 		{BF5BA202-5016-4319-B9FC-C39AAFD77AF0}.Release|Win32.Build.0 = Release|Win32
+		{3BEFACD3-631F-42A5-9E98-D84B0B666F4B}.Debug|Win32.ActiveCfg = Debug|Win32
+		{3BEFACD3-631F-42A5-9E98-D84B0B666F4B}.Debug|Win32.Build.0 = Debug|Win32
+		{3BEFACD3-631F-42A5-9E98-D84B0B666F4B}.Release|Win32.ActiveCfg = Release|Win32
+		{3BEFACD3-631F-42A5-9E98-D84B0B666F4B}.Release|Win32.Build.0 = Release|Win32
+		{E2F7A742-1508-4898-8D42-59371E1739EB}.Debug|Win32.ActiveCfg = Debug|Win32
+		{E2F7A742-1508-4898-8D42-59371E1739EB}.Debug|Win32.Build.0 = Debug|Win32
+		{E2F7A742-1508-4898-8D42-59371E1739EB}.Release|Win32.ActiveCfg = Release|Win32
+		{E2F7A742-1508-4898-8D42-59371E1739EB}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
