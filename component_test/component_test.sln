@@ -3,9 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 9.00
 # Visual Studio 2005
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "component", "..\component\component.vcproj", "{8ED092B5-70E1-47CE-9ED2-F7179AF1D009}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "aircraft_measure", "aircraft_measure\aircraft_measure.vcproj", "{2416F238-3E06-4414-9D52-0ACB6ED6B6F5}"
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test_platform", "test_platform\test_platform.vcproj", "{AE50B4E8-6B7B-4BD1-9207-41956783E9C7}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "aircraft_measure_component", "aircraft_measure\aircraft_measure.vcproj", "{2416F238-3E06-4414-9D52-0ACB6ED6B6F5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,10 +19,6 @@ Global
 		{2416F238-3E06-4414-9D52-0ACB6ED6B6F5}.Debug|Win32.Build.0 = Debug|Win32
 		{2416F238-3E06-4414-9D52-0ACB6ED6B6F5}.Release|Win32.ActiveCfg = Release|Win32
 		{2416F238-3E06-4414-9D52-0ACB6ED6B6F5}.Release|Win32.Build.0 = Release|Win32
-		{AE50B4E8-6B7B-4BD1-9207-41956783E9C7}.Debug|Win32.ActiveCfg = Debug|Win32
-		{AE50B4E8-6B7B-4BD1-9207-41956783E9C7}.Debug|Win32.Build.0 = Debug|Win32
-		{AE50B4E8-6B7B-4BD1-9207-41956783E9C7}.Release|Win32.ActiveCfg = Release|Win32
-		{AE50B4E8-6B7B-4BD1-9207-41956783E9C7}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

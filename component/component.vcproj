@@ -159,6 +159,10 @@
 				RelativePath="..\utility\rc.cpp"
 				>
 			</File>
+			<File
+				RelativePath=".\vector.cpp"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -183,6 +187,10 @@
 			</File>
 			<File
 				RelativePath="..\include\types.h"
+				>
+			</File>
+			<File
+				RelativePath="..\include\vector.h"
 				>
 			</File>
 		</Filter>
