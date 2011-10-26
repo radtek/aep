@@ -7,6 +7,7 @@
 */
 
 #include "tcp_socket.h"
+#include "utility.h"
 #include <mswsock.h>
 
 TcpSocket::TcpSocket()
@@ -209,10 +210,17 @@ RC TcpSocket::Send(const void *buf, size_t size)
 * @param fileName 将接收到的文件内容保存到的文件名.
 * @return 结果代码.
 */
-RC TcpSocket::RecvFile(const char *fileName)
+RC TcpSocket::RecvFile(LPCWSTR fileName)
 {
     RC rc;
-    FILE *file = fopen(fileName, "wb");
+    HANDLE file = CreateFile(
+        fileName,
+        GENERIC_READ | GENERIC_WRITE,
+        FILE_SHARE_WRITE,
+        NULL,
+        CREATE_ALWAYS,
+        FILE_ATTRIBUTE_NORMAL,
+        NULL);
     if (NULL == file)
     {
         return RC::FILE_OPEN_ERROR;
@@ -221,12 +229,14 @@ RC TcpSocket::RecvFile(const char *fileName)
     CHECK_RC(Recv32(length));
     char *buf = new char[length];
     CHECK_RC(Recv(buf, length));
-    if (fwrite(buf, 1, length, file) != length)
+    DWORD written = 0;
+    WriteFile(file, buf, length, &written, NULL);
+    if (length != written)
     {
         return RC::FILE_WRITE_ERROR;
     }
     delete[] buf;
-    fclose(file);
+    CloseHandle(file);
     return rc;
 }
 
@@ -235,15 +245,11 @@ RC TcpSocket::RecvFile(const char *fileName)
 * @return 结果代码.
 */
 
-RC TcpSocket::SendFile(const char *fileName)
+RC TcpSocket::SendFile(LPCWSTR fileName)
 {
     RC rc;
-    UINT32 length = strlen(fileName) + 1;
-    wchar_t *wFileName = (wchar_t *)malloc(length * sizeof(wchar_t));
-    UINT32 converted;
-    mbstowcs_s(&converted, wFileName, length, fileName, _TRUNCATE);
     HANDLE file = CreateFile(
-        wFileName,
+        fileName,
         GENERIC_READ,
         FILE_SHARE_READ,
         NULL,
@@ -252,10 +258,9 @@ RC TcpSocket::SendFile(const char *fileName)
         NULL);
     if (file == INVALID_HANDLE_VALUE)
     {
-        INT32 e = GetLastError();
         return RC::FILE_OPEN_ERROR;
     }
-    length = GetFileSize(file, NULL);
+    UINT32 length = GetFileSize(file, NULL);
     CHECK_RC(Send32(length));
     if (!TransmitFile(
         m_Socket,

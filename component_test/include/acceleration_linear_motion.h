@@ -39,7 +39,7 @@ private:
     Vector *m_Acceleration;
 };
 
-extern const char *AccelerationLinearMotionTypeName;
+extern LPCWSTR AccelerationLinearMotionTypeName;
 
 extern UINT32 AccelerationLinearMotionAttributeList[];
 

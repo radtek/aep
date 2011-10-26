@@ -8,6 +8,6 @@
 #include "file_server_test.h"
 #include "massert.h"
 
-const char *serverTempFileName = "file_test_server_temp.txt";
+LPCWSTR serverTempFileName = TEXT("file_test_server_temp.txt");
 
 MAKE_SERVER_TEST(FileTestServer, FileServerTest, file_test_server, 1)

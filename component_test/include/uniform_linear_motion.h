@@ -38,7 +38,7 @@ private:
     Vector *m_Velocity;
 };
 
-extern const char *UniformLinearMotionTypeName;
+extern LPCWSTR UniformLinearMotionTypeName;
 
 extern UINT32 UniformLinearMotionAttributeList[];
 

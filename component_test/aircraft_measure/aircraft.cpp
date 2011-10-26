@@ -101,7 +101,7 @@ RC Aircraft::Fly(double second)
     return rc;
 }
 
-const char *AircraftTypeName = "Acceleration linear motion";
+LPCWSTR AircraftTypeName = TEXT("Acceleration linear motion");
 
 UINT32 AircraftAttributeList[] =
 {

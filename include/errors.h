@@ -31,6 +31,8 @@ DEFINE_ERROR(COMPONENT_GETINTERFACE_ERROR, "Component get interface error.")
 DEFINE_ERROR(COMPONENT_GETATTRIBUTE_ERROR, "Component get attribute error.")
 DEFINE_ERROR(COMPONENT_ATTRIBUTEUNSET_ERROR, "Component unset attribute error.")
 DEFINE_ERROR(COMPONENT_SETATTRIBUTE_ERROR, "Component set attribute error.")
+DEFINE_ERROR(COMPONENT_LOADDLL_ERROR, "Component load dll error.")
+DEFINE_ERROR(COMPONENT_REGISTERCLIENTCOMPONENT_ERROR, "Component register client component error.")
 
 #ifdef __NETWORK_TEST__
 DEFINE_ERROR(THREAD_CREATE_ERROR, "Create thread failed.")

@@ -1,20 +1,24 @@
 #include "aircraft_measure.h"
+#include "uniform_linear_motion.h"
+#include "acceleration_linear_motion.h"
+#include "aircraft.h"
 
-ComponentInfo *RegisterAllComponents()
+void RegisterClientComponent(ComponentInfoList &componentInfoList)
 {
-    ComponentInfo *componentInfoList = new ComponentInfo[3];
+    ComponentInfo componentInfo;
 
-    componentInfoList[0].typeName = AccelerationLinearMotionTypeName;
-    componentInfoList[0].attributeList = AccelerationLinearMotionAttributeList;
-    componentInfoList[0].factory = (ComponentFactory)AccelerationLinearMotionFactory;
+    componentInfo.typeName = AccelerationLinearMotionTypeName;
+    componentInfo.attributeList = AccelerationLinearMotionAttributeList;
+    componentInfo.factory = (ComponentFactory)AccelerationLinearMotionFactory;
+    componentInfoList.push_back(componentInfo);
 
-    componentInfoList[1].typeName = UniformLinearMotionTypeName;
-    componentInfoList[1].attributeList = UniformLinearMotionAttributeList;
-    componentInfoList[1].factory = (ComponentFactory)UniformLinearMotionFactory;
+    componentInfo.typeName = UniformLinearMotionTypeName;
+    componentInfo.attributeList = UniformLinearMotionAttributeList;
+    componentInfo.factory = (ComponentFactory)UniformLinearMotionFactory;
+    componentInfoList.push_back(componentInfo);
 
-    componentInfoList[2].typeName = AircraftTypeName;
-    componentInfoList[2].attributeList = AircraftAttributeList;
-    componentInfoList[2].factory = (ComponentFactory)AircraftFactory;
-
-    return componentInfoList;
+    componentInfo.typeName = AircraftTypeName;
+    componentInfo.attributeList = AircraftAttributeList;
+    componentInfo.factory = (ComponentFactory)AircraftFactory;
+    componentInfoList.push_back(componentInfo);
 }

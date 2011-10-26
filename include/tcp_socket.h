@@ -46,9 +46,9 @@ public:
     virtual RC Send(const void *buf, size_t size);
 
     /** @brief 基于TCP协议的文件接收函数. */
-    virtual RC RecvFile(const char *fileName);
+    virtual RC RecvFile(LPCWSTR fileName);
     /** @brief 基于TCP协议的文件发送函数. */
-    virtual RC SendFile(const char *fileName);
+    virtual RC SendFile(LPCWSTR fileName);
 
 private:
     /** @brief 真正工作的winsock SOCKET对象. */

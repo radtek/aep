@@ -8,8 +8,8 @@
 
 #include "file_client_test.h"
 
-extern const char *clientSendFileName;
-extern const char *clientRecvFileName;
+extern LPCWSTR clientSendFileName;
+extern LPCWSTR clientRecvFileName;
 
 FileClientTest::FileClientTest(const char *testName, TestTcpClient *client)
 :
@@ -21,7 +21,7 @@ NetworkTest::TestResult FileClientTest::Check()
 {
     TestResult result = PASS;
 
-    FILE *sendFile = fopen(clientSendFileName, "r"), *recvFile = fopen(clientRecvFileName, "r");
+    FILE *sendFile = _wfopen(clientSendFileName, TEXT("r")), *recvFile = _wfopen(clientRecvFileName, TEXT("r"));
     if (NULL == sendFile || NULL == recvFile)
     {
         return FAIL;

@@ -8,7 +8,7 @@
 
 #include "file_test_server.h"
 
-extern const char *serverTempFileName;
+extern LPCWSTR serverTempFileName;
 
 FileTestServer::FileTestServer(int port, const char *logFileName, UINT32 maxClientNum)
 :

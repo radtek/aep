@@ -82,7 +82,7 @@ RC AccelerationLinearMotion::Move(Vector &coordinate, double time)
     return OK;
 }
 
-const char *AccelerationLinearMotionTypeName = "Acceleration linear motion";
+LPCWSTR AccelerationLinearMotionTypeName = TEXT("Acceleration linear motion");
 
 UINT32 AccelerationLinearMotionAttributeList[] =
 {

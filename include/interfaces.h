@@ -10,7 +10,10 @@
 #define __INTERFACES_H__
 
 #include <objbase.h>
+#include <vector>
 #include "rc.h"
+
+using namespace std;
 
 enum CIID
 {
@@ -44,11 +47,13 @@ interface IAlgorithm : IComponent
 
 typedef IComponent *(*ComponentFactory)(void);
 
-struct ComponentInfo
+typedef struct
 {
-    const char *typeName;
+    LPCWSTR typeName;
     UINT32 *attributeList;
     ComponentFactory factory;
-};
+} ComponentInfo;
+
+typedef vector<ComponentInfo> ComponentInfoList;
 
 #endif // __INTERFACES_H__

@@ -12,12 +12,12 @@
 using namespace std;
 
 /** @brief 创建结果代码与消息的对应map. */
-static map<INT32, const char *> MakeErrorMap()
+static map<INT32, LPCWSTR> MakeErrorMap()
 {
-    map<INT32, const char *> errorMap;
+    map<INT32, LPCWSTR> errorMap;
     #undef DEFINE_ERROR
     /** @brief 重定义结果代码的外包宏DEFINE_ERROR. */
-    #define DEFINE_ERROR(e, msg) errorMap[RC::e] = msg;
+    #define DEFINE_ERROR(e, msg) errorMap[RC::e] = TEXT(msg);
     /** @brief 用来开启允许包含errors.h头文件的开关. */
     #define __USE_ERRORS__
     #include "errors.h"
@@ -25,7 +25,7 @@ static map<INT32, const char *> MakeErrorMap()
 }
 
 /** @brief 全局结果代码与消息的对应map. */
-static map<INT32, const char *> ErrorMap = MakeErrorMap();
+static map<INT32, LPCWSTR> ErrorMap = MakeErrorMap();
 
 /**
 *
@@ -90,7 +90,7 @@ RC::operator INT32() const
     return m_Rc;
 }
 
-const char *RC::Message() const
+LPCWSTR RC::Message() const
 {
     return ErrorMap[m_Rc];
 }

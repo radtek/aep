@@ -44,7 +44,7 @@
 				PreprocessorDefinitions="WIN32;_DEBUG;_LIB"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
-				RuntimeLibrary="3"
+				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="true"
@@ -107,7 +107,7 @@
 				Name="VCCLCompilerTool"
 				AdditionalIncludeDirectories="..\include"
 				PreprocessorDefinitions="WIN32;NDEBUG;_LIB"
-				RuntimeLibrary="2"
+				RuntimeLibrary="0"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="true"
@@ -168,6 +168,10 @@
 				RelativePath=".\tcp_socket.cpp"
 				>
 			</File>
+			<File
+				RelativePath="..\utility\utility.cpp"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -196,6 +200,10 @@
 			</File>
 			<File
 				RelativePath="..\include\types.h"
+				>
+			</File>
+			<File
+				RelativePath="..\include\utility.h"
 				>
 			</File>
 		</Filter>

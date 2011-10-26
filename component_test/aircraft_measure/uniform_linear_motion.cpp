@@ -80,7 +80,7 @@ RC UniformLinearMotion::Move(Vector &coordinate, double time)
     return OK;
 }
 
-const char *UniformLinearMotionTypeName = "Uniform linear motion";
+LPCWSTR UniformLinearMotionTypeName = TEXT("Uniform linear motion");
 
 UINT32 UniformLinearMotionAttributeList[] =
 {

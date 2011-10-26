@@ -1,5 +1,6 @@
-#include "uniform_linear_motion.h"
-#include "acceleration_linear_motion.h"
-#include "aircraft.h"
+#include "interfaces.h"
 
-ComponentInfo *RegisterAllComponents();
+extern "C"
+{
+    __declspec(dllexport) void RegisterClientComponent(ComponentInfoList &componentInfoList);
+}

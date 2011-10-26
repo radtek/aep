@@ -8,8 +8,8 @@
 
 #include "file_test_client.h"
 
-extern const char *clientSendFileName;
-extern const char *clientRecvFileName;
+extern LPCWSTR clientSendFileName;
+extern LPCWSTR clientRecvFileName;
 
 FileTestClient::FileTestClient(const char *hostName, int port, const char *logFileName, UINT32 id)
 :

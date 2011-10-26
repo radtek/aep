@@ -44,7 +44,7 @@ private:
     IMotion *m_Motion;
 };
 
-extern const char *AircraftTypeName;
+extern LPCWSTR AircraftTypeName;
 
 extern UINT32 AircraftAttributeList[];
 

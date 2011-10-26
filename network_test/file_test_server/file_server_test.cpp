@@ -8,7 +8,7 @@
 
 #include "file_server_test.h"
 
-extern const char *serverTempFileName;
+extern LPCWSTR serverTempFileName;
 
 FileServerTest::FileServerTest(const char *testName, TestTcpServer *server)
 :
@@ -18,11 +18,11 @@ TcpServerTest(testName, server)
 
 NetworkTest::TestResult FileServerTest::Check()
 {
-    FILE *file = fopen(serverTempFileName, "r");
+    FILE *file = _wfopen(serverTempFileName, TEXT("r"));
     if (NULL == file)
     {
         return FAIL;
     }
-    remove(serverTempFileName);
+    _wremove(serverTempFileName);
     return PASS;
 }

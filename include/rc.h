@@ -54,7 +54,7 @@ public:
     /** @brief 转换成INT32类型的强制转换运算符. */
     operator INT32() const;
     /** @brief 得到结果代码所表示的消息. */
-    const char * Message() const;
+    LPCWSTR Message() const;
 
 protected:
     /** @brief 设置结果代码. */
