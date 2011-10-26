@@ -11,6 +11,7 @@
 #endif // __USE_AIRCRAFT_ATTRS__
 #undef __USE_AIRCRAFT_ATTRS__
 
+DEFINE_ATTR(ATTR_NAME, "Name of aircraft.")
 DEFINE_ATTR(ATTR_START_COORDINATE, "Start coordinate of aircraft.")
 DEFINE_ATTR(ATTR_START_VELOCITY, "Start velocity of aircraft.")
 DEFINE_ATTR(ATTR_CURRENT_COORDINATE, "Current coordinate of aircraft.")

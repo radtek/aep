@@ -57,6 +57,7 @@ CTestPlatformDlg::CTestPlatformDlg(CWnd* pParent /*=NULL*/)
 void CTestPlatformDlg::DoDataExchange(CDataExchange* pDX)
 {
     CDialog::DoDataExchange(pDX);
+    DDX_Control(pDX, IDC_COMPONENTINFO_LIST, m_ComponentInfoList);
     DDX_Control(pDX, IDC_COMPONENT_LIST, m_ComponentList);
 }
 
@@ -65,6 +66,7 @@ BEGIN_MESSAGE_MAP(CTestPlatformDlg, CDialog)
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
 	//}}AFX_MSG_MAP
+    ON_NOTIFY(NM_RCLICK, IDC_COMPONENTINFO_LIST, &CTestPlatformDlg::OnNMRclickComponentInfoList)
 END_MESSAGE_MAP()
 
 
@@ -99,7 +101,8 @@ BOOL CTestPlatformDlg::OnInitDialog()
 
 	// TODO: 在此添加额外的初始化代码
     RC rc;
-    CHECK_RC(InitComponent());
+    CHECK_RC(InitComponentInfoList());
+    m_ComponentList.SetImageList(&m_ComponentInfoImageList, LVSIL_NORMAL);
 
 	return TRUE;  // 除非将焦点设置到控件，否则返回 TRUE
 }
@@ -153,24 +156,62 @@ HCURSOR CTestPlatformDlg::OnQueryDragIcon()
 	return static_cast<HCURSOR>(m_hIcon);
 }
 
-RC CTestPlatformDlg::InitComponent()
+RC CTestPlatformDlg::InitComponentInfoList()
 {
     RC rc;
 
     CHECK_RC(Component::LoadClientComponentDll(TEXT("aircraft_measure.dll"), &m_DllHandle));
-    CHECK_RC(Component::RegisterClientComponent(m_DllHandle, m_ComponentInfoList));
+    CHECK_RC(Component::RegisterClientComponent(m_DllHandle, m_CComponentInfoList));
     AfxSetResourceHandle((HINSTANCE)m_DllHandle);
 
-    m_ImageList.Create(32, 32, true, 2, 2);
-    for (UINT32 i = 0; i < m_ComponentInfoList.size(); ++i)
+    m_ComponentInfoImageList.Create(32, 32, true, 2, 2);
+    for (UINT32 i = 0; i < m_CComponentInfoList.size(); ++i)
     {
-        m_ImageList.Add(AfxGetApp()->LoadIcon((LPCTSTR)m_ComponentInfoList[i].iconId));
-        m_ComponentList.InsertItem(LVIF_TEXT | LVIF_IMAGE | LVIF_PARAM, i, (LPCTSTR)m_ComponentInfoList[i].typeName, 0, 0, i, (LPARAM)&m_ComponentInfoList[i]);
+        m_ComponentInfoImageList.Add(AfxGetApp()->LoadIcon((LPCTSTR)m_CComponentInfoList[i].iconId));
+        m_ComponentInfoList.InsertItem(LVIF_TEXT | LVIF_IMAGE, i, (LPCTSTR)m_CComponentInfoList[i].typeName, 0, 0, i, NULL);
     }
-    m_ComponentList.SetImageList(&m_ImageList, LVSIL_NORMAL);
+    m_ComponentInfoList.SetImageList(&m_ComponentInfoImageList, LVSIL_NORMAL);
 
     AfxSetResourceHandle(AfxGetInstanceHandle());
 
     return OK;
 }
 
+void CTestPlatformDlg::OnNMRclickComponentInfoList(NMHDR *pNMHDR, LRESULT *pResult)
+{
+    // TODO: Add your control notification handler code here
+    LPNMITEMACTIVATE item = (LPNMITEMACTIVATE)pNMHDR;
+    if (item->iItem < 0)
+    {
+        return;
+    }
+    CMenu menu;
+    menu.LoadMenu(IDR_COMPONENT_MENU);
+    CMenu *popup = menu.GetSubMenu(0);
+    CPoint point;
+    GetCursorPos(&point);
+    INT32 sel = popup->TrackPopupMenu(TPM_LEFTALIGN | TPM_RETURNCMD, point.x, point.y, this);
+    if (ID_COMPONENT_CREATE == sel)
+    {
+        if(OK != InsertComponent(item->iItem))
+        {
+            Utility::PromptLastErrorMessage();
+        }
+    }
+    *pResult = 0;
+}
+
+RC CTestPlatformDlg::InsertComponent(UINT32 componentId)
+{
+    RC rc;
+
+    IComponent *component = m_CComponentInfoList[componentId].factory();
+    LPWSTR name;
+    CHECK_RC(component->GetName(&name));
+
+    AfxSetResourceHandle((HINSTANCE)m_DllHandle);
+    m_ComponentList.InsertItem(LVIF_TEXT | LVIF_IMAGE, m_CComponentList.size(), name, 0, 0, componentId, NULL);
+    AfxSetResourceHandle(AfxGetInstanceHandle());
+
+    return rc;
+}

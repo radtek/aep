@@ -34,9 +34,19 @@ RC Aircraft::GetInterface(UINT32 iid, void **iface)
     return OK;
 }
 
+RC Aircraft::GetName(LPWSTR *name)
+{
+    *name = m_Name;
+    return OK;
+}
+
 RC Aircraft::GetAttribute(UINT32 aid, void **attr)
 {
-    if (ATTR_START_COORDINATE == aid)
+    if (ATTR_NAME == aid)
+    {
+        *attr = m_Name;
+    }
+    else if (ATTR_START_COORDINATE == aid)
     {
         *attr = m_StartCoordinate;
     }
@@ -66,7 +76,11 @@ RC Aircraft::GetAttribute(UINT32 aid, void **attr)
 
 RC Aircraft::SetAttribute(UINT32 aid, void *attr)
 {
-    if (ATTR_START_COORDINATE == aid)
+    if (ATTR_NAME == aid)
+    {
+        m_Name = (LPWSTR)attr;
+    }
+    else if (ATTR_START_COORDINATE == aid)
     {
         m_StartCoordinate = static_cast<Vector *>(attr);
     }
@@ -101,7 +115,7 @@ RC Aircraft::Fly(double second)
     return rc;
 }
 
-LPCWSTR AircraftTypeName = TEXT("Acceleration linear motion");
+LPCWSTR AircraftTypeName = TEXT("Aircraft");
 
 UINT32 AircraftAttributeList[] =
 {
@@ -113,7 +127,14 @@ UINT32 AircraftAttributeList[] =
     #include "aircraft_attrs.h"
 };
 
+UINT32 AircraftCount = 0;
+
 Aircraft *AircraftFactory()
 {
-    return new Aircraft();
+    Aircraft *aircraft = new Aircraft();
+    LPWSTR name = new wchar_t[256];
+    wsprintf(name, TEXT("%s %u"), AircraftTypeName, AircraftCount);
+    aircraft->m_Name = name;
+    ++AircraftCount;
+    return aircraft;
 }

@@ -34,9 +34,19 @@ RC AccelerationLinearMotion::GetInterface(UINT32 iid, void **iface)
     return OK;
 }
 
+RC AccelerationLinearMotion::GetName(LPWSTR *name)
+{
+    *name = m_Name;
+    return OK;
+}
+
 RC AccelerationLinearMotion::GetAttribute(UINT32 aid, void **attr)
 {
-    if (ATTR_VELOCITY == aid)
+    if (ATTR_NAME == aid)
+    {
+        *attr = m_Name;
+    }
+    else if (ATTR_VELOCITY == aid)
     {
         *attr = m_Velocity;
     }
@@ -54,7 +64,11 @@ RC AccelerationLinearMotion::GetAttribute(UINT32 aid, void **attr)
 
 RC AccelerationLinearMotion::SetAttribute(UINT32 aid, void *attr)
 {
-    if (ATTR_VELOCITY == aid)
+    if (ATTR_NAME == aid)
+    {
+        m_Name = (LPWSTR)attr;
+    }
+    else if (ATTR_VELOCITY == aid)
     {
         m_Velocity = static_cast<Vector *>(attr);
     }
@@ -94,7 +108,14 @@ UINT32 AccelerationLinearMotionAttributeList[] =
     #include "acceleration_linear_motion_attrs.h"
 };
 
+UINT32 AccelerationLinearMotionCount = 0;
+
 AccelerationLinearMotion *AccelerationLinearMotionFactory()
 {
-    return new AccelerationLinearMotion();
+    AccelerationLinearMotion *accelerationLinearMotion = new AccelerationLinearMotion();
+    LPWSTR name = new wchar_t[256];
+    wsprintf(name, TEXT("%s %u"), AccelerationLinearMotionTypeName, AccelerationLinearMotionCount);
+    accelerationLinearMotion->m_Name = name;
+    ++AccelerationLinearMotionCount;
+    return accelerationLinearMotion;
 }

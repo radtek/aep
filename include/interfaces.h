@@ -35,10 +35,13 @@ enum CIID
 interface IComponent
 {
     virtual RC _stdcall GetInterface(UINT32 iid, void **iface) = 0;
+    virtual RC _stdcall GetName(LPWSTR *name) = 0;
     virtual RC _stdcall GetAttribute(UINT32 aid, void **attr) = 0;
     virtual RC _stdcall SetAttribute(UINT32 aid, void *attr) = 0;
     // virtual RC _stdcall Validate() = 0;
 };
+
+typedef vector<IComponent *> IComponentList;
 
 interface IAlgorithm : IComponent
 {

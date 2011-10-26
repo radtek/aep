@@ -31,10 +31,16 @@ protected:
 	afx_msg HCURSOR OnQueryDragIcon();
 	DECLARE_MESSAGE_MAP()
 private:
-    RC InitComponent();
-    CImageList m_ImageList;
-    CListCtrl m_ComponentList;
-    ComponentInfoList m_ComponentInfoList;
+    RC InitComponentInfoList();
+    CImageList m_ComponentInfoImageList;
+    CListCtrl m_ComponentInfoList;
+    ComponentInfoList m_CComponentInfoList;
 
     void *m_DllHandle;
+    afx_msg void OnNMRclickComponentInfoList(NMHDR *pNMHDR, LRESULT *pResult);
+
+    RC InsertComponent(UINT32 componentId);
+    CImageList m_ComponentImageList;
+    CListCtrl m_ComponentList;
+    IComponentList m_CComponentList;
 };

@@ -34,9 +34,19 @@ RC UniformLinearMotion::GetInterface(UINT32 iid, void **iface)
     return OK;
 }
 
+RC UniformLinearMotion::GetName(LPWSTR *name)
+{
+    *name = m_Name;
+    return OK;
+}
+
 RC UniformLinearMotion::GetAttribute(UINT32 aid, void **attr)
 {
-    if (ATTR_VELOCITY == aid)
+    if (ATTR_NAME == aid)
+    {
+        *attr = m_Name;
+    }
+    else if (ATTR_VELOCITY == aid)
     {
         *attr = m_Velocity;
     }
@@ -54,7 +64,11 @@ RC UniformLinearMotion::GetAttribute(UINT32 aid, void **attr)
 
 RC UniformLinearMotion::SetAttribute(UINT32 aid, void *attr)
 {
-    if (ATTR_VELOCITY == aid)
+    if (ATTR_NAME == aid)
+    {
+        m_Name = (LPWSTR)attr;
+    }
+    else if (ATTR_VELOCITY == aid)
     {
         m_Velocity = static_cast<Vector *>(attr);
     }
@@ -92,7 +106,14 @@ UINT32 UniformLinearMotionAttributeList[] =
     #include "uniform_linear_motion_attrs.h"
 };
 
+UINT32 UniformLinearMotionCount = 0;
+
 UniformLinearMotion *UniformLinearMotionFactory()
 {
-    return new UniformLinearMotion();
+    UniformLinearMotion *uniformLinearMotion = new UniformLinearMotion();
+    LPWSTR name = new wchar_t[256];
+    wsprintf(name, TEXT("%s %u"), UniformLinearMotionTypeName, UniformLinearMotionCount);
+    uniformLinearMotion->m_Name = name;
+    ++UniformLinearMotionCount;
+    return uniformLinearMotion;
 }

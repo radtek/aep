@@ -43,7 +43,8 @@ EXSTYLE WS_EX_APPWINDOW
 CAPTION "Test Platform"
 FONT 9, "ËÎÌå", 0, 0, 0x1
 BEGIN
-    CONTROL         "",IDC_COMPONENT_LIST,"SysListView32",LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP,7,7,67,186
+    CONTROL         "",IDC_COMPONENTINFO_LIST,"SysListView32",LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP,7,7,51,186
+    CONTROL         "",IDC_COMPONENT_LIST,"SysListView32",LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP,63,7,250,116
 END
 
 
@@ -163,8 +164,8 @@ BEGIN
     "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)\r\n"
     "LANGUAGE 4, 2\r\n"
     "#pragma code_page(936)\r\n"
-    "#include ""res\\test_platform.rc2""  // ¡¤? Microsoft Visual C++ ¡À¨¤?-¦Ì?¡Á¨º?¡ä\r\n"
-    "#include ""afxres.rc""     // ¡À¨º¡Á?¡Á¨¦?t\r\n"
+    "#include ""res\\test_platform.rc2""  // ??¡§¡§? Microsoft Visual C++ ??¡ì?¨¨??¨¬?¡§¡§?-|?¡ì????¡ì?¨¦??¨¬o???\r\n"
+    "#include ""afxres.rc""     // ??¡ì?¨¨??¨¬o??¡ì?¨¦???¡ì?¨¦??¨¬|?t\r\n"
     "#endif\r\n"
     "\0"
 END
@@ -180,6 +181,26 @@ END
 // Icon with lowest ID value placed first to ensure application icon
 // remains consistent on all systems.
 IDR_MAINFRAME           ICON                    "res\\test_platform.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDR_COMPONENT_MENU MENU 
+BEGIN
+    POPUP "Component"
+    BEGIN
+        MENUITEM "Create",                      ID_COMPONENT_CREATE
+        MENUITEM "...",                         ID_COMPONENT_ETC
+    END
+    POPUP "Object"
+    BEGIN
+        MENUITEM "Config",                      ID_OBJECT_CONFIG
+        MENUITEM "Delete",                      ID_OBJECT_DELETE
+    END
+END
+
 #endif    // English (U.S.) resources
 /////////////////////////////////////////////////////////////////////////////
 
@@ -198,8 +219,8 @@ IDR_MAINFRAME           ICON                    "res\\test_platform.ico"
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)
 LANGUAGE 4, 2
 #pragma code_page(936)
-#include "res\test_platform.rc2"  // ¡¤? Microsoft Visual C++ ¡À¨¤?-¦Ì?¡Á¨º?¡ä
-#include "afxres.rc"     // ¡À¨º¡Á?¡Á¨¦?t
+#include "res\test_platform.rc2"  // ??¨¨? Microsoft Visual C++ ?¡§¡è?¡ì?¨¨?-|¡§???¡§¡é?¡ìo???
+#include "afxres.rc"     // ?¡§¡è?¡ìo?¡§¡é??¡§¡é?¡ì|?t
 #endif
 
 /////////////////////////////////////////////////////////////////////////////

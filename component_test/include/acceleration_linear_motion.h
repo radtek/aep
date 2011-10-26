@@ -29,19 +29,27 @@ public:
     virtual ~AccelerationLinearMotion();
 
     virtual RC _stdcall GetInterface(UINT32 iid, void **iface);
+    virtual RC _stdcall GetName(LPWSTR *name);
     virtual RC _stdcall GetAttribute(UINT32 aid, void **attr);
     virtual RC _stdcall SetAttribute(UINT32 aid, void *attr);
 
     virtual RC _stdcall GetCurrentVelocity(Vector &velocity);
     virtual RC _stdcall Move(Vector &coordinate, double time);
+
 private:
     Vector *m_Velocity;
     Vector *m_Acceleration;
+
+    LPWSTR m_Name;
+
+    friend AccelerationLinearMotion *AccelerationLinearMotionFactory();
 };
 
 extern LPCWSTR AccelerationLinearMotionTypeName;
 
 extern UINT32 AccelerationLinearMotionAttributeList[];
+
+extern UINT32 AccelerationLinearMotionCount;
 
 extern AccelerationLinearMotion *AccelerationLinearMotionFactory();
 

@@ -251,6 +251,14 @@
 				RelativePath="..\include\uniform_linear_motion_attrs.h"
 				>
 			</File>
+			<File
+				RelativePath=".\white_noise.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\include\white_noise.h"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Resource Files"

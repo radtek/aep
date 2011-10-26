@@ -11,5 +11,6 @@
 #endif // __USE_ACCELERATION_LINEAR_MOTION_ATTRS__
 #undef __USE_ACCELERATION_LINEAR_MOTION_ATTRS__
 
+DEFINE_ATTR(ATTR_NAME, "Name of acceleration linear motion.")
 DEFINE_ATTR(ATTR_VELOCITY, "Velocity of acceleration linear motion.")
 DEFINE_ATTR(ATTR_ACCELERATION, "Acceleration of acceleration linear motion.")
