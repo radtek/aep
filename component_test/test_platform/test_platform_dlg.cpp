@@ -5,6 +5,8 @@
 #include "test_platform.h"
 #include "test_platform_dlg.h"
 
+#include "utility.h"
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
@@ -155,17 +157,19 @@ RC CTestPlatformDlg::InitComponent()
 {
     RC rc;
 
-    m_ImageList.Create(32, 32, true, 2, 2);
-    m_ImageList.Add(AfxGetApp()->LoadIcon(IDR_MAINFRAME));
-    m_ComponentList.SetImageList(&m_ImageList, LVSIL_NORMAL);
-
     CHECK_RC(Component::LoadClientComponentDll(TEXT("aircraft_measure.dll"), &m_DllHandle));
     CHECK_RC(Component::RegisterClientComponent(m_DllHandle, m_ComponentInfoList));
+    AfxSetResourceHandle((HINSTANCE)m_DllHandle);
 
+    m_ImageList.Create(32, 32, true, 2, 2);
     for (UINT32 i = 0; i < m_ComponentInfoList.size(); ++i)
     {
-        m_ComponentList.InsertItem(LVIF_TEXT | LVIF_IMAGE | LVIF_PARAM, i, (LPCTSTR)m_ComponentInfoList[i].typeName, 0, 0, 0, (LPARAM)&m_ComponentInfoList[i]);
+        m_ImageList.Add(AfxGetApp()->LoadIcon((LPCTSTR)m_ComponentInfoList[i].iconId));
+        m_ComponentList.InsertItem(LVIF_TEXT | LVIF_IMAGE | LVIF_PARAM, i, (LPCTSTR)m_ComponentInfoList[i].typeName, 0, 0, i, (LPARAM)&m_ComponentInfoList[i]);
     }
+    m_ComponentList.SetImageList(&m_ImageList, LVSIL_NORMAL);
+
+    AfxSetResourceHandle(AfxGetInstanceHandle());
 
     return OK;
 }

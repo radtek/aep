@@ -7,7 +7,6 @@
 #define IDS_ABOUTBOX                    101
 #define IDD_TEST_PLATFORM_DIALOG        102
 #define IDR_MAINFRAME                   128
-#define IDC_LIST1                       1000
 #define IDC_COMPONENT_LIST              1000
 
 // Next default values for new objects

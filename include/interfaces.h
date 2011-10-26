@@ -52,6 +52,7 @@ typedef struct
     LPCWSTR typeName;
     UINT32 *attributeList;
     ComponentFactory factory;
+    UINT32 iconId;
 } ComponentInfo;
 
 typedef vector<ComponentInfo> ComponentInfoList;
