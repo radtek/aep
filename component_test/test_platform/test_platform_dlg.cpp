@@ -167,7 +167,7 @@ RC CTestPlatformDlg::InitComponentInfoList()
     m_ComponentInfoImageList.Create(32, 32, true, 2, 2);
     for (UINT32 i = 0; i < m_CComponentInfoList.size(); ++i)
     {
-        m_ComponentInfoImageList.Add(AfxGetApp()->LoadIcon((LPCTSTR)m_CComponentInfoList[i].iconId));
+        m_ComponentInfoImageList.Add(AfxGetApp()->LoadIcon(m_CComponentInfoList[i].iconId));
         m_ComponentInfoList.InsertItem(LVIF_TEXT | LVIF_IMAGE, i, (LPCTSTR)m_CComponentInfoList[i].typeName, 0, 0, i, NULL);
     }
     m_ComponentInfoList.SetImageList(&m_ComponentInfoImageList, LVSIL_NORMAL);
@@ -210,7 +210,7 @@ RC CTestPlatformDlg::InsertComponent(UINT32 componentId)
     CHECK_RC(component->GetName(&name));
 
     AfxSetResourceHandle((HINSTANCE)m_DllHandle);
-    m_ComponentList.InsertItem(LVIF_TEXT | LVIF_IMAGE, m_CComponentList.size(), name, 0, 0, componentId, NULL);
+    m_ComponentList.InsertItem(LVIF_TEXT | LVIF_IMAGE, (INT32)m_CComponentList.size(), name, 0, 0, componentId, NULL);
     AfxSetResourceHandle(AfxGetInstanceHandle());
 
     return rc;
