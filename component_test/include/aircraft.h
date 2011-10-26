@@ -9,42 +9,45 @@
 #ifndef __AIRCRAFT_H__
 #define __AIRCRAFT_H__
 
-#include "client_interfaces.h"
+#include "aircraft_measure_ifaces.h"
 
 class Aircraft : public IAircraft
 {
 public:
+    enum
+    {
+        #undef DEFINE_ATTR
+        /** @brief 重定义飞行器属性的外包宏DEFINE_ATTR. */
+        #define DEFINE_ATTR(a, msg) a,
+        /** @brief 用来开启允许包含aircraft_attrs.h头文件的开关. */
+        #define __USE_AIRCRAFT_ATTRS__
+        #include "aircraft_attrs.h"
+    };
+
+public:
     Aircraft();
     virtual ~Aircraft();
 
-    virtual RC _stdcall QueryInterface(UINT32 iid, void **ppi);
+    virtual RC _stdcall GetInterface(UINT32 iid, void **iface);
+    virtual RC _stdcall GetAttribute(UINT32 aid, void **attr);
+    virtual RC _stdcall SetAttribute(UINT32 aid, void *attr);
 
-    virtual Vector _stdcall GetStartCoordinate();
-    virtual void _stdcall SetStartCoordinate(Vector coordinate);
+    virtual RC _stdcall Fly(double time);
 
-    virtual Vector _stdcall GetStartVelocity();
-    virtual void _stdcall SetStartVelocity(Vector velocity);
-
-    virtual Vector _stdcall GetCurrentCoordinate();
-    virtual void _stdcall SetCurrentCoordinate(Vector coordinate);
-
-    virtual Vector _stdcall GetCurrentVelocity();
-    virtual void _stdcall SetCurrentVelocity(Vector velocity);
-
-    virtual IMotion *_stdcall GetMotion();
-    virtual void _stdcall SetMotion(IMotion *motion);
-
-    virtual void _stdcall Fly(double second);
 private:
-    Vector m_StartCoordinate;
-    Vector m_CurrentCoordinate;
+    Vector *m_StartCoordinate;
+    Vector *m_StartVelocity;
 
-    Vector m_StartVelocity;
-    Vector m_CurrentVelocity;
+    Vector *m_CurrentCoordinate;
+    Vector *m_CurrentVelocity;
 
     IMotion *m_Motion;
 };
 
-extern Aircraft *CreateAircraft();
+extern const char *AircraftTypeName;
+
+extern UINT32 AircraftAttributeList[];
+
+extern Aircraft *AircraftFactory();
 
 #endif // __AIRCRAFT_H__

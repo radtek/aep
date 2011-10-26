@@ -1,6 +1,6 @@
 /**
 * @file
-* @brief 向量类文件.
+* @brief 向量类cpp文件.
 * @author ruoxi
 *
 * 实现了向量类.

@@ -1,6 +1,6 @@
 /**
 * @file
-* @brief 向量类文件.
+* @brief 向量类头文件.
 * @author ruoxi
 *
 * 定义了向量类.

@@ -16,81 +16,104 @@ Aircraft::~Aircraft()
 {
 }
 
-RC Aircraft::QueryInterface(UINT32 iid, void **ppi)
+RC Aircraft::GetInterface(UINT32 iid, void **iface)
 {
     if (CIID_ICOMPONENT == iid)
     {
-        *ppi = static_cast<IComponent *>(this);
+        *iface = static_cast<IComponent *>(this);
     }
     else if (CLIENT_CIID_AIRCRAFT == iid)
     {
-        *ppi = static_cast<IAircraft *>(this);
+        *iface = static_cast<IAircraft *>(this);
     }
     else
     {
-        *ppi = 0;
-        return RC::COMPONENT_QUERYINTERFACE_ERROR;
+        *iface = 0;
+        return RC::COMPONENT_GETINTERFACE_ERROR;
     }
     return OK;
 }
 
-Vector Aircraft::GetStartCoordinate()
+RC Aircraft::GetAttribute(UINT32 aid, void **attr)
 {
-    return m_StartCoordinate;
+    if (ATTR_START_COORDINATE == aid)
+    {
+        *attr = m_StartCoordinate;
+    }
+    else if (ATTR_START_VELOCITY == aid)
+    {
+        *attr = m_StartVelocity;
+    }
+    else if (ATTR_CURRENT_COORDINATE == aid)
+    {
+        *attr = m_CurrentCoordinate;
+    }
+    else if (ATTR_CURRENT_VELOCITY == aid)
+    {
+        *attr = m_CurrentVelocity;
+    }
+    else if (ATTR_MOTION == aid)
+    {
+        *attr = m_Motion;
+    }
+    else
+    {
+        *attr = 0;
+        return RC::COMPONENT_GETATTRIBUTE_ERROR;
+    }
+    return OK;
 }
 
-void Aircraft::SetStartCoordinate(Vector coordinate)
+RC Aircraft::SetAttribute(UINT32 aid, void *attr)
 {
-    m_StartCoordinate = coordinate;
+    if (ATTR_START_COORDINATE == aid)
+    {
+        m_StartCoordinate = static_cast<Vector *>(attr);
+    }
+    else if (ATTR_START_VELOCITY == aid)
+    {
+        m_StartVelocity = static_cast<Vector *>(attr);
+    }
+    else if (ATTR_CURRENT_COORDINATE == aid)
+    {
+        m_CurrentCoordinate = static_cast<Vector *>(attr);
+    }
+    else if (ATTR_CURRENT_VELOCITY == aid)
+    {
+        m_CurrentVelocity = static_cast<Vector *>(attr);
+    }
+    else if (ATTR_MOTION == aid)
+    {
+        m_Motion = static_cast<IMotion *>(attr);
+    }
+    else
+    {
+        return RC::COMPONENT_SETATTRIBUTE_ERROR;
+    }
+    return OK;
 }
 
-Vector Aircraft::GetStartVelocity()
+RC Aircraft::Fly(double second)
 {
-    return m_StartVelocity;
+    RC rc;
+    CHECK_RC(m_Motion->GetCurrentVelocity(*m_CurrentVelocity));
+    CHECK_RC(m_Motion->Move(*m_CurrentCoordinate, second));
+    return rc;
 }
 
-void Aircraft::SetStartVelocity(Vector speed)
-{
-    m_StartVelocity = speed;
-}
+const char *AircraftTypeName = "Acceleration linear motion";
 
-Vector Aircraft::GetCurrentCoordinate()
+UINT32 AircraftAttributeList[] =
 {
-    return m_CurrentCoordinate;
-}
+    #undef DEFINE_ATTR
+    /** @brief 重定义飞行器属性的外包宏DEFINE_ATTR. */
+    #define DEFINE_ATTR(a, msg) Aircraft::a,
+    /** @brief 用来开启允许包含aircraft_attrs.h头文件的开关. */
+    #define __USE_AIRCRAFT_ATTRS__
+    #include "aircraft_attrs.h"
+};
 
-void Aircraft::SetCurrentCoordinate(Vector coordinate)
-{
-    coordinate = m_CurrentCoordinate;
-}
-
-Vector Aircraft::GetCurrentVelocity()
-{
-    return m_CurrentVelocity;
-}
-
-void Aircraft::SetCurrentVelocity(Vector speed)
-{
-    m_CurrentVelocity = speed;
-}
-
-IMotion *Aircraft::GetMotion()
-{
-    return m_Motion;
-}
-
-void Aircraft::SetMotion(IMotion *motion)
-{
-    m_Motion = motion;
-}
-
-void Aircraft::Fly(double second)
-{
-    m_CurrentVelocity = m_Motion->GetCurrentVelocity();
-    m_CurrentCoordinate = m_Motion->Move(m_CurrentCoordinate, second);
-}
-
-Aircraft *CreateAircraft()
+Aircraft *AircraftFactory()
 {
     return new Aircraft();
 }

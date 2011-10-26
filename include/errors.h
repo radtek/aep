@@ -27,7 +27,10 @@ DEFINE_ERROR(SOCK_ACCEPT_ERROR, "Socket accept failed.")
 DEFINE_ERROR(SOCK_RECV_ERROR, "Socket recieve data failed.")
 DEFINE_ERROR(SOCK_SEND_ERROR, "Socket send data failed.")
 DEFINE_ERROR(SOCK_SEND_FILE_ERROR, "Socket send file failed.")
-DEFINE_ERROR(COMPONENT_QUERYINTERFACE_ERROR, "Component query interface error.")
+DEFINE_ERROR(COMPONENT_GETINTERFACE_ERROR, "Component get interface error.")
+DEFINE_ERROR(COMPONENT_GETATTRIBUTE_ERROR, "Component get attribute error.")
+DEFINE_ERROR(COMPONENT_ATTRIBUTEUNSET_ERROR, "Component unset attribute error.")
+DEFINE_ERROR(COMPONENT_SETATTRIBUTE_ERROR, "Component set attribute error.")
 
 #ifdef __NETWORK_TEST__
 DEFINE_ERROR(THREAD_CREATE_ERROR, "Create thread failed.")

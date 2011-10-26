@@ -2,7 +2,7 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="8.00"
-	Name="aircraft_measure_component"
+	Name="aircraft_measure"
 	ProjectGUID="{2416F238-3E06-4414-9D52-0ACB6ED6B6F5}"
 	RootNamespace="aircraft_measure"
 	Keyword="Win32Proj"
@@ -190,6 +190,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\aircraft_measure.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\include\aircraft_measure_algorithm.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\main.cpp"
 				>
 			</File>
@@ -208,15 +216,35 @@
 				>
 			</File>
 			<File
+				RelativePath="..\include\acceleration_linear_motion_attrs.h"
+				>
+			</File>
+			<File
 				RelativePath="..\include\aircraft.h"
 				>
 			</File>
 			<File
-				RelativePath="..\include\client_interfaces.h"
+				RelativePath="..\include\aircraft_attrs.h"
+				>
+			</File>
+			<File
+				RelativePath="..\include\aircraft_measure.h"
+				>
+			</File>
+			<File
+				RelativePath="..\include\aircraft_measure_algorithm.h"
+				>
+			</File>
+			<File
+				RelativePath="..\include\aircraft_measure_ifaces.h"
 				>
 			</File>
 			<File
 				RelativePath="..\include\uniform_linear_motion.h"
+				>
+			</File>
+			<File
+				RelativePath="..\include\uniform_linear_motion_attrs.h"
 				>
 			</File>
 		</Filter>

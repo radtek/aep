@@ -16,6 +16,7 @@ enum CIID
 {
     CIID_FIRST = 0,
     CIID_ICOMPONENT,
+    CIID_IALGORITHM,
     CIID_LAST,
 };
 
@@ -30,7 +31,24 @@ enum CIID
 
 interface IComponent
 {
-    virtual RC _stdcall QueryInterface(UINT32 iid, void **ppi) = 0;
+    virtual RC _stdcall GetInterface(UINT32 iid, void **iface) = 0;
+    virtual RC _stdcall GetAttribute(UINT32 aid, void **attr) = 0;
+    virtual RC _stdcall SetAttribute(UINT32 aid, void *attr) = 0;
+    // virtual RC _stdcall Validate() = 0;
+};
+
+interface IAlgorithm : IComponent
+{
+    virtual RC _stdcall Run() = 0;
+};
+
+typedef IComponent *(*ComponentFactory)(void);
+
+struct ComponentInfo
+{
+    const char *typeName;
+    UINT32 *attributeList;
+    ComponentFactory factory;
 };
 
 #endif // __INTERFACES_H__

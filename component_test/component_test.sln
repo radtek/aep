@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 9.00
 # Visual Studio 2005
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "component", "..\component\component.vcproj", "{8ED092B5-70E1-47CE-9ED2-F7179AF1D009}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "aircraft_measure_component", "aircraft_measure\aircraft_measure.vcproj", "{2416F238-3E06-4414-9D52-0ACB6ED6B6F5}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "aircraft_measure", "aircraft_measure\aircraft_measure.vcproj", "{2416F238-3E06-4414-9D52-0ACB6ED6B6F5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
