@@ -32,8 +32,14 @@ enum CIID
         CLIENT_CIID_LAST, \
     };
 
+interface IComponent;
+
+typedef vector<IComponent *> ComponentList;
+
 interface IComponent
 {
+    virtual RC _stdcall Config(ComponentList *list) = 0;
+    virtual RC _stdcall Destroy() = 0;
     virtual RC _stdcall GetInterface(UINT32 iid, void **iface) = 0;
     virtual RC _stdcall GetName(LPWSTR *name) = 0;
     virtual RC _stdcall GetAttribute(UINT32 aid, void **attr) = 0;
@@ -41,21 +47,21 @@ interface IComponent
     // virtual RC _stdcall Validate() = 0;
 };
 
-typedef vector<IComponent *> IComponentList;
-
 interface IAlgorithm : IComponent
 {
     virtual RC _stdcall Run() = 0;
 };
 
 typedef IComponent *(*ComponentFactory)(void);
+typedef void (*ComponentDestroy)(IComponent *);
 
 typedef struct
 {
     LPCWSTR typeName;
     UINT32 *attributeList;
     ComponentFactory factory;
-    UINT32 iconId;
+    ComponentDestroy destroy;
+    void *iconHandle;
 } ComponentInfo;
 
 typedef vector<ComponentInfo> ComponentInfoList;

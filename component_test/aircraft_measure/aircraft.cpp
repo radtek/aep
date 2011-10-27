@@ -7,6 +7,7 @@
 */
 
 #include "aircraft.h"
+#include "aircraft_config_dlg.h"
 
 Aircraft::Aircraft()
 {
@@ -14,6 +15,7 @@ Aircraft::Aircraft()
 
 Aircraft::~Aircraft()
 {
+    delete[] m_Name;
 }
 
 RC Aircraft::GetInterface(UINT32 iid, void **iface)
@@ -31,6 +33,25 @@ RC Aircraft::GetInterface(UINT32 iid, void **iface)
         *iface = 0;
         return RC::COMPONENT_GETINTERFACE_ERROR;
     }
+    return OK;
+}
+
+RC Aircraft::Config(ComponentList *list)
+{
+    // AFX_MANAGE_STATE(AfxGetStaticModuleState());
+    AFX_MANAGE_STATE(AfxGetStaticModuleState());
+    CAircraftConfigDlg dlg(list);
+    dlg.DoModal();
+    delete[] m_Name;
+    m_Name = new wchar_t[dlg.m_Name.GetLength() + 1];
+    wsprintf(m_Name, TEXT("%s"), (LPWSTR)(LPCTSTR)dlg.m_Name);
+    m_Name[dlg.m_Name.GetLength()] = 0;
+    return OK;
+}
+
+RC Aircraft::Destroy()
+{
+    delete this;
     return OK;
 }
 
@@ -137,4 +158,9 @@ Aircraft *AircraftFactory()
     aircraft->m_Name = name;
     ++AircraftCount;
     return aircraft;
+}
+
+void AircraftDestroy(Aircraft *aircraft)
+{
+    delete aircraft;
 }

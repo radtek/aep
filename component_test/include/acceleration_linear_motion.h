@@ -29,6 +29,8 @@ public:
     virtual ~AccelerationLinearMotion();
 
     virtual RC _stdcall GetInterface(UINT32 iid, void **iface);
+    virtual RC _stdcall Config(ComponentList *list);
+    virtual RC _stdcall Destroy();
     virtual RC _stdcall GetName(LPWSTR *name);
     virtual RC _stdcall GetAttribute(UINT32 aid, void **attr);
     virtual RC _stdcall SetAttribute(UINT32 aid, void *attr);
@@ -52,5 +54,7 @@ extern UINT32 AccelerationLinearMotionAttributeList[];
 extern UINT32 AccelerationLinearMotionCount;
 
 extern AccelerationLinearMotion *AccelerationLinearMotionFactory();
+
+extern void AccelerationLinearMotionDestroy(AccelerationLinearMotion *accelerationLinearMotion);
 
 #endif // __ACCELERATION_LINEAR_MOTION_H__

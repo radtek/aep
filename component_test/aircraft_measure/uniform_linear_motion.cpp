@@ -7,6 +7,7 @@
 */
 
 #include "uniform_linear_motion.h"
+#include "utility.h"
 
 UniformLinearMotion::UniformLinearMotion()
 {
@@ -31,6 +32,18 @@ RC UniformLinearMotion::GetInterface(UINT32 iid, void **iface)
         *iface = 0;
         return RC::COMPONENT_GETINTERFACE_ERROR;
     }
+    return OK;
+}
+
+RC UniformLinearMotion::Config(ComponentList *list)
+{
+    Utility::PromptLastErrorMessage();
+    return OK;
+}
+
+RC UniformLinearMotion::Destroy()
+{
+    delete this;
     return OK;
 }
 
@@ -116,4 +129,8 @@ UniformLinearMotion *UniformLinearMotionFactory()
     uniformLinearMotion->m_Name = name;
     ++UniformLinearMotionCount;
     return uniformLinearMotion;
+}
+void UniformLinearMotionDestroy(UniformLinearMotion *uniformLinearMotion)
+{
+    delete uniformLinearMotion;
 }

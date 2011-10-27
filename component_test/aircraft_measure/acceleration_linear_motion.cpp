@@ -7,6 +7,7 @@
 */
 
 #include "acceleration_linear_motion.h"
+#include "utility.h"
 
 AccelerationLinearMotion::AccelerationLinearMotion()
 {
@@ -31,6 +32,18 @@ RC AccelerationLinearMotion::GetInterface(UINT32 iid, void **iface)
         *iface = 0;
         return RC::COMPONENT_GETINTERFACE_ERROR;
     }
+    return OK;
+}
+
+RC AccelerationLinearMotion::Config(ComponentList *list)
+{
+    Utility::PromptLastErrorMessage();
+    return OK;
+}
+
+RC AccelerationLinearMotion::Destroy()
+{
+    delete this;
     return OK;
 }
 
@@ -118,4 +131,9 @@ AccelerationLinearMotion *AccelerationLinearMotionFactory()
     accelerationLinearMotion->m_Name = name;
     ++AccelerationLinearMotionCount;
     return accelerationLinearMotion;
+}
+
+void AccelerationLinearMotionDestroy(AccelerationLinearMotion *accelerationLinearMotion)
+{
+    delete accelerationLinearMotion;
 }

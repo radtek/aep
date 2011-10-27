@@ -38,9 +38,11 @@ private:
 
     void *m_DllHandle;
     afx_msg void OnNMRclickComponentInfoList(NMHDR *pNMHDR, LRESULT *pResult);
-
     RC InsertComponent(UINT32 componentId);
+
     CImageList m_ComponentImageList;
     CListCtrl m_ComponentList;
-    IComponentList m_CComponentList;
+    ComponentList m_CComponentList;
+    afx_msg void OnNMRclickComponentList(NMHDR *pNMHDR, LRESULT *pResult);
+    RC DeleteComponent(UINT32 componentId);
 };

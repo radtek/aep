@@ -67,6 +67,7 @@ BEGIN_MESSAGE_MAP(CTestPlatformDlg, CDialog)
 	ON_WM_QUERYDRAGICON()
 	//}}AFX_MSG_MAP
     ON_NOTIFY(NM_RCLICK, IDC_COMPONENTINFO_LIST, &CTestPlatformDlg::OnNMRclickComponentInfoList)
+    ON_NOTIFY(NM_RCLICK, IDC_COMPONENT_LIST, &CTestPlatformDlg::OnNMRclickComponentList)
 END_MESSAGE_MAP()
 
 
@@ -162,17 +163,17 @@ RC CTestPlatformDlg::InitComponentInfoList()
 
     CHECK_RC(Component::LoadClientComponentDll(TEXT("aircraft_measure.dll"), &m_DllHandle));
     CHECK_RC(Component::RegisterClientComponent(m_DllHandle, m_CComponentInfoList));
-    AfxSetResourceHandle((HINSTANCE)m_DllHandle);
+    //AfxSetResourceHandle((HINSTANCE)m_DllHandle);
 
     m_ComponentInfoImageList.Create(32, 32, true, 2, 2);
     for (UINT32 i = 0; i < m_CComponentInfoList.size(); ++i)
     {
-        m_ComponentInfoImageList.Add(AfxGetApp()->LoadIcon(m_CComponentInfoList[i].iconId));
+        m_ComponentInfoImageList.Add((HICON)m_CComponentInfoList[i].iconHandle);//AfxGetApp()->LoadIcon(m_CComponentInfoList[i].iconHandle));
         m_ComponentInfoList.InsertItem(LVIF_TEXT | LVIF_IMAGE, i, (LPCTSTR)m_CComponentInfoList[i].typeName, 0, 0, i, NULL);
     }
     m_ComponentInfoList.SetImageList(&m_ComponentInfoImageList, LVSIL_NORMAL);
 
-    AfxSetResourceHandle(AfxGetInstanceHandle());
+    //AfxSetResourceHandle(AfxGetInstanceHandle());
 
     return OK;
 }
@@ -186,12 +187,12 @@ void CTestPlatformDlg::OnNMRclickComponentInfoList(NMHDR *pNMHDR, LRESULT *pResu
         return;
     }
     CMenu menu;
-    menu.LoadMenu(IDR_COMPONENT_MENU);
+    menu.LoadMenu(IDR_TEST_PLATFORM_MENU);
     CMenu *popup = menu.GetSubMenu(0);
     CPoint point;
     GetCursorPos(&point);
     INT32 sel = popup->TrackPopupMenu(TPM_LEFTALIGN | TPM_RETURNCMD, point.x, point.y, this);
-    if (ID_COMPONENT_CREATE == sel)
+    if (ID_COMPONENTINFO_CREATE == sel)
     {
         if(OK != InsertComponent(item->iItem))
         {
@@ -206,12 +207,52 @@ RC CTestPlatformDlg::InsertComponent(UINT32 componentId)
     RC rc;
 
     IComponent *component = m_CComponentInfoList[componentId].factory();
+    m_CComponentList.push_back(component);
+
     LPWSTR name;
     CHECK_RC(component->GetName(&name));
+    //AfxSetResourceHandle((HINSTANCE)m_DllHandle);
+    m_ComponentList.InsertItem(LVIF_TEXT | LVIF_IMAGE, (INT32)m_CComponentList.size() - 1, name, 0, 0, componentId, NULL);
+    //AfxSetResourceHandle(AfxGetInstanceHandle());
 
-    AfxSetResourceHandle((HINSTANCE)m_DllHandle);
-    m_ComponentList.InsertItem(LVIF_TEXT | LVIF_IMAGE, (INT32)m_CComponentList.size(), name, 0, 0, componentId, NULL);
-    AfxSetResourceHandle(AfxGetInstanceHandle());
+    return rc;
+}
+
+void CTestPlatformDlg::OnNMRclickComponentList(NMHDR *pNMHDR, LRESULT *pResult)
+{
+    // TODO: Add your control notification handler code here
+    LPNMITEMACTIVATE item = (LPNMITEMACTIVATE)pNMHDR;
+    if (item->iItem < 0)
+    {
+        return;
+    }
+    CMenu menu;
+    menu.LoadMenu(IDR_TEST_PLATFORM_MENU);
+    CMenu *popup = menu.GetSubMenu(1);
+    CPoint point;
+    GetCursorPos(&point);
+    INT32 sel = popup->TrackPopupMenu(TPM_LEFTALIGN | TPM_RETURNCMD, point.x, point.y, this);
+    if (ID_COMPONENT_CONFIG == sel)
+    {
+        m_CComponentList[item->iItem]->Config(&m_CComponentList);
+        LPWSTR name;
+        m_CComponentList[item->iItem]->GetName(&name);
+        m_ComponentList.SetItemText(item->iItem, 0, name);
+    }
+    else if (ID_COMPONENT_DELETE == sel)
+    {
+        DeleteComponent(item->iItem);
+    }
+    *pResult = 0;
+}
+
+RC CTestPlatformDlg::DeleteComponent(UINT32 componentId)
+{
+    RC rc;
+
+    CHECK_RC(m_CComponentList[componentId]->Destroy());
+    m_CComponentList.erase(m_CComponentList.begin() + componentId);
+    m_ComponentList.DeleteItem(componentId);
 
     return rc;
 }

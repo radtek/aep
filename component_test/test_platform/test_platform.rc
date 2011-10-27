@@ -43,8 +43,10 @@ EXSTYLE WS_EX_APPWINDOW
 CAPTION "Test Platform"
 FONT 9, "宋体", 0, 0, 0x1
 BEGIN
-    CONTROL         "",IDC_COMPONENTINFO_LIST,"SysListView32",LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP,7,7,51,186
-    CONTROL         "",IDC_COMPONENT_LIST,"SysListView32",LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP,63,7,250,116
+    CONTROL         "",IDC_COMPONENTINFO_LIST,"SysListView32",LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP,7,20,55,173
+    CONTROL         "",IDC_COMPONENT_LIST,"SysListView32",LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP,71,20,242,135
+    CTEXT           "可用组件",IDC_COMPONENT_INFO_LIST_TITLE,7,7,55,11
+    CTEXT           "模型",IDC_COMPONENT_LIST_TITLE,71,7,242,11
 END
 
 
@@ -107,8 +109,13 @@ BEGIN
     BEGIN
         LEFTMARGIN, 7
         RIGHTMARGIN, 313
+        VERTGUIDE, 62
+        VERTGUIDE, 71
         TOPMARGIN, 7
         BOTTOMMARGIN, 193
+        HORZGUIDE, 18
+        HORZGUIDE, 20
+        HORZGUIDE, 155
     END
 END
 #endif    // APSTUDIO_INVOKED
@@ -164,8 +171,8 @@ BEGIN
     "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)\r\n"
     "LANGUAGE 4, 2\r\n"
     "#pragma code_page(936)\r\n"
-    "#include ""res\\test_platform.rc2""  // ??¨¨? Microsoft Visual C++ ??§?è??ì?¨¨?-|?§????§?é??ìo???\r\n"
-    "#include ""afxres.rc""     // ??§?è??ìo??§?é???§?é??ì|?t\r\n"
+    "#include ""res\\test_platform.rc2""  // ????ì??ì? Microsoft Visual C++ ???¨???§?§???§????ì??ì?-|??¨??????¨???§|???§?o???\r\n"
+    "#include ""afxres.rc""     // ???¨???§?§???§?o???¨???§|????¨???§|???§?|?t\r\n"
     "#endif\r\n"
     "\0"
 END
@@ -187,17 +194,17 @@ IDR_MAINFRAME           ICON                    "res\\test_platform.ico"
 // Menu
 //
 
-IDR_COMPONENT_MENU MENU 
+IDR_TEST_PLATFORM_MENU MENU 
 BEGIN
+    POPUP "ComponentInfo"
+    BEGIN
+        MENUITEM "Create",                      ID_COMPONENTINFO_CREATE
+        MENUITEM "...",                         ID_COMPONENTINFO_ETC
+    END
     POPUP "Component"
     BEGIN
-        MENUITEM "Create",                      ID_COMPONENT_CREATE
-        MENUITEM "...",                         ID_COMPONENT_ETC
-    END
-    POPUP "Object"
-    BEGIN
-        MENUITEM "Config",                      ID_OBJECT_CONFIG
-        MENUITEM "Delete",                      ID_OBJECT_DELETE
+        MENUITEM "Config",                      ID_COMPONENT_CONFIG
+        MENUITEM "Delete",                      ID_COMPONENT_DELETE
     END
 END
 
@@ -219,8 +226,8 @@ END
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)
 LANGUAGE 4, 2
 #pragma code_page(936)
-#include "res\test_platform.rc2"  // ??è? Microsoft Visual C++ ?¨¤?§?è?-|¨???¨￠?§o???
-#include "afxres.rc"     // ?¨¤?§o?¨￠??¨￠?§|?t
+#include "res\test_platform.rc2"  // ????ì??ì? Microsoft Visual C++ ???¨???§?§???§????ì??ì?-|??¨??????¨???§|???§?o???
+#include "afxres.rc"     // ???¨???§?§???§?o???¨???§|????¨???§|???§?|?t
 #endif
 
 /////////////////////////////////////////////////////////////////////////////

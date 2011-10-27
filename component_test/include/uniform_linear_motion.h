@@ -29,6 +29,8 @@ public:
     virtual ~UniformLinearMotion();
 
     virtual RC _stdcall GetInterface(UINT32 iid, void **iface);
+    virtual RC _stdcall Config(ComponentList *list);
+    virtual RC _stdcall Destroy();
     virtual RC _stdcall GetName(LPWSTR *name);
     virtual RC _stdcall GetAttribute(UINT32 aid, void **attr);
     virtual RC _stdcall SetAttribute(UINT32 aid, void *attr);
@@ -50,5 +52,7 @@ extern UINT32 UniformLinearMotionAttributeList[];
 extern UINT32 UniformLinearMotionCount;
 
 extern UniformLinearMotion *UniformLinearMotionFactory();
+
+extern void UniformLinearMotionDestroy(UniformLinearMotion *uniformLinearMotion);
 
 #endif // __UNIFORM_LINEAR_MOTION_H__
