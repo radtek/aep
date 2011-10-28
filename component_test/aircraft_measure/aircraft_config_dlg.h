@@ -1,8 +1,8 @@
 #pragma once
-#include "aircraft_measure_ifaces.h"
+
 #include "stdafx.h"
 #include "resource.h"
-#include "afxwin.h"
+#include "aircraft.h"
 
 // CAircraftConfigDlg dialog
 
@@ -11,7 +11,7 @@ class CAircraftConfigDlg : public CDialog
 	DECLARE_DYNAMIC(CAircraftConfigDlg)
 
 public:
-	CAircraftConfigDlg(ComponentList *list, CWnd* pParent = NULL);   // standard constructor
+	CAircraftConfigDlg(Aircraft *aircraft, ComponentList *list, CWnd* pParent = NULL);   // standard constructor
 	virtual ~CAircraftConfigDlg();
 
 // Dialog Data
@@ -26,6 +26,16 @@ public:
 public:
     CString m_Name;
 public:
-    ComponentList *m_MotionList;
     CComboBox m_Motion;
+public:
+    Aircraft *m_Aircraft;
+    ComponentList *m_MotionList;
+public:
+    double m_StartX;
+public:
+    double m_StartY;
+public:
+    double m_StartZ;
+public:
+    afx_msg void OnCbnSelchangeAircraftMotion();
 };

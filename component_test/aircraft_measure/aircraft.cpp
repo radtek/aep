@@ -10,7 +10,14 @@
 #include "aircraft_config_dlg.h"
 
 Aircraft::Aircraft()
+:
+m_Motion(NULL)
 {
+    m_StartCoordinate = new Vector;
+    m_StartVelocity = new Vector;
+
+    m_CurrentCoordinate = new Vector;
+    m_CurrentVelocity = new Vector;
 }
 
 Aircraft::~Aircraft()
@@ -40,12 +47,16 @@ RC Aircraft::Config(ComponentList *list)
 {
     // AFX_MANAGE_STATE(AfxGetStaticModuleState());
     AFX_MANAGE_STATE(AfxGetStaticModuleState());
-    CAircraftConfigDlg dlg(list);
+    CAircraftConfigDlg dlg(this, list);
     dlg.DoModal();
+
     delete[] m_Name;
     m_Name = new wchar_t[dlg.m_Name.GetLength() + 1];
     wsprintf(m_Name, TEXT("%s"), (LPWSTR)(LPCTSTR)dlg.m_Name);
     m_Name[dlg.m_Name.GetLength()] = 0;
+
+    *m_StartCoordinate = Vector(dlg.m_StartX, dlg.m_StartY, dlg.m_StartZ);
+    
     return OK;
 }
 

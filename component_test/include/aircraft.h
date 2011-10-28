@@ -37,7 +37,7 @@ public:
 
     virtual RC _stdcall Fly(double time);
 
-private:
+public:
     Vector *m_StartCoordinate;
     Vector *m_StartVelocity;
 
