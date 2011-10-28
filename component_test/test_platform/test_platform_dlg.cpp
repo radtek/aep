@@ -51,6 +51,7 @@ END_MESSAGE_MAP()
 
 CTestPlatformDlg::CTestPlatformDlg(CWnd* pParent /*=NULL*/)
 	: CDialog(CTestPlatformDlg::IDD, pParent)
+    , m_Platform(Platform::GetInstance())
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }
@@ -235,7 +236,7 @@ void CTestPlatformDlg::OnNMRclickComponentList(NMHDR *pNMHDR, LRESULT *pResult)
     INT32 sel = popup->TrackPopupMenu(TPM_LEFTALIGN | TPM_RETURNCMD, point.x, point.y, this);
     if (ID_COMPONENT_CONFIG == sel)
     {
-        m_Platform.GetComponentList()[item->iItem]->Config(&m_Platform.GetComponentList());
+        m_Platform.GetComponentList()[item->iItem]->Config();
         LPWSTR name;
         m_Platform.GetComponentList()[item->iItem]->GetName(&name);
         m_ComponentList.SetItemText(item->iItem, 0, name);

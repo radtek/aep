@@ -8,6 +8,7 @@
 
 #include "aircraft.h"
 #include "aircraft_config_dlg.h"
+#include "component.h"
 
 Aircraft::Aircraft()
 :
@@ -23,6 +24,10 @@ m_Motion(NULL)
 Aircraft::~Aircraft()
 {
     delete[] m_Name;
+    delete m_StartCoordinate;
+    delete m_StartVelocity;
+    delete m_CurrentCoordinate;
+    delete m_CurrentVelocity;
 }
 
 RC Aircraft::GetInterface(UINT32 iid, void **iface)
@@ -43,11 +48,13 @@ RC Aircraft::GetInterface(UINT32 iid, void **iface)
     return OK;
 }
 
-RC Aircraft::Config(ComponentList *list)
+RC Aircraft::Config()
 {
+    ComponentList list;
+    Component::GetComponentList(list);
     // AFX_MANAGE_STATE(AfxGetStaticModuleState());
     AFX_MANAGE_STATE(AfxGetStaticModuleState());
-    CAircraftConfigDlg dlg(this, list);
+    CAircraftConfigDlg dlg(this, &list);
     dlg.DoModal();
 
     delete[] m_Name;
@@ -147,7 +154,7 @@ RC Aircraft::Fly(double second)
     return rc;
 }
 
-LPCWSTR AircraftTypeName = TEXT("Aircraft");
+LPCWSTR AircraftTypeName = TEXT("·ÉĞĞÆ÷");
 
 UINT32 AircraftAttributeList[] =
 {
@@ -165,7 +172,7 @@ Aircraft *AircraftFactory()
 {
     Aircraft *aircraft = new Aircraft();
     LPWSTR name = new wchar_t[256];
-    wsprintf(name, TEXT("%s %u"), AircraftTypeName, AircraftCount);
+    wsprintf(name, TEXT("%s%u"), AircraftTypeName, AircraftCount);
     aircraft->m_Name = name;
     ++AircraftCount;
     return aircraft;

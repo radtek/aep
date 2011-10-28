@@ -225,6 +225,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\alm_config_dlg.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\stdafx.cpp"
 				>
 				<FileConfiguration
@@ -243,6 +247,10 @@
 						UsePrecompiledHeader="1"
 					/>
 				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\ulm_config_dlg.cpp"
+				>
 			</File>
 			<File
 				RelativePath=".\uniform_linear_motion.cpp"
@@ -275,10 +283,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\include\aircraft_measure.h"
-				>
-			</File>
-			<File
 				RelativePath="..\include\aircraft_measure_algorithm.h"
 				>
 			</File>
@@ -295,11 +299,19 @@
 				>
 			</File>
 			<File
+				RelativePath=".\alm_config_dlg.h"
+				>
+			</File>
+			<File
 				RelativePath=".\Resource.h"
 				>
 			</File>
 			<File
 				RelativePath=".\stdafx.h"
+				>
+			</File>
+			<File
+				RelativePath=".\ulm_config_dlg.h"
 				>
 			</File>
 			<File

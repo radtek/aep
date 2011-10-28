@@ -43,5 +43,5 @@ private:
     RC DeleteComponent(UINT32 componentId);
 
 private:
-    Platform m_Platform;
+    Platform &m_Platform;
 };

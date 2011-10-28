@@ -11,6 +11,29 @@
 #include "platform.h"
 #include "component.h"
 
+Platform &Platform::GetInstance()
+{
+    if (!s_Initialized)
+    {
+        s_Instance = new Platform;
+        s_Initialized = true;
+    }
+    return *s_Instance;
+}
+
+Platform::Platform()
+{
+}
+
+Platform *Platform::s_Instance = NULL;
+
+bool Platform::s_Initialized = false;
+
+void GetComponentList(ComponentList &componentList)
+{
+    componentList = Platform::GetInstance().GetComponentList();
+}
+
 RC Platform::LoadComponentDll(LPCWSTR fileName)
 {
     m_DllHandle = LoadLibrary(fileName);
@@ -27,18 +50,17 @@ RC Platform::RegisterComponent()
 {
     RC rc;
 
-    typedef void (*RegisterComponentFunc)(ComponentInfoList &componentInfoList);
-    RegisterComponentFunc func =
-        (RegisterComponentFunc)GetProcAddress(
+    Component::RegisterComponentFunc func =
+        (Component::RegisterComponentFunc)GetProcAddress(
         (HMODULE)m_DllHandle,
-        Component::registerComponentFuncName);
+        Component::RegisterComponentFuncName);
 
     if (!func)
     {
         return RC::PLATFORM_REGISTERCLIENTCOMPONENT_ERROR;
     }
 
-    func(m_ComponentInfoList);
+    func(m_ComponentInfoList, (Component::GetComponentListFunc)::GetComponentList);
 
     return rc;
 }

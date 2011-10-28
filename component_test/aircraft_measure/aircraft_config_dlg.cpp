@@ -2,9 +2,7 @@
 //
 
 #include "stdafx.h"
-#include "aircraft_measure_main.h"
 #include "aircraft_config_dlg.h"
-
 
 // CAircraftConfigDlg dialog
 

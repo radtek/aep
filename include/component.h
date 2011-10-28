@@ -9,10 +9,15 @@
 #ifndef __COMPONENT_H__
 #define __COMPONENT_H__
 
+#include "interfaces.h"
+
 namespace Component
 {
-    /** @brief 客户组件应负责实现的客户组件注册函数名. */
-    extern LPCSTR registerComponentFuncName;
+    typedef void (*GetComponentListFunc)(ComponentList &componentList);
+    typedef void (*RegisterComponentFunc)(ComponentInfoList &componentInfoList, GetComponentListFunc getComponentListFunc);
+
+    extern GetComponentListFunc GetComponentList;
+    extern LPCSTR RegisterComponentFuncName;
 };
 
 #endif // __COMPONENT_H__

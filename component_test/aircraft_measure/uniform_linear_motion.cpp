@@ -7,14 +7,17 @@
 */
 
 #include "uniform_linear_motion.h"
-#include "utility.h"
+#include "ulm_config_dlg.h"
 
 UniformLinearMotion::UniformLinearMotion()
 {
+    m_Velocity = new Vector;
 }
 
 UniformLinearMotion::~UniformLinearMotion()
 {
+    delete[] m_Name;
+    delete m_Velocity;
 }
 
 RC UniformLinearMotion::GetInterface(UINT32 iid, void **iface)
@@ -35,9 +38,20 @@ RC UniformLinearMotion::GetInterface(UINT32 iid, void **iface)
     return OK;
 }
 
-RC UniformLinearMotion::Config(ComponentList *list)
+RC UniformLinearMotion::Config()
 {
-    Utility::PromptLastErrorMessage();
+    // AFX_MANAGE_STATE(AfxGetStaticModuleState());
+    AFX_MANAGE_STATE(AfxGetStaticModuleState());
+    CULMConfigDlg dlg(this);
+    dlg.DoModal();
+
+    delete[] m_Name;
+    m_Name = new wchar_t[dlg.m_Name.GetLength() + 1];
+    wsprintf(m_Name, TEXT("%s"), (LPWSTR)(LPCTSTR)dlg.m_Name);
+    m_Name[dlg.m_Name.GetLength()] = 0;
+
+    *m_Velocity = Vector(dlg.m_X, dlg.m_Y, dlg.m_Z);
+
     return OK;
 }
 
@@ -107,7 +121,7 @@ RC UniformLinearMotion::Move(Vector &coordinate, double time)
     return OK;
 }
 
-LPCWSTR UniformLinearMotionTypeName = TEXT("Uniform linear motion");
+LPCWSTR UniformLinearMotionTypeName = TEXT("匀速直线运动");
 
 UINT32 UniformLinearMotionAttributeList[] =
 {
@@ -125,7 +139,7 @@ UniformLinearMotion *UniformLinearMotionFactory()
 {
     UniformLinearMotion *uniformLinearMotion = new UniformLinearMotion();
     LPWSTR name = new wchar_t[256];
-    wsprintf(name, TEXT("%s %u"), UniformLinearMotionTypeName, UniformLinearMotionCount);
+    wsprintf(name, TEXT("%s%u"), UniformLinearMotionTypeName, UniformLinearMotionCount);
     uniformLinearMotion->m_Name = name;
     ++UniformLinearMotionCount;
     return uniformLinearMotion;

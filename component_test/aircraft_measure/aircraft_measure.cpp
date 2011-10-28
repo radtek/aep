@@ -1,4 +1,4 @@
-#include "aircraft_measure.h"
+#include "component.h"
 #include "uniform_linear_motion.h"
 #include "acceleration_linear_motion.h"
 #include "aircraft.h"
@@ -6,8 +6,9 @@
 
 #include "stdafx.h"
 
-void RegisterComponent(ComponentInfoList &componentInfoList)
+extern "C" __declspec(dllexport) void RegisterComponent(ComponentInfoList &componentInfoList, Component::GetComponentListFunc getComponentListFunc)
 {
+    Component::GetComponentList = getComponentListFunc;
     ComponentInfo componentInfo;
     AFX_MANAGE_STATE(AfxGetStaticModuleState());
 

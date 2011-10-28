@@ -29,7 +29,7 @@ public:
     virtual ~UniformLinearMotion();
 
     virtual RC _stdcall GetInterface(UINT32 iid, void **iface);
-    virtual RC _stdcall Config(ComponentList *list);
+    virtual RC _stdcall Config();
     virtual RC _stdcall Destroy();
     virtual RC _stdcall GetName(LPWSTR *name);
     virtual RC _stdcall GetAttribute(UINT32 aid, void **attr);
@@ -37,7 +37,8 @@ public:
 
     virtual RC _stdcall GetCurrentVelocity(Vector &velocity);
     virtual RC _stdcall Move(Vector &coordinate, double time);
-private:
+
+public:
     Vector *m_Velocity;
 
     LPWSTR m_Name;

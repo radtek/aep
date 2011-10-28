@@ -8,4 +8,5 @@
 
 #include "component.h"
 
-LPCSTR Component::registerComponentFuncName = "RegisterComponent";
+Component::GetComponentListFunc Component::GetComponentList;
+LPCSTR Component::RegisterComponentFuncName = "RegisterComponent";

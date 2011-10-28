@@ -9,7 +9,6 @@
 #ifndef __PLATFORM_H__
 #define __PLATFORM_H__
 
-#include "rc.h"
 #include "interfaces.h"
 
 class Platform
@@ -27,6 +26,14 @@ private:
     ComponentList m_ComponentList;
 
     HINSTANCE m_DllHandle;
+
+public:
+    static Platform &GetInstance();
+
+private:
+    Platform();
+    static Platform *s_Instance;
+    static bool s_Initialized;
 };
 
 #endif // __PLATFORM_H__

@@ -7,14 +7,19 @@
 */
 
 #include "acceleration_linear_motion.h"
-#include "utility.h"
+#include "alm_config_dlg.h"
 
 AccelerationLinearMotion::AccelerationLinearMotion()
 {
+    m_Velocity = new Vector();
+    m_Acceleration = new Vector();
 }
 
 AccelerationLinearMotion::~AccelerationLinearMotion()
 {
+    delete[] m_Name;
+    delete m_Velocity;
+    delete m_Acceleration;
 }
 
 RC AccelerationLinearMotion::GetInterface(UINT32 iid, void **iface)
@@ -35,9 +40,21 @@ RC AccelerationLinearMotion::GetInterface(UINT32 iid, void **iface)
     return OK;
 }
 
-RC AccelerationLinearMotion::Config(ComponentList *list)
+RC AccelerationLinearMotion::Config()
 {
-    Utility::PromptLastErrorMessage();
+    // AFX_MANAGE_STATE(AfxGetStaticModuleState());
+    AFX_MANAGE_STATE(AfxGetStaticModuleState());
+    CALMConfigDlg dlg(this);
+    dlg.DoModal();
+
+    delete[] m_Name;
+    m_Name = new wchar_t[dlg.m_Name.GetLength() + 1];
+    wsprintf(m_Name, TEXT("%s"), (LPWSTR)(LPCTSTR)dlg.m_Name);
+    m_Name[dlg.m_Name.GetLength()] = 0;
+
+    *m_Velocity = Vector(dlg.m_VelocityX, dlg.m_VelocityY, dlg.m_VelocityZ);
+    *m_Acceleration = Vector(dlg.m_AccelerationX, dlg.m_AccelerationY, dlg.m_AccelerationZ);
+
     return OK;
 }
 
@@ -109,7 +126,7 @@ RC AccelerationLinearMotion::Move(Vector &coordinate, double time)
     return OK;
 }
 
-LPCWSTR AccelerationLinearMotionTypeName = TEXT("Acceleration linear motion");
+LPCWSTR AccelerationLinearMotionTypeName = TEXT("匀加速直线运动");
 
 UINT32 AccelerationLinearMotionAttributeList[] =
 {
@@ -127,7 +144,7 @@ AccelerationLinearMotion *AccelerationLinearMotionFactory()
 {
     AccelerationLinearMotion *accelerationLinearMotion = new AccelerationLinearMotion();
     LPWSTR name = new wchar_t[256];
-    wsprintf(name, TEXT("%s %u"), AccelerationLinearMotionTypeName, AccelerationLinearMotionCount);
+    wsprintf(name, TEXT("%s%u"), AccelerationLinearMotionTypeName, AccelerationLinearMotionCount);
     accelerationLinearMotion->m_Name = name;
     ++AccelerationLinearMotionCount;
     return accelerationLinearMotion;

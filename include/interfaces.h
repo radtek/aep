@@ -38,7 +38,7 @@ typedef vector<IComponent *> ComponentList;
 
 interface IComponent
 {
-    virtual RC _stdcall Config(ComponentList *list) = 0;
+    virtual RC _stdcall Config() = 0;
     virtual RC _stdcall Destroy() = 0;
     virtual RC _stdcall GetInterface(UINT32 iid, void **iface) = 0;
     virtual RC _stdcall GetName(LPWSTR *name) = 0;
