@@ -5,6 +5,7 @@
 #include "test_platform.h"
 #include "test_platform_dlg.h"
 
+#include "platform.h"
 #include "utility.h"
 
 #ifdef _DEBUG
@@ -161,15 +162,15 @@ RC CTestPlatformDlg::InitComponentInfoList()
 {
     RC rc;
 
-    CHECK_RC(Component::LoadClientComponentDll(TEXT("aircraft_measure.dll"), &m_DllHandle));
-    CHECK_RC(Component::RegisterClientComponent(m_DllHandle, m_CComponentInfoList));
-    //AfxSetResourceHandle((HINSTANCE)m_DllHandle);
+    ::AfxLoadLibrary(TEXT("aircraft_measure.dll"));
+    CHECK_RC(m_Platform.LoadComponentDll(TEXT("aircraft_measure.dll")));
+    CHECK_RC(m_Platform.RegisterComponent());
 
     m_ComponentInfoImageList.Create(32, 32, true, 2, 2);
-    for (UINT32 i = 0; i < m_CComponentInfoList.size(); ++i)
+    for (UINT32 i = 0; i < m_Platform.GetComponentInfoList().size(); ++i)
     {
-        m_ComponentInfoImageList.Add((HICON)m_CComponentInfoList[i].iconHandle);//AfxGetApp()->LoadIcon(m_CComponentInfoList[i].iconHandle));
-        m_ComponentInfoList.InsertItem(LVIF_TEXT | LVIF_IMAGE, i, (LPCTSTR)m_CComponentInfoList[i].typeName, 0, 0, i, NULL);
+        m_ComponentInfoImageList.Add((HICON)m_Platform.GetComponentInfoList()[i].iconHandle);//AfxGetApp()->LoadIcon(m_Platform.GetComponentInfoList()[i].iconHandle));
+        m_ComponentInfoList.InsertItem(LVIF_TEXT | LVIF_IMAGE, i, (LPCTSTR)m_Platform.GetComponentInfoList()[i].typeName, 0, 0, i, NULL);
     }
     m_ComponentInfoList.SetImageList(&m_ComponentInfoImageList, LVSIL_NORMAL);
 
@@ -206,13 +207,13 @@ RC CTestPlatformDlg::InsertComponent(UINT32 componentId)
 {
     RC rc;
 
-    IComponent *component = m_CComponentInfoList[componentId].factory();
-    m_CComponentList.push_back(component);
+    IComponent *component = m_Platform.GetComponentInfoList()[componentId].factory();
+    m_Platform.GetComponentList().push_back(component);
 
     LPWSTR name;
     CHECK_RC(component->GetName(&name));
     //AfxSetResourceHandle((HINSTANCE)m_DllHandle);
-    m_ComponentList.InsertItem(LVIF_TEXT | LVIF_IMAGE, (INT32)m_CComponentList.size() - 1, name, 0, 0, componentId, NULL);
+    m_ComponentList.InsertItem(LVIF_TEXT | LVIF_IMAGE, (INT32)m_Platform.GetComponentList().size() - 1, name, 0, 0, componentId, NULL);
     //AfxSetResourceHandle(AfxGetInstanceHandle());
 
     return rc;
@@ -234,9 +235,9 @@ void CTestPlatformDlg::OnNMRclickComponentList(NMHDR *pNMHDR, LRESULT *pResult)
     INT32 sel = popup->TrackPopupMenu(TPM_LEFTALIGN | TPM_RETURNCMD, point.x, point.y, this);
     if (ID_COMPONENT_CONFIG == sel)
     {
-        m_CComponentList[item->iItem]->Config(&m_CComponentList);
+        m_Platform.GetComponentList()[item->iItem]->Config(&m_Platform.GetComponentList());
         LPWSTR name;
-        m_CComponentList[item->iItem]->GetName(&name);
+        m_Platform.GetComponentList()[item->iItem]->GetName(&name);
         m_ComponentList.SetItemText(item->iItem, 0, name);
     }
     else if (ID_COMPONENT_DELETE == sel)
@@ -250,8 +251,8 @@ RC CTestPlatformDlg::DeleteComponent(UINT32 componentId)
 {
     RC rc;
 
-    CHECK_RC(m_CComponentList[componentId]->Destroy());
-    m_CComponentList.erase(m_CComponentList.begin() + componentId);
+    CHECK_RC(m_Platform.GetComponentList()[componentId]->Destroy());
+    m_Platform.GetComponentList().erase(m_Platform.GetComponentList().begin() + componentId);
     m_ComponentList.DeleteItem(componentId);
 
     return rc;

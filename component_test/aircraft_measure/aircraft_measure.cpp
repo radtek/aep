@@ -6,7 +6,7 @@
 
 #include "stdafx.h"
 
-void RegisterClientComponent(ComponentInfoList &componentInfoList)
+void RegisterComponent(ComponentInfoList &componentInfoList)
 {
     ComponentInfo componentInfo;
     AFX_MANAGE_STATE(AfxGetStaticModuleState());

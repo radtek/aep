@@ -2,5 +2,5 @@
 
 extern "C"
 {
-    __declspec(dllexport) void RegisterClientComponent(ComponentInfoList &componentInfoList);
+    __declspec(dllexport) void RegisterComponent(ComponentInfoList &componentInfoList);
 }

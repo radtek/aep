@@ -3,8 +3,7 @@
 
 #pragma once
 #include "afxcmn.h"
-#include "component.h"
-
+#include "platform.h"
 
 // CTestPlatformDlg ¶Ô»°¿ò
 class CTestPlatformDlg : public CDialog
@@ -34,15 +33,15 @@ private:
     RC InitComponentInfoList();
     CImageList m_ComponentInfoImageList;
     CListCtrl m_ComponentInfoList;
-    ComponentInfoList m_CComponentInfoList;
 
-    void *m_DllHandle;
     afx_msg void OnNMRclickComponentInfoList(NMHDR *pNMHDR, LRESULT *pResult);
     RC InsertComponent(UINT32 componentId);
 
     CImageList m_ComponentImageList;
     CListCtrl m_ComponentList;
-    ComponentList m_CComponentList;
     afx_msg void OnNMRclickComponentList(NMHDR *pNMHDR, LRESULT *pResult);
     RC DeleteComponent(UINT32 componentId);
+
+private:
+    Platform m_Platform;
 };

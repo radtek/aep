@@ -9,16 +9,10 @@
 #ifndef __COMPONENT_H__
 #define __COMPONENT_H__
 
-#include "rc.h"
-#include "interfaces.h"
-
 namespace Component
 {
-    RC LoadClientComponentDll(LPCWSTR fileName, void **dllHandle);
-    RC RegisterClientComponent(void *dllHandle, ComponentInfoList &componentInfoList);
-    RC UnloadClientComponentDll(void *dllHandle);
-
-    extern LPCSTR registerClientComponentFuncName;
+    /** @brief 客户组件应负责实现的客户组件注册函数名. */
+    extern LPCSTR registerComponentFuncName;
 };
 
 #endif // __COMPONENT_H__
