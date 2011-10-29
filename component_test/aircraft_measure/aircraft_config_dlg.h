@@ -11,7 +11,7 @@ class CAircraftConfigDlg : public CDialog
 	DECLARE_DYNAMIC(CAircraftConfigDlg)
 
 public:
-	CAircraftConfigDlg(Aircraft *aircraft, ComponentList *list, CWnd* pParent = NULL);   // standard constructor
+	CAircraftConfigDlg(Aircraft *aircraft, CWnd* pParent = NULL);   // standard constructor
 	virtual ~CAircraftConfigDlg();
 
 // Dialog Data
@@ -29,7 +29,6 @@ public:
     CComboBox m_Motion;
 public:
     Aircraft *m_Aircraft;
-    ComponentList *m_MotionList;
 public:
     double m_StartX;
 public:

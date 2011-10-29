@@ -16,6 +16,7 @@ class Aircraft : public IAircraft
 public:
     enum
     {
+        ATTR_UNKNOWN = 0,
         #undef DEFINE_ATTR
         /** @brief 重定义飞行器属性的外包宏DEFINE_ATTR. */
         #define DEFINE_ATTR(a, msg) a,
@@ -34,6 +35,7 @@ public:
     virtual RC _stdcall GetName(LPWSTR *name);
     virtual RC _stdcall GetAttribute(UINT32 aid, void **attr);
     virtual RC _stdcall SetAttribute(UINT32 aid, void *attr);
+    virtual bool _stdcall Validate();
 
     virtual RC _stdcall Fly(double time);
 

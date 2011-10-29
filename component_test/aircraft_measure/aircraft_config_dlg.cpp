@@ -3,16 +3,16 @@
 
 #include "stdafx.h"
 #include "aircraft_config_dlg.h"
+#include "component.h"
 
 // CAircraftConfigDlg dialog
 
 IMPLEMENT_DYNAMIC(CAircraftConfigDlg, CDialog)
 
-CAircraftConfigDlg::CAircraftConfigDlg(Aircraft *aircraft, ComponentList *list, CWnd* pParent /*=NULL*/)
+CAircraftConfigDlg::CAircraftConfigDlg(Aircraft *aircraft, CWnd* pParent /*=NULL*/)
 	: CDialog(CAircraftConfigDlg::IDD, pParent)
     , m_Name(_T(""))
     , m_Aircraft(aircraft)
-    , m_MotionList(list)
     , m_StartX(0)
     , m_StartY(0)
     , m_StartZ(0)
@@ -48,36 +48,62 @@ END_MESSAGE_MAP()
 BOOL CAircraftConfigDlg::OnInitDialog()
 {
     CDialog::OnInitDialog();
-    for (UINT32 i = 0; i < m_MotionList->size(); ++i)
+    ComponentList componentList;
+    Component::GetComponentList(componentList);
+    for (UINT32 i = 0; i < componentList.size(); ++i)
     {
-        IComponent *component;
-        RC rc = (*m_MotionList)[i]->GetInterface(CLIENT_CIID_MOTION, (void **)&component);
-        if (OK == rc && component)
+        IMotion *motion;
+        RC rc = componentList[i]->GetInterface(CLIENT_CIID_MOTION, (void **)&motion);
+        if (OK == rc && motion)
         {
             LPWSTR buf;
-            component->GetName(&buf);
+            motion->GetName(&buf);
             CString cs(buf);
             m_Motion.AddString(cs);
-            int item = m_Motion.GetCount() - 1;
-            m_Motion.SetItemData(item, (DWORD_PTR)component);
+        }
+    }
 
-            IComponent *motion = m_Aircraft->m_Motion;
-            if (motion)
+    for (UINT32 i = 0; i < m_Motion.GetCount(); ++i)
+    {
+        CString cs;
+        m_Motion.GetLBText(i, cs);
+        IMotion *motion = m_Aircraft->m_Motion;
+        if (motion)
+        {
+            LPWSTR buf;
+            motion->GetName(&buf);
+            if (cs == CString(buf))
             {
-                motion->GetName(&buf);
-                if (cs == CString(buf))
-                {
-                    m_Motion.SetCurSel(item);
-                }
+                m_Motion.SetCurSel(i);
             }
         }
     }
     return TRUE;
 }
-
+#include "utility.h"
 void CAircraftConfigDlg::OnCbnSelchangeAircraftMotion()
 {
     // TODO: Add your control notification handler code here
     int sel = m_Motion.GetCurSel();
-    m_Aircraft->m_Motion = (IMotion *)m_Motion.GetItemData(sel);
+    CString name;
+    m_Motion.GetLBText(sel, name);
+
+    ComponentList componentList;
+    Component::GetComponentList(componentList);
+    for (UINT32 i = 0; i < componentList.size(); ++i)
+    {
+        IMotion *motion = NULL;
+        RC rc = componentList[i]->GetInterface(CLIENT_CIID_MOTION, (void **)&motion);
+        if (OK == rc && motion)
+        {
+            LPWSTR buf;
+            motion->GetName(&buf);
+            CString cs(buf);
+            if (name == cs)
+            {
+                m_Aircraft->m_Motion = motion;
+                return;
+            }
+        }
+    }
 }

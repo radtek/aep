@@ -36,9 +36,9 @@ void GetComponentList(ComponentList &componentList)
 
 RC Platform::LoadComponentDll(LPCWSTR fileName)
 {
-    m_DllHandle = LoadLibrary(fileName);
+    m_ComponentDllHandle = LoadLibrary(fileName);
 
-    if (!m_DllHandle)
+    if (!m_ComponentDllHandle)
     {
         return RC::PLATFORM_LOADDLL_ERROR;
     }
@@ -46,28 +46,141 @@ RC Platform::LoadComponentDll(LPCWSTR fileName)
     return OK;
 }
 
-RC Platform::RegisterComponent()
+RC Platform::LoadAlgorithmDll(LPCWSTR fileName)
+{
+    m_AlgorithmDllHandle = LoadLibrary(fileName);
+
+    if (!m_AlgorithmDllHandle)
+    {
+        return RC::PLATFORM_LOADDLL_ERROR;
+    }
+
+    return OK;
+}
+
+RC Platform::RegisterComponentInfo()
 {
     RC rc;
 
-    Component::RegisterComponentFunc func =
-        (Component::RegisterComponentFunc)GetProcAddress(
-        (HMODULE)m_DllHandle,
-        Component::RegisterComponentFuncName);
+    Component::RegisterComponentInfoFunc func =
+        (Component::RegisterComponentInfoFunc)GetProcAddress(
+        (HMODULE)m_ComponentDllHandle,
+        Component::RegisterComponentInfoFuncName);
 
     if (!func)
     {
-        return RC::PLATFORM_REGISTERCLIENTCOMPONENT_ERROR;
+        return RC::PLATFORM_REGISTERCOMPONENTINFO_ERROR;
     }
 
-    func(m_ComponentInfoList, (Component::GetComponentListFunc)::GetComponentList);
+    func(m_ComponentInfoList);
+
+    return rc;
+}
+
+RC Platform::RegisterAlgorithm()
+{
+    RC rc;
+
+    Component::RegisterAlgorithmFunc func =
+        (Component::RegisterAlgorithmFunc)GetProcAddress(
+        (HMODULE)m_AlgorithmDllHandle,
+        Component::RegisterAlgorithmFuncName);
+
+    if (!func)
+    {
+        return RC::PLATFORM_REGISTERALGORITHM_ERROR;
+    }
+
+    func(m_AlgorithmList);
+
+    return rc;
+}
+
+RC Platform::RegisterGetComponentListFuncToComponent()
+{
+    RC rc;
+
+    Component::RegisterGetComponentListFuncFunc func =
+        (Component::RegisterGetComponentListFuncFunc)GetProcAddress(
+        (HMODULE)m_ComponentDllHandle,
+        Component::RegisterGetComponentListFuncFuncName);
+
+    if (!func)
+    {
+        return RC::PLATFORM_REGISTERGETCOMPONENTLISTFUNC_ERROR;
+    }
+
+    func((Component::GetComponentListFunc)::GetComponentList);
+
+    return rc;
+}
+
+RC Platform::RegisterGetComponentListFuncToAlgorithm()
+{
+    RC rc;
+
+    Component::RegisterGetComponentListFuncFunc func =
+        (Component::RegisterGetComponentListFuncFunc)GetProcAddress(
+        (HMODULE)m_AlgorithmDllHandle,
+        Component::RegisterGetComponentListFuncFuncName);
+
+    if (!func)
+    {
+        return RC::PLATFORM_REGISTERGETCOMPONENTLISTFUNC_ERROR;
+    }
+
+    func((Component::GetComponentListFunc)::GetComponentList);
+
+    return rc;
+}
+
+RC Platform::ValidateModel(bool &result)
+{
+    RC rc;
+
+    Component::ValidateModelFunc func =
+        (Component::ValidateModelFunc)GetProcAddress(
+        (HMODULE)m_ComponentDllHandle,
+        Component::ValidateModelFuncName);
+
+    if (!func)
+    {
+        return RC::PLATFORM_VALIDATEMODEL_ERROR;
+    }
+
+    result = func();
+
+    return rc;
+}
+
+RC Platform::RunModel()
+{
+    RC rc;
+
+    Component::RunModelFunc func =
+        (Component::RunModelFunc)GetProcAddress(
+        (HMODULE)m_ComponentDllHandle,
+        Component::RunModelFuncName);
+
+    if (!func)
+    {
+        return RC::PLATFORM_RUNMODEL_ERROR;
+    }
+
+    func();
 
     return rc;
 }
 
 RC Platform::UnloadComponentDll()
 {
-    FreeLibrary((HMODULE)m_DllHandle);
+    FreeLibrary((HMODULE)m_ComponentDllHandle);
+    return OK;
+}
+
+RC Platform::UnloadAlgorithmDll()
+{
+    FreeLibrary((HMODULE)m_AlgorithmDllHandle);
     return OK;
 }
 
@@ -79,4 +192,9 @@ ComponentInfoList &Platform::GetComponentInfoList()
 ComponentList &Platform::GetComponentList()
 {
     return m_ComponentList;
+}
+
+AlgorithmList &Platform::GetAlgorithmList()
+{
+    return m_AlgorithmList;
 }

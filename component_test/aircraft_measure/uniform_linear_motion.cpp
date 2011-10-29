@@ -109,6 +109,11 @@ RC UniformLinearMotion::SetAttribute(UINT32 aid, void *attr)
     return OK;
 }
 
+bool UniformLinearMotion::Validate()
+{
+    return true;
+}
+
 RC UniformLinearMotion::GetCurrentVelocity(Vector &velocity)
 {
     velocity = (*m_Velocity);

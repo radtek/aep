@@ -13,11 +13,26 @@
 
 namespace Component
 {
-    typedef void (*GetComponentListFunc)(ComponentList &componentList);
-    typedef void (*RegisterComponentFunc)(ComponentInfoList &componentInfoList, GetComponentListFunc getComponentListFunc);
+    // 平台调组件
+    typedef void (*RegisterComponentInfoFunc)(ComponentInfoList &componentInfoList);
+    extern LPCSTR RegisterComponentInfoFuncName;
 
+    typedef bool (*ValidateModelFunc)();
+    extern LPCSTR ValidateModelFuncName;
+
+    typedef void (*RunModelFunc)();
+    extern LPCSTR RunModelFuncName;
+
+    // 平台调算法
+    typedef void (*RegisterAlgorithmFunc)(AlgorithmList &algorithmList);
+    extern LPCSTR RegisterAlgorithmFuncName;
+
+    // 组件及算法调平台
+    typedef void (*GetComponentListFunc)(ComponentList &componentList);
     extern GetComponentListFunc GetComponentList;
-    extern LPCSTR RegisterComponentFuncName;
+
+    typedef void (*RegisterGetComponentListFuncFunc)(GetComponentListFunc getComponentListFunc);
+    extern LPCSTR RegisterGetComponentListFuncFuncName;
 };
 
 #endif // __COMPONENT_H__

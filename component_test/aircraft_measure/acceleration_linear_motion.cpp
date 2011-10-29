@@ -113,6 +113,11 @@ RC AccelerationLinearMotion::SetAttribute(UINT32 aid, void *attr)
     return OK;
 }
 
+bool AccelerationLinearMotion::Validate()
+{
+    return true;
+}
+
 RC AccelerationLinearMotion::GetCurrentVelocity(Vector &velocity)
 {
     velocity = (*m_Velocity);

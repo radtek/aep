@@ -34,6 +34,7 @@ public:
     virtual RC _stdcall GetName(LPWSTR *name);
     virtual RC _stdcall GetAttribute(UINT32 aid, void **attr);
     virtual RC _stdcall SetAttribute(UINT32 aid, void *attr);
+    virtual bool _stdcall Validate();
 
     virtual RC _stdcall GetCurrentVelocity(Vector &velocity);
     virtual RC _stdcall Move(Vector &coordinate, double time);

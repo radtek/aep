@@ -8,7 +8,6 @@
 
 #include "aircraft.h"
 #include "aircraft_config_dlg.h"
-#include "component.h"
 
 Aircraft::Aircraft()
 :
@@ -50,11 +49,9 @@ RC Aircraft::GetInterface(UINT32 iid, void **iface)
 
 RC Aircraft::Config()
 {
-    ComponentList list;
-    Component::GetComponentList(list);
     // AFX_MANAGE_STATE(AfxGetStaticModuleState());
     AFX_MANAGE_STATE(AfxGetStaticModuleState());
-    CAircraftConfigDlg dlg(this, &list);
+    CAircraftConfigDlg dlg(this);
     dlg.DoModal();
 
     delete[] m_Name;
@@ -144,6 +141,11 @@ RC Aircraft::SetAttribute(UINT32 aid, void *attr)
         return RC::COMPONENT_SETATTRIBUTE_ERROR;
     }
     return OK;
+}
+
+bool Aircraft::Validate()
+{
+    return m_Motion && m_Motion->Validate();
 }
 
 RC Aircraft::Fly(double second)

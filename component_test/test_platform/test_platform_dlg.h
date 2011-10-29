@@ -4,6 +4,7 @@
 #pragma once
 #include "afxcmn.h"
 #include "platform.h"
+#include "afxwin.h"
 
 // CTestPlatformDlg ¶Ô»°¿ò
 class CTestPlatformDlg : public CDialog
@@ -42,6 +43,12 @@ private:
     afx_msg void OnNMRclickComponentList(NMHDR *pNMHDR, LRESULT *pResult);
     RC DeleteComponent(UINT32 componentId);
 
+    RC InitAlgorithmList();
+
 private:
     Platform &m_Platform;
+    afx_msg void OnBnClickedRunModel();
+    afx_msg void OnBnClickedValidateModel();
+    afx_msg void OnBnClickedAlgorithmRun();
+    CComboBox m_AlgorithmList;
 };

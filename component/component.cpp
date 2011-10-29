@@ -8,5 +8,14 @@
 
 #include "component.h"
 
+LPCSTR Component::RegisterComponentInfoFuncName = "RegisterComponentInfo";
+
+LPCSTR Component::ValidateModelFuncName = "ValidateModel";
+
+LPCSTR Component::RunModelFuncName = "RunModel";
+
+LPCSTR Component::RegisterAlgorithmFuncName = "RegisterAlgorithm";
+
 Component::GetComponentListFunc Component::GetComponentList;
-LPCSTR Component::RegisterComponentFuncName = "RegisterComponent";
+
+LPCSTR Component::RegisterGetComponentListFuncFuncName = "RegisterGetComponentListFunc";

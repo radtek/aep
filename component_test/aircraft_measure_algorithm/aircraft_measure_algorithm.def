@@ -1,0 +1,6 @@
+; aircraft_measure_algorithm.def : Declares the module parameters for the DLL.
+
+LIBRARY      "aircraft_measure_algorithm"
+
+EXPORTS
+    ; Explicit exports can go here

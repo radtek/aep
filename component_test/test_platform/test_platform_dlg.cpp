@@ -61,6 +61,7 @@ void CTestPlatformDlg::DoDataExchange(CDataExchange* pDX)
     CDialog::DoDataExchange(pDX);
     DDX_Control(pDX, IDC_COMPONENTINFO_LIST, m_ComponentInfoList);
     DDX_Control(pDX, IDC_COMPONENT_LIST, m_ComponentList);
+    DDX_Control(pDX, IDC_ALGORITHM_SEL, m_AlgorithmList);
 }
 
 BEGIN_MESSAGE_MAP(CTestPlatformDlg, CDialog)
@@ -70,6 +71,9 @@ BEGIN_MESSAGE_MAP(CTestPlatformDlg, CDialog)
 	//}}AFX_MSG_MAP
     ON_NOTIFY(NM_RCLICK, IDC_COMPONENTINFO_LIST, &CTestPlatformDlg::OnNMRclickComponentInfoList)
     ON_NOTIFY(NM_RCLICK, IDC_COMPONENT_LIST, &CTestPlatformDlg::OnNMRclickComponentList)
+    ON_BN_CLICKED(IDC_RUN_MODEL, &CTestPlatformDlg::OnBnClickedRunModel)
+    ON_BN_CLICKED(IDC_VALIDATE_MODEL, &CTestPlatformDlg::OnBnClickedValidateModel)
+    ON_BN_CLICKED(IDC_ALGORITHM_RUN, &CTestPlatformDlg::OnBnClickedAlgorithmRun)
 END_MESSAGE_MAP()
 
 
@@ -106,6 +110,8 @@ BOOL CTestPlatformDlg::OnInitDialog()
     RC rc;
     CHECK_RC(InitComponentInfoList());
     m_ComponentList.SetImageList(&m_ComponentInfoImageList, LVSIL_NORMAL);
+
+    CHECK_RC(InitAlgorithmList());
 
 	return TRUE;  // 除非将焦点设置到控件，否则返回 TRUE
 }
@@ -165,7 +171,8 @@ RC CTestPlatformDlg::InitComponentInfoList()
 
     ::AfxLoadLibrary(TEXT("aircraft_measure.dll"));
     CHECK_RC(m_Platform.LoadComponentDll(TEXT("aircraft_measure.dll")));
-    CHECK_RC(m_Platform.RegisterComponent());
+    CHECK_RC(m_Platform.RegisterComponentInfo());
+    CHECK_RC(m_Platform.RegisterGetComponentListFuncToComponent());
 
     m_ComponentInfoImageList.Create(32, 32, true, 2, 2);
     for (UINT32 i = 0; i < m_Platform.GetComponentInfoList().size(); ++i)
@@ -175,6 +182,28 @@ RC CTestPlatformDlg::InitComponentInfoList()
     }
     m_ComponentInfoList.SetImageList(&m_ComponentInfoImageList, LVSIL_NORMAL);
 
+    //AfxSetResourceHandle(AfxGetInstanceHandle());
+
+    return OK;
+}
+
+RC CTestPlatformDlg::InitAlgorithmList()
+{
+    RC rc;
+
+    ::AfxLoadLibrary(TEXT("aircraft_measure_algorithm.dll"));
+    CHECK_RC(m_Platform.LoadAlgorithmDll(TEXT("aircraft_measure_algorithm.dll")));
+    CHECK_RC(m_Platform.RegisterAlgorithm());
+    CHECK_RC(m_Platform.RegisterGetComponentListFuncToAlgorithm());
+
+    for (UINT32 i = 0; i < m_Platform.GetAlgorithmList().size(); ++i)
+    {
+        IAlgorithm *algorithm = m_Platform.GetAlgorithmList()[i];
+        LPWSTR buf;
+        algorithm->GetName(&buf);
+        CString cs(buf);
+        m_AlgorithmList.AddString(cs);
+    }
     //AfxSetResourceHandle(AfxGetInstanceHandle());
 
     return OK;
@@ -257,4 +286,30 @@ RC CTestPlatformDlg::DeleteComponent(UINT32 componentId)
     m_ComponentList.DeleteItem(componentId);
 
     return rc;
+}
+
+void CTestPlatformDlg::OnBnClickedRunModel()
+{
+    // TODO: Add your control notification handler code here
+    OnBnClickedValidateModel();
+    m_Platform.RunModel();
+}
+
+void CTestPlatformDlg::OnBnClickedValidateModel()
+{
+    // TODO: Add your control notification handler code here
+    bool valid;
+    m_Platform.ValidateModel(valid);
+    if (!valid)
+    {
+        ::MessageBox(NULL, TEXT("模型中存在非法状态"), TEXT("错误"), MB_OK); 
+        return;
+    }
+}
+
+void CTestPlatformDlg::OnBnClickedAlgorithmRun()
+{
+    // TODO: Add your control notification handler code here
+    IAlgorithm *algorithm = m_Platform.GetAlgorithmList()[m_AlgorithmList.GetCurSel()];
+    algorithm->Run();
 }
