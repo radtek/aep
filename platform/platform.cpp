@@ -81,6 +81,16 @@ RC Platform::RegisterAlgorithm()
 {
     RC rc;
 
+    // 读algorithm.ini文件, 获得算法列表
+
+    return rc;
+}
+
+/*
+RC Platform::RegisterAlgorithm()
+{
+    RC rc;
+
     Component::RegisterAlgorithmFunc func =
         (Component::RegisterAlgorithmFunc)GetProcAddress(
         (HMODULE)m_AlgorithmDllHandle,
@@ -95,6 +105,7 @@ RC Platform::RegisterAlgorithm()
 
     return rc;
 }
+*/
 
 RC Platform::RegisterGetComponentListFuncToComponent()
 {

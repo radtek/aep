@@ -12,6 +12,7 @@
 #define __PLATFORM_H__
 
 #include "interfaces.h"
+#include "algorithm.h"
 
 class Platform
 {

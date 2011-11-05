@@ -14,8 +14,6 @@ LPCSTR Component::ValidateModelFuncName = "ValidateModel";
 
 LPCSTR Component::RunModelFuncName = "RunModel";
 
-LPCSTR Component::RegisterAlgorithmFuncName = "RegisterAlgorithm";
-
 Component::GetComponentListFunc Component::GetComponentList;
 
 LPCSTR Component::RegisterGetComponentListFuncFuncName = "RegisterGetComponentListFunc";

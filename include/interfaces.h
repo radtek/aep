@@ -62,15 +62,4 @@ typedef struct
 
 typedef vector<ComponentInfo> ComponentInfoList;
 
-// 算法部分接口
-interface IAlgorithm;
-
-typedef vector<IAlgorithm *> AlgorithmList;
-
-interface IAlgorithm
-{
-    virtual RC _stdcall GetName(LPWSTR *name) = 0;
-    virtual RC _stdcall Run() = 0;
-};
-
 #endif // __INTERFACES_H__

@@ -185,10 +185,6 @@
 		</Configuration>
 	</Configurations>
 	<References>
-		<ProjectReference
-			ReferencedProjectIdentifier="{8ED092B5-70E1-47CE-9ED2-F7179AF1D009}"
-			RelativePathToProject="..\component\component.vcproj"
-		/>
 	</References>
 	<Files>
 		<Filter

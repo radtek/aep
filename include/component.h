@@ -23,10 +23,6 @@ namespace Component
     typedef void (*RunModelFunc)();
     extern LPCSTR RunModelFuncName;
 
-    // 平台调算法
-    typedef void (*RegisterAlgorithmFunc)(AlgorithmList &algorithmList);
-    extern LPCSTR RegisterAlgorithmFuncName;
-
     // 组件及算法调平台
     typedef void (*GetComponentListFunc)(ComponentList &componentList);
     extern GetComponentListFunc GetComponentList;
