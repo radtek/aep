@@ -29,118 +29,38 @@ Platform *Platform::s_Instance = NULL;
 
 bool Platform::s_Initialized = false;
 
+LPCWSTR Platform::s_CfgFileName = TEXT("platform.cfg");
+
 void GetComponentList(ComponentList &componentList)
 {
     componentList = Platform::GetInstance().GetComponentList();
 }
 
-RC Platform::LoadComponentDll(LPCWSTR fileName)
-{
-    m_ComponentDllHandle = LoadLibrary(fileName);
-
-    if (!m_ComponentDllHandle)
-    {
-        return RC::PLATFORM_LOADDLL_ERROR;
-    }
-
-    return OK;
-}
-
-RC Platform::LoadAlgorithmDll(LPCWSTR fileName)
-{
-    m_AlgorithmDllHandle = LoadLibrary(fileName);
-
-    if (!m_AlgorithmDllHandle)
-    {
-        return RC::PLATFORM_LOADDLL_ERROR;
-    }
-
-    return OK;
-}
-
-RC Platform::RegisterComponentInfo()
+RC Platform::Init()
 {
     RC rc;
 
-    Component::RegisterComponentInfoFunc func =
-        (Component::RegisterComponentInfoFunc)GetProcAddress(
-        (HMODULE)m_ComponentDllHandle,
-        Component::RegisterComponentInfoFuncName);
+    // FIXME: Load from cfg.
+    m_ComponentDllFileName = TEXT("aircraft_measure.dll");
+    m_AlgorithmCfgFileName = TEXT("aircraft_measure_algorithm.cfg");
 
-    if (!func)
-    {
-        return RC::PLATFORM_REGISTERCOMPONENTINFO_ERROR;
-    }
+    CHECK_RC(LoadComponentDll());
+    CHECK_RC(RegisterComponentInfo());
+    CHECK_RC(RegisterGetComponentListFuncToComponent());
 
-    func(m_ComponentInfoList);
+    CHECK_RC(InitAlgorithm());
+    CHECK_RC(RegisterAlgorithm());
 
     return rc;
 }
 
-RC Platform::RegisterAlgorithm()
+RC Platform::Shut()
 {
     RC rc;
 
-    // 读algorithm.ini文件, 获得算法列表
+    CHECK_RC(UnloadComponentDll());
 
-    return rc;
-}
-
-/*
-RC Platform::RegisterAlgorithm()
-{
-    RC rc;
-
-    Component::RegisterAlgorithmFunc func =
-        (Component::RegisterAlgorithmFunc)GetProcAddress(
-        (HMODULE)m_AlgorithmDllHandle,
-        Component::RegisterAlgorithmFuncName);
-
-    if (!func)
-    {
-        return RC::PLATFORM_REGISTERALGORITHM_ERROR;
-    }
-
-    func(m_AlgorithmList);
-
-    return rc;
-}
-*/
-
-RC Platform::RegisterGetComponentListFuncToComponent()
-{
-    RC rc;
-
-    Component::RegisterGetComponentListFuncFunc func =
-        (Component::RegisterGetComponentListFuncFunc)GetProcAddress(
-        (HMODULE)m_ComponentDllHandle,
-        Component::RegisterGetComponentListFuncFuncName);
-
-    if (!func)
-    {
-        return RC::PLATFORM_REGISTERGETCOMPONENTLISTFUNC_ERROR;
-    }
-
-    func((Component::GetComponentListFunc)::GetComponentList);
-
-    return rc;
-}
-
-RC Platform::RegisterGetComponentListFuncToAlgorithm()
-{
-    RC rc;
-
-    Component::RegisterGetComponentListFuncFunc func =
-        (Component::RegisterGetComponentListFuncFunc)GetProcAddress(
-        (HMODULE)m_AlgorithmDllHandle,
-        Component::RegisterGetComponentListFuncFuncName);
-
-    if (!func)
-    {
-        return RC::PLATFORM_REGISTERGETCOMPONENTLISTFUNC_ERROR;
-    }
-
-    func((Component::GetComponentListFunc)::GetComponentList);
+    CHECK_RC(ShutAlgorithm());
 
     return rc;
 }
@@ -183,16 +103,13 @@ RC Platform::RunModel()
     return rc;
 }
 
-RC Platform::UnloadComponentDll()
+RC Platform::RunAlgorithm(const AlgorithmInfo &algorithmInfo)
 {
-    FreeLibrary((HMODULE)m_ComponentDllHandle);
-    return OK;
-}
+    RC rc;
 
-RC Platform::UnloadAlgorithmDll()
-{
-    FreeLibrary((HMODULE)m_AlgorithmDllHandle);
-    return OK;
+    Algorithm::RunAlgorithm(algorithmInfo);
+
+    return rc;
 }
 
 ComponentInfoList &Platform::GetComponentInfoList()
@@ -205,7 +122,96 @@ ComponentList &Platform::GetComponentList()
     return m_ComponentList;
 }
 
-AlgorithmList &Platform::GetAlgorithmList()
+AlgorithmInfoList &Platform::GetAlgorithmInfoList()
 {
-    return m_AlgorithmList;
+    return m_AlgorithmInfoList;
+}
+
+RC Platform::LoadComponentDll()
+{
+    RC rc;
+
+    m_ComponentDllHandle = LoadLibrary(m_ComponentDllFileName);
+
+    if (!m_ComponentDllHandle)
+    {
+        return RC::PLATFORM_LOADDLL_ERROR;
+    }
+
+    return rc;
+}
+
+RC Platform::RegisterComponentInfo()
+{
+    RC rc;
+
+    Component::RegisterComponentInfoFunc func =
+        (Component::RegisterComponentInfoFunc)GetProcAddress(
+        (HMODULE)m_ComponentDllHandle,
+        Component::RegisterComponentInfoFuncName);
+
+    if (!func)
+    {
+        return RC::PLATFORM_REGISTERCOMPONENTINFO_ERROR;
+    }
+
+    func(m_ComponentInfoList);
+
+    return rc;
+}
+
+RC Platform::RegisterGetComponentListFuncToComponent()
+{
+    RC rc;
+
+    Component::RegisterGetComponentListFuncFunc func =
+        (Component::RegisterGetComponentListFuncFunc)GetProcAddress(
+        (HMODULE)m_ComponentDllHandle,
+        Component::RegisterGetComponentListFuncFuncName);
+
+    if (!func)
+    {
+        return RC::PLATFORM_REGISTERGETCOMPONENTLISTFUNC_ERROR;
+    }
+
+    func((Component::GetComponentListFunc)::GetComponentList);
+
+    return rc;
+}
+
+RC Platform::UnloadComponentDll()
+{
+    RC rc;
+
+    // FIXME.
+    FreeLibrary((HMODULE)m_ComponentDllHandle);
+
+    return rc;
+}
+
+RC Platform::InitAlgorithm()
+{
+    RC rc;
+
+    CHECK_RC(Algorithm::Init());
+
+    return rc;
+}
+
+RC Platform::RegisterAlgorithm()
+{
+    RC rc;
+
+    CHECK_RC(Algorithm::RegisterAlgorithm(m_AlgorithmCfgFileName, m_AlgorithmInfoList));
+
+    return rc;
+}
+
+RC Platform::ShutAlgorithm()
+{
+    RC rc;
+
+    CHECK_RC(Algorithm::Shut());
+
+    return rc;
 }

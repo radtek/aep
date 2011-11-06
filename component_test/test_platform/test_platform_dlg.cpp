@@ -108,6 +108,9 @@ BOOL CTestPlatformDlg::OnInitDialog()
 
 	// TODO: 在此添加额外的初始化代码
     RC rc;
+
+    CHECK_RC(m_Platform.Init());
+
     CHECK_RC(InitComponentInfoList());
     m_ComponentList.SetImageList(&m_ComponentInfoImageList, LVSIL_NORMAL);
 
@@ -169,11 +172,6 @@ RC CTestPlatformDlg::InitComponentInfoList()
 {
     RC rc;
 
-    ::AfxLoadLibrary(TEXT("aircraft_measure.dll"));
-    CHECK_RC(m_Platform.LoadComponentDll(TEXT("aircraft_measure.dll")));
-    CHECK_RC(m_Platform.RegisterComponentInfo());
-    CHECK_RC(m_Platform.RegisterGetComponentListFuncToComponent());
-
     m_ComponentInfoImageList.Create(32, 32, true, 2, 2);
     for (UINT32 i = 0; i < m_Platform.GetComponentInfoList().size(); ++i)
     {
@@ -191,18 +189,10 @@ RC CTestPlatformDlg::InitAlgorithmList()
 {
     RC rc;
 
-    ::AfxLoadLibrary(TEXT("aircraft_measure_algorithm.dll"));
-    CHECK_RC(m_Platform.LoadAlgorithmDll(TEXT("aircraft_measure_algorithm.dll")));
-    CHECK_RC(m_Platform.RegisterAlgorithm());
-    CHECK_RC(m_Platform.RegisterGetComponentListFuncToAlgorithm());
-
-    for (UINT32 i = 0; i < m_Platform.GetAlgorithmList().size(); ++i)
+    for (UINT32 i = 0; i < m_Platform.GetAlgorithmInfoList().size(); ++i)
     {
-        IAlgorithm *algorithm = m_Platform.GetAlgorithmList()[i];
-        LPWSTR buf;
-        algorithm->GetName(&buf);
-        CString cs(buf);
-        m_AlgorithmList.AddString(cs);
+        AlgorithmInfo algorithmInfo = m_Platform.GetAlgorithmInfoList()[i];
+        m_AlgorithmList.AddString(algorithmInfo.name);
     }
     //AfxSetResourceHandle(AfxGetInstanceHandle());
 
@@ -310,6 +300,8 @@ void CTestPlatformDlg::OnBnClickedValidateModel()
 void CTestPlatformDlg::OnBnClickedAlgorithmRun()
 {
     // TODO: Add your control notification handler code here
-    IAlgorithm *algorithm = m_Platform.GetAlgorithmList()[m_AlgorithmList.GetCurSel()];
-    algorithm->Run();
+    // IAlgorithm *algorithm = m_Platform.GetAlgorithmList()[m_AlgorithmList.GetCurSel()];
+    // algorithm->Run();
+
+    m_Platform.RunAlgorithm(m_Platform.GetAlgorithmInfoList()[0]);
 }

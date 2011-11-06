@@ -13,8 +13,12 @@
 #include <vector>
 #include "rc.h"
 
+#include "mclmcrrt.h"
+#include "mclcppclass.h"
+
 using namespace std;
 
+/*
 // 算法部分接口
 interface IAlgorithm;
 
@@ -25,6 +29,7 @@ interface IAlgorithm
     virtual RC _stdcall GetName(LPWSTR *name) = 0;
     virtual RC _stdcall Run() = 0;
 };
+*/
 
 typedef struct
 {
@@ -41,8 +46,12 @@ namespace Algorithm
     /** @brief 初始化MatLab运行时环境. */
     RC Init();
 
+    /** @brief 关闭MatLab运行时环境. */
+    RC Shut();
+
     /** @brief 从配置文件中拿到算法列表. */
-    RC RegisterAlgorithm(AlgorithmInfoList &algorithmInfoList);
+    RC RegisterAlgorithm(LPCWSTR algorithmCfgFileName,
+        AlgorithmInfoList &algorithmInfoList);
 
     /** @brief 将一个算法添加到配置文件中. */
     RC AddAlgorithm(const AlgorithmInfo &algorithmInfo);
@@ -50,8 +59,14 @@ namespace Algorithm
     /** @brief 运行一个算法. */
     RC RunAlgorithm(const AlgorithmInfo &algorithmInfo);
 
-    /** @brief 算法列表配置文件名. */
-    extern LPCWSTR AlgorithmListFileName;
+    typedef bool (*InitializeFunc)(void);
+    extern LPCSTR InitializeFuncPrefix;
+
+    typedef bool (*Func)(int, mxArray**, mxArray*, mxArray*);
+    extern LPCSTR FuncPrefix;
+
+    typedef void (*TerminateFunc)(void);
+    extern LPCSTR TerminateFuncPrefix;
 };
 
 #endif // __ALGORITHM_H__
