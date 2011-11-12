@@ -55,8 +55,8 @@ private:
     HINSTANCE m_ComponentDllHandle;
 
 private:
-    LPCWSTR m_ComponentDllFileName;
-    LPCWSTR m_AlgorithmCfgFileName;
+    wstring m_ComponentDllFileName;
+    wstring m_AlgorithmCfgFileName;
 
 public:
     static Platform &GetInstance();
@@ -66,9 +66,9 @@ private:
     static Platform *s_Instance;
     static bool s_Initialized;
 
-    static LPCSTR s_CfgFileName;
-    static LPCSTR s_ComponentDllFileNameKey;
-    static LPCSTR s_AlgorithmCfgFileNameKey;
+    static LPCWSTR s_CfgFileName;
+    static LPCWSTR s_ComponentDllFileNameKey;
+    static LPCWSTR s_AlgorithmCfgFileNameKey;
 };
 
 #endif // __PLATFORM_H__

@@ -30,9 +30,9 @@ Platform *Platform::s_Instance = NULL;
 
 bool Platform::s_Initialized = false;
 
-LPCSTR Platform::s_CfgFileName = "platform.cfg";
-LPCSTR Platform::s_ComponentDllFileNameKey = "COMPONENT_DLL_FILE_NAME";
-LPCSTR Platform::s_AlgorithmCfgFileNameKey = "ALGORITHM_CFG_FILE_NAME";
+LPCWSTR Platform::s_CfgFileName = TEXT("platform.cfg");
+LPCWSTR Platform::s_ComponentDllFileNameKey = TEXT("COMPONENT_DLL_FILE_NAME");
+LPCWSTR Platform::s_AlgorithmCfgFileNameKey = TEXT("ALGORITHM_CFG_FILE_NAME");
 
 void GetComponentList(ComponentList &componentList)
 {
@@ -44,8 +44,8 @@ RC Platform::Init()
     RC rc;
 
     ConfigFile configFile(s_CfgFileName);
-    m_ComponentDllFileName = configFile.read<string>(s_ComponentDllFileNameKey);
-    m_AlgorithmCfgFileName = configFile.read<string>(s_AlgorithmCfgFileNameKey);
+    m_ComponentDllFileName = configFile.read<wstring>(s_ComponentDllFileNameKey);
+    m_AlgorithmCfgFileName = configFile.read<wstring>(s_AlgorithmCfgFileNameKey);
 
     CHECK_RC(LoadComponentDll());
     CHECK_RC(RegisterComponentInfo());
@@ -125,7 +125,7 @@ RC Platform::LoadComponentDll()
 {
     RC rc;
 
-    m_ComponentDllHandle = LoadLibrary(m_ComponentDllFileName);
+    m_ComponentDllHandle = LoadLibrary(m_ComponentDllFileName.c_str());
 
     if (!m_ComponentDllHandle)
     {
