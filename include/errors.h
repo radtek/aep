@@ -14,6 +14,7 @@
 DEFINE_ERROR(UNKNOWN_ERROR, "Unknown error occured.")
 DEFINE_ERROR(FILE_OPEN_ERROR, "File open failed.")
 DEFINE_ERROR(FILE_WRITE_ERROR, "File write failed.")
+DEFINE_ERROR(FILE_DELETE_ERROR, "File delete failed.")
 DEFINE_ERROR(WINSOCK_INIT_ERROR, "Winsock initialize failed.")
 DEFINE_ERROR(WINSOCK_SHUT_ERROR, "Winsock cleanup failed.")
 DEFINE_ERROR(SOCK_CREATE_ERROR, "Socket create failed.")
@@ -45,6 +46,8 @@ DEFINE_ERROR(ALGORITHM_UNLOADDLL_ERROR, "Algorithm unload dll failed.")
 DEFINE_ERROR(ALGORITHM_GETPROC_ERROR, "Algorithm get proc failed.")
 DEFINE_ERROR(ALGORITHM_RUN_INITIALIZE_ERROR, "Algorithm run initialize failed.")
 DEFINE_ERROR(ALGORITHM_RUN_ERROR, "Algorithm run failed.")
+DEFINE_ERROR(ALGORITHM_INSERT_ERROR, "Algorithm insert failed.")
+DEFINE_ERROR(ALGORITHM_REMOVE_ERROR, "Algorithm remove failed.")
 
 #ifdef __NETWORK_TEST__
 DEFINE_ERROR(THREAD_CREATE_ERROR, "Create thread failed.")

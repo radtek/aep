@@ -192,7 +192,7 @@ RC CTestPlatformDlg::InitAlgorithmList()
     for (UINT32 i = 0; i < m_Platform.GetAlgorithmList().size(); ++i)
     {
         Algorithm algorithm = m_Platform.GetAlgorithmList()[i];
-        m_AlgorithmList.AddString(algorithm.GetName());
+        m_AlgorithmList.AddString(algorithm.GetName().c_str());
     }
     //AfxSetResourceHandle(AfxGetInstanceHandle());
 

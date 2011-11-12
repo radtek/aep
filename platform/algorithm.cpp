@@ -6,8 +6,6 @@
 * 实现了算法相关函数.
 */
 
-#include "stdafx.h"
-
 #include "algorithm.h"
 #include "utility.h"
 
@@ -41,7 +39,7 @@ LPCSTR Algorithm::FuncPrefix = "mlf";
 
 LPCSTR Algorithm::TerminateFuncPrefix = "Terminate";
 
-Algorithm::Algorithm(LPCWSTR name, LPCWSTR dllFileName, LPCSTR funcName, LPCWSTR iconFileName)
+Algorithm::Algorithm(wstring name, wstring dllFileName, wstring funcName, wstring iconFileName)
 :
 m_Name(name),
 m_DllFileName(dllFileName),
@@ -54,7 +52,7 @@ RC Algorithm::Run()
 {
     RC rc;
 
-    HINSTANCE algorithmDllHandle = LoadLibrary(m_DllFileName);
+    HINSTANCE algorithmDllHandle = LoadLibrary(m_DllFileName.c_str());
 
     if (!algorithmDllHandle)
     {
@@ -64,7 +62,7 @@ RC Algorithm::Run()
 
     bool result;
 
-    string initializeFuncName = m_FuncName;
+    string initializeFuncName(m_FuncName.begin(), m_FuncName.end());
     initializeFuncName += InitializeFuncPrefix;
 
     InitializeFunc initializeFunc = (InitializeFunc)GetProcAddress(
@@ -85,7 +83,7 @@ RC Algorithm::Run()
     }
 
     string funcName = FuncPrefix;
-    funcName += m_FuncName;
+    funcName += string(m_FuncName.begin(), m_FuncName.end());
 
     Func func = (Func)GetProcAddress(
         (HMODULE)algorithmDllHandle,
@@ -109,7 +107,7 @@ RC Algorithm::Run()
         return RC::ALGORITHM_RUN_ERROR;
     }
 
-    string terminateFuncName = m_FuncName;
+    string terminateFuncName(m_FuncName.begin(), m_FuncName.end());
     terminateFuncName += TerminateFuncPrefix;
 
     TerminateFunc terminateFunc = (TerminateFunc)GetProcAddress(
@@ -127,7 +125,22 @@ RC Algorithm::Run()
     return rc;
 }
 
-LPCWSTR Algorithm::GetName()
+wstring Algorithm::GetName() const
 {
     return m_Name;
+}
+
+wstring Algorithm::GetDllFileName() const
+{
+    return m_DllFileName;
+}
+
+wstring Algorithm::GetFuncName() const
+{
+    return m_FuncName;
+}
+
+wstring Algorithm::GetIconFileName() const
+{
+    return m_IconFileName;
 }

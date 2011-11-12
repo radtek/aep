@@ -44,7 +44,7 @@ private:
     /** @brief 从配置文件中拿到算法列表. */
     RC RegisterAlgorithm();
     /** @brief 将一个算法添加到配置文件中. */
-    RC AddAlgorithm();
+    RC UploadAlgorithm();
 
 private:
     ComponentInfoList m_ComponentInfoList;

@@ -10,6 +10,7 @@
 #define __ALGORITHM_H__
 
 #include <objbase.h>
+#include <string>
 #include <vector>
 #include "rc.h"
 
@@ -17,7 +18,6 @@
 #include "mclcppclass.h"
 
 using namespace std;
-
 
 class Algorithm
 {
@@ -38,23 +38,29 @@ public:
     static LPCSTR TerminateFuncPrefix;
 
 public:
-    Algorithm(LPCWSTR name, LPCWSTR dllFileName, LPCSTR funcName, LPCWSTR iconFileName);
+    Algorithm(wstring name, wstring dllFileName, wstring funcName, wstring iconFileName);
     /** @brief 运行一个算法. */
     RC Run();
 
 public:
     /** @brief 得到算法名称. */
-    LPCWSTR GetName();
+    wstring GetName() const;
+    /** @brief 得到算法DLL文件名. */
+    wstring GetDllFileName() const;
+    /** @brief 得到算法入口函数名. */
+    wstring GetFuncName() const;
+    /** @brief 得到算法图标文件名. */
+    wstring GetIconFileName() const;
 
 private:
     /** @brief 算法名称. */
-    LPCWSTR m_Name;
+    wstring m_Name;
     /** @brief 算法DLL文件名. */
-    LPCWSTR m_DllFileName;
+    wstring m_DllFileName;
     /** @brief 算法入口函数名称. */
-    LPCSTR m_FuncName;
-    /** @brief 算法图标句柄. */
-    LPCWSTR m_IconFileName;
+    wstring m_FuncName;
+    /** @brief 算法图标文件名. */
+    wstring m_IconFileName;
 };
 
 typedef vector<Algorithm> AlgorithmList;

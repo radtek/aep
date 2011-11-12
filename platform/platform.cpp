@@ -6,11 +6,10 @@
 * 实现了平台类.
 */
 
-#include "stdafx.h"
-
 #include "platform.h"
 #include "component.h"
 #include "config_file.h"
+#include "algorithm_data_file.h"
 
 Platform &Platform::GetInstance()
 {
@@ -177,8 +176,10 @@ RC Platform::UnloadComponentDll()
 {
     RC rc;
 
-    // FIXME.
-    FreeLibrary((HMODULE)m_ComponentDllHandle);
+    if (!FreeLibrary((HMODULE)m_ComponentDllHandle))
+    {
+        return RC::PLATFORM_UNLOADDLL_ERROR;
+    }
 
     return rc;
 }
@@ -205,14 +206,18 @@ RC Platform::RegisterAlgorithm()
 {
     RC rc;
 
-    // FIXME: Load from cfg file.
-    Algorithm algorithm(TEXT("加法"), TEXT("AddFunc.dll"), "AddFunc", TEXT("AddFunc.ico"));
-    m_AlgorithmList.push_back(algorithm);
+    // Algorithm algorithm(TEXT("加法"), TEXT("AddFunc.dll"), TEXT("AddFunc"), TEXT("AddFunc.ico"));
+    // m_AlgorithmList.push_back(algorithm);
+    // file.InsertAlgorithm(algorithm);
+
+    AlgorithmDataFile file(m_AlgorithmCfgFileName);
+    file.Parse();
+    m_AlgorithmList = file.GetAlgorithmList();
 
     return rc;
 }
 
-RC Platform::AddAlgorithm()
+RC Platform::UploadAlgorithm()
 {
     RC rc;
     // FIXME

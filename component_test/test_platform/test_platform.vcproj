@@ -49,7 +49,7 @@
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
-				UsePrecompiledHeader="2"
+				UsePrecompiledHeader="0"
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="true"
 				DebugInformationFormat="4"
@@ -133,7 +133,7 @@
 				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG;__PLATFORM__"
 				MinimalRebuild="false"
 				RuntimeLibrary="2"
-				UsePrecompiledHeader="2"
+				UsePrecompiledHeader="0"
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="true"
 				DebugInformationFormat="3"
@@ -204,7 +204,27 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\platform\algorithm_data_file.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\platform\config_file.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\platform\data_file.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\utility\massert.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\platform\platform.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\utility\rc.cpp"
 				>
 			</File>
 			<File
@@ -235,6 +255,10 @@
 				RelativePath=".\test_platform_dlg.cpp"
 				>
 			</File>
+			<File
+				RelativePath="..\..\utility\utility.cpp"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -246,7 +270,31 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\include\algorithm_data_file.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\include\config_file.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\include\data_file.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\include\errors.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\include\massert.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\include\platform.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\include\rc.h"
 				>
 			</File>
 			<File
@@ -265,6 +313,14 @@
 				RelativePath=".\test_platform_dlg.h"
 				>
 			</File>
+			<File
+				RelativePath="..\..\include\types.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\include\utility.h"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Resource Files"
@@ -272,7 +328,11 @@
 			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}"
 			>
 			<File
-				RelativePath="..\..\platform\platform.cfg"
+				RelativePath=".\aircraft_measure_algorithm.cfg"
+				>
+			</File>
+			<File
+				RelativePath=".\platform.cfg"
 				>
 			</File>
 			<File
