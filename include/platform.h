@@ -53,7 +53,6 @@ private:
     AlgorithmList m_AlgorithmList;
 
     HINSTANCE m_ComponentDllHandle;
-    HINSTANCE m_AlgorithmDllHandle;
 
 private:
     LPCWSTR m_ComponentDllFileName;
@@ -67,7 +66,9 @@ private:
     static Platform *s_Instance;
     static bool s_Initialized;
 
-    static LPCWSTR s_CfgFileName;
+    static LPCSTR s_CfgFileName;
+    static LPCSTR s_ComponentDllFileNameKey;
+    static LPCSTR s_AlgorithmCfgFileNameKey;
 };
 
 #endif // __PLATFORM_H__

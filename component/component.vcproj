@@ -159,6 +159,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\utility\config_file.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\utility\massert.cpp"
 				>
 			</File>
@@ -182,6 +186,10 @@
 			>
 			<File
 				RelativePath="..\include\component.h"
+				>
+			</File>
+			<File
+				RelativePath="..\include\config_file.h"
 				>
 			</File>
 			<File

@@ -10,6 +10,7 @@
 
 #include "platform.h"
 #include "component.h"
+#include "config_file.h"
 
 Platform &Platform::GetInstance()
 {
@@ -29,7 +30,9 @@ Platform *Platform::s_Instance = NULL;
 
 bool Platform::s_Initialized = false;
 
-LPCWSTR Platform::s_CfgFileName = TEXT("platform.cfg");
+LPCSTR Platform::s_CfgFileName = "platform.cfg";
+LPCSTR Platform::s_ComponentDllFileNameKey = "COMPONENT_DLL_FILE_NAME";
+LPCSTR Platform::s_AlgorithmCfgFileNameKey = "ALGORITHM_CFG_FILE_NAME";
 
 void GetComponentList(ComponentList &componentList)
 {
@@ -40,9 +43,9 @@ RC Platform::Init()
 {
     RC rc;
 
-    // FIXME: Load from cfg.
-    m_ComponentDllFileName = TEXT("aircraft_measure.dll");
-    m_AlgorithmCfgFileName = TEXT("aircraft_measure_algorithm.cfg");
+    ConfigFile configFile(s_CfgFileName);
+    m_ComponentDllFileName = configFile.read<string>(s_ComponentDllFileNameKey);
+    m_AlgorithmCfgFileName = configFile.read<string>(s_AlgorithmCfgFileNameKey);
 
     CHECK_RC(LoadComponentDll());
     CHECK_RC(RegisterComponentInfo());
