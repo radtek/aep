@@ -25,13 +25,12 @@ public:
     // 平台功能
     RC ValidateModel(bool &result);
     RC RunModel();
-    RC RunAlgorithm(const AlgorithmInfo &algorithmInfo);
 
 public:
     ComponentInfoList &GetComponentInfoList();
     ComponentList &GetComponentList();
 
-    AlgorithmInfoList &GetAlgorithmInfoList();
+    AlgorithmList &GetAlgorithmList();
 
 private:
     // 平台辅助函数
@@ -41,14 +40,17 @@ private:
     RC UnloadComponentDll();
 
     RC InitAlgorithm();
-    RC RegisterAlgorithm();
     RC ShutAlgorithm();
+    /** @brief 从配置文件中拿到算法列表. */
+    RC RegisterAlgorithm();
+    /** @brief 将一个算法添加到配置文件中. */
+    RC AddAlgorithm();
 
 private:
     ComponentInfoList m_ComponentInfoList;
     ComponentList m_ComponentList;
 
-    AlgorithmInfoList m_AlgorithmInfoList;
+    AlgorithmList m_AlgorithmList;
 
     HINSTANCE m_ComponentDllHandle;
     HINSTANCE m_AlgorithmDllHandle;

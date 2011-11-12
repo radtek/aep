@@ -18,55 +18,45 @@
 
 using namespace std;
 
-/*
-// 算法部分接口
-interface IAlgorithm;
 
-typedef vector<IAlgorithm *> AlgorithmList;
-
-interface IAlgorithm
+class Algorithm
 {
-    virtual RC _stdcall GetName(LPWSTR *name) = 0;
-    virtual RC _stdcall Run() = 0;
-};
-*/
-
-typedef struct
-{
-    LPCWSTR name;
-    LPCWSTR dllFileName;
-    LPCSTR funcName;
-    void *iconHandle;
-} AlgorithmInfo;
-
-typedef vector<AlgorithmInfo> AlgorithmInfoList;
-
-namespace Algorithm
-{
+public:
     /** @brief 初始化MatLab运行时环境. */
-    RC Init();
+    static RC Init();
 
     /** @brief 关闭MatLab运行时环境. */
-    RC Shut();
-
-    /** @brief 从配置文件中拿到算法列表. */
-    RC RegisterAlgorithm(LPCWSTR algorithmCfgFileName,
-        AlgorithmInfoList &algorithmInfoList);
-
-    /** @brief 将一个算法添加到配置文件中. */
-    RC AddAlgorithm(const AlgorithmInfo &algorithmInfo);
-
-    /** @brief 运行一个算法. */
-    RC RunAlgorithm(const AlgorithmInfo &algorithmInfo);
+    static RC Shut();
 
     typedef bool (*InitializeFunc)(void);
-    extern LPCSTR InitializeFuncPrefix;
+    static LPCSTR InitializeFuncPrefix;
 
     typedef bool (*Func)(int, mxArray**, mxArray*, mxArray*);
-    extern LPCSTR FuncPrefix;
+    static LPCSTR FuncPrefix;
 
     typedef void (*TerminateFunc)(void);
-    extern LPCSTR TerminateFuncPrefix;
+    static LPCSTR TerminateFuncPrefix;
+
+public:
+    Algorithm(LPCWSTR name, LPCWSTR dllFileName, LPCSTR funcName, LPCWSTR iconFileName);
+    /** @brief 运行一个算法. */
+    RC Run();
+
+public:
+    /** @brief 得到算法名称. */
+    LPCWSTR GetName();
+
+private:
+    /** @brief 算法名称. */
+    LPCWSTR m_Name;
+    /** @brief 算法DLL文件名. */
+    LPCWSTR m_DllFileName;
+    /** @brief 算法入口函数名称. */
+    LPCSTR m_FuncName;
+    /** @brief 算法图标句柄. */
+    LPCWSTR m_IconFileName;
 };
+
+typedef vector<Algorithm> AlgorithmList;
 
 #endif // __ALGORITHM_H__

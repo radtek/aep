@@ -11,9 +11,6 @@
 #include "algorithm.h"
 #include "utility.h"
 
-#include "mclmcrrt.h"
-#include "mclcppclass.h"
-
 RC Algorithm::Init()
 {
     RC rc;
@@ -38,33 +35,26 @@ RC Algorithm::Shut()
     return rc;
 }
 
-RC Algorithm::RegisterAlgorithm(LPCWSTR algorithmCfgFileName,
-                                AlgorithmInfoList &algorithmInfoList)
+LPCSTR Algorithm::InitializeFuncPrefix = "Initialize";
+
+LPCSTR Algorithm::FuncPrefix = "mlf";
+
+LPCSTR Algorithm::TerminateFuncPrefix = "Terminate";
+
+Algorithm::Algorithm(LPCWSTR name, LPCWSTR dllFileName, LPCSTR funcName, LPCWSTR iconFileName)
+:
+m_Name(name),
+m_DllFileName(dllFileName),
+m_FuncName(funcName),
+m_IconFileName(iconFileName)
 {
-    RC rc;
-
-    // FIXME: 加法
-    AlgorithmInfo algorithmInfo;
-    algorithmInfo.name = TEXT("加法");
-    algorithmInfo.dllFileName = TEXT("AddFunc.dll");
-    algorithmInfo.funcName = "AddFunc";
-    algorithmInfoList.push_back(algorithmInfo);
-
-    return rc;
 }
 
-RC Algorithm::AddAlgorithm(const AlgorithmInfo &algorithmInfo)
+RC Algorithm::Run()
 {
     RC rc;
 
-    return rc;
-}
-
-RC Algorithm::RunAlgorithm(const AlgorithmInfo &algorithmInfo)
-{
-    RC rc;
-
-    HINSTANCE algorithmDllHandle = LoadLibrary(algorithmInfo.dllFileName);
+    HINSTANCE algorithmDllHandle = LoadLibrary(m_DllFileName);
 
     if (!algorithmDllHandle)
     {
@@ -74,7 +64,7 @@ RC Algorithm::RunAlgorithm(const AlgorithmInfo &algorithmInfo)
 
     bool result;
 
-    string initializeFuncName = algorithmInfo.funcName;
+    string initializeFuncName = m_FuncName;
     initializeFuncName += InitializeFuncPrefix;
 
     InitializeFunc initializeFunc = (InitializeFunc)GetProcAddress(
@@ -95,7 +85,7 @@ RC Algorithm::RunAlgorithm(const AlgorithmInfo &algorithmInfo)
     }
 
     string funcName = FuncPrefix;
-    funcName += algorithmInfo.funcName;
+    funcName += m_FuncName;
 
     Func func = (Func)GetProcAddress(
         (HMODULE)algorithmDllHandle,
@@ -119,7 +109,7 @@ RC Algorithm::RunAlgorithm(const AlgorithmInfo &algorithmInfo)
         return RC::ALGORITHM_RUN_ERROR;
     }
 
-        string terminateFuncName = algorithmInfo.funcName;
+    string terminateFuncName = m_FuncName;
     terminateFuncName += TerminateFuncPrefix;
 
     TerminateFunc terminateFunc = (TerminateFunc)GetProcAddress(
@@ -137,8 +127,7 @@ RC Algorithm::RunAlgorithm(const AlgorithmInfo &algorithmInfo)
     return rc;
 }
 
-LPCSTR Algorithm::InitializeFuncPrefix = "Initialize";
-
-LPCSTR Algorithm::FuncPrefix = "mlf";
-
-LPCSTR Algorithm::TerminateFuncPrefix = "Terminate";
+LPCWSTR Algorithm::GetName()
+{
+    return m_Name;
+}

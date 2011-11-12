@@ -189,10 +189,10 @@ RC CTestPlatformDlg::InitAlgorithmList()
 {
     RC rc;
 
-    for (UINT32 i = 0; i < m_Platform.GetAlgorithmInfoList().size(); ++i)
+    for (UINT32 i = 0; i < m_Platform.GetAlgorithmList().size(); ++i)
     {
-        AlgorithmInfo algorithmInfo = m_Platform.GetAlgorithmInfoList()[i];
-        m_AlgorithmList.AddString(algorithmInfo.name);
+        Algorithm algorithm = m_Platform.GetAlgorithmList()[i];
+        m_AlgorithmList.AddString(algorithm.GetName());
     }
     //AfxSetResourceHandle(AfxGetInstanceHandle());
 
@@ -303,5 +303,5 @@ void CTestPlatformDlg::OnBnClickedAlgorithmRun()
     // IAlgorithm *algorithm = m_Platform.GetAlgorithmList()[m_AlgorithmList.GetCurSel()];
     // algorithm->Run();
 
-    m_Platform.RunAlgorithm(m_Platform.GetAlgorithmInfoList()[0]);
+    m_Platform.GetAlgorithmList()[0].Run();
 }

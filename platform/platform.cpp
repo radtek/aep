@@ -103,15 +103,6 @@ RC Platform::RunModel()
     return rc;
 }
 
-RC Platform::RunAlgorithm(const AlgorithmInfo &algorithmInfo)
-{
-    RC rc;
-
-    Algorithm::RunAlgorithm(algorithmInfo);
-
-    return rc;
-}
-
 ComponentInfoList &Platform::GetComponentInfoList()
 {
     return m_ComponentInfoList;
@@ -122,9 +113,9 @@ ComponentList &Platform::GetComponentList()
     return m_ComponentList;
 }
 
-AlgorithmInfoList &Platform::GetAlgorithmInfoList()
+AlgorithmList &Platform::GetAlgorithmList()
 {
-    return m_AlgorithmInfoList;
+    return m_AlgorithmList;
 }
 
 RC Platform::LoadComponentDll()
@@ -198,20 +189,29 @@ RC Platform::InitAlgorithm()
     return rc;
 }
 
-RC Platform::RegisterAlgorithm()
-{
-    RC rc;
-
-    CHECK_RC(Algorithm::RegisterAlgorithm(m_AlgorithmCfgFileName, m_AlgorithmInfoList));
-
-    return rc;
-}
-
 RC Platform::ShutAlgorithm()
 {
     RC rc;
 
     CHECK_RC(Algorithm::Shut());
 
+    return rc;
+}
+
+RC Platform::RegisterAlgorithm()
+{
+    RC rc;
+
+    // FIXME: Load from cfg file.
+    Algorithm algorithm(TEXT("¼Ó·¨"), TEXT("AddFunc.dll"), "AddFunc", TEXT("AddFunc.ico"));
+    m_AlgorithmList.push_back(algorithm);
+
+    return rc;
+}
+
+RC Platform::AddAlgorithm()
+{
+    RC rc;
+    // FIXME
     return rc;
 }
