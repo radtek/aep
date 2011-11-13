@@ -9,13 +9,10 @@
 #ifndef __ALGORITHM_H__
 #define __ALGORITHM_H__
 
-#include <objbase.h>
+#include "interfaces.h"
+#include "rc.h"
 #include <string>
 #include <vector>
-#include "rc.h"
-
-#include "mclmcrrt.h"
-#include "mclcppclass.h"
 
 using namespace std;
 
@@ -28,19 +25,17 @@ public:
     /** @brief 关闭MatLab运行时环境. */
     static RC Shut();
 
-    typedef bool (*InitializeFunc)(void);
-    static LPCSTR InitializeFuncPrefix;
-
-    typedef bool (*Func)(int, mxArray**, mxArray*, mxArray*);
-    static LPCSTR FuncPrefix;
-
-    typedef void (*TerminateFunc)(void);
-    static LPCSTR TerminateFuncPrefix;
+    typedef vector<wstring> ParamNameList;
+    typedef vector<IParam *> ParamList;
 
 public:
-    Algorithm(wstring name, wstring dllFileName, wstring funcName, wstring iconFileName);
+    Algorithm(wstring name,
+        wstring dllFileName,
+        wstring funcName,
+        wstring iconFileName,
+        ParamNameList paramNameList);
     /** @brief 运行一个算法. */
-    RC Run();
+    RC Run(ComponentList &componentList);
 
 public:
     /** @brief 得到算法名称. */
@@ -61,6 +56,8 @@ private:
     wstring m_FuncName;
     /** @brief 算法图标文件名. */
     wstring m_IconFileName;
+    /** @brief 参数名列表 */
+    ParamNameList m_ParamNameList;
 };
 
 typedef vector<Algorithm> AlgorithmList;

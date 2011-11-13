@@ -37,6 +37,9 @@ public:
     virtual RC _stdcall SetAttribute(UINT32 aid, void *attr);
     virtual bool _stdcall Validate();
 
+    virtual Param * _stdcall ToParam();
+    virtual UINT32 _stdcall GetParamSize();
+
     virtual RC _stdcall Fly(double time);
 
 public:

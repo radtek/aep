@@ -7,6 +7,8 @@
 class AlgorithmDataFile : public DataFile
 {
 public:
+    typedef Algorithm::ParamNameList ParamNameList;
+public:
     AlgorithmDataFile(wstring fileName);
     virtual ~AlgorithmDataFile();
 

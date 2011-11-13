@@ -35,6 +35,10 @@ RC Aircraft::GetInterface(UINT32 iid, void **iface)
     {
         *iface = static_cast<IComponent *>(this);
     }
+    else if (CIID_IPARAM == iid)
+    {
+        *iface = static_cast<IParam *>(this);
+    }
     else if (CLIENT_CIID_AIRCRAFT == iid)
     {
         *iface = static_cast<IAircraft *>(this);
@@ -154,6 +158,27 @@ RC Aircraft::Fly(double second)
     CHECK_RC(m_Motion->GetCurrentVelocity(*m_CurrentVelocity));
     CHECK_RC(m_Motion->Move(*m_CurrentCoordinate, second));
     return rc;
+}
+
+Param *Aircraft::ToParam()
+{
+    Param *param = mxCreateDoubleMatrix(1, 9, mxREAL);
+    double *data = mxGetPr(param);
+    data[0] = m_CurrentCoordinate->x;
+    data[1] = m_CurrentCoordinate->y;
+    data[2] = m_CurrentCoordinate->z;
+    data[3] = m_CurrentVelocity->x;
+    data[4] = m_CurrentVelocity->y;
+    data[5] = m_CurrentVelocity->z;
+    data[6] = 0;
+    data[7] = 0;
+    data[8] = 0;
+    return param;
+}
+
+UINT32 Aircraft::GetParamSize()
+{
+    return 9;
 }
 
 LPCWSTR AircraftTypeName = TEXT("·ÉÐÐÆ÷");

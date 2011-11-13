@@ -208,6 +208,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\platform\algorithm_helper.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\platform\config_file.cpp"
 				>
 			</File>
@@ -271,6 +275,10 @@
 			</File>
 			<File
 				RelativePath="..\..\include\algorithm_data_file.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\include\algorithm_helper.h"
 				>
 			</File>
 			<File

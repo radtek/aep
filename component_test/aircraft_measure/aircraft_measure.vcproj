@@ -68,6 +68,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalDependencies="mclmcrrt.lib"
 				LinkIncremental="2"
 				ModuleDefinitionFile=".\aircraft_measure.def"
 				GenerateDebugInformation="true"
@@ -150,6 +151,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalDependencies="mclmcrrt.lib"
 				LinkIncremental="1"
 				ModuleDefinitionFile=".\aircraft_measure.def"
 				GenerateDebugInformation="true"

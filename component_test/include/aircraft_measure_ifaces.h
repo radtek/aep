@@ -24,7 +24,7 @@ interface IMotion : IComponent
     virtual RC _stdcall Move(Vector &coordinate, double time) = 0;
 };
 
-interface IAircraft : IComponent
+interface IAircraft : IParam
 {
     virtual RC _stdcall Fly(double time) = 0;
 };

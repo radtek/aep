@@ -65,7 +65,18 @@ RC AlgorithmDataFile::ParseLine(const wstring &line)
     wstring name, dllFileName, funcName, iconFileName;
     ist >> name >> dllFileName >> funcName >> iconFileName;
 
-    m_AlgorithmList.push_back(Algorithm(name, dllFileName, funcName, iconFileName));
+    ParamNameList paramNameList;
+    while (!ist.eof())
+    {
+        wstring paramName;
+        ist >> paramName;
+        if (!paramName.empty())
+        {
+            paramNameList.push_back(paramName);
+        }
+    }
+
+    m_AlgorithmList.push_back(Algorithm(name, dllFileName, funcName, iconFileName, paramNameList));
 
     return rc;
 }

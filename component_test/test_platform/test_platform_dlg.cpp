@@ -303,5 +303,5 @@ void CTestPlatformDlg::OnBnClickedAlgorithmRun()
     // IAlgorithm *algorithm = m_Platform.GetAlgorithmList()[m_AlgorithmList.GetCurSel()];
     // algorithm->Run();
 
-    m_Platform.GetAlgorithmList()[0].Run();
+    m_Platform.GetAlgorithmList()[0].Run(m_Platform.GetComponentList());
 }
