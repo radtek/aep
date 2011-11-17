@@ -336,11 +336,15 @@
 			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}"
 			>
 			<File
+				RelativePath=".\add_func.dll"
+				>
+			</File>
+			<File
 				RelativePath=".\aircraft_measure_algorithm.cfg"
 				>
 			</File>
 			<File
-				RelativePath=".\platform.cfg"
+				RelativePath="..\..\platform\platform.cfg"
 				>
 			</File>
 			<File

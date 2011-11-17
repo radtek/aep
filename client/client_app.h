@@ -1,4 +1,4 @@
-// client.h : PROJECT_NAME 应用程序的主头文件
+// client_app.h : PROJECT_NAME 应用程序的主头文件
 //
 
 #pragma once

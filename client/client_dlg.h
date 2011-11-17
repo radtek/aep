@@ -3,6 +3,7 @@
 
 #pragma once
 
+#include "client.h"
 
 // CClientDlg ¶Ô»°¿ò
 class CClientDlg : public CDialog
@@ -28,4 +29,7 @@ protected:
 	afx_msg void OnPaint();
 	afx_msg HCURSOR OnQueryDragIcon();
 	DECLARE_MESSAGE_MAP()
+
+public:
+    Client m_Client;
 };
