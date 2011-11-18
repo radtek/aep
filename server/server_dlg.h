@@ -3,6 +3,7 @@
 
 #pragma once
 
+#include "server.h"
 
 // CServerDlg ¶Ô»°¿ò
 class CServerDlg : public CDialog
@@ -28,4 +29,7 @@ protected:
 	afx_msg void OnPaint();
 	afx_msg HCURSOR OnQueryDragIcon();
 	DECLARE_MESSAGE_MAP()
+
+public:
+    Server m_Server;
 };

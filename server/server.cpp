@@ -1,16 +1,16 @@
-#include "client.h"
+#include "server.h"
 
-Client::Client()
+Server::Server()
 :
 m_Platform(Platform::GetInstance())
 {
 }
 
-Client::~Client()
+Server::~Server()
 {
 }
 
-RC Client::Init()
+RC Server::Init()
 {
     RC rc;
 
@@ -22,7 +22,7 @@ RC Client::Init()
     return rc;
 }
 
-RC Client::Shut()
+RC Server::Shut()
 {
     RC rc;
 

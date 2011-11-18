@@ -1,14 +1,14 @@
-#ifndef __CLIENT_H__
-#define __CLIENT_H__
+#ifndef __SERVER_H__
+#define __SERVER_H__
 
 #include "platform.h"
 #include "tcp_socket.h"
 
-class Client
+class Server
 {
 public:
-    Client();
-    ~Client();
+    Server();
+    ~Server();
 
     RC Init();
     RC Shut();
@@ -18,4 +18,4 @@ private:
     TcpSocket m_Socket;
 };
 
-#endif // __CLIENT_H__
+#endif // __SERVER_H__
