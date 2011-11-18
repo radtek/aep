@@ -64,6 +64,7 @@ BEGIN_MESSAGE_MAP(CServerDlg, CDialog)
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
 	//}}AFX_MSG_MAP
+    ON_BN_CLICKED(IDC_LISTEN, &CServerDlg::OnBnClickedListen)
 END_MESSAGE_MAP()
 
 
@@ -152,3 +153,9 @@ HCURSOR CServerDlg::OnQueryDragIcon()
 	return static_cast<HCURSOR>(m_hIcon);
 }
 
+
+void CServerDlg::OnBnClickedListen()
+{
+    RC rc;
+    CHECK_RC_MSG_NR(m_Server.Listen());
+}

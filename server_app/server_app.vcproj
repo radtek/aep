@@ -268,5 +268,9 @@
 		</Filter>
 	</Files>
 	<Globals>
+		<Global
+			Name="RESOURCE_FILE"
+			Value="server_app.rc"
+		/>
 	</Globals>
 </VisualStudioProject>

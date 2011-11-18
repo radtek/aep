@@ -1,4 +1,5 @@
 #include "server.h"
+#include "utility.h"
 
 Server::Server()
 :
@@ -18,6 +19,9 @@ RC Server::Init()
 
     CHECK_RC(m_Platform.Init());
     CHECK_RC(m_Socket.Init());
+
+    // FIXME
+    m_Port = 10086;
 
     return rc;
 }
@@ -57,15 +61,16 @@ RC Server::Listen()
 
         CHECK_RC(m_Socket.Accept(*clientSocket));
 
-        HANDLE thread;
+        ServiceThread *thread = new ServiceThread(clientSocket);
 
-        thread = CreateThread(NULL,
+        HANDLE handle;
+        handle = CreateThread(NULL,
             NULL,
             Service,
-            (LPVOID)clientSocket,
+            (LPVOID)thread,
             0,
             0);
-        if(thread == NULL)
+        if(handle == NULL)
         {
             return RC::THREAD_CREATE_ERROR;
         }
@@ -73,13 +78,81 @@ RC Server::Listen()
     return OK;
 }
 
+Server::ServiceThread::ServiceThread(TcpSocket *clientSocket)
+:
+m_ClientSocket(clientSocket)
+{
+}
+
+Server::ServiceThread::~ServiceThread()
+{
+    m_ClientSocket->Shut();
+    delete m_ClientSocket;
+}
+
+RC Server::ServiceThread::RecvCommand(CC &cc)
+{
+    return m_ClientSocket->RecvCommand(cc);
+}
+
+RC Server::ServiceThread::OnLogin()
+{
+    // FIXME
+    RC rc;
+
+    wstring name, password;
+    CHECK_RC(m_ClientSocket->RecvWString(name));
+    CHECK_RC(m_ClientSocket->RecvWString(password));
+
+    if (name == TEXT("test"))
+    {
+        if (password == TEXT("1234"))
+        {
+            CHECK_RC(m_ClientSocket->SendRC(OK));
+        }
+        else
+        {
+            CHECK_RC(m_ClientSocket->SendRC(RC::LOGIN_WRONG_PASSWORD_ERROR));
+        }
+    }
+    else
+    {
+        CHECK_RC(m_ClientSocket->SendRC(RC::LOGIN_UNEXISTS_USER_ERROR));
+    }
+
+    return rc;
+}
+
+RC Server::ServiceThread::OnExit()
+{
+    return OK;
+}
+
 DWORD WINAPI Server::Service(LPVOID lparam)
 {
-    TcpSocket *clientSocket = (TcpSocket *)lparam;
+    ServiceThread *thread = (ServiceThread *)lparam;
 
-
-    clientSocket->Shut();
-    delete clientSocket;
+    CC cc;
+    while (true)
+    {
+        RC rc;
+        CHECK_RC_MSG_NR(thread->RecvCommand(cc));
+        switch (cc.Get())
+        {
+        case CC::LOGIN_COMMAND:
+            thread->OnLogin();
+            break;
+        case CC::EXIT_COMMAND:
+            thread->OnExit();
+            break;
+        default:
+            break;
+        }
+        if (CC::EXIT_COMMAND == cc.Get())
+        {
+            break;
+        }
+    }
 
     return 0;
 }

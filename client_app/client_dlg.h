@@ -32,4 +32,12 @@ protected:
 
 public:
     Client m_Client;
+public:
+    afx_msg void OnBnClickedLogin1();
+public:
+    afx_msg void OnBnClickedConnect();
+public:
+    afx_msg void OnBnClickedLogin2();
+public:
+    afx_msg void OnBnClickedLogin3();
 };

@@ -15,12 +15,25 @@ public:
 
     /** @brief 进入监听服务状态. */
     RC Listen();
-    /** @brief 等待全部服务线程退出. */
-    RC Hold();
 
 private:
     Platform &m_Platform;
 
+    class ServiceThread
+    {
+    public:
+        ServiceThread(TcpSocket *clientSocket);
+        ~ServiceThread();
+
+        RC RecvCommand(CC &cc);
+
+    public:
+        RC OnLogin();
+        RC OnExit();
+
+    private:
+        TcpSocket *m_ClientSocket;
+    };
     /**
     * @brief 服务端程序运行函数.
     * @param clientSocket 所服务的客户端Socket.

@@ -38,14 +38,17 @@ BEGIN
 END
 
 IDD_CLIENT_DIALOG DIALOGEX 0, 0, 320, 200
-STYLE DS_SETFONT | DS_FIXEDSYS | WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
+STYLE DS_SETFONT | WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
 EXSTYLE WS_EX_APPWINDOW
 CAPTION "客户端"
 FONT 9, "宋体", 0, 0, 0x1
 BEGIN
     DEFPUSHBUTTON   "确定",IDOK,263,7,50,16
     PUSHBUTTON      "取消",IDCANCEL,263,25,50,16
-    CTEXT           "TODO: 在此放置对话框控件。",IDC_STATIC,10,96,300,8
+    PUSHBUTTON      "登陆用户1",IDC_LOGIN_1,7,48,50,14
+    PUSHBUTTON      "连接",IDC_CONNECT,7,7,50,14
+    PUSHBUTTON      "登陆用户2",IDC_LOGIN_2,7,95,50,14
+    PUSHBUTTON      "登陆用户3",IDC_LOGIN_3,7,136,50,14
 END
 
 
@@ -165,8 +168,8 @@ BEGIN
     "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)\r\n"
     "LANGUAGE 4, 2\r\n"
     "#pragma code_page(936)\r\n"
-    "#include ""res\\client.rc2""  // ·? Microsoft Visual C++ ±à?-μ?×ê?′\r\n"
-    "#include ""afxres.rc""     // ±ê×?×é?t\r\n"
+    "#include ""res\\client.rc2""  // ??è? Microsoft Visual C++ ?¨¤?§?è?-|¨???¨￠?§o???\r\n"
+    "#include ""afxres.rc""     // ?¨¤?§o?¨￠??¨￠?§|?t\r\n"
     "#endif\r\n"
     "\0"
 END
@@ -200,8 +203,8 @@ IDR_MAINFRAME           ICON                    "res\\client_app.ico"
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)
 LANGUAGE 4, 2
 #pragma code_page(936)
-#include "res\client_app.rc2"  // ·? Microsoft Visual C++ ±à?-μ?×ê?′
-#include "afxres.rc"     // ±ê×?×é?t
+#include "res\client_app.rc2"  // ??è? Microsoft Visual C++ ?¨¤?§?è?-|¨???¨￠?§o???
+#include "afxres.rc"     // ?¨¤?§o?¨￠??¨￠?§|?t
 #endif
 
 /////////////////////////////////////////////////////////////////////////////

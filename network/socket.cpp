@@ -266,6 +266,96 @@ RC Socket::SendString(const char *str)
 }
 
 /**
+* @param str 用来存储接收到的不定长宽字符串.
+* @return 结果代码.
+*
+* 接收一个不定长的宽字符串.
+* 先接收一个32位无符号整形表示宽字符串长度,
+* 再根据长度接收实际的宽字符串内容.
+*/
+RC Socket::RecvWString(wstring &str)
+{
+    RC rc;
+    UINT32 length;
+    CHECK_RC(Recv32(length));
+    str.resize(length);
+    return Recv(&str[0], 2 * length);
+}
+
+/**
+* @param str 要发送的不定长宽字符串.
+* @return 结果代码.
+*
+* 发送一个不定长的宽字符串.
+* 先发送一个32位无符号整形表示宽字符串长度,
+* 再根据长度发送实际的宽字符串内容.
+*/
+RC Socket::SendWString(LPCWSTR str)
+{
+    RC rc;
+    MASSERT(str != 0);
+    UINT32 length = (UINT32)wcslen(str);
+    CHECK_RC(Send32(length));
+    CHECK_RC(Send(str, 2 * length));
+    return rc;
+}
+
+/**
+* @param str 用来存储接收到的命令.
+* @return 结果代码.
+*
+* 接收一个命令.
+*/
+RC Socket::RecvCommand(CC &cc)
+{
+    RC rc;
+    UINT32 data;
+    CHECK_RC(Recv32(data));
+    cc = static_cast<INT32>(data);
+    return rc;
+}
+
+/**
+* @param str 要发送的命令.
+* @return 结果代码.
+*
+* 发送一个命令.
+*/
+RC Socket::SendCommand(const CC &cc)
+{
+    RC rc;
+    CHECK_RC(Send32(static_cast<UINT32>(cc.Get())));
+    return rc;
+}
+
+/**
+* @param str 用来存储接收到的结果代码.
+* @return 结果代码.
+*
+* 接收一个结果代码.
+*/
+RC Socket::RecvRC(RC &_rc)
+{
+    RC rc;
+    UINT32 data;
+    CHECK_RC(Recv32(data));
+    _rc = static_cast<INT32>(data);
+    return rc;
+}
+
+/**
+* @param str 要发送的结果代码.
+* @return 结果代码.
+*
+* 发送一个结果代码.
+*/
+RC Socket::SendRC(const RC &_rc)
+{
+    RC rc;
+    CHECK_RC(Send32(static_cast<UINT32>(_rc.Get())));
+    return rc;
+}
+/**
 * @return winsock错误代码.
 *
 * 返回Socket调用中的最后一个错误.

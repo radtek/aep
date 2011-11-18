@@ -11,6 +11,7 @@
 
 #include "rc.h"
 #include <string>
+#include "cc.h"
 
 using namespace std;
 
@@ -89,6 +90,21 @@ public:
     RC RecvString(string &str);
     /** @brief 发送一个不定长的字符串. */
     RC SendString(const char *str);
+
+    /** @brief 接收一个不定长的宽字符串. */
+    RC RecvWString(wstring &str);
+    /** @brief 发送一个不定长的宽字符串. */
+    RC SendWString(LPCWSTR str);
+
+    /** @brief 接收一个命令. */
+    RC RecvCommand(CC &cc);
+    /** @brief 发送一个不定长的宽字符串. */
+    RC SendCommand(const CC &cc);
+
+    /** @brief 接收一个结果代码. */
+    RC RecvRC(RC &_rc);
+    /** @brief 发送一个结果代码. */
+    RC SendRC(const RC &_rc);
 
     /** @brief 返回Socket调用中的最后一个错误. */
     static int GetLastError();

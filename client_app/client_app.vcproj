@@ -254,19 +254,7 @@
 			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}"
 			>
 			<File
-				RelativePath=".\add_func.dll"
-				>
-			</File>
-			<File
-				RelativePath=".\aircraft_measure.dll"
-				>
-			</File>
-			<File
-				RelativePath=".\aircraft_measure_algorithm.cfg"
-				>
-			</File>
-			<File
-				RelativePath=".\res\client.ico"
+				RelativePath=".\res\client_app.ico"
 				>
 			</File>
 			<File
@@ -277,12 +265,12 @@
 				RelativePath=".\res\client_app.rc2"
 				>
 			</File>
-			<File
-				RelativePath=".\platform.cfg"
-				>
-			</File>
 		</Filter>
 	</Files>
 	<Globals>
+		<Global
+			Name="RESOURCE_FILE"
+			Value="client_app.rc"
+		/>
 	</Globals>
 </VisualStudioProject>

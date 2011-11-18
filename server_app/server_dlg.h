@@ -32,4 +32,6 @@ protected:
 
 public:
     Server m_Server;
+public:
+    afx_msg void OnBnClickedListen();
 };

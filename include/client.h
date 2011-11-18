@@ -13,9 +13,15 @@ public:
     RC Init();
     RC Shut();
 
+    RC Connect();
+
+    RC Login(const wstring &name, const wstring &password);
+
 private:
     Platform &m_Platform;
     TcpSocket m_Socket;
+    const char *m_HostName;
+    int m_Port;
 };
 
 #endif // __CLIENT_H__

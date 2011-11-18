@@ -64,6 +64,10 @@ BEGIN_MESSAGE_MAP(CClientDlg, CDialog)
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
 	//}}AFX_MSG_MAP
+    ON_BN_CLICKED(IDC_LOGIN_1, &CClientDlg::OnBnClickedLogin1)
+    ON_BN_CLICKED(IDC_CONNECT, &CClientDlg::OnBnClickedConnect)
+    ON_BN_CLICKED(IDC_LOGIN_2, &CClientDlg::OnBnClickedLogin2)
+    ON_BN_CLICKED(IDC_LOGIN_3, &CClientDlg::OnBnClickedLogin3)
 END_MESSAGE_MAP()
 
 
@@ -152,3 +156,35 @@ HCURSOR CClientDlg::OnQueryDragIcon()
 	return static_cast<HCURSOR>(m_hIcon);
 }
 
+
+void CClientDlg::OnBnClickedLogin1()
+{
+    // TODO: Add your control notification handler code here
+    RC rc;
+    CHECK_RC_MSG_NR(m_Client.Login(TEXT("aaa"), TEXT("aaa")));
+}
+
+void CClientDlg::OnBnClickedConnect()
+{
+    // TODO: Add your control notification handler code here
+    RC rc;
+    CHECK_RC_MSG_NR(m_Client.Connect());
+}
+
+void CClientDlg::OnBnClickedLogin2()
+{
+    // TODO: Add your control notification handler code here
+    RC rc;
+    CHECK_RC_MSG_NR(m_Client.Login(TEXT("test"), TEXT("123")));
+}
+
+void CClientDlg::OnBnClickedLogin3()
+{
+    // TODO: Add your control notification handler code here
+    RC rc;
+    CHECK_RC_MSG_NR(m_Client.Login(TEXT("test"), TEXT("1234")));
+    if (OK == rc)
+    {
+        Utility::PromptErrorMessage(TEXT("Login succeeded"));
+    }
+}
