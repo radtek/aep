@@ -52,6 +52,4 @@ DEFINE_ERROR(ALGORITHM_PARAMMISSING_ERROR, "Some parameter missed for an algorit
 DEFINE_ERROR(ALGORITHM_INSERT_ERROR, "Algorithm insert failed.")
 DEFINE_ERROR(ALGORITHM_REMOVE_ERROR, "Algorithm remove failed.")
 
-#ifdef __NETWORK_TEST__
 DEFINE_ERROR(THREAD_CREATE_ERROR, "Create thread failed.")
-#endif

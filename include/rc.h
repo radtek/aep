@@ -73,4 +73,25 @@ private:
         return rc; \
     } while(0)
 
+/** @brief 检测函数返回的RC是否为错误的宏并打印错误信息. */
+#define CHECK_RC_MSG(f) \
+    do \
+    { \
+        if (OK != (rc = (f))) \
+        { \
+            Utility::PromptErrorMessage(rc.Message()); \
+        } \
+        return rc; \
+    } while(0)
+
+/** @brief 检测函数返回的RC是否为错误的宏并打印错误信息但不返回. */
+#define CHECK_RC_MSG_NR(f) \
+    do \
+    { \
+        if (OK != (rc = (f))) \
+        { \
+            Utility::PromptErrorMessage(rc.Message()); \
+        } \
+    } while(0)
+
 #endif // __RC_H__

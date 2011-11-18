@@ -1,9 +1,11 @@
-// server_dlg.cpp : 实现文件
+// client_dlg.cpp : 实现文件
 //
 
 #include "stdafx.h"
-#include "server_app.h"
-#include "server_dlg.h"
+#include "client_app.h"
+#include "client_dlg.h"
+
+#include "utility.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -41,23 +43,23 @@ BEGIN_MESSAGE_MAP(CAboutDlg, CDialog)
 END_MESSAGE_MAP()
 
 
-// CServerDlg 对话框
+// CClientDlg 对话框
 
 
 
 
-CServerDlg::CServerDlg(CWnd* pParent /*=NULL*/)
-	: CDialog(CServerDlg::IDD, pParent)
+CClientDlg::CClientDlg(CWnd* pParent /*=NULL*/)
+	: CDialog(CClientDlg::IDD, pParent)
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }
 
-void CServerDlg::DoDataExchange(CDataExchange* pDX)
+void CClientDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 }
 
-BEGIN_MESSAGE_MAP(CServerDlg, CDialog)
+BEGIN_MESSAGE_MAP(CClientDlg, CDialog)
 	ON_WM_SYSCOMMAND()
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
@@ -65,9 +67,9 @@ BEGIN_MESSAGE_MAP(CServerDlg, CDialog)
 END_MESSAGE_MAP()
 
 
-// CServerDlg 消息处理程序
+// CClientDlg 消息处理程序
 
-BOOL CServerDlg::OnInitDialog()
+BOOL CClientDlg::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 
@@ -95,12 +97,13 @@ BOOL CServerDlg::OnInitDialog()
 	SetIcon(m_hIcon, FALSE);		// 设置小图标
 
 	// TODO: 在此添加额外的初始化代码
-    m_Server.Init();
+    RC rc;
+    CHECK_RC_MSG_NR(m_Client.Init());
 
 	return TRUE;  // 除非将焦点设置到控件，否则返回 TRUE
 }
 
-void CServerDlg::OnSysCommand(UINT nID, LPARAM lParam)
+void CClientDlg::OnSysCommand(UINT nID, LPARAM lParam)
 {
 	if ((nID & 0xFFF0) == IDM_ABOUTBOX)
 	{
@@ -117,7 +120,7 @@ void CServerDlg::OnSysCommand(UINT nID, LPARAM lParam)
 //  来绘制该图标。对于使用文档/视图模型的 MFC 应用程序，
 //  这将由框架自动完成。
 
-void CServerDlg::OnPaint()
+void CClientDlg::OnPaint()
 {
 	if (IsIconic())
 	{
@@ -144,7 +147,7 @@ void CServerDlg::OnPaint()
 
 //当用户拖动最小化窗口时系统调用此函数取得光标显示。
 //
-HCURSOR CServerDlg::OnQueryDragIcon()
+HCURSOR CClientDlg::OnQueryDragIcon()
 {
 	return static_cast<HCURSOR>(m_hIcon);
 }

@@ -28,19 +28,19 @@ LANGUAGE LANG_CHINESE, SUBLANG_CHINESE_SIMPLIFIED
 
 IDD_ABOUTBOX DIALOGEX 0, 0, 235, 55
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "关于 client"
+CAPTION "关于 server"
 FONT 9, "宋体", 0, 0, 0x1
 BEGIN
     ICON            IDR_MAINFRAME,IDC_STATIC,11,17,20,20
-    LTEXT           "client 1.0 版",IDC_STATIC,40,10,119,8,SS_NOPREFIX
+    LTEXT           "server 1.0 版",IDC_STATIC,40,10,119,8,SS_NOPREFIX
     LTEXT           "Copyright (C) 2011",IDC_STATIC,40,25,119,8
     DEFPUSHBUTTON   "确定",IDOK,178,7,50,16,WS_GROUP
 END
 
-IDD_CLIENT_DIALOG DIALOGEX 0, 0, 320, 200
+IDD_SERVER_DIALOG DIALOGEX 0, 0, 320, 200
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
 EXSTYLE WS_EX_APPWINDOW
-CAPTION "客户端"
+CAPTION "服务器"
 FONT 9, "宋体", 0, 0, 0x1
 BEGIN
     DEFPUSHBUTTON   "确定",IDOK,263,7,50,16
@@ -74,9 +74,9 @@ BEGIN
             VALUE "CompanyName", "TODO: <公司名>"
             VALUE "FileDescription", "TODO: <文件说明>"
             VALUE "FileVersion", "1.0.0.1"
-            VALUE "InternalName", "client.exe"
+            VALUE "InternalName", "server.exe"
             VALUE "LegalCopyright", "TODO: (C) <公司名>。保留所有权利。"
-            VALUE "OriginalFilename", "client.exe"
+            VALUE "OriginalFilename", "server.exe"
             VALUE "ProductName", "TODO: <产品名>"
             VALUE "ProductVersion", "1.0.0.1"
         END
@@ -104,7 +104,7 @@ BEGIN
         BOTTOMMARGIN, 48
     END
 
-    IDD_CLIENT_DIALOG, DIALOG
+    IDD_SERVER_DIALOG, DIALOG
     BEGIN
         LEFTMARGIN, 7
         RIGHTMARGIN, 313
@@ -122,7 +122,7 @@ END
 
 STRINGTABLE 
 BEGIN
-    IDS_ABOUTBOX            "关于 client(&A)..."
+    IDS_ABOUTBOX            "关于 server(&A)..."
 END
 
 #endif    // Chinese (P.R.C.) resources
@@ -165,7 +165,7 @@ BEGIN
     "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)\r\n"
     "LANGUAGE 4, 2\r\n"
     "#pragma code_page(936)\r\n"
-    "#include ""res\\client.rc2""  // ·? Microsoft Visual C++ ±à?-μ?×ê?′\r\n"
+    "#include ""res\\server.rc2""  // ·? Microsoft Visual C++ ±à?-μ?×ê?′\r\n"
     "#include ""afxres.rc""     // ±ê×?×é?t\r\n"
     "#endif\r\n"
     "\0"
@@ -181,7 +181,7 @@ END
 
 // Icon with lowest ID value placed first to ensure application icon
 // remains consistent on all systems.
-IDR_MAINFRAME           ICON                    "res\\client.ico"
+IDR_MAINFRAME           ICON                    "res\\server_app.ico"
 #endif    // English (U.S.) resources
 /////////////////////////////////////////////////////////////////////////////
 
@@ -200,7 +200,7 @@ IDR_MAINFRAME           ICON                    "res\\client.ico"
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)
 LANGUAGE 4, 2
 #pragma code_page(936)
-#include "res\client.rc2"  // ·? Microsoft Visual C++ ±à?-μ?×ê?′
+#include "res\server_app.rc2"  // ·? Microsoft Visual C++ ±à?-μ?×ê?′
 #include "afxres.rc"     // ±ê×?×é?t
 #endif
 
