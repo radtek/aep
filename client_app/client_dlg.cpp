@@ -4,6 +4,8 @@
 #include "stdafx.h"
 #include "client_app.h"
 #include "client_dlg.h"
+#include "login_dlg.h"
+#include "register_dlg.h"
 
 #include "utility.h"
 
@@ -49,14 +51,17 @@ END_MESSAGE_MAP()
 
 
 CClientDlg::CClientDlg(CWnd* pParent /*=NULL*/)
-	: CDialog(CClientDlg::IDD, pParent)
+	: CDialog(CClientDlg::IDD, pParent),
+    m_Client(Client::GetInstance())
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }
 
 void CClientDlg::DoDataExchange(CDataExchange* pDX)
 {
-	CDialog::DoDataExchange(pDX);
+    CDialog::DoDataExchange(pDX);
+    DDX_Control(pDX, IDC_LOGIN, m_LoginButton);
+    DDX_Control(pDX, IDC_REGISTER, m_RegisterButton);
 }
 
 BEGIN_MESSAGE_MAP(CClientDlg, CDialog)
@@ -64,10 +69,8 @@ BEGIN_MESSAGE_MAP(CClientDlg, CDialog)
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
 	//}}AFX_MSG_MAP
-    ON_BN_CLICKED(IDC_LOGIN_1, &CClientDlg::OnBnClickedLogin1)
-    ON_BN_CLICKED(IDC_CONNECT, &CClientDlg::OnBnClickedConnect)
-    ON_BN_CLICKED(IDC_LOGIN_2, &CClientDlg::OnBnClickedLogin2)
-    ON_BN_CLICKED(IDC_LOGIN_3, &CClientDlg::OnBnClickedLogin3)
+    ON_BN_CLICKED(IDC_LOGIN, &CClientDlg::OnBnClickedLogin)
+    ON_BN_CLICKED(IDC_REGISTER, &CClientDlg::OnBnClickedRegister)
 END_MESSAGE_MAP()
 
 
@@ -156,35 +159,22 @@ HCURSOR CClientDlg::OnQueryDragIcon()
 	return static_cast<HCURSOR>(m_hIcon);
 }
 
-
-void CClientDlg::OnBnClickedLogin1()
+void CClientDlg::OnBnClickedLogin()
 {
     // TODO: Add your control notification handler code here
-    RC rc;
-    CHECK_RC_MSG_NR(m_Client.Login(TEXT("aaa"), TEXT("aaa")));
-}
-
-void CClientDlg::OnBnClickedConnect()
-{
-    // TODO: Add your control notification handler code here
-    RC rc;
-    CHECK_RC_MSG_NR(m_Client.Connect());
-}
-
-void CClientDlg::OnBnClickedLogin2()
-{
-    // TODO: Add your control notification handler code here
-    RC rc;
-    CHECK_RC_MSG_NR(m_Client.Login(TEXT("test"), TEXT("123")));
-}
-
-void CClientDlg::OnBnClickedLogin3()
-{
-    // TODO: Add your control notification handler code here
-    RC rc;
-    CHECK_RC_MSG_NR(m_Client.Login(TEXT("test"), TEXT("1234")));
-    if (OK == rc)
+    if (m_Client.IsLogined())
     {
-        Utility::PromptErrorMessage(TEXT("Login succeeded"));
+        Utility::PromptErrorMessage(TEXT("ÒÑ¾­µÇÂ½"));
+        return;
     }
+
+    CLoginDlg dialog;
+	dialog.DoModal();
+}
+
+void CClientDlg::OnBnClickedRegister()
+{
+    // TODO: Add your control notification handler code here
+    CRegisterDlg dialog;
+	dialog.DoModal();
 }

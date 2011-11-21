@@ -4,6 +4,7 @@
 #pragma once
 
 #include "client.h"
+#include "afxwin.h"
 
 // CClientDlg ¶Ô»°¿ò
 class CClientDlg : public CDialog
@@ -31,13 +32,13 @@ protected:
 	DECLARE_MESSAGE_MAP()
 
 public:
-    Client m_Client;
+    Client &m_Client;
 public:
-    afx_msg void OnBnClickedLogin1();
+    CButton m_LoginButton;
 public:
-    afx_msg void OnBnClickedConnect();
+    afx_msg void OnBnClickedLogin();
 public:
-    afx_msg void OnBnClickedLogin2();
+    CButton m_RegisterButton;
 public:
-    afx_msg void OnBnClickedLogin3();
+    afx_msg void OnBnClickedRegister();
 };

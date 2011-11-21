@@ -1,10 +1,26 @@
 #include "client.h"
 
+Client &Client::GetInstance()
+{
+    if (!s_Initialized)
+    {
+        s_Instance = new Client;
+        s_Initialized = true;
+    }
+    return *s_Instance;
+}
+
 Client::Client()
 :
-m_Platform(Platform::GetInstance())
+m_Platform(Platform::GetInstance()),
+m_IsConnected(false),
+m_IsLogined(false)
 {
 }
+
+Client *Client::s_Instance = NULL;
+
+bool Client::s_Initialized = false;
 
 Client::~Client()
 {
@@ -44,7 +60,26 @@ RC Client::Connect()
 
     CHECK_RC(m_Socket.Connect(m_HostName, m_Port));
 
+    m_IsConnected = true;
+
     return rc;
+}
+
+RC Client::Disconnect()
+{
+    RC rc;
+
+    CHECK_RC(m_Socket.Shut());
+    CHECK_RC(m_Socket.Init());
+
+    m_IsConnected = false;
+
+    return rc;
+}
+
+bool Client::IsConnected()
+{
+    return m_IsConnected;
 }
 
 RC Client::Login(const wstring &name, const wstring &password)
@@ -58,5 +93,30 @@ RC Client::Login(const wstring &name, const wstring &password)
 
     RC _rc;
     CHECK_RC(m_Socket.RecvRC(_rc));
+    if (OK == _rc)
+    {
+        m_IsLogined = true;
+    }
+
+    return _rc;
+}
+
+bool Client::IsLogined()
+{
+    return m_IsLogined;
+}
+
+RC Client::Register(const wstring &name, const wstring &password)
+{
+    RC rc;
+
+    CHECK_RC(m_Socket.SendCommand(CC::REGISTER_COMMAND));
+
+    CHECK_RC(m_Socket.SendWString(name.c_str()));
+    CHECK_RC(m_Socket.SendWString(password.c_str()));
+
+    RC _rc;
+    CHECK_RC(m_Socket.RecvRC(_rc));
+
     return _rc;
 }

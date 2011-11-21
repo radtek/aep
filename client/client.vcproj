@@ -170,6 +170,18 @@
 				RelativePath=".\client.cpp"
 				>
 			</File>
+			<File
+				RelativePath="..\utility\massert.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\utility\rc.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\utility\utility.cpp"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -178,6 +190,26 @@
 			>
 			<File
 				RelativePath="..\include\client.h"
+				>
+			</File>
+			<File
+				RelativePath="..\include\errors.h"
+				>
+			</File>
+			<File
+				RelativePath="..\include\massert.h"
+				>
+			</File>
+			<File
+				RelativePath="..\include\rc.h"
+				>
+			</File>
+			<File
+				RelativePath="..\include\types.h"
+				>
+			</File>
+			<File
+				RelativePath="..\include\utility.h"
 				>
 			</File>
 		</Filter>

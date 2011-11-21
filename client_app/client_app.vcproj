@@ -206,6 +206,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\login_dlg.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\register_dlg.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\stdafx.cpp"
 				>
 				<FileConfiguration
@@ -237,6 +245,14 @@
 			</File>
 			<File
 				RelativePath=".\client_dlg.h"
+				>
+			</File>
+			<File
+				RelativePath=".\login_dlg.h"
+				>
+			</File>
+			<File
+				RelativePath=".\register_dlg.h"
 				>
 			</File>
 			<File

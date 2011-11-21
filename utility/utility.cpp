@@ -104,3 +104,15 @@ wstring Utility::String2Wstring(const string &s)
     setlocale(LC_ALL, "C");
     return result;
 }
+
+bool Utility::ContainSpace(LPCSTR str)
+{
+    static const char whitespace[] = " \n\t\v\r\f";
+    return string(str).find_first_of(whitespace) != string.npos;
+}
+
+bool Utility::ContainSpace(LPCWSTR str)
+{
+    static const wchar_t whitespace[] = L" \n\t\v\r\f";
+    return wstring(str).find_first_of(whitespace) != wstring.npos;
+}

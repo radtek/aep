@@ -29,6 +29,7 @@ private:
 
     public:
         RC OnLogin();
+        RC OnRegister();
         RC OnExit();
 
     private:
@@ -50,6 +51,9 @@ private:
     TcpSocket m_Socket;
     /** @brief 服务端主机端口. */
     int m_Port;
+
+private:
+    static LPCWSTR s_UserFileName;
 };
 
 #endif // __SERVER_H__

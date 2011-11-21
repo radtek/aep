@@ -167,7 +167,23 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
+				RelativePath="..\utility\massert.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\utility\rc.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\server.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\user_data_file.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\utility\utility.cpp"
 				>
 			</File>
 		</Filter>
@@ -177,7 +193,31 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
+				RelativePath="..\include\errors.h"
+				>
+			</File>
+			<File
+				RelativePath="..\include\massert.h"
+				>
+			</File>
+			<File
+				RelativePath="..\include\rc.h"
+				>
+			</File>
+			<File
 				RelativePath="..\include\server.h"
+				>
+			</File>
+			<File
+				RelativePath="..\include\types.h"
+				>
+			</File>
+			<File
+				RelativePath="..\include\user_data_file.h"
+				>
+			</File>
+			<File
+				RelativePath="..\include\utility.h"
 				>
 			</File>
 		</Filter>

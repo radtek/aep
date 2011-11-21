@@ -1,5 +1,8 @@
 #include "server.h"
 #include "utility.h"
+#include "user_data_file.h"
+
+LPCWSTR Server::s_UserFileName = TEXT("user.dat");
 
 Server::Server()
 :
@@ -97,34 +100,40 @@ RC Server::ServiceThread::RecvCommand(CC &cc)
 
 RC Server::ServiceThread::OnLogin()
 {
-    // FIXME
     RC rc;
 
     wstring name, password;
     CHECK_RC(m_ClientSocket->RecvWString(name));
     CHECK_RC(m_ClientSocket->RecvWString(password));
 
-    if (name == TEXT("test"))
-    {
-        if (password == TEXT("1234"))
-        {
-            CHECK_RC(m_ClientSocket->SendRC(OK));
-        }
-        else
-        {
-            CHECK_RC(m_ClientSocket->SendRC(RC::LOGIN_WRONG_PASSWORD_ERROR));
-        }
-    }
-    else
-    {
-        CHECK_RC(m_ClientSocket->SendRC(RC::LOGIN_UNEXISTS_USER_ERROR));
-    }
+    UserDataFile userDataFile(s_UserFileName);
+    CHECK_RC(userDataFile.Parse());
+
+    RC _rc = userDataFile.QueryUser(name, password);
+    CHECK_RC(m_ClientSocket->SendRC(_rc));
+
+    return rc;
+}
+
+RC Server::ServiceThread::OnRegister()
+{
+    RC rc;
+
+    wstring name, password;
+    CHECK_RC(m_ClientSocket->RecvWString(name));
+    CHECK_RC(m_ClientSocket->RecvWString(password));
+
+    UserDataFile userDataFile(s_UserFileName);
+
+    RC _rc = userDataFile.InsertUser(name, password);
+    CHECK_RC(m_ClientSocket->SendRC(_rc));
 
     return rc;
 }
 
 RC Server::ServiceThread::OnExit()
 {
+    delete this;
     return OK;
 }
 
@@ -137,10 +146,18 @@ DWORD WINAPI Server::Service(LPVOID lparam)
     {
         RC rc;
         CHECK_RC_MSG_NR(thread->RecvCommand(cc));
+        if (OK != rc)
+        {
+            delete thread;
+            return 1;
+        }
         switch (cc.Get())
         {
         case CC::LOGIN_COMMAND:
             thread->OnLogin();
+            break;
+        case CC::REGISTER_COMMAND:
+            thread->OnRegister();
             break;
         case CC::EXIT_COMMAND:
             thread->OnExit();

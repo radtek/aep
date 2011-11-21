@@ -22,4 +22,7 @@ namespace Utility
 
     string Wstring2String(const wstring &ws);
     wstring String2Wstring(const string &s);
+
+    bool ContainSpace(LPCSTR str);
+    bool ContainSpace(LPCWSTR str);
 };
