@@ -200,7 +200,7 @@ IDR_MAINFRAME           ICON                    "res\\server_app.ico"
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)
 LANGUAGE 4, 2
 #pragma code_page(936)
-#include "res\server.rc2"  // ??¨¨? Microsoft Visual C++ ?¡§¡è?¡ì?¨¨?-|¡§???¡§¡é?¡ìo???
+#include "res\server_app.rc2"  // ??¨¨? Microsoft Visual C++ ?¡§¡è?¡ì?¨¨?-|¡§???¡§¡é?¡ìo???
 #include "afxres.rc"     // ?¡§¡è?¡ìo?¡§¡é??¡§¡é?¡ì|?t
 #endif
 

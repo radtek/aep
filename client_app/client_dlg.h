@@ -1,44 +1,40 @@
-// client_dlg.h : 头文件
+// client_dlg.h : header file
 //
 
 #pragma once
 
-#include "client.h"
-#include "afxwin.h"
+#include "register_page.h"
+#include "login_page.h"
 
-// CClientDlg 对话框
-class CClientDlg : public CDialog
+// CClientDlg dialog
+class CClientDlg : public CBCGPPropertySheet
 {
-// 构造
-public:
-	CClientDlg(CWnd* pParent = NULL);	// 标准构造函数
+	DECLARE_DYNAMIC(CClientDlg)
 
-// 对话框数据
+// Construction
+public:
+	CClientDlg(CWnd* pParent = NULL);	// standard constructor
+
+// Dialog Data
 	enum { IDD = IDD_CLIENT_DIALOG };
 
-	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV 支持
+// Implementation
+public:
+    virtual ~CClientDlg();
 
+public:
+	virtual BOOL OnInitDialog();
 
-// 实现
-protected:
+public:
+    CRegisterPage m_RegisterPage;
+    CLoginPage m_LoginPage;
+
 	HICON m_hIcon;
 
-	// 生成的消息映射函数
-	virtual BOOL OnInitDialog();
+protected:
+
+	// Generated message map functions
 	afx_msg void OnSysCommand(UINT nID, LPARAM lParam);
-	afx_msg void OnPaint();
 	afx_msg HCURSOR OnQueryDragIcon();
 	DECLARE_MESSAGE_MAP()
-
-public:
-    Client &m_Client;
-public:
-    CButton m_LoginButton;
-public:
-    afx_msg void OnBnClickedLogin();
-public:
-    CButton m_RegisterButton;
-public:
-    afx_msg void OnBnClickedRegister();
 };

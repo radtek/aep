@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="8.00"
 	Name="client_app"
-	ProjectGUID="{3800223B-BED1-46FB-9620-2BD3D20DA086}"
+	ProjectGUID="{E7B6617F-EB97-4129-95E4-A1CE2E9374BD}"
 	RootNamespace="client_app"
 	Keyword="MFCProj"
 	>
@@ -61,7 +61,7 @@
 			<Tool
 				Name="VCResourceCompilerTool"
 				PreprocessorDefinitions="_DEBUG"
-				Culture="2052"
+				Culture="1033"
 				AdditionalIncludeDirectories="$(IntDir)"
 			/>
 			<Tool
@@ -144,7 +144,7 @@
 			<Tool
 				Name="VCResourceCompilerTool"
 				PreprocessorDefinitions="NDEBUG"
-				Culture="2052"
+				Culture="1033"
 				AdditionalIncludeDirectories="$(IntDir)"
 			/>
 			<Tool
@@ -206,11 +206,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\login_dlg.cpp"
+				RelativePath=".\login_page.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\register_dlg.cpp"
+				RelativePath=".\register_page.cpp"
 				>
 			</File>
 			<File
@@ -248,11 +248,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\login_dlg.h"
+				RelativePath=".\login_page.h"
 				>
 			</File>
 			<File
-				RelativePath=".\register_dlg.h"
+				RelativePath=".\register_page.h"
 				>
 			</File>
 			<File
@@ -279,6 +279,14 @@
 			</File>
 			<File
 				RelativePath=".\res\client_app.rc2"
+				>
+			</File>
+			<File
+				RelativePath=".\res\icons.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\icons32.bmp"
 				>
 			</File>
 		</Filter>

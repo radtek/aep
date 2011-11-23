@@ -1,29 +1,30 @@
-// client_app.h : PROJECT_NAME 应用程序的主头文件
+// client_app.h : main header file for the PROJECT_NAME application
 //
 
 #pragma once
 
 #ifndef __AFXWIN_H__
-	#error "在包含此文件之前包含“stdafx.h”以生成 PCH 文件"
+	#error include 'stdafx.h' before including this file for PCH
 #endif
 
-#include "resource.h"		// 主符号
+#include "resource.h"		// main symbols
 
 
 // CClientApp:
-// 有关此类的实现，请参阅 client.cpp
+// See client_app.cpp for the implementation of this class
 //
 
-class CClientApp : public CWinApp
+class CClientApp : public CWinApp,
+    public CBCGPWorkspace
 {
 public:
 	CClientApp();
 
-// 重写
+// Overrides
 	public:
 	virtual BOOL InitInstance();
 
-// 实现
+// Implementation
 
 	DECLARE_MESSAGE_MAP()
 };
