@@ -10,6 +10,16 @@ Client &Client::GetInstance()
     return *s_Instance;
 }
 
+void Client::DestroyInstance()
+{
+    if (s_Initialized)
+    {
+        delete s_Instance;
+        s_Instance = NULL;
+        s_Initialized = false;
+    }
+}
+
 Client::Client()
 :
 m_Platform(Platform::GetInstance()),

@@ -56,6 +56,7 @@ private:
 
 public:
     static Server &GetInstance();
+    static void DestroyInstance();
 
 private:
     Server();

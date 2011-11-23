@@ -77,6 +77,8 @@ CClientDlg::CClientDlg(CWnd* pParent /*=NULL*/)
 
 CClientDlg::~CClientDlg()
 {
+    m_Client.Shut();
+    Client::DestroyInstance();
 }
 
 BEGIN_MESSAGE_MAP(CClientDlg, CBCGPPropertySheet)

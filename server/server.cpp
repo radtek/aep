@@ -14,6 +14,16 @@ Server &Server::GetInstance()
     return *s_Instance;
 }
 
+void Server::DestroyInstance()
+{
+    if (s_Initialized)
+    {
+        delete s_Instance;
+        s_Instance = NULL;
+        s_Initialized = false;
+    }
+}
+
 Server::Server()
 :
 m_Platform(Platform::GetInstance())

@@ -76,6 +76,8 @@ CServerDlg::CServerDlg(CWnd* pParent /*=NULL*/)
 
 CServerDlg::~CServerDlg()
 {
+    m_Server.Shut();
+    Server::DestroyInstance();
 }
 
 BEGIN_MESSAGE_MAP(CServerDlg, CBCGPPropertySheet)

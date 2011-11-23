@@ -31,6 +31,7 @@ private:
 
 public:
     static Client &GetInstance();
+    static void DestroyInstance();
 
 private:
     Client();
