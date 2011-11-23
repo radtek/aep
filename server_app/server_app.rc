@@ -13,6 +13,65 @@
 #undef APSTUDIO_READONLY_SYMBOLS
 
 /////////////////////////////////////////////////////////////////////////////
+// Neutral (Sys. Default) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_NEUSD)
+#ifdef _WIN32
+LANGUAGE LANG_NEUTRAL, SUBLANG_SYS_DEFAULT
+#pragma code_page(936)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_CONTROL_PAGE DIALOGEX 0, 0, 234, 210
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "服务器控制"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "开始",IDB_CONTROL_START,127,67,80,20
+    GROUPBOX        "服务器控制",IDC_CONTROL_GROUP,7,7,220,196
+    LTEXT           "端口：",IDC_CONTROL_PORT_TITLE,27,27,80,20,0,WS_EX_RIGHT
+    EDITTEXT        IDC_CONTROL_PORT,127,27,80,20,ES_AUTOHSCROLL | ES_NUMBER
+    DEFPUSHBUTTON   "登陆",IDB_CONTROL_STOP,127,107,80,20
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO 
+BEGIN
+    IDD_CONTROL_PAGE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 227
+        VERTGUIDE, 27
+        VERTGUIDE, 107
+        VERTGUIDE, 127
+        VERTGUIDE, 207
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 203
+        HORZGUIDE, 27
+        HORZGUIDE, 47
+        HORZGUIDE, 67
+        HORZGUIDE, 87
+        HORZGUIDE, 107
+        HORZGUIDE, 127
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+#endif    // Neutral (Sys. Default) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
 // Chinese (P.R.C.) resources
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)
@@ -28,24 +87,24 @@ LANGUAGE LANG_CHINESE, SUBLANG_CHINESE_SIMPLIFIED
 
 IDD_ABOUTBOX DIALOGEX 0, 0, 235, 55
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "关于 server"
-FONT 9, "宋体", 0, 0, 0x1
+CAPTION "About server_app"
+FONT 8, "MS Shell Dlg", 0, 0, 0x1
 BEGIN
     ICON            IDR_MAINFRAME,IDC_STATIC,11,17,20,20
-    LTEXT           "server 1.0 版",IDC_STATIC,40,10,119,8,SS_NOPREFIX
+    LTEXT           "server_app Version 1.0",IDC_STATIC,40,10,119,8,SS_NOPREFIX
     LTEXT           "Copyright (C) 2011",IDC_STATIC,40,25,119,8
-    DEFPUSHBUTTON   "确定",IDOK,178,7,50,16,WS_GROUP
+    DEFPUSHBUTTON   "OK",IDOK,178,7,50,16,WS_GROUP
 END
 
-IDD_SERVER_DIALOG DIALOGEX 0, 0, 320, 200
-STYLE DS_SETFONT | WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
+IDD_SERVER_APP_DIALOG DIALOGEX 0, 0, 320, 200
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
 EXSTYLE WS_EX_APPWINDOW
 CAPTION "服务器"
-FONT 9, "宋体", 0, 0, 0x1
+FONT 8, "MS Shell Dlg", 0, 0, 0x1
 BEGIN
-    DEFPUSHBUTTON   "确定",IDOK,263,7,50,16
-    PUSHBUTTON      "取消",IDCANCEL,263,25,50,16
-    PUSHBUTTON      "监听",IDC_LISTEN,7,7,50,14
+    DEFPUSHBUTTON   "OK",IDOK,263,7,50,16
+    PUSHBUTTON      "Cancel",IDCANCEL,263,25,50,16
+    CTEXT           "TODO: Place dialog controls here.",IDC_STATIC,10,96,300,8
 END
 
 
@@ -69,21 +128,21 @@ VS_VERSION_INFO VERSIONINFO
 BEGIN
     BLOCK "StringFileInfo"
     BEGIN
-        BLOCK "080403a8"
+        BLOCK "040904e4"
         BEGIN
-            VALUE "CompanyName", "TODO: <公司名>"
-            VALUE "FileDescription", "TODO: <文件说明>"
+            VALUE "CompanyName", "TODO: <Company name>"
+            VALUE "FileDescription", "TODO: <File description>"
             VALUE "FileVersion", "1.0.0.1"
-            VALUE "InternalName", "server.exe"
-            VALUE "LegalCopyright", "TODO: (C) <公司名>。保留所有权利。"
-            VALUE "OriginalFilename", "server.exe"
-            VALUE "ProductName", "TODO: <产品名>"
+            VALUE "InternalName", "server_app.exe"
+            VALUE "LegalCopyright", "TODO: (c) <Company name>.  All rights reserved."
+            VALUE "OriginalFilename", "server_app.exe"
+            VALUE "ProductName", "TODO: <Product name>"
             VALUE "ProductVersion", "1.0.0.1"
         END
     END
     BLOCK "VarFileInfo"
     BEGIN
-        VALUE "Translation", 0x804, 936
+        VALUE "Translation", 0x409, 1252
     END
 END
 
@@ -104,7 +163,7 @@ BEGIN
         BOTTOMMARGIN, 48
     END
 
-    IDD_SERVER_DIALOG, DIALOG
+    "IDD_SERVER_APP_DIALOG", DIALOG
     BEGIN
         LEFTMARGIN, 7
         RIGHTMARGIN, 313
@@ -122,7 +181,8 @@ END
 
 STRINGTABLE 
 BEGIN
-    IDS_ABOUTBOX            "关于 server(&A)..."
+    IDS_ABOUTBOX            "&About server_app..."
+    IDS_SERVER_DIALOG_CAPTION "服务器"
 END
 
 #endif    // Chinese (P.R.C.) resources
@@ -165,8 +225,8 @@ BEGIN
     "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)\r\n"
     "LANGUAGE 4, 2\r\n"
     "#pragma code_page(936)\r\n"
-    "#include ""res\\server.rc2""  // ??è? Microsoft Visual C++ ?¨¤?§?è?-|¨???¨￠?§o???\r\n"
-    "#include ""afxres.rc""     // ?¨¤?§o?¨￠??¨￠?§|?t\r\n"
+    "#include ""res\\server_app.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""afxres.rc""     // Standard components\r\n"
     "#endif\r\n"
     "\0"
 END
@@ -182,6 +242,14 @@ END
 // Icon with lowest ID value placed first to ensure application icon
 // remains consistent on all systems.
 IDR_MAINFRAME           ICON                    "res\\server_app.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDB_ICONS               BITMAP                  "res\\icons.bmp"
+IDB_ICONS32             BITMAP                  "res\\icons32.bmp"
 #endif    // English (U.S.) resources
 /////////////////////////////////////////////////////////////////////////////
 
@@ -200,8 +268,8 @@ IDR_MAINFRAME           ICON                    "res\\server_app.ico"
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)
 LANGUAGE 4, 2
 #pragma code_page(936)
-#include "res\server_app.rc2"  // ??è? Microsoft Visual C++ ?¨¤?§?è?-|¨???¨￠?§o???
-#include "afxres.rc"     // ?¨¤?§o?¨￠??¨￠?§|?t
+#include "res\server_app.rc2"  // non-Microsoft Visual C++ edited resources
+#include "afxres.rc"     // Standard components
 #endif
 
 /////////////////////////////////////////////////////////////////////////////

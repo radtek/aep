@@ -1,10 +1,9 @@
-// server_dlg.cpp : 实现文件
+// server_dlg.cpp : implementation file
 //
 
 #include "stdafx.h"
 #include "server_app.h"
 #include "server_dlg.h"
-
 #include "utility.h"
 
 #ifdef _DEBUG
@@ -12,20 +11,20 @@
 #endif
 
 
-// 用于应用程序“关于”菜单项的 CAboutDlg 对话框
+// CAboutDlg dialog used for App About
 
 class CAboutDlg : public CDialog
 {
 public:
 	CAboutDlg();
 
-// 对话框数据
+// Dialog Data
 	enum { IDD = IDD_ABOUTBOX };
 
 	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 支持
+	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 
-// 实现
+// Implementation
 protected:
 	DECLARE_MESSAGE_MAP()
 };
@@ -43,40 +42,58 @@ BEGIN_MESSAGE_MAP(CAboutDlg, CDialog)
 END_MESSAGE_MAP()
 
 
-// CServerDlg 对话框
+// CServerDlg dialog
 
-
-
+IMPLEMENT_DYNAMIC(CServerDlg, CBCGPPropertySheet)
 
 CServerDlg::CServerDlg(CWnd* pParent /*=NULL*/)
-	: CDialog(CServerDlg::IDD, pParent)
+	: CBCGPPropertySheet(IDS_SERVER_DIALOG_CAPTION, pParent)
+    , m_Server(Server::GetInstance())
 {
+	BOOL b32BitIcons = globalData.bIsOSAlphaBlendingSupport;
+
+	if (globalData.m_nBitsPerPixel == 16)
+	{
+		// 32-bit icons in 16 bpp display mode
+		// are correctly displayed in WinXP only
+
+		OSVERSIONINFO osvi;
+		osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
+		::GetVersionEx (&osvi);
+
+		b32BitIcons = (osvi.dwPlatformId == VER_PLATFORM_WIN32_NT &&
+						(osvi.dwMajorVersion > 5 ||
+						(osvi.dwMajorVersion == 5 && osvi.dwMinorVersion >= 1)));
+	}
+
+	SetLook (CBCGPPropertySheet::PropSheetLook_OutlookBar);
+	SetIconsList (b32BitIcons ? IDB_ICONS32 : IDB_ICONS, 32);
+
+    AddPage(&m_ControlPage);
+
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }
 
-void CServerDlg::DoDataExchange(CDataExchange* pDX)
+CServerDlg::~CServerDlg()
 {
-	CDialog::DoDataExchange(pDX);
 }
 
-BEGIN_MESSAGE_MAP(CServerDlg, CDialog)
+BEGIN_MESSAGE_MAP(CServerDlg, CBCGPPropertySheet)
 	ON_WM_SYSCOMMAND()
-	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
 	//}}AFX_MSG_MAP
-    ON_BN_CLICKED(IDC_LISTEN, &CServerDlg::OnBnClickedListen)
 END_MESSAGE_MAP()
 
 
-// CServerDlg 消息处理程序
+// CServerDlg message handlers
 
 BOOL CServerDlg::OnInitDialog()
 {
-	CDialog::OnInitDialog();
+	CBCGPPropertySheet::OnInitDialog();
 
-	// 将“关于...”菜单项添加到系统菜单中。
+	// Add "About..." menu item to system menu.
 
-	// IDM_ABOUTBOX 必须在系统命令范围内。
+	// IDM_ABOUTBOX must be in the system command range.
 	ASSERT((IDM_ABOUTBOX & 0xFFF0) == IDM_ABOUTBOX);
 	ASSERT(IDM_ABOUTBOX < 0xF000);
 
@@ -92,16 +109,19 @@ BOOL CServerDlg::OnInitDialog()
 		}
 	}
 
-	// 设置此对话框的图标。当应用程序主窗口不是对话框时，框架将自动
-	//  执行此操作
-	SetIcon(m_hIcon, TRUE);			// 设置大图标
-	SetIcon(m_hIcon, FALSE);		// 设置小图标
+	// Set the icon for this dialog.  The framework does this automatically
+	//  when the application's main window is not a dialog
+	SetIcon(m_hIcon, TRUE);			// Set big icon
+	SetIcon(m_hIcon, FALSE);		// Set small icon
 
-	// TODO: 在此添加额外的初始化代码
-    RC rc;
-    CHECK_RC_MSG_NR(m_Server.Init());
-
-	return TRUE;  // 除非将焦点设置到控件，否则返回 TRUE
+	// TODO: Add extra initialization here
+    if (OK != m_Server.Init())
+    {
+        Utility::PromptErrorMessage(TEXT("初始化服务器失败."));
+        return FALSE;
+    }
+	
+	return TRUE;  // return TRUE  unless you set the focus to a control
 }
 
 void CServerDlg::OnSysCommand(UINT nID, LPARAM lParam)
@@ -113,49 +133,14 @@ void CServerDlg::OnSysCommand(UINT nID, LPARAM lParam)
 	}
 	else
 	{
-		CDialog::OnSysCommand(nID, lParam);
+		CBCGPPropertySheet::OnSysCommand(nID, lParam);
 	}
 }
 
-// 如果向对话框添加最小化按钮，则需要下面的代码
-//  来绘制该图标。对于使用文档/视图模型的 MFC 应用程序，
-//  这将由框架自动完成。
-
-void CServerDlg::OnPaint()
-{
-	if (IsIconic())
-	{
-		CPaintDC dc(this); // 用于绘制的设备上下文
-
-		SendMessage(WM_ICONERASEBKGND, reinterpret_cast<WPARAM>(dc.GetSafeHdc()), 0);
-
-		// 使图标在工作矩形中居中
-		int cxIcon = GetSystemMetrics(SM_CXICON);
-		int cyIcon = GetSystemMetrics(SM_CYICON);
-		CRect rect;
-		GetClientRect(&rect);
-		int x = (rect.Width() - cxIcon + 1) / 2;
-		int y = (rect.Height() - cyIcon + 1) / 2;
-
-		// 绘制图标
-		dc.DrawIcon(x, y, m_hIcon);
-	}
-	else
-	{
-		CDialog::OnPaint();
-	}
-}
-
-//当用户拖动最小化窗口时系统调用此函数取得光标显示。
-//
+// The system calls this function to obtain the cursor to display while the user drags
+//  the minimized window.
 HCURSOR CServerDlg::OnQueryDragIcon()
 {
 	return static_cast<HCURSOR>(m_hIcon);
 }
 
-
-void CServerDlg::OnBnClickedListen()
-{
-    RC rc;
-    CHECK_RC_MSG_NR(m_Server.Listen());
-}

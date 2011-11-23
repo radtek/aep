@@ -39,11 +39,6 @@ BOOL CClientApp::InitInstance()
 	// manifest specifies use of ComCtl32.dll version 6 or later to enable
 	// visual styles.  Otherwise, any window creation will fail.
 	InitCommonControls();
-	// InitContextMenuManager ();
-	// InitShellManager ();
-
-	// CBCGPVisualManager::SetDefaultManager (RUNTIME_CLASS (CBCGPWinXPVisualManager));
-	// CBCGPButton::EnableWinXPTheme ();
 
 	CWinApp::InitInstance();
 

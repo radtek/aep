@@ -44,6 +44,7 @@ BOOL CLoginPage::OnInitDialog()
 
     return TRUE;
 }
+
 void CLoginPage::OnBnClickedOk()
 {
     // TODO: Add your control notification handler code here

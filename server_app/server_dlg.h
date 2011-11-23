@@ -1,37 +1,41 @@
-// server_dlg.h : 头文件
+// server_dlg.h : header file
 //
 
 #pragma once
 
 #include "server.h"
+#include "control_page.h"
 
-// CServerDlg 对话框
-class CServerDlg : public CDialog
+// CServerDlg dialog
+class CServerDlg : public CBCGPPropertySheet
 {
-// 构造
-public:
-	CServerDlg(CWnd* pParent = NULL);	// 标准构造函数
+	DECLARE_DYNAMIC(CServerDlg)
 
-// 对话框数据
+// Construction
+public:
+	CServerDlg(CWnd* pParent = NULL);	// standard constructor
+
+// Dialog Data
 	enum { IDD = IDD_SERVER_DIALOG };
 
-	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV 支持
+// Implementation
+public:
+    virtual ~CServerDlg();
 
+public:
+	virtual BOOL OnInitDialog();
 
-// 实现
-protected:
+public:
+    CControlPage m_ControlPage;
+
 	HICON m_hIcon;
 
-	// 生成的消息映射函数
-	virtual BOOL OnInitDialog();
+    Server &m_Server;
+
+protected:
+
+	// Generated message map functions
 	afx_msg void OnSysCommand(UINT nID, LPARAM lParam);
-	afx_msg void OnPaint();
 	afx_msg HCURSOR OnQueryDragIcon();
 	DECLARE_MESSAGE_MAP()
-
-public:
-    Server m_Server;
-public:
-    afx_msg void OnBnClickedListen();
 };

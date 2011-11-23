@@ -4,11 +4,25 @@
 
 LPCWSTR Server::s_UserFileName = TEXT("user.dat");
 
+Server &Server::GetInstance()
+{
+    if (!s_Initialized)
+    {
+        s_Instance = new Server;
+        s_Initialized = true;
+    }
+    return *s_Instance;
+}
+
 Server::Server()
 :
 m_Platform(Platform::GetInstance())
 {
 }
+
+Server *Server::s_Instance = NULL;
+
+bool Server::s_Initialized = false;
 
 Server::~Server()
 {

@@ -1,6 +1,6 @@
-// stdafx.cpp : 只包括标准包含文件的源文件
-// server.pch 将作为预编译头
-// stdafx.obj 将包含预编译类型信息
+// stdafx.cpp : source file that includes just the standard includes
+// server_app.pch will be the pre-compiled header
+// stdafx.obj will contain the pre-compiled type information
 
 #include "stdafx.h"
 

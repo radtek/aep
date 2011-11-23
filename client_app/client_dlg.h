@@ -3,6 +3,7 @@
 
 #pragma once
 
+#include "client.h"
 #include "register_page.h"
 #include "login_page.h"
 

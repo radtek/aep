@@ -14,8 +14,8 @@
 // See client_app.cpp for the implementation of this class
 //
 
-class CClientApp : public CWinApp,
-    public CBCGPWorkspace
+class CClientApp : public CWinApp
+    , public CBCGPWorkspace
 {
 public:
 	CClientApp();

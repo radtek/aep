@@ -7,7 +7,6 @@
 class Server
 {
 public:
-    Server();
     ~Server();
 
     RC Init();
@@ -54,6 +53,14 @@ private:
 
 private:
     static LPCWSTR s_UserFileName;
+
+public:
+    static Server &GetInstance();
+
+private:
+    Server();
+    static Server *s_Instance;
+    static bool s_Initialized;
 };
 
 #endif // __SERVER_H__

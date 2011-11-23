@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="8.00"
 	Name="server_app"
-	ProjectGUID="{0D7A480F-EBB0-4F18-BC6C-2FB98362508F}"
+	ProjectGUID="{F24054CA-D6F6-45A4-A41B-D44E09AC31BE}"
 	RootNamespace="server_app"
 	Keyword="MFCProj"
 	>
@@ -61,7 +61,7 @@
 			<Tool
 				Name="VCResourceCompilerTool"
 				PreprocessorDefinitions="_DEBUG"
-				Culture="2052"
+				Culture="1033"
 				AdditionalIncludeDirectories="$(IntDir)"
 			/>
 			<Tool
@@ -144,7 +144,7 @@
 			<Tool
 				Name="VCResourceCompilerTool"
 				PreprocessorDefinitions="NDEBUG"
-				Culture="2052"
+				Culture="1033"
 				AdditionalIncludeDirectories="$(IntDir)"
 			/>
 			<Tool
@@ -198,6 +198,10 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
+				RelativePath=".\control_page.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\server_app.cpp"
 				>
 			</File>
@@ -232,6 +236,10 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
+				RelativePath=".\control_page.h"
+				>
+			</File>
+			<File
 				RelativePath=".\Resource.h"
 				>
 			</File>
@@ -253,6 +261,14 @@
 			Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav"
 			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}"
 			>
+			<File
+				RelativePath=".\res\icons.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\icons32.bmp"
+				>
+			</File>
 			<File
 				RelativePath=".\res\server_app.ico"
 				>
