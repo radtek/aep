@@ -31,6 +31,8 @@ public:
 
 	HICON m_hIcon;
 
+    Client &m_Client;
+
 protected:
 
 	// Generated message map functions

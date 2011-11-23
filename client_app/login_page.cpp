@@ -42,12 +42,6 @@ BOOL CLoginPage::OnInitDialog()
 {
     CBCGPPropertyPage::OnInitDialog();
 
-    if (OK != m_Client.Init())
-    {
-        Utility::PromptErrorMessage(TEXT("初始化客户端失败."));
-        return FALSE;
-    }
-
     return TRUE;
 }
 void CLoginPage::OnBnClickedOk()
@@ -60,6 +54,18 @@ void CLoginPage::OnBnClickedOk()
     }
 
     UpdateData();
+
+    if (m_Name.IsEmpty())
+    {
+        Utility::PromptErrorMessage(TEXT("用户名不能为空."));
+        return;
+    }
+
+    if (m_Password.IsEmpty())
+    {
+        Utility::PromptErrorMessage(TEXT("密码不能为空."));
+        return;
+    }
 
     if (Utility::ContainSpace(m_Name))
     {
@@ -108,5 +114,11 @@ void CLoginPage::OnBnClickedOk()
         return;
     }
 
-    Utility::PromptErrorMessage(TEXT("登陆成功."));
+    if (OK != rc)
+    {
+        Utility::PromptErrorMessage(TEXT("未知错误."));
+        return;
+    }
+
+    Utility::PromptMessage(TEXT("登陆成功."));
 }

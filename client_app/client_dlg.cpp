@@ -4,6 +4,7 @@
 #include "stdafx.h"
 #include "client_app.h"
 #include "client_dlg.h"
+#include "utility.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -47,6 +48,7 @@ IMPLEMENT_DYNAMIC(CClientDlg, CBCGPPropertySheet)
 
 CClientDlg::CClientDlg(CWnd* pParent /*=NULL*/)
 	: CBCGPPropertySheet(IDS_CLIENT_DIALOG_CAPTION, pParent)
+    , m_Client(Client::GetInstance())
 {
 	BOOL b32BitIcons = globalData.bIsOSAlphaBlendingSupport;
 
@@ -114,6 +116,11 @@ BOOL CClientDlg::OnInitDialog()
 	SetIcon(m_hIcon, FALSE);		// Set small icon
 
 	// TODO: Add extra initialization here
+    if (OK != m_Client.Init())
+    {
+        Utility::PromptErrorMessage(TEXT("初始化客户端失败."));
+        return FALSE;
+    }
 	
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }

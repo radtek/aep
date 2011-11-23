@@ -40,9 +40,14 @@ RC Utility::DeleteFile(LPCWSTR fileName)
     return rc;
 }
 
+void Utility::PromptMessage(LPCWSTR msg)
+{
+    MessageBox(NULL, msg, TEXT("ÏûÏ¢"), MB_OK); 
+}
+
 void Utility::PromptErrorMessage(LPCWSTR msg)
 {
-    MessageBox(NULL, msg, TEXT("Error"), MB_OK); 
+    MessageBox(NULL, msg, TEXT("´íÎó"), MB_OK); 
 }
 
 void Utility::PromptLastErrorMessage()

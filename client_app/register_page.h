@@ -1,5 +1,6 @@
 #pragma once
 
+#include "client.h"
 
 // CRegisterPage dialog
 
@@ -19,4 +20,15 @@ protected:
 
     virtual BOOL OnInitDialog();
 	DECLARE_MESSAGE_MAP()
+public:
+    CString m_Name;
+public:
+    CString m_Password;
+public:
+    CString m_ConfirmPassword;
+public:
+    afx_msg void OnBnClickedOk();
+
+private:
+    Client &m_Client;
 };

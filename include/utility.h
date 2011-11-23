@@ -17,6 +17,7 @@ namespace Utility
     bool FileExists(LPCWSTR fileName);
     RC DeleteFile(LPCWSTR fileName);
 
+    void PromptMessage(LPCWSTR msg);
     void PromptErrorMessage(LPCWSTR msg);
     void PromptLastErrorMessage();
 
