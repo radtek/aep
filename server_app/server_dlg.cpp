@@ -50,24 +50,8 @@ CServerDlg::CServerDlg(CWnd* pParent /*=NULL*/)
 	: CBCGPPropertySheet(IDS_SERVER_DIALOG_CAPTION, pParent)
     , m_Server(Server::GetInstance())
 {
-	BOOL b32BitIcons = globalData.bIsOSAlphaBlendingSupport;
-
-	if (globalData.m_nBitsPerPixel == 16)
-	{
-		// 32-bit icons in 16 bpp display mode
-		// are correctly displayed in WinXP only
-
-		OSVERSIONINFO osvi;
-		osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
-		::GetVersionEx (&osvi);
-
-		b32BitIcons = (osvi.dwPlatformId == VER_PLATFORM_WIN32_NT &&
-						(osvi.dwMajorVersion > 5 ||
-						(osvi.dwMajorVersion == 5 && osvi.dwMinorVersion >= 1)));
-	}
-
 	SetLook (CBCGPPropertySheet::PropSheetLook_OutlookBar);
-	SetIconsList (b32BitIcons ? IDB_ICONS32 : IDB_ICONS, 32);
+	SetIconsList ((globalData.bIsWindows9x || globalData.bIsWindowsNT4) ? IDB_ICONS : IDB_ICONS_HC, 32);
 
     AddPage(&m_ControlPage);
 

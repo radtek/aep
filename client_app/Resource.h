@@ -9,9 +9,11 @@
 #define IDS_CLIENT_DIALOG_CAPTION       103
 #define IDR_MAINFRAME                   128
 #define IDB_ICONS                       129
-#define IDB_ICONS32                     130
 #define IDD_LOGIN_PAGE                  132
 #define IDD_REGISTER_PAGE               134
+#define IDB_ICONS_HC                    135
+#define IDD_LOGIN_PAGE1                 135
+#define IDD_MODEL_PAGE                  135
 #define IDC_LOGIN_NAME                  1001
 #define IDC_LOGIN_PASSWORD              1002
 #define IDC_LOGIN_PASSWORD_TITLE        1003
@@ -29,8 +31,8 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        134
-#define _APS_NEXT_COMMAND_VALUE         32771
+#define _APS_NEXT_RESOURCE_VALUE        137
+#define _APS_NEXT_COMMAND_VALUE         32772
 #define _APS_NEXT_CONTROL_VALUE         1013
 #define _APS_NEXT_SYMED_VALUE           101
 #endif

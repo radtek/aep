@@ -54,6 +54,19 @@ BEGIN
     EDITTEXT        IDC_REGISTER_CONFIRM_PASSWORD,127,107,80,20,ES_PASSWORD | ES_AUTOHSCROLL
 END
 
+IDD_MODEL_PAGE DIALOGEX 0, 0, 234, 210
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "模型搭建"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "登陆",IDOK,127,107,80,20
+    GROUPBOX        "用户登录",IDC_LOGIN_GROUP,7,7,220,196
+    LTEXT           "用户名：",IDC_LOGIN_NAME_TITLE,27,27,80,20,0,WS_EX_RIGHT
+    EDITTEXT        IDC_LOGIN_NAME,127,27,80,20,ES_AUTOHSCROLL
+    LTEXT           "密码：",IDC_LOGIN_PASSWORD_TITLE,27,67,80,20,0,WS_EX_RIGHT
+    EDITTEXT        IDC_LOGIN_PASSWORD,127,67,80,20,ES_PASSWORD | ES_AUTOHSCROLL
+END
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -99,6 +112,24 @@ BEGIN
         HORZGUIDE, 127
         HORZGUIDE, 147
         HORZGUIDE, 167
+    END
+
+    IDD_MODEL_PAGE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 227
+        VERTGUIDE, 27
+        VERTGUIDE, 107
+        VERTGUIDE, 127
+        VERTGUIDE, 207
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 203
+        HORZGUIDE, 27
+        HORZGUIDE, 47
+        HORZGUIDE, 67
+        HORZGUIDE, 87
+        HORZGUIDE, 107
+        HORZGUIDE, 127
     END
 END
 #endif    // APSTUDIO_INVOKED
@@ -285,7 +316,13 @@ IDR_MAINFRAME           ICON                    "res\\client_app.ico"
 //
 
 IDB_ICONS               BITMAP                  "res\\icons.bmp"
-IDB_ICONS32             BITMAP                  "res\\icons32.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// PNG
+//
+
+IDB_ICONS_HC            PNG                     "res\\icons.png"
 #endif    // English (U.S.) resources
 /////////////////////////////////////////////////////////////////////////////
 

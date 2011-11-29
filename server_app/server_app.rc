@@ -110,6 +110,33 @@ END
 
 /////////////////////////////////////////////////////////////////////////////
 //
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO 
+BEGIN
+    IDD_ABOUTBOX, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 228
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 48
+    END
+
+    "IDD_SERVER_APP_DIALOG", DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 313
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 193
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
 // Version
 //
 
@@ -145,33 +172,6 @@ BEGIN
         VALUE "Translation", 0x409, 1252
     END
 END
-
-
-/////////////////////////////////////////////////////////////////////////////
-//
-// DESIGNINFO
-//
-
-#ifdef APSTUDIO_INVOKED
-GUIDELINES DESIGNINFO 
-BEGIN
-    IDD_ABOUTBOX, DIALOG
-    BEGIN
-        LEFTMARGIN, 7
-        RIGHTMARGIN, 228
-        TOPMARGIN, 7
-        BOTTOMMARGIN, 48
-    END
-
-    "IDD_SERVER_APP_DIALOG", DIALOG
-    BEGIN
-        LEFTMARGIN, 7
-        RIGHTMARGIN, 313
-        TOPMARGIN, 7
-        BOTTOMMARGIN, 193
-    END
-END
-#endif    // APSTUDIO_INVOKED
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -245,11 +245,17 @@ IDR_MAINFRAME           ICON                    "res\\server_app.ico"
 
 /////////////////////////////////////////////////////////////////////////////
 //
+// PNG
+//
+
+IDB_ICONS_HC            PNG                     "res\\icons.png"
+
+/////////////////////////////////////////////////////////////////////////////
+//
 // Bitmap
 //
 
 IDB_ICONS               BITMAP                  "res\\icons.bmp"
-IDB_ICONS32             BITMAP                  "res\\icons32.bmp"
 #endif    // English (U.S.) resources
 /////////////////////////////////////////////////////////////////////////////
 

@@ -44,6 +44,8 @@ BOOL CServerApp::InitInstance()
 
 	AfxEnableControlContainer();
 
+    CBCGPVisualManager2007::SetStyle (CBCGPVisualManager2007::VS2007_LunaBlue);
+    CBCGPVisualManager::SetDefaultManager (RUNTIME_CLASS (CBCGPVisualManager2007));
 
 	CServerDlg dlg;
 	m_pMainWnd = &dlg;
