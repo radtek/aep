@@ -1,0 +1,6 @@
+; aircraft_component.def : Declares the module parameters for the DLL.
+
+LIBRARY      "aircraft_component"
+
+EXPORTS
+    ; Explicit exports can go here

@@ -14,14 +14,19 @@
 namespace Component
 {
     // 平台调组件
+    typedef void (*RegisterInterfaceInfoFunc)(InterfaceInfoList &interfaceInfoList);
+    extern LPCSTR RegisterInterfaceInfoFuncName;
+
     typedef void (*RegisterComponentInfoFunc)(ComponentInfoList &componentInfoList);
     extern LPCSTR RegisterComponentInfoFuncName;
 
+    /*
     typedef bool (*ValidateModelFunc)();
     extern LPCSTR ValidateModelFuncName;
 
     typedef void (*RunModelFunc)();
     extern LPCSTR RunModelFuncName;
+    */
 
     // 组件及算法调平台
     typedef void (*GetComponentListFunc)(ComponentList &componentList);

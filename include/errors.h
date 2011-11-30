@@ -34,6 +34,7 @@ DEFINE_ERROR(COMPONENT_ATTRIBUTEUNSET_ERROR, "Component unset attribute failed."
 DEFINE_ERROR(COMPONENT_SETATTRIBUTE_ERROR, "Component set attribute failed.")
 DEFINE_ERROR(PLATFORM_LOADDLL_ERROR, "Platform load dll failed.")
 DEFINE_ERROR(PLATFORM_REGISTERCOMPONENTINFO_ERROR, "Platform register component failed.")
+DEFINE_ERROR(PLATFORM_REGISTERINTERFACEINFO_ERROR, "Platform register interface failed.")
 DEFINE_ERROR(PLATFORM_REGISTERALGORITHM_ERROR, "Platform register algorithm failed.")
 DEFINE_ERROR(PLATFORM_REGISTERGETCOMPONENTLISTFUNC_ERROR, "Platform register GetComponentList function failed.")
 DEFINE_ERROR(PLATFORM_VALIDATEMODEL_ERROR, "Platform validate model failed.")

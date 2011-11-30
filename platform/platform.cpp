@@ -47,8 +47,9 @@ RC Platform::Init()
     m_AlgorithmCfgFileName = configFile.read<wstring>(s_AlgorithmCfgFileNameKey);
 
     CHECK_RC(LoadComponentDll());
+    CHECK_RC(RegisterInterfaceInfo());
     CHECK_RC(RegisterComponentInfo());
-    CHECK_RC(RegisterGetComponentListFuncToComponent());
+    // CHECK_RC(RegisterGetComponentListFuncToComponent());
 
     CHECK_RC(InitAlgorithm());
     CHECK_RC(RegisterAlgorithm());
@@ -70,7 +71,7 @@ RC Platform::Shut()
 RC Platform::ValidateModel(bool &result)
 {
     RC rc;
-
+/*
     Component::ValidateModelFunc func =
         (Component::ValidateModelFunc)GetProcAddress(
         (HMODULE)m_ComponentDllHandle,
@@ -82,14 +83,14 @@ RC Platform::ValidateModel(bool &result)
     }
 
     result = func();
-
+*/
     return rc;
 }
 
 RC Platform::RunModel()
 {
     RC rc;
-
+/*
     Component::RunModelFunc func =
         (Component::RunModelFunc)GetProcAddress(
         (HMODULE)m_ComponentDllHandle,
@@ -101,8 +102,13 @@ RC Platform::RunModel()
     }
 
     func();
-
+*/
     return rc;
+}
+
+InterfaceInfoList &Platform::GetInterfaceInfoList()
+{
+    return m_InterfaceInfoList;
 }
 
 ComponentInfoList &Platform::GetComponentInfoList()
@@ -130,6 +136,25 @@ RC Platform::LoadComponentDll()
     {
         return RC::PLATFORM_LOADDLL_ERROR;
     }
+
+    return rc;
+}
+
+RC Platform::RegisterInterfaceInfo()
+{
+    RC rc;
+
+    Component::RegisterInterfaceInfoFunc func =
+        (Component::RegisterInterfaceInfoFunc)GetProcAddress(
+        (HMODULE)m_ComponentDllHandle,
+        Component::RegisterInterfaceInfoFuncName);
+
+    if (!func)
+    {
+        return RC::PLATFORM_REGISTERINTERFACEINFO_ERROR;
+    }
+
+    func(m_InterfaceInfoList);
 
     return rc;
 }

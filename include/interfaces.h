@@ -33,20 +33,32 @@ enum CIID
         CLIENT_CIID_LAST, \
     };
 
-interface IComponent;
+typedef vector<UINT32> InterfaceList;
 
-typedef vector<IComponent *> ComponentList;
+typedef struct
+{
+    UINT32 interfaceId;
+    LPCWSTR interfaceName;
+} InterfaceInfo;
+
+typedef vector<InterfaceInfo> InterfaceInfoList;
 
 interface IComponent
 {
-    virtual RC _stdcall Config() = 0;
-    virtual RC _stdcall Destroy() = 0;
-    virtual RC _stdcall GetInterface(UINT32 iid, void **iface) = 0;
-    virtual RC _stdcall GetName(LPWSTR *name) = 0;
+    // virtual RC _stdcall Config() = 0;
+    virtual void _stdcall Destroy() = 0;
+    virtual void * _stdcall GetInterface(UINT32 iid) = 0;
+    virtual UINT32 _stdcall GetId() = 0;
+    virtual void _stdcall SetId(UINT32 id) = 0;
+    virtual wstring _stdcall GetName() = 0;
+    virtual void _stdcall SetName(wstring name) = 0;
     virtual RC _stdcall GetAttribute(UINT32 aid, void **attr) = 0;
     virtual RC _stdcall SetAttribute(UINT32 aid, void *attr) = 0;
-    virtual bool _stdcall Validate() = 0;
+    virtual bool _stdcall Connect(IComponent *component) = 0;
+    // virtual bool _stdcall Validate() = 0;
 };
+
+typedef vector<IComponent *> ComponentList;
 
 typedef mxArray Param;
 typedef mxArray Output;
@@ -62,11 +74,13 @@ typedef void (*ComponentDestroy)(IComponent *);
 
 typedef struct
 {
-    LPCWSTR typeName;
-    UINT32 *attributeList;
+    UINT32 componentId;
+    LPCWSTR componentName;
+    UINT32 interfaceId;
+    // UINT32 *attributeList;
     ComponentFactory factory;
-    ComponentDestroy destroy;
-    void *iconHandle;
+    // ComponentDestroy destroy;
+    // void *iconHandle;
 } ComponentInfo;
 
 typedef vector<ComponentInfo> ComponentInfoList;

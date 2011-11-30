@@ -27,6 +27,8 @@ public:
     RC RunModel();
 
 public:
+    InterfaceInfoList &GetInterfaceInfoList();
+
     ComponentInfoList &GetComponentInfoList();
     ComponentList &GetComponentList();
 
@@ -35,6 +37,7 @@ public:
 private:
     // Æ½Ì¨¸¨Öúº¯Êý
     RC LoadComponentDll();
+    RC RegisterInterfaceInfo();
     RC RegisterComponentInfo();
     RC RegisterGetComponentListFuncToComponent();
     RC UnloadComponentDll();
@@ -47,6 +50,8 @@ private:
     RC UploadAlgorithm();
 
 private:
+    InterfaceInfoList m_InterfaceInfoList;
+
     ComponentInfoList m_ComponentInfoList;
     ComponentList m_ComponentList;
 

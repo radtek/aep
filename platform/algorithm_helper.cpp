@@ -23,12 +23,11 @@ RC AlgorithmHelper::GetParamList(const ParamNameList &paramNameList, ComponentLi
         for (UINT32 iCl = 0; iCl < componentList.size(); ++iCl)
         {
             IComponent *component = componentList[iCl];
-            LPWSTR componentName;
-            component->GetName(&componentName);
+            wstring componentName = component->GetName();
             if (paramName == wstring(componentName))
             {
-                IParam *param;
-                if (OK == component->GetInterface(CIID_IPARAM, (void **)&param))
+                IParam *param = (IParam *)component->GetInterface(CIID_IPARAM);
+                if (NULL != param)
                 {
                     paramList.push_back(param);
                     found = true;

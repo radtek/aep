@@ -2,10 +2,10 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="8.00"
-	Name="aircraft_measure"
-	ProjectGUID="{0BC16984-C7BB-4F46-965D-6EAF57284F07}"
-	RootNamespace="aircraft_measure"
-	Keyword="MFCDLLProj"
+	Name="model_app"
+	ProjectGUID="{1E72F093-1462-4F9B-B822-23DA7C82E785}"
+	RootNamespace="model_app"
+	Keyword="MFCProj"
 	>
 	<Platforms>
 		<Platform
@@ -19,7 +19,7 @@
 			Name="Debug|Win32"
 			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
-			ConfigurationType="2"
+			ConfigurationType="1"
 			UseOfMFC="2"
 			CharacterSet="1"
 			>
@@ -39,12 +39,13 @@
 				Name="VCMIDLTool"
 				PreprocessorDefinitions="_DEBUG"
 				MkTypLibCompatible="false"
+				ValidateParameters="false"
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="../../include;../include"
-				PreprocessorDefinitions="WIN32;_WINDOWS;_DEBUG;_USRDLL"
+				AdditionalIncludeDirectories="../include"
+				PreprocessorDefinitions="WIN32;_WINDOWS;_DEBUG"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -68,9 +69,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="mclmcrrt.lib"
 				LinkIncremental="2"
-				ModuleDefinitionFile=".\aircraft_measure.def"
 				GenerateDebugInformation="true"
 				SubSystem="2"
 				TargetMachine="1"
@@ -104,7 +103,7 @@
 			Name="Release|Win32"
 			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
-			ConfigurationType="2"
+			ConfigurationType="1"
 			UseOfMFC="2"
 			CharacterSet="1"
 			WholeProgramOptimization="1"
@@ -125,11 +124,13 @@
 				Name="VCMIDLTool"
 				PreprocessorDefinitions="NDEBUG"
 				MkTypLibCompatible="false"
+				ValidateParameters="false"
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="../../include;../include"
-				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG;_USRDLL"
+				AdditionalIncludeDirectories="../include"
+				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG"
+				MinimalRebuild="false"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
@@ -151,9 +152,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="mclmcrrt.lib"
 				LinkIncremental="1"
-				ModuleDefinitionFile=".\aircraft_measure.def"
 				GenerateDebugInformation="true"
 				SubSystem="2"
 				OptimizeReferences="2"
@@ -188,8 +187,16 @@
 	</Configurations>
 	<References>
 		<ProjectReference
+			ReferencedProjectIdentifier="{93CCAD86-BF04-4030-BC21-589BCAD64A2C}"
+			RelativePathToProject=".\platform\platform.vcproj"
+		/>
+		<ProjectReference
 			ReferencedProjectIdentifier="{8ED092B5-70E1-47CE-9ED2-F7179AF1D009}"
 			RelativePathToProject=".\component\component.vcproj"
+		/>
+		<ProjectReference
+			ReferencedProjectIdentifier="{3209C5E4-A0D1-4203-9F2D-1BF6290D72A9}"
+			RelativePathToProject=".\aircraft_component\aircraft_component.vcproj"
 		/>
 	</References>
 	<Files>
@@ -199,35 +206,23 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\acceleration_linear_motion.cpp"
+				RelativePath=".\main_frm.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\aircraft.cpp"
+				RelativePath=".\model_app.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\aircraft_config_dlg.cpp"
+				RelativePath=".\model_doc.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\aircraft_measure.cpp"
+				RelativePath=".\model_view.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\aircraft_measure.def"
-				>
-			</File>
-			<File
-				RelativePath=".\aircraft_measure_main.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\alm_config_dlg.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\model_run_dlg.cpp"
+				RelativePath=".\output_bar.cpp"
 				>
 			</File>
 			<File
@@ -250,22 +245,6 @@
 					/>
 				</FileConfiguration>
 			</File>
-			<File
-				RelativePath=".\ulm_config_dlg.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\uniform_linear_motion.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\white_noise.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\wn_config_dlg.cpp"
-				>
-			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -273,43 +252,23 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath="..\include\acceleration_linear_motion.h"
+				RelativePath=".\main_frm.h"
 				>
 			</File>
 			<File
-				RelativePath="..\include\acceleration_linear_motion_attrs.h"
+				RelativePath=".\model_app.h"
 				>
 			</File>
 			<File
-				RelativePath="..\include\aircraft.h"
+				RelativePath=".\model_doc.h"
 				>
 			</File>
 			<File
-				RelativePath="..\include\aircraft_attrs.h"
+				RelativePath=".\model_view.h"
 				>
 			</File>
 			<File
-				RelativePath=".\aircraft_config_dlg.h"
-				>
-			</File>
-			<File
-				RelativePath="..\include\aircraft_measure_attrs.h"
-				>
-			</File>
-			<File
-				RelativePath="..\include\aircraft_measure_ifaces.h"
-				>
-			</File>
-			<File
-				RelativePath=".\aircraft_measure_main.h"
-				>
-			</File>
-			<File
-				RelativePath=".\alm_config_dlg.h"
-				>
-			</File>
-			<File
-				RelativePath=".\model_run_dlg.h"
+				RelativePath=".\output_bar.h"
 				>
 			</File>
 			<File
@@ -320,26 +279,6 @@
 				RelativePath=".\stdafx.h"
 				>
 			</File>
-			<File
-				RelativePath=".\ulm_config_dlg.h"
-				>
-			</File>
-			<File
-				RelativePath="..\include\uniform_linear_motion.h"
-				>
-			</File>
-			<File
-				RelativePath="..\include\uniform_linear_motion_attrs.h"
-				>
-			</File>
-			<File
-				RelativePath="..\include\white_noise.h"
-				>
-			</File>
-			<File
-				RelativePath=".\wn_config_dlg.h"
-				>
-			</File>
 		</Filter>
 		<Filter
 			Name="Resource Files"
@@ -347,35 +286,39 @@
 			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}"
 			>
 			<File
-				RelativePath=".\res\aircraft.ico"
+				RelativePath=".\res\model_app.ico"
 				>
 			</File>
 			<File
-				RelativePath=".\aircraft_measure.rc"
+				RelativePath=".\model_app.rc"
 				>
 			</File>
 			<File
-				RelativePath=".\res\aircraft_measure.rc2"
+				RelativePath=".\res\model_app.rc2"
 				>
 			</File>
 			<File
-				RelativePath=".\res\icon1.ico"
+				RelativePath=".\res\model_appDoc.ico"
 				>
 			</File>
 			<File
-				RelativePath=".\res\motion.ico"
+				RelativePath=".\res\shortcuts.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\noise_icon.ico"
+				RelativePath=".\res\Toolbar.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\Toolbar256.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\UserImages.bmp"
 				>
 			</File>
 		</Filter>
 	</Files>
 	<Globals>
-		<Global
-			Name="RESOURCE_FILE"
-			Value="aircraft_measure.rc"
-		/>
 	</Globals>
 </VisualStudioProject>
