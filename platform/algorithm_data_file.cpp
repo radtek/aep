@@ -62,8 +62,9 @@ RC AlgorithmDataFile::ParseLine(const wstring &line)
 
     wistringstream ist(line);
 
+    UINT32 id;
     wstring name, dllFileName, funcName, iconFileName;
-    ist >> name >> dllFileName >> funcName >> iconFileName;
+    ist >> id >> name >> dllFileName >> funcName >> iconFileName;
 
     ParamNameList paramNameList;
     while (!ist.eof())
@@ -76,7 +77,7 @@ RC AlgorithmDataFile::ParseLine(const wstring &line)
         }
     }
 
-    m_AlgorithmList.push_back(Algorithm(name, dllFileName, funcName, iconFileName, paramNameList));
+    m_AlgorithmList.push_back(Algorithm(id, name, dllFileName, funcName, iconFileName, paramNameList));
 
     return rc;
 }

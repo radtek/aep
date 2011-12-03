@@ -34,12 +34,14 @@ RC Algorithm::Shut()
     return rc;
 }
 
-Algorithm::Algorithm(wstring name,
+Algorithm::Algorithm(UINT32 id,
+                     wstring name,
                      wstring dllFileName,
                      wstring funcName,
                      wstring iconFileName,
                      ParamNameList paramNameList)
 :
+m_Id(id),
 m_Name(name),
 m_DllFileName(dllFileName),
 m_FuncName(funcName),
@@ -57,6 +59,11 @@ RC Algorithm::Run(ComponentList &componentList)
     CHECK_RC(AlgorithmHelper::RunFunc(m_DllFileName, m_FuncName, paramList));
 
     return rc;
+}
+
+UINT32 Algorithm::GetId() const
+{
+    return m_Id;
 }
 
 wstring Algorithm::GetName() const

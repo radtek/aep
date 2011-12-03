@@ -29,7 +29,8 @@ public:
     typedef vector<IParam *> ParamList;
 
 public:
-    Algorithm(wstring name,
+    Algorithm(UINT32 id,
+        wstring name,
         wstring dllFileName,
         wstring funcName,
         wstring iconFileName,
@@ -38,6 +39,8 @@ public:
     RC Run(ComponentList &componentList);
 
 public:
+    /** @brief 得到算法ID. */
+    UINT32 GetId() const;
     /** @brief 得到算法名称. */
     wstring GetName() const;
     /** @brief 得到算法DLL文件名. */
@@ -48,6 +51,8 @@ public:
     wstring GetIconFileName() const;
 
 private:
+    /** @brief 算法ID. */
+    UINT32 m_Id;
     /** @brief 算法名称. */
     wstring m_Name;
     /** @brief 算法DLL文件名. */

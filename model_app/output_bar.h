@@ -12,7 +12,10 @@ public:
 // Attributes
 protected:
 
-	CListCtrl	m_wndList;
+	CBCGPGridCtrl	m_wndList;
+
+    CBCGPGridRow *CreateNewRow();
+    void AddEmptyRow();
 
 // Operations
 public:

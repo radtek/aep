@@ -4,6 +4,7 @@
 
 #pragma once
 
+#include "interfaces.h"
 
 class CModelDoc : public CDocument
 {
@@ -13,6 +14,7 @@ protected: // create from serialization only
 
 // Attributes
 public:
+    ComponentList m_ComponentList;
 
 // Operations
 public:

@@ -36,7 +36,7 @@ protected:  // control bar embedded members
 	CBCGPToolBar			m_wndToolBar;
 	COutputBar				m_wndOutput;
 	CBCGPOutlookBar			m_wndShortcutsBar;
-	vector<CBCGPOutlookBarPane *> m_InterfacePaneList;
+	vector<CBCGPOutlookBarPane *> m_PaneList;
 
 	CBCGPToolBarImages	m_UserImages;
 // Generated message map functions
@@ -46,7 +46,8 @@ protected:
 	afx_msg LRESULT OnToolbarReset(WPARAM,LPARAM);
 	void OnToolsViewUserToolbar (UINT id);
 	void OnUpdateToolsViewUserToolbar (CCmdUI* pCmdUI);
-	void OnOutlookBarShortcut(UINT id);
+	void OnComponentInfo(UINT id);
+	void OnAlgorithm(UINT id);
 	afx_msg void OnAppLook(UINT id);
 	afx_msg void OnUpdateAppLook(CCmdUI* pCmdUI);
 	DECLARE_MESSAGE_MAP()

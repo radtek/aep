@@ -25,7 +25,8 @@ BEGIN_MESSAGE_MAP(CMainFrame, CBCGPFrameWnd)
 	ON_WM_CREATE()
 	ON_COMMAND(ID_VIEW_CUSTOMIZE, OnViewCustomize)
 	ON_REGISTERED_MESSAGE(BCGM_RESETTOOLBAR, OnToolbarReset)
-	ON_COMMAND_RANGE(ID_SHORTCUT_BEGIN, ID_SHORTCUT_END, OnOutlookBarShortcut)
+	ON_COMMAND_RANGE(ID_COMPONENT_INFO_BEGIN, ID_COMPONENT_INFO_END, OnComponentInfo)
+	ON_COMMAND_RANGE(ID_ALGORITHM_BEGIN, ID_ALGORITHM_END, OnAlgorithm)
 	ON_COMMAND_RANGE(ID_VIEW_APPLOOK_2000, ID_VIEW_APPLOOK_VS2008, OnAppLook)
 	ON_UPDATE_COMMAND_UI_RANGE(ID_VIEW_APPLOOK_2000, ID_VIEW_APPLOOK_VS2008, OnUpdateAppLook)
 END_MESSAGE_MAP()
@@ -253,10 +254,10 @@ afx_msg LRESULT CMainFrame::OnToolbarReset(WPARAM /*wp*/,LPARAM)
 	return 0;
 }
 
-void CMainFrame::OnOutlookBarShortcut(UINT id)
+void CMainFrame::OnComponentInfo(UINT id)
 {
 	// TODO: process shortcuts bar commands here...
-    UINT32 componentId = id - ID_SHORTCUT_BEGIN;
+    UINT32 componentId = id - ID_COMPONENT_INFO_BEGIN;
     ComponentInfoList &componentInfoList = theApp.m_Platform.GetComponentInfoList();
     for (UINT32 i = 0; i < componentInfoList.size(); ++i)
     {
@@ -264,6 +265,21 @@ void CMainFrame::OnOutlookBarShortcut(UINT id)
         if (info.componentId == componentId)
         {
             Utility::PromptMessage(info.componentName);
+        }
+    }
+}
+
+void CMainFrame::OnAlgorithm(UINT id)
+{
+	// TODO: process shortcuts bar commands here...
+    UINT32 algorithmId = id - ID_ALGORITHM_BEGIN;
+    AlgorithmList &algorithmList = theApp.m_Platform.GetAlgorithmList();
+    for (UINT32 i = 0; i < algorithmList.size(); ++i)
+    {
+        Algorithm &algorithm = algorithmList[i];
+        if (algorithm.GetId() == algorithmId)
+        {
+            Utility::PromptMessage(algorithm.GetName().c_str());
         }
     }
 }
@@ -299,8 +315,8 @@ BOOL CMainFrame::CreateShortcutsBar ()
     {
         InterfaceInfo &iInfo = interfaceInfoList[iI];
         CBCGPOutlookBarPane	*pane = new CBCGPOutlookBarPane;
-        m_InterfacePaneList.push_back(pane);
-        pane->Create (&m_wndShortcutsBar, dwDefaultToolbarStyle, ID_SHORTCUTS_PANE_BEGIN + iI);
+        m_PaneList.push_back(pane);
+        pane->Create (&m_wndShortcutsBar, dwDefaultToolbarStyle, ID_PANE_BEGIN + iI);
     	pane->SetOwner (this);
     	pane->EnableTextLabels ();
 	    pane->EnableDocking (CBRS_ALIGN_ANY);
@@ -310,12 +326,27 @@ BOOL CMainFrame::CreateShortcutsBar ()
             ComponentInfo &cInfo = componentInfoList[iC];
             if (cInfo.interfaceId == iInfo.interfaceId)
             {
-                pane->AddButton (images.ExtractIcon (iI), cInfo.componentName, ID_SHORTCUT_BEGIN + cInfo.componentId);
+                pane->AddButton (images.ExtractIcon (iI), cInfo.componentName, ID_COMPONENT_INFO_BEGIN + cInfo.componentId);
             }
         }
         pShortcutsBarContainer->AddTab (pane, iInfo.interfaceName, -1, FALSE);
         pane->EnableDocking (CBRS_ALIGN_ANY);
     }
+
+    AlgorithmList &algorithmList = theApp.m_Platform.GetAlgorithmList();
+    CBCGPOutlookBarPane *pane = new CBCGPOutlookBarPane;
+    m_PaneList.push_back(pane);
+    pane->Create (&m_wndShortcutsBar, dwDefaultToolbarStyle, ID_PANE_BEGIN + interfaceInfoList.size());
+    pane->SetOwner (this);
+    pane->EnableTextLabels ();
+    pane->EnableDocking (CBRS_ALIGN_ANY);
+    for (UINT32 i = 0; i < algorithmList.size(); ++i)
+    {
+        Algorithm &algorithm = algorithmList[i];
+        pane->AddButton (images.ExtractIcon (interfaceInfoList.size()), algorithm.GetName().c_str(), ID_ALGORITHM_BEGIN + algorithm.GetId());
+    }
+    pShortcutsBarContainer->AddTab (pane, TEXT("Ëã·¨"), -1, FALSE);
+    pane->EnableDocking (CBRS_ALIGN_ANY);
 
 	return TRUE;
 }

@@ -35,6 +35,23 @@ COutputBar::~COutputBar()
 {
 }
 
+CBCGPGridRow *COutputBar::CreateNewRow()
+{
+	CBCGPGridRow *row = m_wndList.CreateRow(m_wndList.GetColumnCount());
+
+	for (UINT32 i = 0; i < m_wndList.GetColumnCount (); ++i)
+	{
+		row->GetItem(i)->AllowEdit(FALSE);
+	}
+
+	return row;
+}
+
+void COutputBar::AddEmptyRow()
+{
+	m_wndList.AddRow(CreateNewRow(), FALSE);
+}
+
 /////////////////////////////////////////////////////////////////////////////
 // COutputBar message handlers
 
@@ -56,6 +73,19 @@ int COutputBar::OnCreate(LPCREATESTRUCT lpCreateStruct)
 		TRACE0("Failed to create output view\n");
 		return -1;      // fail to create
 	}
+
+    m_wndList.SetWholeRowSel(FALSE);
+    m_wndList.EnableMarkSortedColumn(FALSE);
+	m_wndList.EnableHeader(TRUE, 0);
+
+    m_wndList.InsertColumn (0, _T("A"), 30);
+	m_wndList.InsertColumn (1, _T("B"), 80);
+	m_wndList.InsertColumn (2, _T("C"), 120);
+	m_wndList.InsertColumn (3, _T("D"), 50);
+	m_wndList.InsertColumn (4, _T("E"), 80);
+	m_wndList.InsertColumn (5, _T("F"), 120);
+
+    AddEmptyRow();
 
 	return 0;
 }
