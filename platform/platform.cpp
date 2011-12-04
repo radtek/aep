@@ -47,8 +47,8 @@ RC Platform::Init()
     m_AlgorithmCfgFileName = configFile.read<wstring>(s_AlgorithmCfgFileNameKey);
 
     CHECK_RC(LoadComponentDll());
-    CHECK_RC(RegisterInterfaceInfo());
-    CHECK_RC(RegisterComponentInfo());
+    CHECK_RC(RegisterInterfaceType());
+    CHECK_RC(RegisterComponentType());
     // CHECK_RC(RegisterGetComponentListFuncToComponent());
 
     CHECK_RC(InitAlgorithm());
@@ -106,14 +106,14 @@ RC Platform::RunModel()
     return rc;
 }
 
-InterfaceInfoList &Platform::GetInterfaceInfoList()
+InterfaceTypeMap &Platform::GetInterfaceTypeMap()
 {
-    return m_InterfaceInfoList;
+    return m_InterfaceTypeMap;
 }
 
-ComponentInfoList &Platform::GetComponentInfoList()
+ComponentTypeMap &Platform::GetComponentTypeMap()
 {
-    return m_ComponentInfoList;
+    return m_ComponentTypeMap;
 }
 
 ComponentList &Platform::GetComponentList()
@@ -140,40 +140,40 @@ RC Platform::LoadComponentDll()
     return rc;
 }
 
-RC Platform::RegisterInterfaceInfo()
+RC Platform::RegisterInterfaceType()
 {
     RC rc;
 
-    Component::RegisterInterfaceInfoFunc func =
-        (Component::RegisterInterfaceInfoFunc)GetProcAddress(
+    Component::RegisterInterfaceTypeFunc func =
+        (Component::RegisterInterfaceTypeFunc)GetProcAddress(
         (HMODULE)m_ComponentDllHandle,
-        Component::RegisterInterfaceInfoFuncName);
+        Component::RegisterInterfaceTypeFuncName);
 
     if (!func)
     {
         return RC::PLATFORM_REGISTERINTERFACEINFO_ERROR;
     }
 
-    func(m_InterfaceInfoList);
+    func(m_InterfaceTypeMap);
 
     return rc;
 }
 
-RC Platform::RegisterComponentInfo()
+RC Platform::RegisterComponentType()
 {
     RC rc;
 
-    Component::RegisterComponentInfoFunc func =
-        (Component::RegisterComponentInfoFunc)GetProcAddress(
+    Component::RegisterComponentTypeFunc func =
+        (Component::RegisterComponentTypeFunc)GetProcAddress(
         (HMODULE)m_ComponentDllHandle,
-        Component::RegisterComponentInfoFuncName);
+        Component::RegisterComponentTypeFuncName);
 
     if (!func)
     {
         return RC::PLATFORM_REGISTERCOMPONENTINFO_ERROR;
     }
 
-    func(m_ComponentInfoList);
+    func(m_ComponentTypeMap);
 
     return rc;
 }

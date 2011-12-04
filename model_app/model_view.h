@@ -4,6 +4,7 @@
 
 #pragma once
 
+#include "model_doc.h"
 
 class CModelView : public CView
 {
@@ -15,12 +16,21 @@ protected: // create from serialization only
 public:
 	CModelDoc* GetDocument() const;
 
+    enum State
+    {
+        STATE_NORMAL,
+        STATE_NEW_COMPONENT,
+    } m_CurrentState;
+
+    // New component.
+    INT32 m_CurrentComponentTypeId;
+
 // Operations
 public:
 
 // Overrides
 	public:
-	virtual void OnDraw(CDC* pDC);  // overridden to draw this view
+	virtual void OnDraw(CDC *pDC);  // overridden to draw this view
 virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
 protected:
 	virtual BOOL OnPreparePrinting(CPrintInfo* pInfo);
@@ -41,6 +51,10 @@ protected:
 protected:
 	afx_msg void OnFilePrintPreview();
 	DECLARE_MESSAGE_MAP()
+public:
+    afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
+public:
+    afx_msg void OnMouseMove(UINT nFlags, CPoint point);
 };
 
 #ifndef _DEBUG  // debug version in model_view.cpp

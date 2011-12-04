@@ -5,6 +5,7 @@
 #include "model_app.h"
 
 #include "main_frm.h"
+#include "model_view.h"
 
 #include "utility.h"
 
@@ -25,7 +26,8 @@ BEGIN_MESSAGE_MAP(CMainFrame, CBCGPFrameWnd)
 	ON_WM_CREATE()
 	ON_COMMAND(ID_VIEW_CUSTOMIZE, OnViewCustomize)
 	ON_REGISTERED_MESSAGE(BCGM_RESETTOOLBAR, OnToolbarReset)
-	ON_COMMAND_RANGE(ID_COMPONENT_INFO_BEGIN, ID_COMPONENT_INFO_END, OnComponentInfo)
+	ON_COMMAND_RANGE(ID_COMPONENT_INFO_BEGIN, ID_COMPONENT_INFO_END, OnComponentType)
+    ON_UPDATE_COMMAND_UI_RANGE(ID_COMPONENT_INFO_BEGIN, ID_COMPONENT_INFO_END, OnUpdateComponentTypeUI)
 	ON_COMMAND_RANGE(ID_ALGORITHM_BEGIN, ID_ALGORITHM_END, OnAlgorithm)
 	ON_COMMAND_RANGE(ID_VIEW_APPLOOK_2000, ID_VIEW_APPLOOK_VS2008, OnAppLook)
 	ON_UPDATE_COMMAND_UI_RANGE(ID_VIEW_APPLOOK_2000, ID_VIEW_APPLOOK_VS2008, OnUpdateAppLook)
@@ -50,6 +52,11 @@ CMainFrame::CMainFrame()
 
 CMainFrame::~CMainFrame()
 {
+}
+
+COutputBar &CMainFrame::GetOutputBar()
+{
+    return m_wndOutput;
 }
 
 int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
@@ -139,7 +146,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 		return -1;      // fail to create
 	}
 
-	if (!m_wndOutput.Create (_T("Output"), this, CSize (150, 150),
+	if (!m_wndOutput.Create (_T(" Ù–‘…Ë÷√"), this, CSize (150, 150),
 		TRUE /* Has gripper */, ID_VIEW_OUTPUT,
 		WS_CHILD | WS_VISIBLE | CBRS_BOTTOM))
 	{
@@ -254,18 +261,36 @@ afx_msg LRESULT CMainFrame::OnToolbarReset(WPARAM /*wp*/,LPARAM)
 	return 0;
 }
 
-void CMainFrame::OnComponentInfo(UINT id)
+void CMainFrame::OnComponentType(UINT id)
 {
 	// TODO: process shortcuts bar commands here...
     UINT32 componentId = id - ID_COMPONENT_INFO_BEGIN;
-    ComponentInfoList &componentInfoList = theApp.m_Platform.GetComponentInfoList();
-    for (UINT32 i = 0; i < componentInfoList.size(); ++i)
+    CModelView *view = DYNAMIC_DOWNCAST(CModelView, GetActiveView());
+    if (view->m_CurrentState == CModelView::STATE_NEW_COMPONENT &&
+        componentId == view->m_CurrentComponentTypeId)
     {
-        ComponentInfo &info = componentInfoList[i];
-        if (info.componentId == componentId)
-        {
-            Utility::PromptMessage(info.componentName);
-        }
+        view->m_CurrentState = CModelView::STATE_NORMAL;
+        view->m_CurrentComponentTypeId = -1;
+    }
+    else
+    {
+        view->m_CurrentState = CModelView::STATE_NEW_COMPONENT;
+        view->m_CurrentComponentTypeId = componentId;
+    }
+}
+
+void CMainFrame::OnUpdateComponentTypeUI(CCmdUI *cmdUI)
+{
+    UINT32 componentId = cmdUI->m_nID - ID_COMPONENT_INFO_BEGIN;
+    CModelView *view = DYNAMIC_DOWNCAST(CModelView, GetActiveView());
+    if (view->m_CurrentState == CModelView::STATE_NEW_COMPONENT &&
+        componentId == view->m_CurrentComponentTypeId)
+    {
+        cmdUI->SetCheck();
+    }
+    else
+    {
+        cmdUI->SetCheck(0);
     }
 }
 
@@ -298,9 +323,9 @@ BOOL CMainFrame::CreateShortcutsBar ()
 		return FALSE;
 	}
 
-	CBCGPOutlookWnd* pShortcutsBarContainer = DYNAMIC_DOWNCAST (CBCGPOutlookWnd, 
+	CBCGPOutlookWnd *pShortcutsBarContainer = DYNAMIC_DOWNCAST (CBCGPOutlookWnd, 
 							m_wndShortcutsBar.GetUnderlinedWindow ());
-	if (pShortcutsBarContainer == NULL)
+	if (m_ShortcutsBarContainer == NULL)
 	{
 		TRACE0("Cannot get outlook bar container\n");
 		return FALSE;
@@ -309,41 +334,44 @@ BOOL CMainFrame::CreateShortcutsBar ()
 	CImageList images;
 	images.Create (IDB_SHORTCUTS, 32, 0, RGB (255, 0, 255));
 
-    InterfaceInfoList &interfaceInfoList = theApp.m_Platform.GetInterfaceInfoList();
-    ComponentInfoList &componentInfoList = theApp.m_Platform.GetComponentInfoList();
-    for (UINT32 iI = 0; iI < interfaceInfoList.size(); ++iI)
+    InterfaceTypeMap &interfaceTypeMap = theApp.m_Platform.GetInterfaceTypeMap();
+    ComponentTypeMap &componentTypeMap = theApp.m_Platform.GetComponentTypeMap();
+    UINT32 interfaceIndex = 0;
+    for (InterfaceTypeMap::iterator interfaceIt = interfaceTypeMap.begin();
+        interfaceIt != interfaceTypeMap.end(); ++interfaceIt, ++interfaceIndex)
     {
-        InterfaceInfo &iInfo = interfaceInfoList[iI];
+        InterfaceType &interfaceType = interfaceIt->second;
         CBCGPOutlookBarPane	*pane = new CBCGPOutlookBarPane;
         m_PaneList.push_back(pane);
-        pane->Create (&m_wndShortcutsBar, dwDefaultToolbarStyle, ID_PANE_BEGIN + iI);
+        pane->Create (&m_wndShortcutsBar, dwDefaultToolbarStyle, ID_PANE_BEGIN + interfaceIndex);
     	pane->SetOwner (this);
     	pane->EnableTextLabels ();
 	    pane->EnableDocking (CBRS_ALIGN_ANY);
 
-        for (UINT32 iC = 0; iC < componentInfoList.size(); ++iC)
+        for (ComponentTypeMap::iterator componentIt = componentTypeMap.begin();
+            componentIt != componentTypeMap.end(); ++componentIt)
         {
-            ComponentInfo &cInfo = componentInfoList[iC];
-            if (cInfo.interfaceId == iInfo.interfaceId)
+            ComponentType &componentType = componentIt->second;
+            if (interfaceType.InterfaceId == componentType.InterfaceId)
             {
-                pane->AddButton (images.ExtractIcon (iI), cInfo.componentName, ID_COMPONENT_INFO_BEGIN + cInfo.componentId);
+                pane->AddButton (images.ExtractIcon (interfaceIndex), componentType.TypeName, ID_COMPONENT_INFO_BEGIN + componentType.TypeId);
             }
         }
-        pShortcutsBarContainer->AddTab (pane, iInfo.interfaceName, -1, FALSE);
+        pShortcutsBarContainer->AddTab (pane, interfaceType.InterfaceName, -1, FALSE);
         pane->EnableDocking (CBRS_ALIGN_ANY);
     }
 
     AlgorithmList &algorithmList = theApp.m_Platform.GetAlgorithmList();
     CBCGPOutlookBarPane *pane = new CBCGPOutlookBarPane;
     m_PaneList.push_back(pane);
-    pane->Create (&m_wndShortcutsBar, dwDefaultToolbarStyle, ID_PANE_BEGIN + interfaceInfoList.size());
+    pane->Create (&m_wndShortcutsBar, dwDefaultToolbarStyle, ID_PANE_BEGIN + interfaceTypeMap.size());
     pane->SetOwner (this);
     pane->EnableTextLabels ();
     pane->EnableDocking (CBRS_ALIGN_ANY);
     for (UINT32 i = 0; i < algorithmList.size(); ++i)
     {
         Algorithm &algorithm = algorithmList[i];
-        pane->AddButton (images.ExtractIcon (interfaceInfoList.size()), algorithm.GetName().c_str(), ID_ALGORITHM_BEGIN + algorithm.GetId());
+        pane->AddButton (images.ExtractIcon (interfaceTypeMap.size()), algorithm.GetName().c_str(), ID_ALGORITHM_BEGIN + algorithm.GetId());
     }
     pShortcutsBarContainer->AddTab (pane, TEXT("À„∑®"), -1, FALSE);
     pane->EnableDocking (CBRS_ALIGN_ANY);

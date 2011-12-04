@@ -17,13 +17,24 @@ public:
     ALM();
     virtual ~ALM();
 
+    virtual UINT32 _stdcall GetTypeId();
     virtual void _stdcall Destroy();
     virtual void * _stdcall GetInterface(UINT32 iid);
     virtual UINT32 _stdcall GetId();
     virtual void _stdcall SetId(UINT32 id);
     virtual wstring _stdcall GetName();
     virtual void _stdcall SetName(wstring name);
-    virtual RC _stdcall GetAttribute(UINT32 aid, void **attr);
+    enum ALMAID
+    {
+        ALMAID_V_X,
+        ALMAID_V_Y,
+        ALMAID_V_Z,
+        ALMAID_A_X,
+        ALMAID_A_Y,
+        ALMAID_A_Z,
+    };
+    virtual void _stdcall GetAttributeList(AttributeList &attributeList);
+    virtual RC _stdcall GetAttribute(UINT32 aid, void *attr);
     virtual RC _stdcall SetAttribute(UINT32 aid, void *attr);
     virtual bool _stdcall Connect(IComponent *component);
 

@@ -10,6 +10,7 @@
 #define __INTERFACES_H__
 
 #include <vector>
+#include <map>
 #include "rc.h"
 #include <mclmcrrt.h>
 
@@ -37,22 +38,38 @@ typedef vector<UINT32> InterfaceList;
 
 typedef struct
 {
-    UINT32 interfaceId;
-    LPCWSTR interfaceName;
-} InterfaceInfo;
+    UINT32 InterfaceId;
+    LPCWSTR InterfaceName;
+} InterfaceType;
 
-typedef vector<InterfaceInfo> InterfaceInfoList;
+typedef map<UINT32, InterfaceType> InterfaceTypeMap;
+
+typedef struct
+{
+    UINT32 Id;
+    LPCWSTR Name;
+    enum AttributeType
+    {
+        TYPE_INT,
+        TYPE_DOUBLE,
+        TYPE_STRING,
+    } Type;
+} Attribute;
+
+typedef vector<Attribute> AttributeList;
 
 interface IComponent
 {
     // virtual RC _stdcall Config() = 0;
+    virtual UINT32 _stdcall GetTypeId() = 0;
     virtual void _stdcall Destroy() = 0;
     virtual void * _stdcall GetInterface(UINT32 iid) = 0;
     virtual UINT32 _stdcall GetId() = 0;
     virtual void _stdcall SetId(UINT32 id) = 0;
     virtual wstring _stdcall GetName() = 0;
     virtual void _stdcall SetName(wstring name) = 0;
-    virtual RC _stdcall GetAttribute(UINT32 aid, void **attr) = 0;
+    virtual void _stdcall GetAttributeList(AttributeList &attributeList) = 0;
+    virtual RC _stdcall GetAttribute(UINT32 aid, void *attr) = 0;
     virtual RC _stdcall SetAttribute(UINT32 aid, void *attr) = 0;
     virtual bool _stdcall Connect(IComponent *component) = 0;
     // virtual bool _stdcall Validate() = 0;
@@ -70,19 +87,18 @@ interface IParam : public IComponent
 };
 
 typedef IComponent *(*ComponentFactory)(void);
-typedef void (*ComponentDestroy)(IComponent *);
 
 typedef struct
 {
-    UINT32 componentId;
-    LPCWSTR componentName;
-    UINT32 interfaceId;
+    UINT32 TypeId;
+    LPCWSTR TypeName;
+    UINT32 InterfaceId;
     // UINT32 *attributeList;
-    ComponentFactory factory;
+    ComponentFactory Factory;
     // ComponentDestroy destroy;
     // void *iconHandle;
-} ComponentInfo;
+} ComponentType;
 
-typedef vector<ComponentInfo> ComponentInfoList;
+typedef map<UINT32, ComponentType> ComponentTypeMap;
 
 #endif // __INTERFACES_H__

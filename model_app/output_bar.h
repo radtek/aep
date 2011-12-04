@@ -4,6 +4,8 @@
 
 #pragma once
 
+#include "interfaces.h"
+
 class COutputBar : public CBCGPDockingControlBar
 {
 public:
@@ -15,10 +17,16 @@ protected:
 	CBCGPGridCtrl	m_wndList;
 
     CBCGPGridRow *CreateNewRow();
-    void AddEmptyRow();
+    LPCWSTR GetAttributeTypeString(Attribute::AttributeType attributeType);
+    CBCGPGridRow *CreateIdRow(IComponent *component);
+    CBCGPGridRow *CreateNameRow(IComponent *component);
+    void InsertAttributeValue(const Attribute &attribute, IComponent *component, CBCGPGridRow *row);
+    CBCGPGridRow *CreateAttributeRow(const Attribute &attribute, IComponent *component);
 
 // Operations
 public:
+    void Clear();
+    void SetComponent(IComponent *component);
 
 // Overrides
 	// ClassWizard generated virtual function overrides

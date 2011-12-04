@@ -18,6 +18,11 @@ Aircraft::~Aircraft()
 {
 }
 
+UINT32 Aircraft::GetTypeId()
+{
+    return s_ComponentId;
+}
+
 void Aircraft::Destroy()
 {
     delete this;
@@ -66,9 +71,43 @@ void Aircraft::SetName(wstring name)
     m_Name = name;
 }
 
-RC Aircraft::GetAttribute(UINT32 aid, void **attr)
+void Aircraft::GetAttributeList(AttributeList &attributeList)
+{
+    Attribute attribute;
+
+    attribute.Id = AAID_COORD_X;
+    attribute.Name = TEXT("初始位置X");
+    attribute.Type = Attribute::TYPE_DOUBLE;
+    attributeList.push_back(attribute);
+
+    attribute.Id = AAID_COORD_Y;
+    attribute.Name = TEXT("初始位置Y");
+    attribute.Type = Attribute::TYPE_DOUBLE;
+    attributeList.push_back(attribute);
+
+    attribute.Id = AAID_COORD_Z;
+    attribute.Name = TEXT("初始位置Z");
+    attribute.Type = Attribute::TYPE_DOUBLE;
+    attributeList.push_back(attribute);
+}
+
+RC Aircraft::GetAttribute(UINT32 aid, void *attr)
 {
     RC rc;
+
+    switch (aid)
+    {
+    case AAID_COORD_X:
+        *((double *)attr) = m_Coordinate.x;
+        break;
+    case AAID_COORD_Y:
+        *((double *)attr) = m_Coordinate.y;
+        break;
+    case AAID_COORD_Z:
+        *((double *)attr) = m_Coordinate.z;
+        break;
+    }
+
     return rc;
 }
 

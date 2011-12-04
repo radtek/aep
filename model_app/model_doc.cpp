@@ -22,6 +22,8 @@ END_MESSAGE_MAP()
 // CModelDoc construction/destruction
 
 CModelDoc::CModelDoc()
+:
+m_CurrentComponentId(0)
 {
 	// TODO: add one-time construction code here
 
@@ -76,3 +78,65 @@ void CModelDoc::Dump(CDumpContext& dc) const
 
 
 // CModelDoc commands
+
+// Operations
+void CModelDoc::OnDraw(CDC *dc)
+{
+    for (ModelCtrlList::iterator it = m_ModelCtrlList.begin();
+        it != m_ModelCtrlList.end();
+        ++it)
+    {
+        (*it)->OnDraw(dc);
+    }
+}
+
+void CModelDoc::OnLButtonDown(UINT nFlags, CPoint point)
+{
+    for (ModelCtrlList::iterator it = m_ModelCtrlList.begin();
+        it != m_ModelCtrlList.end();
+        ++it)
+    {
+        (*it)->OnLButtonDown(nFlags, point);
+    }
+}
+
+void CModelDoc::OnMouseMove(UINT nFlags, CPoint point)
+{
+    for (ModelCtrlList::iterator it = m_ModelCtrlList.begin();
+        it != m_ModelCtrlList.end();
+        ++it)
+    {
+        (*it)->OnMouseMove(nFlags, point);
+    }
+}
+
+bool CModelDoc::AddModelCtrl(ModelCtrl *modelCtrl)
+{
+    if (modelCtrl == NULL)
+    {
+        return false;
+    }
+
+    if (modelCtrl->SetId(m_CurrentComponentId))
+    {
+        ++m_CurrentComponentId;
+    }
+
+    m_ModelCtrlList.push_front(modelCtrl);
+    return true;
+}
+
+bool CModelDoc::RemoveModelCtrl(ModelCtrl *modelCtrl)
+{
+    for (ModelCtrlList::iterator it = m_ModelCtrlList.begin();
+        it != m_ModelCtrlList.end();
+        ++it)
+    {
+        if ((*it) == modelCtrl)
+        {
+            m_ModelCtrlList.erase(it);
+            return true;
+        }
+    }
+    return false;
+}

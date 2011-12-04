@@ -16,6 +16,11 @@ ALM::~ALM()
 {
 }
 
+UINT32 ALM::GetTypeId()
+{
+    return s_ComponentId;
+}
+
 void ALM::Destroy()
 {
     delete this;
@@ -60,9 +65,67 @@ void ALM::SetName(wstring name)
     m_Name = name;
 }
 
-RC ALM::GetAttribute(UINT32 aid, void **attr)
+void ALM::GetAttributeList(AttributeList &attributeList)
+{
+    Attribute attribute;
+
+    attribute.Id = ALMAID_V_X;
+    attribute.Name = TEXT("初始速度X");
+    attribute.Type = Attribute::TYPE_DOUBLE;
+    attributeList.push_back(attribute);
+
+    attribute.Id = ALMAID_V_Y;
+    attribute.Name = TEXT("初始速度Y");
+    attribute.Type = Attribute::TYPE_DOUBLE;
+    attributeList.push_back(attribute);
+
+    attribute.Id = ALMAID_V_Z;
+    attribute.Name = TEXT("初始速度Z");
+    attribute.Type = Attribute::TYPE_DOUBLE;
+    attributeList.push_back(attribute);
+
+    attribute.Id = ALMAID_A_X;
+    attribute.Name = TEXT("初始加速度X");
+    attribute.Type = Attribute::TYPE_DOUBLE;
+    attributeList.push_back(attribute);
+
+    attribute.Id = ALMAID_A_Y;
+    attribute.Name = TEXT("初始加速度Y");
+    attribute.Type = Attribute::TYPE_DOUBLE;
+    attributeList.push_back(attribute);
+
+    attribute.Id = ALMAID_A_Z;
+    attribute.Name = TEXT("初始加速度Z");
+    attribute.Type = Attribute::TYPE_DOUBLE;
+    attributeList.push_back(attribute);
+}
+
+RC ALM::GetAttribute(UINT32 aid, void *attr)
 {
     RC rc;
+
+    switch (aid)
+    {
+    case ALMAID_V_X:
+        *((double *)attr) = m_Velocity.x;
+        break;
+    case ALMAID_V_Y:
+        *((double *)attr) = m_Velocity.y;
+        break;
+    case ALMAID_V_Z:
+        *((double *)attr) = m_Velocity.z;
+        break;
+    case ALMAID_A_X:
+        *((double *)attr) = m_Acceleration.x;
+        break;
+    case ALMAID_A_Y:
+        *((double *)attr) = m_Acceleration.y;
+        break;
+    case ALMAID_A_Z:
+        *((double *)attr) = m_Acceleration.z;
+        break;
+    }
+
     return rc;
 }
 

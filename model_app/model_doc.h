@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "interfaces.h"
+#include "model_ctrl.h"
 
 class CModelDoc : public CDocument
 {
@@ -14,10 +14,19 @@ protected: // create from serialization only
 
 // Attributes
 public:
-    ComponentList m_ComponentList;
+    ModelCtrlList m_ModelCtrlList;
+
+protected:
+    UINT32 m_CurrentComponentId;
 
 // Operations
 public:
+    void OnDraw(CDC *dc);
+    void OnLButtonDown(UINT nFlags, CPoint point);
+    void OnMouseMove(UINT nFlags, CPoint point);
+
+    bool AddModelCtrl(ModelCtrl *modelCtrl);
+    bool RemoveModelCtrl(ModelCtrl *modelCtrl);
 
 // Overrides
 	public:

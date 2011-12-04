@@ -206,11 +206,19 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
+				RelativePath=".\component_ctrl.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\main_frm.cpp"
 				>
 			</File>
 			<File
 				RelativePath=".\model_app.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\model_ctrl.cpp"
 				>
 			</File>
 			<File
@@ -223,6 +231,10 @@
 			</File>
 			<File
 				RelativePath=".\output_bar.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\rect_ctrl.cpp"
 				>
 			</File>
 			<File
@@ -252,11 +264,19 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
+				RelativePath=".\component_ctrl.h"
+				>
+			</File>
+			<File
 				RelativePath=".\main_frm.h"
 				>
 			</File>
 			<File
 				RelativePath=".\model_app.h"
+				>
+			</File>
+			<File
+				RelativePath=".\model_ctrl.h"
 				>
 			</File>
 			<File
@@ -269,6 +289,10 @@
 			</File>
 			<File
 				RelativePath=".\output_bar.h"
+				>
+			</File>
+			<File
+				RelativePath=".\rect_ctrl.h"
 				>
 			</File>
 			<File
@@ -320,5 +344,9 @@
 		</Filter>
 	</Files>
 	<Globals>
+		<Global
+			Name="RESOURCE_FILE"
+			Value="model_app.rc"
+		/>
 	</Globals>
 </VisualStudioProject>

@@ -4,40 +4,40 @@
 #include "ulm.h"
 #include "alm.h"
 
-extern "C" __declspec(dllexport) void RegisterInterfaceInfo(InterfaceInfoList &interfaceInfoList)
+extern "C" __declspec(dllexport) void RegisterInterfaceType(InterfaceTypeMap &interfaceTypeMap)
 {
-    InterfaceInfo interfaceInfo;
+    InterfaceType interfaceType;
 
-    interfaceInfo.interfaceId = CLIENT_CIID_AIRCRAFT;
-    interfaceInfo.interfaceName = TEXT("飞行器");
-    interfaceInfoList.push_back(interfaceInfo);
+    interfaceType.InterfaceId = CLIENT_CIID_AIRCRAFT;
+    interfaceType.InterfaceName = TEXT("飞行器");
+    interfaceTypeMap[interfaceType.InterfaceId] = interfaceType;
 
-    interfaceInfo.interfaceId = CLIENT_CIID_MOTION;
-    interfaceInfo.interfaceName = TEXT("运动");
-    interfaceInfoList.push_back(interfaceInfo);
+    interfaceType.InterfaceId = CLIENT_CIID_MOTION;
+    interfaceType.InterfaceName = TEXT("运动");
+    interfaceTypeMap[interfaceType.InterfaceId] = interfaceType;
 }
 
-extern "C" __declspec(dllexport) void RegisterComponentInfo(ComponentInfoList &componentInfoList)
+extern "C" __declspec(dllexport) void RegisterComponentType(ComponentTypeMap &componentTypeMap)
 {
-    ComponentInfo componentInfo;
+    ComponentType componentType;
 
-    componentInfo.componentId = Aircraft::s_ComponentId;
-    componentInfo.componentName = Aircraft::s_ComponentName;
-    componentInfo.interfaceId = CLIENT_CIID_AIRCRAFT;
-    componentInfo.factory = (ComponentFactory)Aircraft::Factory;
-    componentInfoList.push_back(componentInfo);
+    componentType.TypeId = Aircraft::s_ComponentId;
+    componentType.TypeName = Aircraft::s_ComponentName;
+    componentType.InterfaceId = CLIENT_CIID_AIRCRAFT;
+    componentType.Factory = (ComponentFactory)Aircraft::Factory;
+    componentTypeMap[componentType.TypeId] = componentType;
 
-    componentInfo.componentId = ULM::s_ComponentId;
-    componentInfo.componentName = ULM::s_ComponentName;
-    componentInfo.interfaceId = CLIENT_CIID_MOTION;
-    componentInfo.factory = (ComponentFactory)ULM::Factory;
-    componentInfoList.push_back(componentInfo);
+    componentType.TypeId = ULM::s_ComponentId;
+    componentType.TypeName = ULM::s_ComponentName;
+    componentType.InterfaceId = CLIENT_CIID_MOTION;
+    componentType.Factory = (ComponentFactory)ULM::Factory;
+    componentTypeMap[componentType.TypeId] = componentType;
 
-    componentInfo.componentId = ALM::s_ComponentId;
-    componentInfo.componentName = ALM::s_ComponentName;
-    componentInfo.interfaceId = CLIENT_CIID_MOTION;
-    componentInfo.factory = (ComponentFactory)ALM::Factory;
-    componentInfoList.push_back(componentInfo);
+    componentType.TypeId = ALM::s_ComponentId;
+    componentType.TypeName = ALM::s_ComponentName;
+    componentType.InterfaceId = CLIENT_CIID_MOTION;
+    componentType.Factory = (ComponentFactory)ALM::Factory;
+    componentTypeMap[componentType.TypeId] = componentType;
 }
 
 extern "C" __declspec(dllexport) void RegisterGetComponentListFunc(Component::GetComponentListFunc getComponentListFunc)

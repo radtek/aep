@@ -7,6 +7,8 @@
 #include "model_doc.h"
 #include "model_view.h"
 
+#include "component_ctrl.h"
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
@@ -21,11 +23,16 @@ BEGIN_MESSAGE_MAP(CModelView, CView)
 	ON_COMMAND(ID_FILE_PRINT, CView::OnFilePrint)
 	ON_COMMAND(ID_FILE_PRINT_PREVIEW, OnFilePrintPreview)
 	ON_COMMAND(ID_FILE_PRINT_DIRECT, CView::OnFilePrint)
+    ON_WM_LBUTTONDOWN()
+    ON_WM_MOUSEMOVE()
 END_MESSAGE_MAP()
 
 // CModelView construction/destruction
 
 CModelView::CModelView()
+:
+m_CurrentState(STATE_NORMAL),
+m_CurrentComponentTypeId(-1)
 {
 	// TODO: add construction code here
 
@@ -45,12 +52,13 @@ BOOL CModelView::PreCreateWindow(CREATESTRUCT& cs)
 
 // CModelView drawing
 
-void CModelView::OnDraw(CDC* /*pDC*/)
+void CModelView::OnDraw(CDC *dc)
 {
 	CModelDoc* pDoc = GetDocument();
 	ASSERT_VALID(pDoc);
 
 	// TODO: add draw code for native data here
+    GetDocument()->OnDraw(dc);
 }
 
 
@@ -100,3 +108,40 @@ CModelDoc* CModelView::GetDocument() const // non-debug version is inline
 
 
 // CModelView message handlers
+
+void CModelView::OnLButtonDown(UINT nFlags, CPoint point)
+{
+    // TODO: Add your message handler code here and/or call default
+    if (m_CurrentState == STATE_NEW_COMPONENT)
+    {
+        ComponentType &info = theApp.m_Platform.GetComponentTypeMap()[m_CurrentComponentTypeId];
+        IComponent *component = info.Factory();
+        ModelCtrl *modelCtrl = new ComponentCtrl(component, point);
+        GetDocument()->AddModelCtrl(modelCtrl);
+        m_CurrentComponentTypeId = -1;
+        m_CurrentState = STATE_NORMAL;
+        Invalidate();
+    }
+    else if (m_CurrentState == STATE_NORMAL)
+    {
+        GetDocument()->OnLButtonDown(nFlags, point);
+        Invalidate();
+    }
+
+    CView::OnLButtonDown(nFlags, point);
+}
+
+void CModelView::OnMouseMove(UINT nFlags, CPoint point)
+{
+    // TODO: Add your message handler code here and/or call default
+    if (nFlags & MK_LBUTTON)
+    {
+        if (m_CurrentState == STATE_NORMAL)
+        {
+            GetDocument()->OnMouseMove(nFlags, point);
+            Invalidate();
+        }
+    }
+
+    CView::OnMouseMove(nFlags, point);
+}

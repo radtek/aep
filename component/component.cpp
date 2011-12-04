@@ -8,9 +8,9 @@
 
 #include "component.h"
 
-LPCSTR Component::RegisterInterfaceInfoFuncName = "RegisterInterfaceInfo";
+LPCSTR Component::RegisterInterfaceTypeFuncName = "RegisterInterfaceType";
 
-LPCSTR Component::RegisterComponentInfoFuncName = "RegisterComponentInfo";
+LPCSTR Component::RegisterComponentTypeFuncName = "RegisterComponentType";
 
 // LPCSTR Component::ValidateModelFuncName = "ValidateModel";
 
