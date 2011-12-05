@@ -114,6 +114,20 @@ RC Aircraft::GetAttribute(UINT32 aid, void *attr)
 RC Aircraft::SetAttribute(UINT32 aid, void *attr)
 {
     RC rc;
+
+    switch (aid)
+    {
+    case AAID_COORD_X:
+        m_Coordinate.x = *((double *)attr);
+        break;
+    case AAID_COORD_Y:
+        m_Coordinate.y = *((double *)attr);
+        break;
+    case AAID_COORD_Z:
+        m_Coordinate.z = *((double *)attr);
+        break;
+    }
+
     return rc;
 }
 

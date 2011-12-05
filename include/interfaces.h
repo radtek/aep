@@ -50,6 +50,7 @@ typedef struct
     LPCWSTR Name;
     enum AttributeType
     {
+        TYPE_UNKNOWN,
         TYPE_INT,
         TYPE_DOUBLE,
         TYPE_STRING,

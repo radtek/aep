@@ -108,6 +108,20 @@ RC ULM::GetAttribute(UINT32 aid, void *attr)
 RC ULM::SetAttribute(UINT32 aid, void *attr)
 {
     RC rc;
+
+    switch (aid)
+    {
+    case ULMAID_V_X:
+        m_Velocity.x = *((double *)attr);
+        break;
+    case ULMAID_V_Y:
+        m_Velocity.y = *((double *)attr);
+        break;
+    case ULMAID_V_Z:
+        m_Velocity.z = *((double *)attr);
+        break;
+    }
+
     return rc;
 }
 

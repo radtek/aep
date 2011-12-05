@@ -210,6 +210,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\attribute_grid_ctrl.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\component_ctrl.cpp"
 				>
 			</File>
@@ -265,6 +269,10 @@
 			>
 			<File
 				RelativePath=".\attribute_bar.h"
+				>
+			</File>
+			<File
+				RelativePath=".\attribute_grid_ctrl.h"
 				>
 			</File>
 			<File

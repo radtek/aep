@@ -121,3 +121,38 @@ bool Utility::ContainSpace(LPCWSTR str)
     static const wchar_t whitespace[] = L" \n\t\v\r\f";
     return wstring(str).find_first_of(whitespace) != wstring.npos;
 }
+
+LPCWSTR Utility::AttributeTypeToString(Attribute::AttributeType attributeType)
+{
+    switch (attributeType)
+    {
+    case Attribute::TYPE_INT:
+        return TEXT("整型");
+    case Attribute::TYPE_DOUBLE:
+        return TEXT("浮点型");
+    case Attribute::TYPE_STRING:
+        return TEXT("字符型");
+    default:
+        return TEXT("未知类型");
+    }
+}
+
+Attribute::AttributeType Utility::StringToAttributeType(wstring str)
+{
+    if (str == TEXT("整型"))
+    {
+        return Attribute::TYPE_INT;
+    }
+    else if (str == TEXT("浮点型"))
+    {
+        return Attribute::TYPE_DOUBLE;
+    }
+    else if (str == TEXT("字符型"))
+    {
+        return Attribute::TYPE_DOUBLE;
+    }
+    else
+    {
+        return Attribute::TYPE_UNKNOWN;
+    }
+}

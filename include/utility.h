@@ -7,6 +7,7 @@
 */
 
 #include "rc.h"
+#include "interfaces.h"
 
 #include <string>
 
@@ -26,4 +27,7 @@ namespace Utility
 
     bool ContainSpace(LPCSTR str);
     bool ContainSpace(LPCWSTR str);
+
+    LPCWSTR AttributeTypeToString(Attribute::AttributeType attributeType);
+    Attribute::AttributeType StringToAttributeType(wstring str);
 };

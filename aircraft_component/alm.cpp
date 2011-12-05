@@ -132,6 +132,29 @@ RC ALM::GetAttribute(UINT32 aid, void *attr)
 RC ALM::SetAttribute(UINT32 aid, void *attr)
 {
     RC rc;
+
+    switch (aid)
+    {
+    case ALMAID_V_X:
+        m_Velocity.x = *((double *)attr);
+        break;
+    case ALMAID_V_Y:
+        m_Velocity.y = *((double *)attr);
+        break;
+    case ALMAID_V_Z:
+        m_Velocity.z = *((double *)attr);
+        break;
+    case ALMAID_A_X:
+        m_Acceleration.x = *((double *)attr);
+        break;
+    case ALMAID_A_Y:
+        m_Acceleration.y = *((double *)attr);
+        break;
+    case ALMAID_A_Z:
+        m_Acceleration.z = *((double *)attr);
+        break;
+    }
+
     return rc;
 }
 
