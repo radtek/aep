@@ -138,7 +138,7 @@ int COutputBar::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	// Create list window.
 	// TODO: create your own window here:
 	const DWORD dwViewStyle =	
-		LBS_NOINTEGRALHEIGHT | WS_CHILD | WS_VISIBLE | WS_HSCROLL | WS_VSCROLL;
+		LBS_NOINTEGRALHEIGHT | WS_CHILD | WS_VISIBLE;
 	
 	if (!m_wndList.Create (dwViewStyle, rectDummy, this, 1))
 	{
@@ -154,6 +154,8 @@ int COutputBar::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	m_wndList.InsertColumn (1, _T("属性名称"), 100);
 	m_wndList.InsertColumn (2, _T("属性类型"), 100);
 	m_wndList.InsertColumn (3, _T("属性值"), 100);
+
+	m_wndList.AdjustLayout ();
 
 	return 0;
 }
@@ -200,5 +202,7 @@ void COutputBar::SetComponent(IComponent *component)
         m_wndList.AddRow(CreateAttributeRow(attribute, component));
     }
 
-    Invalidate();
+    m_wndList.AdjustLayout();
+
+    m_wndList.Invalidate();
 }
