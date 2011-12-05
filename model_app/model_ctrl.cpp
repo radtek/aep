@@ -13,17 +13,17 @@ ModelCtrl::~ModelCtrl()
 void ModelCtrl::Select()
 {
     m_IsSelected = true;
-    UpdateOutputBar();
+    UpdateAttributeBar();
 }
 
 void ModelCtrl::UnSelect()
 {
     m_IsSelected = false;
-    ClearOutputBar();
+    ClearAttributeBar();
 }
 
-COutputBar &ModelCtrl::GetOutputBar()
+CAttributeBar &ModelCtrl::GetAttributeBar()
 {
     CMainFrame *mainFrame = DYNAMIC_DOWNCAST(CMainFrame, theApp.m_pMainWnd);
-    return mainFrame->GetOutputBar();
+    return mainFrame->GetAttributeBar();
 }

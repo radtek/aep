@@ -23,8 +23,8 @@ public:
     virtual wstring GetTitle();
 
 protected:
-    virtual void UpdateOutputBar();
-    virtual void ClearOutputBar();
+    virtual void UpdateAttributeBar();
+    virtual void ClearAttributeBar();
 
 protected:
     IComponent *m_Component;

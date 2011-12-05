@@ -35,9 +35,9 @@ public:
     virtual void UnSelect();
 
 protected:
-    virtual COutputBar &GetOutputBar();
-    virtual void UpdateOutputBar() = 0;
-    virtual void ClearOutputBar() = 0;
+    virtual CAttributeBar &GetAttributeBar();
+    virtual void UpdateAttributeBar() = 0;
+    virtual void ClearAttributeBar() = 0;
 
 protected:
     bool m_IsSelected;

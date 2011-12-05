@@ -54,7 +54,7 @@ CMainFrame::~CMainFrame()
 {
 }
 
-COutputBar &CMainFrame::GetOutputBar()
+CAttributeBar &CMainFrame::GetAttributeBar()
 {
     return m_wndOutput;
 }

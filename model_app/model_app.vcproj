@@ -206,6 +206,10 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
+				RelativePath=".\attribute_bar.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\component_ctrl.cpp"
 				>
 			</File>
@@ -227,10 +231,6 @@
 			</File>
 			<File
 				RelativePath=".\model_view.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\output_bar.cpp"
 				>
 			</File>
 			<File
@@ -264,6 +264,10 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
+				RelativePath=".\attribute_bar.h"
+				>
+			</File>
+			<File
 				RelativePath=".\component_ctrl.h"
 				>
 			</File>
@@ -285,10 +289,6 @@
 			</File>
 			<File
 				RelativePath=".\model_view.h"
-				>
-			</File>
-			<File
-				RelativePath=".\output_bar.h"
 				>
 			</File>
 			<File

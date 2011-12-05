@@ -23,12 +23,12 @@ wstring ComponentCtrl::GetTitle()
     return m_Component->GetName();
 }
 
-void ComponentCtrl::UpdateOutputBar()
+void ComponentCtrl::UpdateAttributeBar()
 {
-    GetOutputBar().SetComponent(m_Component);
+    GetAttributeBar().SetComponent(m_Component);
 }
 
-void ComponentCtrl::ClearOutputBar()
+void ComponentCtrl::ClearAttributeBar()
 {
-    GetOutputBar().Clear();
+    GetAttributeBar().Clear();
 }

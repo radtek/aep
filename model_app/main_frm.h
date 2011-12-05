@@ -3,7 +3,7 @@
 
 
 #pragma once
-#include "output_bar.h"
+#include "attribute_bar.h"
 
 class CMainFrame : public CBCGPFrameWnd
 {
@@ -17,7 +17,7 @@ public:
 
 // Operations
 public:
-    COutputBar &GetOutputBar();
+    CAttributeBar &GetAttributeBar();
 
 // Overrides
 public:
@@ -35,7 +35,7 @@ protected:  // control bar embedded members
 	CBCGPStatusBar			m_wndStatusBar;
 	CBCGPMenuBar			m_wndMenuBar;
 	CBCGPToolBar			m_wndToolBar;
-	COutputBar				m_wndOutput;
+	CAttributeBar				m_wndOutput;
 	CBCGPOutlookBar			m_wndShortcutsBar;
     CBCGPOutlookWnd *m_ShortcutsBarContainer;
 	vector<CBCGPOutlookBarPane *> m_PaneList;
