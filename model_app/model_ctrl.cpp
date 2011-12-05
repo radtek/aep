@@ -22,11 +22,6 @@ void ModelCtrl::UnSelect()
     ClearOutputBar();
 }
 
-bool ModelCtrl::IsSelected()
-{
-    return m_IsSelected;
-}
-
 COutputBar &ModelCtrl::GetOutputBar()
 {
     CMainFrame *mainFrame = DYNAMIC_DOWNCAST(CMainFrame, theApp.m_pMainWnd);

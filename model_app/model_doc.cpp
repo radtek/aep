@@ -80,36 +80,6 @@ void CModelDoc::Dump(CDumpContext& dc) const
 // CModelDoc commands
 
 // Operations
-void CModelDoc::OnDraw(CDC *dc)
-{
-    for (ModelCtrlList::iterator it = m_ModelCtrlList.begin();
-        it != m_ModelCtrlList.end();
-        ++it)
-    {
-        (*it)->OnDraw(dc);
-    }
-}
-
-void CModelDoc::OnLButtonDown(UINT nFlags, CPoint point)
-{
-    for (ModelCtrlList::iterator it = m_ModelCtrlList.begin();
-        it != m_ModelCtrlList.end();
-        ++it)
-    {
-        (*it)->OnLButtonDown(nFlags, point);
-    }
-}
-
-void CModelDoc::OnMouseMove(UINT nFlags, CPoint point)
-{
-    for (ModelCtrlList::iterator it = m_ModelCtrlList.begin();
-        it != m_ModelCtrlList.end();
-        ++it)
-    {
-        (*it)->OnMouseMove(nFlags, point);
-    }
-}
-
 bool CModelDoc::AddModelCtrl(ModelCtrl *modelCtrl)
 {
     if (modelCtrl == NULL)

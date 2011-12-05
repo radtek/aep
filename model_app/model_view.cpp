@@ -32,7 +32,8 @@ END_MESSAGE_MAP()
 CModelView::CModelView()
 :
 m_CurrentState(STATE_NORMAL),
-m_CurrentComponentTypeId(-1)
+m_CurrentComponentTypeId(-1),
+m_CurrentModelCtrl(NULL)
 {
 	// TODO: add construction code here
 
@@ -57,8 +58,14 @@ void CModelView::OnDraw(CDC *dc)
 	CModelDoc* pDoc = GetDocument();
 	ASSERT_VALID(pDoc);
 
-	// TODO: add draw code for native data here
-    GetDocument()->OnDraw(dc);
+    // TODO: add draw code for native data here
+    ModelCtrlList &modelCtrlList = pDoc->m_ModelCtrlList;
+    for (ModelCtrlList::iterator it = modelCtrlList.end();
+        it != modelCtrlList.begin();)
+    {
+        ModelCtrl *modelCtrl = *(--it);
+        modelCtrl->Draw(dc);
+    }
 }
 
 
@@ -120,11 +127,40 @@ void CModelView::OnLButtonDown(UINT nFlags, CPoint point)
         GetDocument()->AddModelCtrl(modelCtrl);
         m_CurrentComponentTypeId = -1;
         m_CurrentState = STATE_NORMAL;
+        if (m_CurrentModelCtrl != NULL)
+        {
+            m_CurrentModelCtrl->UnSelect();
+            m_CurrentModelCtrl = NULL;
+        }
         Invalidate();
     }
     else if (m_CurrentState == STATE_NORMAL)
     {
-        GetDocument()->OnLButtonDown(nFlags, point);
+        ModelCtrlList &modelCtrlList = GetDocument()->m_ModelCtrlList;
+        ModelCtrl *selectedModelCtrl = NULL;
+        for (ModelCtrlList::iterator it = modelCtrlList.begin();
+            it != modelCtrlList.end(); ++it)
+        {
+            ModelCtrl *modelCtrl = (*it);
+            if (modelCtrl->HitTest(point))
+            {
+                selectedModelCtrl = modelCtrl;
+                break;
+            }
+        }
+        if (m_CurrentModelCtrl != selectedModelCtrl)
+        {
+            if (m_CurrentModelCtrl != NULL)
+            {
+                m_CurrentModelCtrl->UnSelect();
+            }
+            m_CurrentModelCtrl = selectedModelCtrl;
+            if (m_CurrentModelCtrl != NULL)
+            {
+                m_CurrentModelCtrl->Select();
+            }
+        }
+        m_LastClickPosition = point;
         Invalidate();
     }
 
@@ -134,14 +170,26 @@ void CModelView::OnLButtonDown(UINT nFlags, CPoint point)
 void CModelView::OnMouseMove(UINT nFlags, CPoint point)
 {
     // TODO: Add your message handler code here and/or call default
-    if (nFlags & MK_LBUTTON)
+    if (!(nFlags & MK_LBUTTON))
     {
-        if (m_CurrentState == STATE_NORMAL)
-        {
-            GetDocument()->OnMouseMove(nFlags, point);
-            Invalidate();
-        }
+        return;
     }
+
+    if (m_CurrentState == STATE_NEW_COMPONENT)
+    {
+        return;
+    }
+
+    if (m_CurrentModelCtrl == NULL)
+    {
+        return;
+    }
+
+    CPoint d = point - m_LastClickPosition;
+    m_LastClickPosition = point;
+    m_CurrentModelCtrl->Move(d);
+
+    Invalidate();
 
     CView::OnMouseMove(nFlags, point);
 }

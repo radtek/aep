@@ -10,7 +10,7 @@ RectCtrl::~RectCtrl()
 {
 }
 
-void RectCtrl::OnDraw(CDC *dc)
+void RectCtrl::Draw(CDC *dc)
 {
     CPoint oldPosition = dc->MoveTo(m_Position);
 
@@ -20,47 +20,17 @@ void RectCtrl::OnDraw(CDC *dc)
     dc->MoveTo(oldPosition);
 }
 
-void RectCtrl::OnLButtonDown(UINT nFlags, CPoint point)
-{
-    if (!HitTest(point))
-    {
-        if (m_IsSelected)
-        {
-            UnSelect();
-        }
-        return;
-    }
-
-    if (!m_IsSelected)
-    {
-        Select();
-    }
-
-    m_LastPosition = point;
-}
-
-void RectCtrl::OnMouseMove(UINT nFlags, CPoint point)
-{
-    if (!(nFlags & MK_LBUTTON))
-    {
-        return;
-    }
-    if (m_IsSelected)
-    {
-        INT32 dx = point.x - m_LastPosition.x;
-        INT32 dy = point.y - m_LastPosition.y;
-        m_Position.x += dx;
-        m_Position.y += dy;
-        m_LastPosition = point;
-    }
-}
-
 bool RectCtrl::HitTest(CPoint point)
 {
     return point.x >= Left() &&
         point.x <= Right() &&
         point.y >= Top() &&
         point.y <= Bottom();
+}
+
+void RectCtrl::Move(CPoint point)
+{
+    m_Position += point;
 }
 
 void RectCtrl::DrawBorder(CDC *dc)

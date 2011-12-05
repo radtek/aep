@@ -21,10 +21,6 @@ protected:
 
 // Operations
 public:
-    void OnDraw(CDC *dc);
-    void OnLButtonDown(UINT nFlags, CPoint point);
-    void OnMouseMove(UINT nFlags, CPoint point);
-
     bool AddModelCtrl(ModelCtrl *modelCtrl);
     bool RemoveModelCtrl(ModelCtrl *modelCtrl);
 

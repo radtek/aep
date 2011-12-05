@@ -26,17 +26,15 @@ public:
     virtual ~ModelCtrl();
 
 public:
-    virtual void OnDraw(CDC *dc) = 0;
-    virtual void OnLButtonDown(UINT nFlags, CPoint point) = 0;
-    virtual void OnMouseMove(UINT nFlags, CPoint point) = 0;
+    virtual void Draw(CDC *dc) = 0;
     virtual bool HitTest(CPoint point) = 0;
     virtual bool SetId(UINT32 id) = 0;
+    virtual void Move(CPoint point) = 0;
 
-protected:
     virtual void Select();
     virtual void UnSelect();
-    virtual bool IsSelected();
 
+protected:
     virtual COutputBar &GetOutputBar();
     virtual void UpdateOutputBar() = 0;
     virtual void ClearOutputBar() = 0;

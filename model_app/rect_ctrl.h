@@ -19,10 +19,9 @@ public:
     virtual ~RectCtrl();
 
 public:
-    virtual void OnDraw(CDC *dc);
-    virtual void OnLButtonDown(UINT nFlags, CPoint point);
-    virtual void OnMouseMove(UINT nFlags, CPoint point);
+    virtual void Draw(CDC *dc);
     virtual bool HitTest(CPoint point);
+    virtual void Move(CPoint point);
 
     virtual wstring GetTitle() = 0;
 

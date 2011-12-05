@@ -25,6 +25,10 @@ public:
     // New component.
     INT32 m_CurrentComponentTypeId;
 
+    // Normal.
+    ModelCtrl *m_CurrentModelCtrl;
+    CPoint m_LastClickPosition;
+
 // Operations
 public:
 
