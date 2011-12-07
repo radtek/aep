@@ -218,6 +218,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\connector.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\main_frm.cpp"
 				>
 			</File>
@@ -277,6 +281,10 @@
 			</File>
 			<File
 				RelativePath=".\component_ctrl.h"
+				>
+			</File>
+			<File
+				RelativePath=".\connector.h"
 				>
 			</File>
 			<File

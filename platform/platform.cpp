@@ -52,7 +52,8 @@ RC Platform::Init()
     // CHECK_RC(RegisterGetComponentListFuncToComponent());
 
     CHECK_RC(InitAlgorithm());
-    CHECK_RC(RegisterAlgorithm());
+    // CHECK_RC(RegisterAlgorithm());
+    CHECK_RC(RegisterInternalAlgorithm());
 
     return rc;
 }
@@ -124,6 +125,11 @@ ComponentList &Platform::GetComponentList()
 AlgorithmList &Platform::GetAlgorithmList()
 {
     return m_AlgorithmList;
+}
+
+InternalAlgorithmList &Platform::GetInternalAlgorithmList()
+{
+    return m_InternalAlgorithmList;
 }
 
 RC Platform::LoadComponentDll()
@@ -238,6 +244,21 @@ RC Platform::RegisterAlgorithm()
     AlgorithmDataFile file(m_AlgorithmCfgFileName);
     file.Parse();
     m_AlgorithmList = file.GetAlgorithmList();
+
+    return rc;
+}
+
+RC Platform::RegisterInternalAlgorithm()
+{
+    RC rc;
+
+    // Algorithm algorithm(TEXT("¼Ó·¨"), TEXT("AddFunc.dll"), TEXT("AddFunc"), TEXT("AddFunc.ico"));
+    // m_AlgorithmList.push_back(algorithm);
+    // file.InsertAlgorithm(algorithm);
+
+    AlgorithmDataFile file(m_AlgorithmCfgFileName);
+    file.Parse();
+    m_InternalAlgorithmList = file.GetInternalAlgorithmList();
 
     return rc;
 }

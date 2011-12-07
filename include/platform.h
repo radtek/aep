@@ -13,6 +13,7 @@
 
 #include "interfaces.h"
 #include "algorithm.h"
+#include "internal_algorithm.h"
 
 class Platform
 {
@@ -34,6 +35,8 @@ public:
 
     AlgorithmList &GetAlgorithmList();
 
+    InternalAlgorithmList &GetInternalAlgorithmList();
+
 private:
     // 平台辅助函数
     RC LoadComponentDll();
@@ -46,6 +49,8 @@ private:
     RC ShutAlgorithm();
     /** @brief 从配置文件中拿到算法列表. */
     RC RegisterAlgorithm();
+
+    RC RegisterInternalAlgorithm();
     /** @brief 将一个算法添加到配置文件中. */
     RC UploadAlgorithm();
 
@@ -56,6 +61,8 @@ private:
     ComponentList m_ComponentList;
 
     AlgorithmList m_AlgorithmList;
+
+    InternalAlgorithmList m_InternalAlgorithmList;
 
     HINSTANCE m_ComponentDllHandle;
 

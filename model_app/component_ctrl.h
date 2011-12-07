@@ -10,6 +10,7 @@
 #define __COMPONENT_CTRL_H__
 
 #include "rect_ctrl.h"
+
 #include "interfaces.h"
 
 class ComponentCtrl : public RectCtrl
@@ -17,6 +18,8 @@ class ComponentCtrl : public RectCtrl
 public:
     ComponentCtrl(IComponent *component, CPoint position = CPoint(0, 0));
     virtual ~ComponentCtrl();
+
+    virtual bool Connect(ModelCtrl *modelCtrl);
 
 public:
     virtual bool SetId(UINT32 id);

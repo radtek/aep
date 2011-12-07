@@ -30,4 +30,7 @@ namespace Utility
 
     LPCWSTR AttributeTypeToString(Attribute::AttributeType attributeType);
     Attribute::AttributeType StringToAttributeType(wstring str);
+
+    double DistanceToEdge(CPoint p1, CPoint p2, CPoint p);
+    double DistanceToPoint(CPoint p1, CPoint p2);
 };

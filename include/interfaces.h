@@ -22,16 +22,35 @@ enum CIID
     CIID_FIRST = 0,
     CIID_ICOMPONENT,
     CIID_IPARAM,
+    CIID_IALGORITHM,
     CIID_LAST,
 };
 
 #define BEGIN_CLIENT_CIID \
     enum CLIENT_CIID \
     { \
-        CLIENT_CIID_First = CIID_LAST,
+        CLIENT_CIID_FIRST = CIID_LAST,
 
 #define END_CLIENT_CIID \
         CLIENT_CIID_LAST, \
+    };
+
+// 组件部分
+enum CCID
+{
+    CCID_FIRST = 0,
+    CCID_INTERNAL_ALGORITHM,
+    CCID_EXTERNAL_ALGORITHM,
+    CCID_LAST,
+};
+
+#define BEGIN_CLIENT_CCID \
+    enum CLIENT_CCID \
+    { \
+        CLIENT_CCID_FIRST = CIID_LAST,
+
+#define END_CLIENT_CCID \
+        CLIENT_CCID_LAST, \
     };
 
 typedef vector<UINT32> InterfaceList;
@@ -101,5 +120,10 @@ typedef struct
 } ComponentType;
 
 typedef map<UINT32, ComponentType> ComponentTypeMap;
+
+interface IAlgorithm : public IComponent
+{
+    virtual RC _stdcall Run() = 0;
+};
 
 #endif // __INTERFACES_H__

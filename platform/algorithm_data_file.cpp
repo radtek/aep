@@ -15,6 +15,11 @@ AlgorithmList &AlgorithmDataFile::GetAlgorithmList()
     return m_AlgorithmList;
 }
 
+InternalAlgorithmList &AlgorithmDataFile::GetInternalAlgorithmList()
+{
+    return m_InternalAlgorithmList;
+}
+
 RC AlgorithmDataFile::InsertAlgorithm(const Algorithm &algorithm)
 {
     RC rc;
@@ -56,6 +61,7 @@ RC AlgorithmDataFile::RemoveAlgorithm(wstring name)
     return rc;
 }
 
+/*
 RC AlgorithmDataFile::ParseLine(const wstring &line)
 {
     RC rc;
@@ -78,6 +84,33 @@ RC AlgorithmDataFile::ParseLine(const wstring &line)
     }
 
     m_AlgorithmList.push_back(Algorithm(id, name, dllFileName, funcName, iconFileName, paramNameList));
+
+    return rc;
+}
+*/
+
+RC AlgorithmDataFile::ParseLine(const wstring &line)
+{
+    RC rc;
+
+    wistringstream ist(line);
+
+    UINT32 id;
+    wstring name, dllFileName, funcName, iconFileName;
+    ist >> id >> name >> dllFileName >> funcName >> iconFileName;
+
+    ParamNameList paramNameList;
+    while (!ist.eof())
+    {
+        wstring paramName;
+        ist >> paramName;
+        if (!paramName.empty())
+        {
+            paramNameList.push_back(paramName);
+        }
+    }
+
+    m_InternalAlgorithmList.push_back(InternalAlgorithm(id, name, dllFileName, funcName));
 
     return rc;
 }

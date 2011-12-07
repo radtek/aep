@@ -26,9 +26,14 @@ BEGIN_MESSAGE_MAP(CMainFrame, CBCGPFrameWnd)
 	ON_WM_CREATE()
 	ON_COMMAND(ID_VIEW_CUSTOMIZE, OnViewCustomize)
 	ON_REGISTERED_MESSAGE(BCGM_RESETTOOLBAR, OnToolbarReset)
-	ON_COMMAND_RANGE(ID_COMPONENT_INFO_BEGIN, ID_COMPONENT_INFO_END, OnComponentType)
-    ON_UPDATE_COMMAND_UI_RANGE(ID_COMPONENT_INFO_BEGIN, ID_COMPONENT_INFO_END, OnUpdateComponentTypeUI)
-	ON_COMMAND_RANGE(ID_ALGORITHM_BEGIN, ID_ALGORITHM_END, OnAlgorithm)
+	ON_COMMAND_RANGE(ID_COMPONENT_TYPE_BEGIN, ID_COMPONENT_TYPE_END, OnComponentType)
+    ON_UPDATE_COMMAND_UI_RANGE(ID_COMPONENT_TYPE_BEGIN, ID_COMPONENT_TYPE_END, OnUpdateComponentTypeUI)
+    ON_COMMAND_RANGE(ID_INTERNAL_ALGORITHM_BEGIN, ID_INTERNAL_ALGORITHM_END, OnInternalAlgorithm)
+    ON_UPDATE_COMMAND_UI_RANGE(ID_INTERNAL_ALGORITHM_BEGIN, ID_INTERNAL_ALGORITHM_END, OnUpdateInternalAlgorithmUI)
+	ON_COMMAND_RANGE(ID_EXTERNAL_ALGORITHM_BEGIN, ID_EXTERNAL_ALGORITHM_END, OnExternalAlgorithm)
+    ON_UPDATE_COMMAND_UI_RANGE(ID_EXTERNAL_ALGORITHM_BEGIN, ID_EXTERNAL_ALGORITHM_END, OnUpdateExternalAlgorithmUI)
+	ON_COMMAND_RANGE(ID_CONNECTOR_BEGIN, ID_CONNECTOR_END, OnConnector)
+    ON_UPDATE_COMMAND_UI_RANGE(ID_CONNECTOR_BEGIN, ID_CONNECTOR_END, OnUpdateConnectorUI)
 	ON_COMMAND_RANGE(ID_VIEW_APPLOOK_2000, ID_VIEW_APPLOOK_VS2008, OnAppLook)
 	ON_UPDATE_COMMAND_UI_RANGE(ID_VIEW_APPLOOK_2000, ID_VIEW_APPLOOK_VS2008, OnUpdateAppLook)
 END_MESSAGE_MAP()
@@ -261,10 +266,11 @@ afx_msg LRESULT CMainFrame::OnToolbarReset(WPARAM /*wp*/,LPARAM)
 	return 0;
 }
 
+
 void CMainFrame::OnComponentType(UINT id)
 {
 	// TODO: process shortcuts bar commands here...
-    UINT32 componentId = id - ID_COMPONENT_INFO_BEGIN;
+    UINT32 componentId = id - ID_COMPONENT_TYPE_BEGIN;
     CModelView *view = DYNAMIC_DOWNCAST(CModelView, GetActiveView());
     if (view->m_CurrentState == CModelView::STATE_NEW_COMPONENT &&
         componentId == view->m_CurrentComponentTypeId)
@@ -281,12 +287,13 @@ void CMainFrame::OnComponentType(UINT id)
 
 void CMainFrame::OnUpdateComponentTypeUI(CCmdUI *cmdUI)
 {
-    UINT32 componentId = cmdUI->m_nID - ID_COMPONENT_INFO_BEGIN;
     CModelView *view = DYNAMIC_DOWNCAST(CModelView, GetActiveView());
+    UINT32 uiId = cmdUI->m_nID - ID_COMPONENT_TYPE_BEGIN;
     if (view->m_CurrentState == CModelView::STATE_NEW_COMPONENT &&
-        componentId == view->m_CurrentComponentTypeId)
+        uiId == view->m_CurrentComponentTypeId)
     {
         cmdUI->SetCheck();
+        return;
     }
     else
     {
@@ -294,18 +301,85 @@ void CMainFrame::OnUpdateComponentTypeUI(CCmdUI *cmdUI)
     }
 }
 
-void CMainFrame::OnAlgorithm(UINT id)
+void CMainFrame::OnInternalAlgorithm(UINT id)
 {
 	// TODO: process shortcuts bar commands here...
-    UINT32 algorithmId = id - ID_ALGORITHM_BEGIN;
-    AlgorithmList &algorithmList = theApp.m_Platform.GetAlgorithmList();
-    for (UINT32 i = 0; i < algorithmList.size(); ++i)
+    UINT32 internalAlgorithmId = id - ID_INTERNAL_ALGORITHM_BEGIN;
+    InternalAlgorithmList &internalAlgorithmList = theApp.m_Platform.GetInternalAlgorithmList();
+    for (UINT32 i = 0; i < internalAlgorithmList.size(); ++i)
     {
-        Algorithm &algorithm = algorithmList[i];
-        if (algorithm.GetId() == algorithmId)
+        InternalAlgorithm &internalAlgorithm = internalAlgorithmList[i];
+        if (internalAlgorithm.GetId() == internalAlgorithmId)
         {
-            Utility::PromptMessage(algorithm.GetName().c_str());
+            Utility::PromptMessage(internalAlgorithm.GetName().c_str());
         }
+    }
+}
+
+void CMainFrame::OnUpdateInternalAlgorithmUI(CCmdUI *cmdUI)
+{
+    CModelView *view = DYNAMIC_DOWNCAST(CModelView, GetActiveView());
+    UINT32 uiId = cmdUI->m_nID - ID_INTERNAL_ALGORITHM_BEGIN;
+    if (view->m_CurrentState == CModelView::STATE_NEW_INTERNAL_ALGORITHM)
+    {
+        cmdUI->SetCheck();
+        return;
+    }
+    else
+    {
+        cmdUI->SetCheck(0);
+    }
+}
+
+void CMainFrame::OnExternalAlgorithm(UINT id)
+{
+}
+
+void CMainFrame::OnUpdateExternalAlgorithmUI(CCmdUI *cmdUI)
+{
+    CModelView *view = DYNAMIC_DOWNCAST(CModelView, GetActiveView());
+    UINT32 uiId = cmdUI->m_nID - ID_EXTERNAL_ALGORITHM_BEGIN;
+    if (view->m_CurrentState == CModelView::STATE_NEW_EXTERNAL_ALGORITHM)
+    {
+        cmdUI->SetCheck();
+        return;
+    }
+    else
+    {
+        cmdUI->SetCheck(0);
+    }
+}
+
+void CMainFrame::OnConnector(UINT id)
+{
+    UINT32 connectorId = id - ID_CONNECTOR_BEGIN;
+    CModelView *view = DYNAMIC_DOWNCAST(CModelView, GetActiveView());
+    if (view->m_CurrentState == CModelView::STATE_NEW_CONNECTOR &&
+        connectorId == view->m_CurrentConnectorId)
+    {
+        view->m_CurrentState = CModelView::STATE_NORMAL;
+        view->m_CurrentConnectorId = -1;
+    }
+    else
+    {
+        view->m_CurrentState = CModelView::STATE_NEW_CONNECTOR;
+        view->m_CurrentConnectorId = connectorId;
+    }
+}
+
+void CMainFrame::OnUpdateConnectorUI(CCmdUI *cmdUI)
+{
+    CModelView *view = DYNAMIC_DOWNCAST(CModelView, GetActiveView());
+    UINT32 uiId = cmdUI->m_nID - ID_CONNECTOR_BEGIN;
+    if (view->m_CurrentState == CModelView::STATE_NEW_CONNECTOR &&
+        uiId == view->m_CurrentConnectorId)
+    {
+        cmdUI->SetCheck();
+        return;
+    }
+    else
+    {
+        cmdUI->SetCheck(0);
     }
 }
 
@@ -354,27 +428,54 @@ BOOL CMainFrame::CreateShortcutsBar ()
             ComponentType &componentType = componentIt->second;
             if (interfaceType.InterfaceId == componentType.InterfaceId)
             {
-                pane->AddButton (images.ExtractIcon (interfaceIndex), componentType.TypeName, ID_COMPONENT_INFO_BEGIN + componentType.TypeId);
+                pane->AddButton (images.ExtractIcon (interfaceIndex), componentType.TypeName, ID_COMPONENT_TYPE_BEGIN + componentType.TypeId);
             }
         }
         pShortcutsBarContainer->AddTab (pane, interfaceType.InterfaceName, -1, FALSE);
         pane->EnableDocking (CBRS_ALIGN_ANY);
     }
 
-    AlgorithmList &algorithmList = theApp.m_Platform.GetAlgorithmList();
-    CBCGPOutlookBarPane *pane = new CBCGPOutlookBarPane;
-    m_PaneList.push_back(pane);
-    pane->Create (&m_wndShortcutsBar, dwDefaultToolbarStyle, ID_PANE_BEGIN + interfaceTypeMap.size());
-    pane->SetOwner (this);
-    pane->EnableTextLabels ();
-    pane->EnableDocking (CBRS_ALIGN_ANY);
-    for (UINT32 i = 0; i < algorithmList.size(); ++i)
+    InternalAlgorithmList &internalAlgorithmList = theApp.m_Platform.GetInternalAlgorithmList();
+    CBCGPOutlookBarPane *internalAlgorithmPane = new CBCGPOutlookBarPane;
+    m_PaneList.push_back(internalAlgorithmPane);
+    internalAlgorithmPane->Create (&m_wndShortcutsBar, dwDefaultToolbarStyle, ID_PANE_BEGIN + interfaceTypeMap.size());
+    internalAlgorithmPane->SetOwner (this);
+    internalAlgorithmPane->EnableTextLabels ();
+    internalAlgorithmPane->EnableDocking (CBRS_ALIGN_ANY);
+    for (UINT32 i = 0; i < internalAlgorithmList.size(); ++i)
     {
-        Algorithm &algorithm = algorithmList[i];
-        pane->AddButton (images.ExtractIcon (interfaceTypeMap.size()), algorithm.GetName().c_str(), ID_ALGORITHM_BEGIN + algorithm.GetId());
+        InternalAlgorithm &internalAlgorithm = internalAlgorithmList[i];
+        internalAlgorithmPane->AddButton (images.ExtractIcon (interfaceTypeMap.size()), internalAlgorithm.GetName().c_str(), ID_INTERNAL_ALGORITHM_BEGIN + internalAlgorithm.GetId());
     }
-    pShortcutsBarContainer->AddTab (pane, TEXT("算法"), -1, FALSE);
-    pane->EnableDocking (CBRS_ALIGN_ANY);
+    pShortcutsBarContainer->AddTab (internalAlgorithmPane, InternalAlgorithm::s_ComponentName, -1, FALSE);
+    internalAlgorithmPane->EnableDocking (CBRS_ALIGN_ANY);
+
+    // InternalAlgorithmList &internalAlgorithmList = theApp.m_Platform.GetInternalAlgorithmList();
+    CBCGPOutlookBarPane *externalAlgorithmPane = new CBCGPOutlookBarPane;
+    m_PaneList.push_back(externalAlgorithmPane);
+    externalAlgorithmPane->Create (&m_wndShortcutsBar, dwDefaultToolbarStyle, ID_PANE_BEGIN + interfaceTypeMap.size() + 1);
+    externalAlgorithmPane->SetOwner (this);
+    externalAlgorithmPane->EnableTextLabels ();
+    externalAlgorithmPane->EnableDocking (CBRS_ALIGN_ANY);
+    /*
+    for (UINT32 i = 0; i < internalAlgorithmList.size(); ++i)
+    {
+        InternalAlgorithm &internalAlgorithm = internalAlgorithmList[i];
+        externalAlgorithmPane->AddButton (images.ExtractIcon (interfaceTypeMap.size()), internalAlgorithm.GetName().c_str(), ID_EXTERNAL_ALGORITHM_BEGIN + externalAlgorithm.GetId());
+    }
+    */
+    pShortcutsBarContainer->AddTab (externalAlgorithmPane, TEXT("外部算法")/*InternalAlgorithm::s_ComponentName*/, -1, FALSE);
+    externalAlgorithmPane->EnableDocking (CBRS_ALIGN_ANY);
+
+    CBCGPOutlookBarPane *connectorPane = new CBCGPOutlookBarPane;
+    m_PaneList.push_back(connectorPane);
+    connectorPane->Create (&m_wndShortcutsBar, dwDefaultToolbarStyle, ID_PANE_BEGIN + interfaceTypeMap.size() + 2);
+    connectorPane->SetOwner (this);
+    connectorPane->EnableTextLabels ();
+    connectorPane->EnableDocking (CBRS_ALIGN_ANY);
+    connectorPane->AddButton (images.ExtractIcon (interfaceTypeMap.size() + 2), TEXT("连接线"), ID_CONNECTOR_BEGIN);
+    pShortcutsBarContainer->AddTab (connectorPane, TEXT("连接线"), -1, FALSE);
+    connectorPane->EnableDocking (CBRS_ALIGN_ANY);
 
 	return TRUE;
 }

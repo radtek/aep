@@ -172,6 +172,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\internal_algorithm.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\utility\massert.cpp"
 				>
 			</File>
@@ -215,6 +219,10 @@
 			</File>
 			<File
 				RelativePath="..\include\errors.h"
+				>
+			</File>
+			<File
+				RelativePath="..\include\internal_algorithm.h"
 				>
 			</File>
 			<File

@@ -110,3 +110,14 @@ bool CModelDoc::RemoveModelCtrl(ModelCtrl *modelCtrl)
     }
     return false;
 }
+
+bool CModelDoc::AddConnector(Connector *connector)
+{
+    if (connector == NULL)
+    {
+        return false;
+    }
+
+    m_ConnectorList.push_back(connector);
+    return true;
+}

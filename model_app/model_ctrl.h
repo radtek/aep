@@ -9,15 +9,14 @@
 #ifndef __MODEL_CTRL_H__
 #define __MODEL_CTRL_H__
 
-#include <afxwin.h>
+// #include <afxwin.h>
 
 #include <list>
 
-#include "stdafx.h"
-#include "model_app.h"
-#include "main_frm.h"
-
 using namespace std;
+
+class CAttributeBar;
+class Connector;
 
 class ModelCtrl
 {
@@ -34,6 +33,26 @@ public:
     virtual void Select();
     virtual void UnSelect();
 
+    virtual bool Connect(ModelCtrl *modelCtrl) = 0;
+
+public:
+    virtual void AddConnector(Connector *connector);
+    virtual void RemoveConnector(Connector *connector);
+
+    virtual CPoint GetAttachPoint(CPoint point) = 0;
+
+public:
+    virtual INT32 Left() = 0;
+    virtual INT32 Right() = 0;
+    virtual INT32 Top() = 0;
+    virtual INT32 Bottom() = 0;
+    virtual CPoint Center() = 0;
+
+    virtual CPoint LeftCenter() = 0;
+    virtual CPoint RightCenter() = 0;
+    virtual CPoint TopCenter() = 0;
+    virtual CPoint BottomCenter() = 0;
+
 protected:
     virtual CAttributeBar &GetAttributeBar();
     virtual void UpdateAttributeBar() = 0;
@@ -41,6 +60,7 @@ protected:
 
 protected:
     bool m_IsSelected;
+    list<Connector *> m_ConnectorList;
 };
 
 typedef list<ModelCtrl *> ModelCtrlList;

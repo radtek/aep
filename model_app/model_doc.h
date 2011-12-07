@@ -5,6 +5,7 @@
 #pragma once
 
 #include "model_ctrl.h"
+#include "connector.h"
 
 class CModelDoc : public CDocument
 {
@@ -16,6 +17,8 @@ protected: // create from serialization only
 public:
     ModelCtrlList m_ModelCtrlList;
 
+    ConnectorList m_ConnectorList;
+
 protected:
     UINT32 m_CurrentComponentId;
 
@@ -23,6 +26,9 @@ protected:
 public:
     bool AddModelCtrl(ModelCtrl *modelCtrl);
     bool RemoveModelCtrl(ModelCtrl *modelCtrl);
+
+    bool AddConnector(Connector *connector);
+    bool RemoveConnector(Connector *connector);
 
 // Overrides
 	public:

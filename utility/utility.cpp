@@ -9,6 +9,7 @@
 #include "utility.h"
 #include <strsafe.h>
 #include <locale.h>
+#include <math.h>
 
 bool Utility::FileExists(LPCWSTR fileName)
 {
@@ -155,4 +156,14 @@ Attribute::AttributeType Utility::StringToAttributeType(wstring str)
     {
         return Attribute::TYPE_UNKNOWN;
     }
+}
+
+double Utility::DistanceToEdge(CPoint p1, CPoint p2, CPoint p)
+{
+    return (fabs((double)((p2.y - p1.y) * p.x + (p1.x - p2.x) * p.y + ((p2.x * p1.y) - (p1.x * p2.y))))) / (sqrt(pow((double)(p2.y - p1.y), 2) + pow((double)(p1.x - p2.x), 2))); 
+}
+
+double Utility::DistanceToPoint(CPoint p1, CPoint p2)
+{
+    return sqrt(pow((double)(p1.y - p2.y), 2) + pow((double)(p1.x - p2.x), 2));
 }

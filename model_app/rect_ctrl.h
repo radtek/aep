@@ -10,6 +10,7 @@
 #define __RECT_CTRL_H__
 
 #include "model_ctrl.h"
+
 #include "interfaces.h"
 
 class RectCtrl : public ModelCtrl
@@ -30,20 +31,24 @@ protected:
     virtual void DrawTitle(CDC *dc);
 
 public:
+    virtual CPoint GetAttachPoint(CPoint point);
+
+public:
     virtual INT32 Left();
     virtual INT32 Right();
     virtual INT32 Top();
     virtual INT32 Bottom();
 
-    virtual CPoint LeftTop();
-    virtual CPoint LeftBottom();
-    virtual CPoint RightTop();
-    virtual CPoint RightBottom();
     virtual CPoint Center();
     virtual CPoint LeftCenter();
     virtual CPoint RightCenter();
     virtual CPoint TopCenter();
     virtual CPoint BottomCenter();
+
+    virtual CPoint LeftTop();
+    virtual CPoint LeftBottom();
+    virtual CPoint RightTop();
+    virtual CPoint RightBottom();
 
 protected:
     CPoint m_Position;

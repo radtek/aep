@@ -14,23 +14,41 @@ protected: // create from serialization only
 
 // Attributes
 public:
+    static const UINT32 s_Threshold = 5;
+
 	CModelDoc* GetDocument() const;
 
     enum State
     {
         STATE_NORMAL,
         STATE_NEW_COMPONENT,
+        STATE_NEW_INTERNAL_ALGORITHM,
+        STATE_NEW_EXTERNAL_ALGORITHM,
+        STATE_NEW_CONNECTOR,
+        STATE_COMPONENT_SELECTED,
+        STATE_CONNECTOR_SELECTED,
     } m_CurrentState;
 
     // New component.
     INT32 m_CurrentComponentTypeId;
+    ModelCtrl *m_CurrentModelCtrl;
+
+    // New connector.
+    INT32 m_CurrentConnectorId;
+    Connector *m_CurrentConnector;
 
     // Normal.
-    ModelCtrl *m_CurrentModelCtrl;
     CPoint m_LastClickPosition;
 
 // Operations
 public:
+    ModelCtrl *HitTestModelCtrl(CPoint point);
+    Connector *HitTestConnector(CPoint point);
+    void SelectModelCtrl(ModelCtrl *modelCtrl);
+    void SelectConnector(Connector *connector, CPoint point);
+    void UnSelectCurrentModelCtrl();
+    void UnSelectCurrentConnector();
+    void UnSelectAll();
 
 // Overrides
 	public:
@@ -59,6 +77,8 @@ public:
     afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
 public:
     afx_msg void OnMouseMove(UINT nFlags, CPoint point);
+public:
+    afx_msg void OnLButtonUp(UINT nFlags, CPoint point);
 };
 
 #ifndef _DEBUG  // debug version in model_view.cpp

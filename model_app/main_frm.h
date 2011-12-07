@@ -50,7 +50,12 @@ protected:
 	void OnUpdateToolsViewUserToolbar (CCmdUI* pCmdUI);
 	void OnComponentType(UINT id);
     void OnUpdateComponentTypeUI(CCmdUI *cmdUI);
-	void OnAlgorithm(UINT id);
+	void OnInternalAlgorithm(UINT id);
+    void OnUpdateInternalAlgorithmUI(CCmdUI *cmdUI);
+	void OnExternalAlgorithm(UINT id);
+    void OnUpdateExternalAlgorithmUI(CCmdUI *cmdUI);
+    void OnConnector(UINT id);
+    void OnUpdateConnectorUI(CCmdUI *cmdUI);
 	afx_msg void OnAppLook(UINT id);
 	afx_msg void OnUpdateAppLook(CCmdUI* pCmdUI);
 	DECLARE_MESSAGE_MAP()
