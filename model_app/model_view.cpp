@@ -357,6 +357,7 @@ void CModelView::OnMouseMove(UINT nFlags, CPoint point)
 void CModelView::OnLButtonUp(UINT nFlags, CPoint point)
 {
     // TODO: Add your message handler code here and/or call default
+
     ReleaseCapture();
 
     if (m_CurrentState == STATE_CONNECTOR_SELECTED)
