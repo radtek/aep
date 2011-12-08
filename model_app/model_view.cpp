@@ -8,6 +8,7 @@
 #include "model_view.h"
 
 #include "component_ctrl.h"
+#include "internal_algorithm_ctrl.h"
 #include "connector.h"
 
 #ifdef _DEBUG
@@ -36,8 +37,10 @@ CModelView::CModelView()
 m_CurrentState(STATE_NORMAL),
 m_CurrentComponentTypeId(-1),
 m_CurrentModelCtrl(NULL),
+m_CurrentInternalAlgorithmId(-1),
 m_CurrentConnectorId(-1),
-m_CurrentConnector(NULL)
+m_CurrentConnector(NULL),
+m_Moved(false)
 {
 	// TODO: add construction code here
 
@@ -200,6 +203,8 @@ void CModelView::SelectConnector(Connector *connector, CPoint point)
 void CModelView::OnLButtonDown(UINT nFlags, CPoint point)
 {
     // TODO: Add your message handler code here and/or call default
+    SetCapture();
+
     if (m_CurrentState == STATE_NEW_COMPONENT)
     {
         ComponentType &info = theApp.m_Platform.GetComponentTypeMap()[m_CurrentComponentTypeId];
@@ -212,6 +217,12 @@ void CModelView::OnLButtonDown(UINT nFlags, CPoint point)
     }
     else if (m_CurrentState == STATE_NEW_INTERNAL_ALGORITHM)
     {
+        InternalAlgorithm &internalAlgorithm = theApp.m_Platform.GetInternalAlgorithmMap()[m_CurrentInternalAlgorithmId];
+        ModelCtrl *modelCtrl = new InternalAlgorithmCtrl(&internalAlgorithm, point);
+        GetDocument()->AddModelCtrl(modelCtrl);
+        m_CurrentState = STATE_NORMAL;
+        UnSelectAll();
+        Invalidate();
     }
     else if (m_CurrentState == STATE_NEW_EXTERNAL_ALGORITHM)
     {
@@ -251,7 +262,6 @@ void CModelView::OnLButtonDown(UINT nFlags, CPoint point)
             }
         }
 
-        m_LastClickPosition = point;
         Invalidate();
     }
     else if (m_CurrentState == STATE_CONNECTOR_SELECTED)
@@ -285,7 +295,6 @@ void CModelView::OnLButtonDown(UINT nFlags, CPoint point)
             }
         }
 
-        m_LastClickPosition = point;
         Invalidate();
     }
     else if (m_CurrentState == STATE_NORMAL)
@@ -306,9 +315,11 @@ void CModelView::OnLButtonDown(UINT nFlags, CPoint point)
             }
         }
 
-        m_LastClickPosition = point;
         Invalidate();
     }
+
+    m_LastClickPosition = point;
+    m_Moved = false;
 
     CView::OnLButtonDown(nFlags, point);
 }
@@ -324,7 +335,6 @@ void CModelView::OnMouseMove(UINT nFlags, CPoint point)
     if (m_CurrentState == STATE_COMPONENT_SELECTED)
     {
         CPoint d = point - m_LastClickPosition;
-        m_LastClickPosition = point;
         m_CurrentModelCtrl->Move(d);
 
         Invalidate();
@@ -333,11 +343,13 @@ void CModelView::OnMouseMove(UINT nFlags, CPoint point)
     else if (m_CurrentState == STATE_CONNECTOR_SELECTED)
     {
         CPoint d = point - m_LastClickPosition;
-        m_LastClickPosition = point;
         m_CurrentConnector->Move(d);
 
         Invalidate();
     }
+
+    m_LastClickPosition = point;
+    m_Moved = true;
 
     CView::OnMouseMove(nFlags, point);
 }
@@ -345,19 +357,26 @@ void CModelView::OnMouseMove(UINT nFlags, CPoint point)
 void CModelView::OnLButtonUp(UINT nFlags, CPoint point)
 {
     // TODO: Add your message handler code here and/or call default
+    ReleaseCapture();
+
     if (m_CurrentState == STATE_CONNECTOR_SELECTED)
     {
-        m_CurrentConnector->Disconnect();
-
-        ModelCtrl *modelCtrl = HitTestModelCtrl(point);
-        if (modelCtrl != NULL)
+        if (m_Moved)
         {
-            m_CurrentConnector->SetAttachPoint(modelCtrl->GetAttachPoint(point));
-            m_CurrentConnector->Connect(modelCtrl);
+            m_CurrentConnector->Disconnect();
+
+            ModelCtrl *modelCtrl = HitTestModelCtrl(point);
+            if (modelCtrl != NULL)
+            {
+                m_CurrentConnector->SetAttachPoint(modelCtrl->GetAttachPoint(point));
+                m_CurrentConnector->Connect(modelCtrl);
+            }
         }
 
         Invalidate();
     }
+
+    m_Moved = false;
 
     CView::OnLButtonUp(nFlags, point);
 }

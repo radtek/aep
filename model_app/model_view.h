@@ -33,12 +33,16 @@ public:
     INT32 m_CurrentComponentTypeId;
     ModelCtrl *m_CurrentModelCtrl;
 
+    // New internal algorithm.
+    INT32 m_CurrentInternalAlgorithmId;
+
     // New connector.
     INT32 m_CurrentConnectorId;
     Connector *m_CurrentConnector;
 
     // Normal.
     CPoint m_LastClickPosition;
+    bool m_Moved;
 
 // Operations
 public:

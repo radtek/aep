@@ -15,9 +15,9 @@ AlgorithmList &AlgorithmDataFile::GetAlgorithmList()
     return m_AlgorithmList;
 }
 
-InternalAlgorithmList &AlgorithmDataFile::GetInternalAlgorithmList()
+InternalAlgorithmMap &AlgorithmDataFile::GetInternalAlgorithmMap()
 {
-    return m_InternalAlgorithmList;
+    return m_InternalAlgorithmMap;
 }
 
 RC AlgorithmDataFile::InsertAlgorithm(const Algorithm &algorithm)
@@ -95,9 +95,9 @@ RC AlgorithmDataFile::ParseLine(const wstring &line)
 
     wistringstream ist(line);
 
-    UINT32 id;
+    UINT32 algorithmId;
     wstring name, dllFileName, funcName, iconFileName;
-    ist >> id >> name >> dllFileName >> funcName >> iconFileName;
+    ist >> algorithmId >> name >> dllFileName >> funcName >> iconFileName;
 
     ParamNameList paramNameList;
     while (!ist.eof())
@@ -110,7 +110,7 @@ RC AlgorithmDataFile::ParseLine(const wstring &line)
         }
     }
 
-    m_InternalAlgorithmList.push_back(InternalAlgorithm(id, name, dllFileName, funcName));
+    m_InternalAlgorithmMap[algorithmId] = InternalAlgorithm(algorithmId, name, dllFileName, funcName);
 
     return rc;
 }

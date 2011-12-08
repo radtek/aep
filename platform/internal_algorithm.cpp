@@ -14,12 +14,16 @@
 
 using namespace std;
 
-InternalAlgorithm::InternalAlgorithm(UINT32 id,
+InternalAlgorithm::InternalAlgorithm()
+{
+}
+
+InternalAlgorithm::InternalAlgorithm(UINT32 algorithmId,
                                      wstring name,
                                      wstring dllFileName,
                                      wstring funcName)
                                      :
-m_Id(id),
+m_AlgorithmId(algorithmId),
 m_Name(name),
 m_DllFileName(dllFileName),
 m_FuncName(funcName)
@@ -109,6 +113,16 @@ bool InternalAlgorithm::Connect(IComponent *component)
         return true;
     }
     return false;
+}
+
+UINT32 InternalAlgorithm::GetAlgorithmId()
+{
+    return m_AlgorithmId;
+}
+
+void InternalAlgorithm::SetAlgorithmId(UINT32 algorithmId)
+{
+    m_AlgorithmId = algorithmId;
 }
 
 RC InternalAlgorithm::Run()

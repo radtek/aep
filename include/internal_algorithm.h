@@ -14,7 +14,8 @@
 class InternalAlgorithm : public IAlgorithm
 {
 public:
-    InternalAlgorithm(UINT32 id,
+    InternalAlgorithm();
+    InternalAlgorithm(UINT32 algorithmId,
         wstring name,
         wstring dllFileName,
         wstring funcName);
@@ -32,10 +33,12 @@ public:
     virtual RC _stdcall SetAttribute(UINT32 aid, void *attr);
     virtual bool _stdcall Connect(IComponent *component);
 
+    virtual UINT32 _stdcall GetAlgorithmId();
+    virtual void _stdcall SetAlgorithmId(UINT32 algorithmId);
     virtual RC _stdcall Run();
 
 public:
-    /** @brief 算法ID. */
+    /** @brief 组件ID. */
     UINT32 m_Id;
     /** @brief 算法名称. */
     wstring m_Name;
@@ -43,8 +46,9 @@ public:
     wstring m_DllFileName;
     /** @brief 算法入口函数名称. */
     wstring m_FuncName;
-    /** @brief 算法图标文件名. */
-    wstring m_IconFileName;
+
+    /** @brief 算法ID. */
+    UINT32 m_AlgorithmId;
 
     typedef vector<IParam *> ParamList;
     ParamList m_ParamList;
@@ -54,6 +58,6 @@ public:
     static LPCWSTR s_ComponentName;
 };
 
-typedef vector<InternalAlgorithm> InternalAlgorithmList;
+typedef map<UINT32, InternalAlgorithm> InternalAlgorithmMap;
 
 #endif // __INTERNAL_ALGORITHM_H__

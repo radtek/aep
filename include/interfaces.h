@@ -123,6 +123,8 @@ typedef map<UINT32, ComponentType> ComponentTypeMap;
 
 interface IAlgorithm : public IComponent
 {
+    virtual UINT32 _stdcall GetAlgorithmId() = 0;
+    virtual void _stdcall SetAlgorithmId(UINT32 algorithmId) = 0;
     virtual RC _stdcall Run() = 0;
 };
 

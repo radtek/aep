@@ -19,11 +19,15 @@ protected:
     {
         STATE_NONE,
         STATE_COMPONENT,
-        STATE_ALGORITHM,
+        STATE_INTERNAL_ALGORITHM,
+        STATE_EXTERNAL_ALGORITHM,
     } m_CurrentState;
 
     // Component.
     IComponent *m_CurrentComponent;
+
+    // Internal algorithm.
+    InternalAlgorithm *m_CurrentInternalAlgorithm;
 
     // Grid ctrl.
     enum ItemColumn
@@ -57,6 +61,7 @@ protected:
 public:
     void Clear();
     void SetComponent(IComponent *component);
+    void SetInternalAlgorithm(InternalAlgorithm *internalAlgorithm);
     void OnItemChanged(CBCGPGridItem* pItem, int nRow, int nColumn);
 
 // Overrides

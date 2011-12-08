@@ -14,7 +14,7 @@ public:
     virtual ~AlgorithmDataFile();
 
     AlgorithmList &GetAlgorithmList();
-    InternalAlgorithmList &GetInternalAlgorithmList();
+    InternalAlgorithmMap &GetInternalAlgorithmMap();
     RC InsertAlgorithm(const Algorithm &algorithm);
     RC RemoveAlgorithm(wstring name);
 protected:
@@ -22,7 +22,7 @@ protected:
 
 protected:
     AlgorithmList m_AlgorithmList;
-    InternalAlgorithmList m_InternalAlgorithmList;
+    InternalAlgorithmMap m_InternalAlgorithmMap;
 };
 
 #endif // __ALGORITHM_DATA_FILE_H__

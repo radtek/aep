@@ -305,14 +305,17 @@ void CMainFrame::OnInternalAlgorithm(UINT id)
 {
 	// TODO: process shortcuts bar commands here...
     UINT32 internalAlgorithmId = id - ID_INTERNAL_ALGORITHM_BEGIN;
-    InternalAlgorithmList &internalAlgorithmList = theApp.m_Platform.GetInternalAlgorithmList();
-    for (UINT32 i = 0; i < internalAlgorithmList.size(); ++i)
+        CModelView *view = DYNAMIC_DOWNCAST(CModelView, GetActiveView());
+    if (view->m_CurrentState == CModelView::STATE_NEW_INTERNAL_ALGORITHM &&
+        internalAlgorithmId == view->m_CurrentInternalAlgorithmId)
     {
-        InternalAlgorithm &internalAlgorithm = internalAlgorithmList[i];
-        if (internalAlgorithm.GetId() == internalAlgorithmId)
-        {
-            Utility::PromptMessage(internalAlgorithm.GetName().c_str());
-        }
+        view->m_CurrentState = CModelView::STATE_NORMAL;
+        view->m_CurrentInternalAlgorithmId = -1;
+    }
+    else
+    {
+        view->m_CurrentState = CModelView::STATE_NEW_INTERNAL_ALGORITHM;
+        view->m_CurrentInternalAlgorithmId = internalAlgorithmId;
     }
 }
 
@@ -320,7 +323,8 @@ void CMainFrame::OnUpdateInternalAlgorithmUI(CCmdUI *cmdUI)
 {
     CModelView *view = DYNAMIC_DOWNCAST(CModelView, GetActiveView());
     UINT32 uiId = cmdUI->m_nID - ID_INTERNAL_ALGORITHM_BEGIN;
-    if (view->m_CurrentState == CModelView::STATE_NEW_INTERNAL_ALGORITHM)
+    if (view->m_CurrentState == CModelView::STATE_NEW_INTERNAL_ALGORITHM &&
+        uiId == view->m_CurrentInternalAlgorithmId)
     {
         cmdUI->SetCheck();
         return;
@@ -435,17 +439,18 @@ BOOL CMainFrame::CreateShortcutsBar ()
         pane->EnableDocking (CBRS_ALIGN_ANY);
     }
 
-    InternalAlgorithmList &internalAlgorithmList = theApp.m_Platform.GetInternalAlgorithmList();
+    InternalAlgorithmMap &internalAlgorithmMap = theApp.m_Platform.GetInternalAlgorithmMap();
     CBCGPOutlookBarPane *internalAlgorithmPane = new CBCGPOutlookBarPane;
     m_PaneList.push_back(internalAlgorithmPane);
     internalAlgorithmPane->Create (&m_wndShortcutsBar, dwDefaultToolbarStyle, ID_PANE_BEGIN + interfaceTypeMap.size());
     internalAlgorithmPane->SetOwner (this);
     internalAlgorithmPane->EnableTextLabels ();
     internalAlgorithmPane->EnableDocking (CBRS_ALIGN_ANY);
-    for (UINT32 i = 0; i < internalAlgorithmList.size(); ++i)
+    for (InternalAlgorithmMap::iterator it = internalAlgorithmMap.begin();
+        it != internalAlgorithmMap.end(); ++it)
     {
-        InternalAlgorithm &internalAlgorithm = internalAlgorithmList[i];
-        internalAlgorithmPane->AddButton (images.ExtractIcon (interfaceTypeMap.size()), internalAlgorithm.GetName().c_str(), ID_INTERNAL_ALGORITHM_BEGIN + internalAlgorithm.GetId());
+        InternalAlgorithm &internalAlgorithm = it->second;
+        internalAlgorithmPane->AddButton (images.ExtractIcon (interfaceTypeMap.size()), internalAlgorithm.GetName().c_str(), ID_INTERNAL_ALGORITHM_BEGIN + internalAlgorithm.GetAlgorithmId());
     }
     pShortcutsBarContainer->AddTab (internalAlgorithmPane, InternalAlgorithm::s_ComponentName, -1, FALSE);
     internalAlgorithmPane->EnableDocking (CBRS_ALIGN_ANY);

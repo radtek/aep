@@ -35,7 +35,7 @@ public:
 
     AlgorithmList &GetAlgorithmList();
 
-    InternalAlgorithmList &GetInternalAlgorithmList();
+    InternalAlgorithmMap &GetInternalAlgorithmMap();
 
 private:
     // Æ½Ì¨¸¨Öúº¯Êý
@@ -62,7 +62,7 @@ private:
 
     AlgorithmList m_AlgorithmList;
 
-    InternalAlgorithmList m_InternalAlgorithmList;
+    InternalAlgorithmMap m_InternalAlgorithmMap;
 
     HINSTANCE m_ComponentDllHandle;
 

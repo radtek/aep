@@ -35,7 +35,8 @@ CAttributeBar::CAttributeBar()
 :
 m_AttributeGridCtrl(this),
 m_CurrentState(STATE_NONE),
-m_CurrentComponent(NULL)
+m_CurrentComponent(NULL),
+m_CurrentInternalAlgorithm(NULL)
 {
 	// TODO: add one-time construction code here
 }
@@ -61,9 +62,28 @@ CBCGPGridRow *CAttributeBar::CreateComponentIdRow()
     CBCGPGridRow *row = CreateNewRow();
 
     row->GetItem(IC_ID)->SetValue(TEXT("-"));
-    row->GetItem(IC_NAME)->SetValue(TEXT("组件ID"));
+    if (m_CurrentState == STATE_INTERNAL_ALGORITHM ||
+        m_CurrentState == STATE_EXTERNAL_ALGORITHM)
+    {
+        row->GetItem(IC_NAME)->SetValue(TEXT("算法ID"));
+    }
+    else
+    {
+        row->GetItem(IC_NAME)->SetValue(TEXT("组件ID"));
+    }
     row->GetItem(IC_TYPE)->SetValue(Utility::AttributeTypeToString(Attribute::TYPE_INT));
-    row->GetItem(IC_VALUE)->SetValue(m_CurrentComponent->GetId());
+    if (m_CurrentState == STATE_COMPONENT)
+    {
+        row->GetItem(IC_VALUE)->SetValue(m_CurrentComponent->GetId());
+    }
+    else if (m_CurrentState == STATE_INTERNAL_ALGORITHM)
+    {
+        row->GetItem(IC_VALUE)->SetValue(m_CurrentInternalAlgorithm->GetId());
+    }
+    else if (m_CurrentState == STATE_EXTERNAL_ALGORITHM)
+    {
+        // row->ReplaceItem(IC_VALUE, new CBCGPGridItem(m_CurrentComponent->GetName().c_str()));
+    }
 
     return row;
 }
@@ -73,9 +93,28 @@ CBCGPGridRow *CAttributeBar::CreateComponentNameRow()
     CBCGPGridRow *row = CreateNewRow();
 
     row->GetItem(IC_ID)->SetValue(TEXT("-"));
-    row->GetItem(IC_NAME)->SetValue(TEXT("组件名称"));
+    if (m_CurrentState == STATE_INTERNAL_ALGORITHM ||
+        m_CurrentState == STATE_EXTERNAL_ALGORITHM)
+    {
+        row->GetItem(IC_NAME)->SetValue(TEXT("算法名称"));
+    }
+    else
+    {
+        row->GetItem(IC_NAME)->SetValue(TEXT("组件名称"));
+    }
     row->GetItem(IC_TYPE)->SetValue(Utility::AttributeTypeToString(Attribute::TYPE_STRING));
-    row->ReplaceItem(IC_VALUE, new CBCGPGridItem(m_CurrentComponent->GetName().c_str()));
+    if (m_CurrentState == STATE_COMPONENT)
+    {
+        row->ReplaceItem(IC_VALUE, new CBCGPGridItem(m_CurrentComponent->GetName().c_str()));
+    }
+    else if (m_CurrentState == STATE_INTERNAL_ALGORITHM)
+    {
+        row->GetItem(IC_VALUE)->SetValue(m_CurrentInternalAlgorithm->GetName().c_str());
+    }
+    else if (m_CurrentState == STATE_EXTERNAL_ALGORITHM)
+    {
+        // row->ReplaceItem(IC_VALUE, new CBCGPGridItem(m_CurrentComponent->GetName().c_str()));
+    }
 
     return row;
 }
@@ -238,7 +277,28 @@ void CAttributeBar::SetComponent(IComponent *component)
     m_AttributeGridCtrl.AddRow(CreateComponentNameRow());
 
     AttributeList attributeList;
-    component->GetAttributeList(attributeList);
+    m_CurrentComponent->GetAttributeList(attributeList);
+
+    for (UINT32 i = 0; i < attributeList.size(); ++i)
+    {
+        Attribute &attribute = attributeList[i];
+        m_AttributeGridCtrl.AddRow(CreateComponentAttributeRow(attribute));
+    }
+
+    m_AttributeGridCtrl.AdjustLayout();
+    m_AttributeGridCtrl.Invalidate();
+}
+
+void CAttributeBar::SetInternalAlgorithm(InternalAlgorithm *internalAlgorithm)
+{
+    m_CurrentState = STATE_INTERNAL_ALGORITHM;
+    m_CurrentInternalAlgorithm = internalAlgorithm;
+
+    m_AttributeGridCtrl.AddRow(CreateComponentIdRow());
+    m_AttributeGridCtrl.AddRow(CreateComponentNameRow());
+
+    AttributeList attributeList;
+    m_CurrentInternalAlgorithm->GetAttributeList(attributeList);
 
     for (UINT32 i = 0; i < attributeList.size(); ++i)
     {

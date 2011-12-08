@@ -222,6 +222,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\internal_algorithm_ctrl.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\main_frm.cpp"
 				>
 			</File>
@@ -285,6 +289,10 @@
 			</File>
 			<File
 				RelativePath=".\connector.h"
+				>
+			</File>
+			<File
+				RelativePath=".\internal_algorithm_ctrl.h"
 				>
 			</File>
 			<File

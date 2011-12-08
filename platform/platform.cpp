@@ -127,9 +127,9 @@ AlgorithmList &Platform::GetAlgorithmList()
     return m_AlgorithmList;
 }
 
-InternalAlgorithmList &Platform::GetInternalAlgorithmList()
+InternalAlgorithmMap &Platform::GetInternalAlgorithmMap()
 {
-    return m_InternalAlgorithmList;
+    return m_InternalAlgorithmMap;
 }
 
 RC Platform::LoadComponentDll()
@@ -258,7 +258,7 @@ RC Platform::RegisterInternalAlgorithm()
 
     AlgorithmDataFile file(m_AlgorithmCfgFileName);
     file.Parse();
-    m_InternalAlgorithmList = file.GetInternalAlgorithmList();
+    m_InternalAlgorithmMap = file.GetInternalAlgorithmMap();
 
     return rc;
 }
