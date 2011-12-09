@@ -18,6 +18,9 @@ class RectCtrl : public ModelCtrl
 public:
     RectCtrl(CPoint position = CPoint(0, 0));
     virtual ~RectCtrl();
+ 
+    virtual void Save(CArchive &ar);
+    virtual void Load(CArchive &ar);
 
 public:
     virtual void Draw(CDC *dc);

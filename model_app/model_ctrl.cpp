@@ -6,14 +6,36 @@
 
 #include "connector.h"
 
+UINT32 ModelCtrl::s_IdCount = 0;
+
 ModelCtrl::ModelCtrl()
 :
 m_IsSelected(false)
 {
+    m_Id = s_IdCount++;
 }
 
 ModelCtrl::~ModelCtrl()
 {
+}
+
+void ModelCtrl::Save(CArchive &ar)
+{
+    ar << m_Id;
+}
+
+void ModelCtrl::Load(CArchive &ar)
+{
+    ar >> m_Id;
+    if (s_IdCount <= m_Id)
+    {
+        s_IdCount = m_Id + 1;
+    }
+}
+
+UINT32 ModelCtrl::GetId()
+{
+    return m_Id;
 }
 
 void ModelCtrl::Select()

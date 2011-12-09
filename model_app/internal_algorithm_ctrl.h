@@ -16,14 +16,20 @@
 class InternalAlgorithmCtrl : public ComponentCtrl
 {
 public:
-    InternalAlgorithmCtrl(InternalAlgorithm *internalAlgorithm, CPoint position = CPoint(0, 0));
+    InternalAlgorithmCtrl(InternalAlgorithm *internalAlgorithm = NULL, CPoint position = CPoint(0, 0));
     virtual ~InternalAlgorithmCtrl();
+ 
+    virtual void Save(CArchive &ar);
+    virtual void Load(CArchive &ar);
 
 public:
     virtual void UpdateAttributeBar();
 
 protected:
     InternalAlgorithm *m_InternalAlgorithm;
+
+public:
+    static const UINT32 s_ModelCtrlId = 1;
 };
 
 #endif // __INTERNAL_ALGORITHM_CTRL_H__

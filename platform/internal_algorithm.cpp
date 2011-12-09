@@ -39,6 +39,17 @@ UINT32 InternalAlgorithm::GetTypeId()
     return s_ComponentId;
 }
 
+void InternalAlgorithm::Save(CArchive &ar)
+{
+    ar << m_AlgorithmId
+        << m_Id;
+}
+
+void InternalAlgorithm::Load(CArchive &ar)
+{
+    ar >> m_Id;
+}
+
 void InternalAlgorithm::Destroy()
 {
     delete this;

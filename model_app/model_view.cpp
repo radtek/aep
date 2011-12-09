@@ -75,9 +75,10 @@ void CModelView::OnDraw(CDC *dc)
     }
     
     ConnectorList &connectorList = pDoc->m_ConnectorList;
-    for (UINT32 i = 0; i < connectorList.size(); ++i)
+    for (ConnectorList::iterator it = connectorList.end();
+        it != connectorList.begin();)
     {
-        Connector *connector = connectorList[i]; 
+        Connector *connector = *(--it);
         connector->Draw(dc);
     }
 }
@@ -175,9 +176,10 @@ Connector *CModelView::HitTestConnector(CPoint point)
 {
     // Selecting connectors.
     ConnectorList &connectorList = GetDocument()->m_ConnectorList;
-    for (UINT32 i = 0; i < connectorList.size(); ++i)
+    for (ConnectorList::iterator it = connectorList.begin();
+        it != connectorList.end(); ++it)
     {
-        Connector *connector = connectorList[i];
+        Connector *connector = *it;
         if (connector->HitTest(point) != Connector::CSM_NONE)
         {
             return connector;

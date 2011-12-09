@@ -15,6 +15,9 @@ struct Vector
     Vector(double _x, double _y, double _z);
     Vector(const Vector &v);
 
+    void Save(CArchive &ar);
+    void Load(CArchive &ar);
+
     Vector &operator =(const Vector &v);
 
     const Vector operator +(const Vector &v) const;

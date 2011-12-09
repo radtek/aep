@@ -82,6 +82,8 @@ interface IComponent
 {
     // virtual RC _stdcall Config() = 0;
     virtual UINT32 _stdcall GetTypeId() = 0;
+    virtual void Save(CArchive &ar) = 0;
+    virtual void Load(CArchive &ar) = 0;
     virtual void _stdcall Destroy() = 0;
     virtual void * _stdcall GetInterface(UINT32 iid) = 0;
     virtual UINT32 _stdcall GetId() = 0;

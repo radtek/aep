@@ -17,6 +17,26 @@ ComponentCtrl::~ComponentCtrl()
     m_Component->Destroy();
 }
 
+void ComponentCtrl::Save(CArchive &ar)
+{
+    ar << s_ModelCtrlId;
+
+    RectCtrl::Save(ar);
+
+    m_Component->Save(ar);
+}
+
+void ComponentCtrl::Load(CArchive &ar)
+{
+    RectCtrl::Load(ar);
+
+    UINT32 componentId;
+    ar >> componentId;
+
+    m_Component = theApp.m_Platform.GetComponentTypeMap()[componentId].Factory();
+    m_Component->Load(ar);
+}
+
 bool ComponentCtrl::Connect(ModelCtrl *modelCtrl)
 {
     ComponentCtrl *componentCtrl = dynamic_cast<ComponentCtrl *>(modelCtrl);

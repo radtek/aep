@@ -10,12 +10,16 @@
 #define __CONNECTOR_H__
 
 class ModelCtrl;
+class CModelDoc;
 
 class Connector
 {
 public:
     Connector(CPoint point = CPoint(0, 0));
     virtual ~Connector();
+
+    void Save(CArchive &ar);
+    void Load(CArchive &ar, CModelDoc &doc);
 
 public:
     void Draw(CDC *dc);
@@ -53,8 +57,11 @@ protected:
 protected:
     static const UINT32 s_Length = 100;
     static const UINT32 s_Threshold = 5;
+
+public:
+    static const UINT32 s_ModelCtrlId = 3;
 };
 
-typedef vector<Connector *> ConnectorList;
+typedef list<Connector *> ConnectorList;
 
 #endif // __CONNECTOR_H__

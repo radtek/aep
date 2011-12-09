@@ -1,9 +1,10 @@
 #include "stdafx.h"
 #include "model_app.h"
 
+#include "model_ctrl.h"
 #include "connector.h"
 
-#include "model_ctrl.h"
+#include "model_doc.h"
 
 #include "utility.h"
 #include "massert.h"
@@ -20,6 +21,40 @@ m_Target(NULL)
 
 Connector::~Connector()
 {
+}
+void Connector::Save(CArchive &ar)
+{
+    ar << m_Start
+        << m_End;
+
+    ar << m_Source->GetId()
+        << m_Target->GetId();
+}
+
+void Connector::Load(CArchive &ar, CModelDoc &doc)
+{
+    ar >> m_Start
+        >> m_End;
+
+    UINT32 sourceId, targetId;
+    ar >> sourceId
+        >> targetId;
+    
+    for (ModelCtrlList::iterator it = doc.m_ModelCtrlList.begin();
+        it != doc.m_ModelCtrlList.end(); ++it)
+    {
+        ModelCtrl *modelCtrl = (*it);
+        if (modelCtrl->GetId() == sourceId)
+        {
+            m_Source = modelCtrl;
+            m_Source->AddConnector(this);
+        }
+        else if (modelCtrl->GetId() == targetId)
+        {
+            m_Target = modelCtrl;
+            m_Target->AddConnector(this);
+        }
+    }
 }
 
 void Connector::Draw(CDC *dc)

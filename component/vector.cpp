@@ -32,6 +32,20 @@ z(v.z)
 {
 }
 
+void Vector::Save(CArchive &ar)
+{
+    ar << x
+        << y
+        << z;
+}
+
+void Vector::Load(CArchive &ar)
+{
+    ar >> x
+        >> y
+        >> z;
+}
+
 Vector &Vector::operator =(const Vector &v)
 {
     x = v.x;

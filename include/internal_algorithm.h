@@ -22,6 +22,8 @@ public:
     virtual ~InternalAlgorithm();
 
     virtual UINT32 _stdcall GetTypeId();
+    virtual void Save(CArchive &ar);
+    virtual void Load(CArchive &ar);
     virtual void _stdcall Destroy();
     virtual void * _stdcall GetInterface(UINT32 iid);
     virtual UINT32 _stdcall GetId();

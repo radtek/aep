@@ -23,6 +23,26 @@ UINT32 Aircraft::GetTypeId()
     return s_ComponentId;
 }
 
+void Aircraft::Save(CArchive &ar)
+{
+    ar << s_ComponentId
+        << m_Id
+        << CString(m_Name.c_str());
+
+    m_Coordinate.Save(ar);
+}
+
+void Aircraft::Load(CArchive &ar)
+{
+    ar >> m_Id;
+
+    CString str;
+    ar >> str;
+    m_Name = str;
+
+    m_Coordinate.Load(ar);
+}
+
 void Aircraft::Destroy()
 {
     delete this;

@@ -16,8 +16,11 @@
 class ComponentCtrl : public RectCtrl
 {
 public:
-    ComponentCtrl(IComponent *component, CPoint position = CPoint(0, 0));
+    ComponentCtrl(IComponent *component = NULL, CPoint position = CPoint(0, 0));
     virtual ~ComponentCtrl();
+ 
+    virtual void Save(CArchive &ar);
+    virtual void Load(CArchive &ar);
 
     virtual bool Connect(ModelCtrl *modelCtrl);
 
@@ -31,6 +34,9 @@ protected:
 
 protected:
     IComponent *m_Component;
+
+public:
+    static const UINT32 s_ModelCtrlId = 0;
 };
 
 #endif // __COMPONENT_CTRL_H__

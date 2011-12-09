@@ -24,6 +24,11 @@ public:
     ModelCtrl();
     virtual ~ModelCtrl();
 
+    virtual void Save(CArchive &ar) = 0;
+    virtual void Load(CArchive &ar) = 0;
+
+    UINT32 GetId();
+
 public:
     virtual void Draw(CDC *dc) = 0;
     virtual bool HitTest(CPoint point) = 0;
@@ -57,6 +62,12 @@ protected:
     virtual CAttributeBar &GetAttributeBar();
     virtual void UpdateAttributeBar() = 0;
     virtual void ClearAttributeBar() = 0;
+
+public:
+    static UINT32 s_IdCount;
+
+protected:
+    UINT32 m_Id;
 
 protected:
     bool m_IsSelected;

@@ -21,6 +21,26 @@ UINT32 ULM::GetTypeId()
     return s_ComponentId;
 }
 
+void ULM::Save(CArchive &ar)
+{
+    ar << s_ComponentId
+        << m_Id
+        << m_Name.c_str();
+
+    m_Velocity.Save(ar);
+}
+
+void ULM::Load(CArchive &ar)
+{
+    ar >> m_Id;
+
+    CString str;
+    ar >> str;
+    m_Name = str;
+
+    m_Velocity.Load(ar);
+}
+
 void ULM::Destroy()
 {
     delete this;

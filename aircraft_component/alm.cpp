@@ -21,6 +21,28 @@ UINT32 ALM::GetTypeId()
     return s_ComponentId;
 }
 
+void ALM::Save(CArchive &ar)
+{
+    ar << s_ComponentId
+        << m_Id
+        << m_Name.c_str();
+
+    m_Velocity.Save(ar);
+    m_Acceleration.Save(ar);
+}
+
+void ALM::Load(CArchive &ar)
+{
+    ar >> m_Id;
+
+    CString str;
+    ar >> str;
+    m_Name = str;
+
+    m_Velocity.Load(ar);
+    m_Acceleration.Load(ar);
+}
+
 void ALM::Destroy()
 {
     delete this;
