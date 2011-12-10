@@ -130,3 +130,17 @@ RC Client::Register(const wstring &name, const wstring &password)
 
     return _rc;
 }
+
+RC Client::SendModelFile(LPCWSTR fileName)
+{
+    RC rc;
+
+    CHECK_RC(m_Socket.SendCommand(CC::SEND_MODEL_FILE_COMMAND));
+
+    CHECK_RC(m_Socket.SendFile(fileName));
+
+    RC _rc;
+    CHECK_RC(m_Socket.RecvRC(_rc));
+
+    return _rc;
+}

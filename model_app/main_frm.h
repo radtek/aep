@@ -64,6 +64,8 @@ protected:
 	BOOL CreateShortcutsBar ();
 
 	UINT	m_nAppLook;
+public:
+    afx_msg void OnFileExport();
 };
 
 

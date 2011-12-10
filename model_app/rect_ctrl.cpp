@@ -23,15 +23,11 @@ RectCtrl::~RectCtrl()
 
 void RectCtrl::Save(CArchive &ar)
 {
-    ModelCtrl::Save(ar);
-
     ar << m_Position;
 }
 
 void RectCtrl::Load(CArchive &ar)
 {
-    ModelCtrl::Load(ar);
-
     ar >> m_Position;
 }
 

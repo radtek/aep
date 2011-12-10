@@ -29,7 +29,7 @@ END_MESSAGE_MAP()
 
 CModelDoc::CModelDoc()
 :
-m_CurrentComponentId(0)
+m_CurrentComponentId(theApp.m_Platform.GetComponentIdStart())
 {
 	// TODO: add one-time construction code here
 
@@ -133,6 +133,30 @@ void CModelDoc::Serialize(CArchive& ar)
 	}
 }
 
+RC CModelDoc::ExportModel(CArchive &ar)
+{
+    RC rc;
+
+    ar << m_ModelCtrlList.size();
+
+    for (ModelCtrlList::iterator it = m_ModelCtrlList.begin();
+        it != m_ModelCtrlList.end(); ++it)
+    {
+        ModelCtrl *modelCtrl = (*it);
+        modelCtrl->Export(ar);
+    }
+
+    ar << m_ConnectorList.size();
+
+    for (ConnectorList::iterator it = m_ConnectorList.begin();
+        it != m_ConnectorList.end(); ++it)
+    {
+        Connector *connector = (*it);
+        connector->Export(ar);
+    }
+
+    return rc;
+}
 
 // CModelDoc diagnostics
 

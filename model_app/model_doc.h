@@ -34,6 +34,7 @@ public:
 	public:
 	virtual BOOL OnNewDocument();
 	virtual void Serialize(CArchive& ar);
+    RC ExportModel(CArchive &ar);
 
 // Implementation
 public:

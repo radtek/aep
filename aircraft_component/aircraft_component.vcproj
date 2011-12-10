@@ -242,6 +242,10 @@
 				RelativePath=".\ulm.cpp"
 				>
 			</File>
+			<File
+				RelativePath=".\white_noise.cpp"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -274,6 +278,10 @@
 			</File>
 			<File
 				RelativePath=".\ulm.h"
+				>
+			</File>
+			<File
+				RelativePath=".\white_noise.h"
 				>
 			</File>
 		</Filter>

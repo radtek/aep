@@ -18,12 +18,12 @@ InternalAlgorithm::InternalAlgorithm()
 {
 }
 
-InternalAlgorithm::InternalAlgorithm(UINT32 algorithmId,
+InternalAlgorithm::InternalAlgorithm(UINT32 id,
                                      wstring name,
                                      wstring dllFileName,
                                      wstring funcName)
                                      :
-m_AlgorithmId(algorithmId),
+m_Id(id),
 m_Name(name),
 m_DllFileName(dllFileName),
 m_FuncName(funcName)
@@ -41,18 +41,16 @@ UINT32 InternalAlgorithm::GetTypeId()
 
 void InternalAlgorithm::Save(CArchive &ar)
 {
-    ar << m_AlgorithmId
-        << m_Id;
+    ar << m_Id;
 }
 
 void InternalAlgorithm::Load(CArchive &ar)
 {
-    ar >> m_Id;
 }
 
 void InternalAlgorithm::Destroy()
 {
-    delete this;
+    // delete this;
 }
 
 void *InternalAlgorithm::GetInterface(UINT32 iid)
@@ -124,16 +122,6 @@ bool InternalAlgorithm::Connect(IComponent *component)
         return true;
     }
     return false;
-}
-
-UINT32 InternalAlgorithm::GetAlgorithmId()
-{
-    return m_AlgorithmId;
-}
-
-void InternalAlgorithm::SetAlgorithmId(UINT32 algorithmId)
-{
-    m_AlgorithmId = algorithmId;
 }
 
 RC InternalAlgorithm::Run()

@@ -20,6 +20,7 @@ public:
 
     void Save(CArchive &ar);
     void Load(CArchive &ar, CModelDoc &doc);
+    void Export(CArchive &ar);
 
 public:
     void Draw(CDC *dc);

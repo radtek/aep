@@ -21,6 +21,8 @@ public:
 
     RC Register(const wstring &name, const wstring &password);
 
+    RC SendModelFile(LPCWSTR fileName);
+
 private:
     Platform &m_Platform;
     TcpSocket m_Socket;

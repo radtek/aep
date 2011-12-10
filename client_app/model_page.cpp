@@ -5,13 +5,15 @@
 #include "client_app.h"
 #include "model_page.h"
 
+#include "utility.h"
 
 // CModelPage dialog
 
 IMPLEMENT_DYNAMIC(CModelPage, CBCGPPropertyPage)
 
 CModelPage::CModelPage()
-	: CBCGPPropertyPage(CModelPage::IDD)
+	: CBCGPPropertyPage(CModelPage::IDD),
+    m_Client(Client::GetInstance())
 {
 
 }
@@ -36,4 +38,31 @@ END_MESSAGE_MAP()
 void CModelPage::OnBnClickedOk()
 {
     // TODO: Add your control notification handler code here
+    CString pathName;
+
+    CFileDialog dlg(FALSE, TEXT("mod"), TEXT("Untitiled.mod"), 0, TEXT("Model Files (*.mod)|*.mod|All Files (*.*)|*.*||"));
+    if(dlg.DoModal() == IDOK)
+    {
+        pathName = dlg.GetPathName();
+    }
+    else
+    {
+        return;
+    }
+
+    if (!m_Client.IsLogined())
+    {
+        Utility::PromptErrorMessage(TEXT("您尚未登陆."));
+        return;
+    }
+
+    RC rc = m_Client.SendModelFile(pathName);
+
+    if (OK != rc)
+    {
+        Utility::PromptErrorMessage(TEXT("未知错误."));
+        return;
+    }
+
+    Utility::PromptMessage(TEXT("发送模型文件成功."));
 }

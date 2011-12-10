@@ -29,9 +29,12 @@ private:
     public:
         RC OnLogin();
         RC OnRegister();
+        RC OnSendModelFile();
         RC OnExit();
 
     private:
+        wstring m_UserName;
+        bool m_IsLogined;
         TcpSocket *m_ClientSocket;
     };
     /**

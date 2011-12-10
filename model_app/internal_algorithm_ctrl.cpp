@@ -30,13 +30,24 @@ void InternalAlgorithmCtrl::Load(CArchive &ar)
 {
     RectCtrl::Load(ar);
 
-    UINT32 algorithmId;
-    ar >> algorithmId;
+    UINT32 id;
+    ar >> id;
 
-    m_InternalAlgorithm = &(theApp.m_Platform.GetInternalAlgorithmMap()[algorithmId]);
+    m_InternalAlgorithm = &(theApp.m_Platform.GetInternalAlgorithmMap()[id]);
     m_InternalAlgorithm->Load(ar);
 
     m_Component = m_InternalAlgorithm;
+}
+
+void InternalAlgorithmCtrl::Export(CArchive &ar)
+{
+    ar << CCID_INTERNAL_ALGORITHM;
+    m_InternalAlgorithm->Save(ar);
+}
+
+bool InternalAlgorithmCtrl::SetId(UINT32 id)
+{
+    return true;
 }
 
 void InternalAlgorithmCtrl::UpdateAttributeBar()

@@ -25,7 +25,7 @@ void ULM::Save(CArchive &ar)
 {
     ar << s_ComponentId
         << m_Id
-        << m_Name.c_str();
+        << CString(m_Name.c_str());
 
     m_Velocity.Save(ar);
 }

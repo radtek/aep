@@ -180,6 +180,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\model.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\platform.cpp"
 				>
 			</File>
@@ -227,6 +231,10 @@
 			</File>
 			<File
 				RelativePath="..\include\massert.h"
+				>
+			</File>
+			<File
+				RelativePath="..\include\model.h"
 				>
 			</File>
 			<File

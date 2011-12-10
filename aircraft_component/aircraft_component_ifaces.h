@@ -15,12 +15,14 @@
 BEGIN_CLIENT_CIID
     CLIENT_CIID_AIRCRAFT,
     CLIENT_CIID_MOTION,
+    CLIENT_CIID_NOISE,
 END_CLIENT_CIID
 
 BEGIN_CLIENT_CCID
     CLIENT_CCID_AIRCRAFT,
     CLIENT_CCID_ULM,
     CLIENT_CCID_ALM,
+    CLIENT_CCID_WHITE_NOISE,
 END_CLIENT_CCID
 
 interface IMotion : IComponent
@@ -35,7 +37,10 @@ interface IAircraft : IParam
 
 interface INoise : IComponent
 {
-    virtual RC _stdcall Affect(Vector &data) = 0;
+    virtual double _stdcall Affect(double data) = 0;
+
+    virtual double _stdcall GetMean() = 0;
+    virtual double _stdcall GetVariance() = 0;
 };
 
 #endif // __CLIENT_INTERFACES_H__

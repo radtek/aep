@@ -36,6 +36,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CBCGPFrameWnd)
     ON_UPDATE_COMMAND_UI_RANGE(ID_CONNECTOR_BEGIN, ID_CONNECTOR_END, OnUpdateConnectorUI)
 	ON_COMMAND_RANGE(ID_VIEW_APPLOOK_2000, ID_VIEW_APPLOOK_VS2008, OnAppLook)
 	ON_UPDATE_COMMAND_UI_RANGE(ID_VIEW_APPLOOK_2000, ID_VIEW_APPLOOK_VS2008, OnUpdateAppLook)
+    ON_COMMAND(ID_FILE_EXPORT, &CMainFrame::OnFileExport)
 END_MESSAGE_MAP()
 
 static UINT indicators[] =
@@ -97,6 +98,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	lstBasicCommands.AddTail (ID_FILE_NEW);
 	lstBasicCommands.AddTail (ID_FILE_OPEN);
 	lstBasicCommands.AddTail (ID_FILE_SAVE);
+	lstBasicCommands.AddTail (ID_FILE_EXPORT);
 	lstBasicCommands.AddTail (ID_FILE_PRINT);
 	lstBasicCommands.AddTail (ID_APP_EXIT);
 	lstBasicCommands.AddTail (ID_EDIT_CUT);
@@ -450,7 +452,7 @@ BOOL CMainFrame::CreateShortcutsBar ()
         it != internalAlgorithmMap.end(); ++it)
     {
         InternalAlgorithm &internalAlgorithm = it->second;
-        internalAlgorithmPane->AddButton (images.ExtractIcon (interfaceTypeMap.size()), internalAlgorithm.GetName().c_str(), ID_INTERNAL_ALGORITHM_BEGIN + internalAlgorithm.GetAlgorithmId());
+        internalAlgorithmPane->AddButton (images.ExtractIcon (interfaceTypeMap.size()), internalAlgorithm.GetName().c_str(), ID_INTERNAL_ALGORITHM_BEGIN + internalAlgorithm.GetId());
     }
     pShortcutsBarContainer->AddTab (internalAlgorithmPane, InternalAlgorithm::s_ComponentName, -1, FALSE);
     internalAlgorithmPane->EnableDocking (CBRS_ALIGN_ANY);
@@ -578,3 +580,24 @@ void CMainFrame::OnUpdateAppLook(CCmdUI* pCmdUI)
 	pCmdUI->SetRadio (m_nAppLook == pCmdUI->m_nID);
 }
  // RIBBON_APP
+
+void CMainFrame::OnFileExport()
+{
+    // TODO: Add your command handler code here
+    CFileDialog dlg(FALSE, TEXT("mod"), TEXT("Untitiled.mod"), 0, TEXT("Model Files (*.mod)|*.mod|All Files (*.*)|*.*||"));
+    if(dlg.DoModal() == IDOK)
+    {
+        CString pathName = dlg.GetPathName();
+        CFile modFile(pathName, CFile::modeWrite | CFile::modeCreate);
+        CArchive ar(&modFile, CArchive::store);
+        CModelDoc *doc = DYNAMIC_DOWNCAST(CModelDoc, GetActiveDocument());
+        if (OK != doc->ExportModel(ar))
+        {
+            Utility::PromptErrorMessage(TEXT("导出模型文件失败."));
+        }
+        else
+        {
+            Utility::PromptMessage(TEXT("导出模型文件成功."));
+        }
+    }
+}

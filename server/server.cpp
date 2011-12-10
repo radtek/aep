@@ -1,6 +1,7 @@
 #include "server.h"
 #include "utility.h"
 #include "user_data_file.h"
+#include "model.h"
 
 LPCWSTR Server::s_UserFileName = TEXT("user.dat");
 
@@ -107,6 +108,7 @@ RC Server::Listen()
 
 Server::ServiceThread::ServiceThread(TcpSocket *clientSocket)
 :
+m_IsLogined(false),
 m_ClientSocket(clientSocket)
 {
 }
@@ -134,6 +136,11 @@ RC Server::ServiceThread::OnLogin()
     CHECK_RC(userDataFile.Parse());
 
     RC _rc = userDataFile.QueryUser(name, password);
+    if (_rc == OK)
+    {
+        m_IsLogined = true;
+        m_UserName = name;
+    }
     CHECK_RC(m_ClientSocket->SendRC(_rc));
 
     return rc;
@@ -150,6 +157,33 @@ RC Server::ServiceThread::OnRegister()
     UserDataFile userDataFile(s_UserFileName);
 
     RC _rc = userDataFile.InsertUser(name, password);
+    CHECK_RC(m_ClientSocket->SendRC(_rc));
+
+    return rc;
+}
+
+RC Server::ServiceThread::OnSendModelFile()
+{
+    RC rc;
+
+    wstring fileName = m_UserName + TEXT(".mod");
+    RC _rc = m_ClientSocket->RecvFile(fileName.c_str());
+
+    if (_rc == OK)
+    {
+        CFile modFile(fileName.c_str(), CFile::modeRead);
+        CArchive ar(&modFile, CArchive::load);
+        Model model;
+        if (OK == model.Load(ar))
+        {
+            Utility::PromptMessage(TEXT("模型文件解析成功."));
+        }
+        else
+        {
+            Utility::PromptErrorMessage(TEXT("模型文件解析失败."));
+        }
+    }
+
     CHECK_RC(m_ClientSocket->SendRC(_rc));
 
     return rc;
@@ -182,6 +216,9 @@ DWORD WINAPI Server::Service(LPVOID lparam)
             break;
         case CC::REGISTER_COMMAND:
             thread->OnRegister();
+            break;
+        case CC::SEND_MODEL_FILE_COMMAND:
+            thread->OnSendModelFile();
             break;
         case CC::EXIT_COMMAND:
             thread->OnExit();

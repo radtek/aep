@@ -21,10 +21,12 @@ public:
  
     virtual void Save(CArchive &ar);
     virtual void Load(CArchive &ar);
+    virtual void Export(CArchive &ar);
 
     virtual bool Connect(ModelCtrl *modelCtrl);
 
 public:
+    virtual UINT32 GetId();
     virtual bool SetId(UINT32 id);
     virtual wstring GetTitle();
 

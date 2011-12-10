@@ -37,6 +37,11 @@ void ComponentCtrl::Load(CArchive &ar)
     m_Component->Load(ar);
 }
 
+void ComponentCtrl::Export(CArchive &ar)
+{
+    m_Component->Save(ar);
+}
+
 bool ComponentCtrl::Connect(ModelCtrl *modelCtrl)
 {
     ComponentCtrl *componentCtrl = dynamic_cast<ComponentCtrl *>(modelCtrl);
@@ -45,6 +50,11 @@ bool ComponentCtrl::Connect(ModelCtrl *modelCtrl)
         return m_Component->Connect(componentCtrl->m_Component);
     }
     return false;
+}
+
+UINT32 ComponentCtrl::GetId()
+{
+    return m_Component->GetId();
 }
 
 bool ComponentCtrl::SetId(UINT32 id)

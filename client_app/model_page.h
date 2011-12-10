@@ -1,5 +1,6 @@
 #pragma once
 
+#include "client.h"
 
 // CModelPage dialog
 
@@ -20,4 +21,7 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
     afx_msg void OnBnClickedOk();
+
+private:
+    Client &m_Client;
 };

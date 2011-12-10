@@ -132,6 +132,23 @@ InternalAlgorithmMap &Platform::GetInternalAlgorithmMap()
     return m_InternalAlgorithmMap;
 }
 
+UINT32 Platform::GetComponentIdStart()
+{
+    UINT32 idStart = 0;
+
+    for (InternalAlgorithmMap::iterator it = m_InternalAlgorithmMap.begin();
+        it != m_InternalAlgorithmMap.end(); ++it)
+    {
+        InternalAlgorithm &internalAlgorithm = it->second;
+        if (internalAlgorithm.GetId() >= idStart)
+        {
+            idStart = internalAlgorithm.GetId() + 1;
+        }
+    }
+
+    return idStart;
+}
+
 RC Platform::LoadComponentDll()
 {
     RC rc;

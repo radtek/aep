@@ -37,6 +37,8 @@ public:
 
     InternalAlgorithmMap &GetInternalAlgorithmMap();
 
+    UINT32 GetComponentIdStart();
+
 private:
     // Æ½Ì¨¸¨Öúº¯Êý
     RC LoadComponentDll();

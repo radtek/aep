@@ -21,8 +21,10 @@ public:
  
     virtual void Save(CArchive &ar);
     virtual void Load(CArchive &ar);
+    virtual void Export(CArchive &ar);
 
 public:
+    virtual bool SetId(UINT32 id);
     virtual void UpdateAttributeBar();
 
 protected:

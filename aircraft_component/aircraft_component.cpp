@@ -3,6 +3,7 @@
 #include "aircraft.h"
 #include "ulm.h"
 #include "alm.h"
+#include "white_noise.h"
 
 extern "C" __declspec(dllexport) void RegisterInterfaceType(InterfaceTypeMap &interfaceTypeMap)
 {
@@ -14,6 +15,10 @@ extern "C" __declspec(dllexport) void RegisterInterfaceType(InterfaceTypeMap &in
 
     interfaceType.InterfaceId = CLIENT_CIID_MOTION;
     interfaceType.InterfaceName = TEXT("‘À∂Ø");
+    interfaceTypeMap[interfaceType.InterfaceId] = interfaceType;
+
+    interfaceType.InterfaceId = CLIENT_CIID_NOISE;
+    interfaceType.InterfaceName = TEXT("‘Î…˘");
     interfaceTypeMap[interfaceType.InterfaceId] = interfaceType;
 }
 
@@ -37,6 +42,12 @@ extern "C" __declspec(dllexport) void RegisterComponentType(ComponentTypeMap &co
     componentType.TypeName = ALM::s_ComponentName;
     componentType.InterfaceId = CLIENT_CIID_MOTION;
     componentType.Factory = (ComponentFactory)ALM::Factory;
+    componentTypeMap[componentType.TypeId] = componentType;
+
+    componentType.TypeId = WhiteNoise::s_ComponentId;
+    componentType.TypeName = WhiteNoise::s_ComponentName;
+    componentType.InterfaceId = CLIENT_CIID_NOISE;
+    componentType.Factory = (ComponentFactory)WhiteNoise::Factory;
     componentTypeMap[componentType.TypeId] = componentType;
 }
 

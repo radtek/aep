@@ -22,19 +22,26 @@ m_Target(NULL)
 Connector::~Connector()
 {
 }
+
 void Connector::Save(CArchive &ar)
 {
     ar << m_Start
         << m_End;
 
-    ar << m_Source->GetId()
-        << m_Target->GetId();
+    ar << (m_Source != NULL ? TRUE : FALSE)
+        << (m_Target != NULL ? TRUE : FALSE);
+
+    ar << (m_Source != NULL ? m_Source->GetId() : 0)
+        << (m_Target != NULL ? m_Target->GetId() : 0);
 }
 
 void Connector::Load(CArchive &ar, CModelDoc &doc)
 {
     ar >> m_Start
         >> m_End;
+
+    BOOL sourceValid, targetValid;
+    ar >> sourceValid >> targetValid;
 
     UINT32 sourceId, targetId;
     ar >> sourceId
@@ -44,17 +51,26 @@ void Connector::Load(CArchive &ar, CModelDoc &doc)
         it != doc.m_ModelCtrlList.end(); ++it)
     {
         ModelCtrl *modelCtrl = (*it);
-        if (modelCtrl->GetId() == sourceId)
+        if (sourceValid && modelCtrl->GetId() == sourceId)
         {
             m_Source = modelCtrl;
             m_Source->AddConnector(this);
         }
-        else if (modelCtrl->GetId() == targetId)
+        if (targetValid && modelCtrl->GetId() == targetId)
         {
             m_Target = modelCtrl;
             m_Target->AddConnector(this);
         }
     }
+}
+
+void Connector::Export(CArchive &ar)
+{
+    ar << (m_Source != NULL ? TRUE : FALSE)
+        << (m_Target != NULL ? TRUE : FALSE);
+
+    ar << (m_Source != NULL ? m_Source->GetId() : 0)
+        << (m_Target != NULL ? m_Target->GetId() : 0);
 }
 
 void Connector::Draw(CDC *dc)
