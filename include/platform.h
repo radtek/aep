@@ -70,6 +70,7 @@ private:
 
 private:
     wstring m_ComponentDllFileName;
+    wstring m_ComponentCfgFileName;
     wstring m_AlgorithmCfgFileName;
 
 public:
@@ -82,6 +83,7 @@ private:
 
     static LPCWSTR s_CfgFileName;
     static LPCWSTR s_ComponentDllFileNameKey;
+    static LPCWSTR s_ComponentCfgFileNameKey;
     static LPCWSTR s_AlgorithmCfgFileNameKey;
 };
 

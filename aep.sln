@@ -19,6 +19,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "aircraft_component", "aircr
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "model_app", "model_app\model_app.vcproj", "{1E72F093-1462-4F9B-B822-23DA7C82E785}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "aircraft_component_target", "aircraft_component_target\aircraft_component_target.vcproj", "{DB88E729-4C1F-4D0D-8DE8-78B8E8EF1151}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -61,6 +63,10 @@ Global
 		{1E72F093-1462-4F9B-B822-23DA7C82E785}.Debug|Win32.Build.0 = Debug|Win32
 		{1E72F093-1462-4F9B-B822-23DA7C82E785}.Release|Win32.ActiveCfg = Release|Win32
 		{1E72F093-1462-4F9B-B822-23DA7C82E785}.Release|Win32.Build.0 = Release|Win32
+		{DB88E729-4C1F-4D0D-8DE8-78B8E8EF1151}.Debug|Win32.ActiveCfg = Debug|Win32
+		{DB88E729-4C1F-4D0D-8DE8-78B8E8EF1151}.Debug|Win32.Build.0 = Debug|Win32
+		{DB88E729-4C1F-4D0D-8DE8-78B8E8EF1151}.Release|Win32.ActiveCfg = Release|Win32
+		{DB88E729-4C1F-4D0D-8DE8-78B8E8EF1151}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -10,6 +10,7 @@
 #include "component.h"
 #include "config_file.h"
 #include "algorithm_data_file.h"
+#include "component_type_data_file.h"
 
 Platform &Platform::GetInstance()
 {
@@ -31,6 +32,7 @@ bool Platform::s_Initialized = false;
 
 LPCWSTR Platform::s_CfgFileName = TEXT("platform.cfg");
 LPCWSTR Platform::s_ComponentDllFileNameKey = TEXT("COMPONENT_DLL_FILE_NAME");
+LPCWSTR Platform::s_ComponentCfgFileNameKey = TEXT("COMPONENT_CFG_FILE_NAME");
 LPCWSTR Platform::s_AlgorithmCfgFileNameKey = TEXT("ALGORITHM_CFG_FILE_NAME");
 
 void GetComponentList(ComponentList &componentList)
@@ -43,11 +45,11 @@ RC Platform::Init()
     RC rc;
 
     ConfigFile configFile(s_CfgFileName);
-    m_ComponentDllFileName = configFile.read<wstring>(s_ComponentDllFileNameKey);
+    m_ComponentCfgFileName = configFile.read<wstring>(s_ComponentCfgFileNameKey);
     m_AlgorithmCfgFileName = configFile.read<wstring>(s_AlgorithmCfgFileNameKey);
 
-    CHECK_RC(LoadComponentDll());
-    CHECK_RC(RegisterInterfaceType());
+    // CHECK_RC(LoadComponentDll());
+    // CHECK_RC(RegisterInterfaceType());
     CHECK_RC(RegisterComponentType());
     // CHECK_RC(RegisterGetComponentListFuncToComponent());
 
@@ -167,18 +169,6 @@ RC Platform::RegisterInterfaceType()
 {
     RC rc;
 
-    Component::RegisterInterfaceTypeFunc func =
-        (Component::RegisterInterfaceTypeFunc)GetProcAddress(
-        (HMODULE)m_ComponentDllHandle,
-        Component::RegisterInterfaceTypeFuncName);
-
-    if (!func)
-    {
-        return RC::PLATFORM_REGISTERINTERFACEINFO_ERROR;
-    }
-
-    func(m_InterfaceTypeMap);
-
     return rc;
 }
 
@@ -186,17 +176,10 @@ RC Platform::RegisterComponentType()
 {
     RC rc;
 
-    Component::RegisterComponentTypeFunc func =
-        (Component::RegisterComponentTypeFunc)GetProcAddress(
-        (HMODULE)m_ComponentDllHandle,
-        Component::RegisterComponentTypeFuncName);
-
-    if (!func)
-    {
-        return RC::PLATFORM_REGISTERCOMPONENTINFO_ERROR;
-    }
-
-    func(m_ComponentTypeMap);
+    ComponentTypeDataFile file(m_ComponentCfgFileName);
+    file.Parse();
+    m_InterfaceTypeMap = file.GetInterfaceTypeMap();
+    m_ComponentTypeMap = file.GetComponentTypeMap();
 
     return rc;
 }
