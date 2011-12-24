@@ -24,6 +24,7 @@ public:
 
 public:
     void Draw(CDC *dc);
+    void DrawArrow(CDC *dc, double theta, UINT32 length);
 
     enum ConnectorSelectMode
     {

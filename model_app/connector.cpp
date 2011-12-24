@@ -9,6 +9,8 @@
 #include "utility.h"
 #include "massert.h"
 
+#include <math.h>
+
 Connector::Connector(CPoint point)
 :
 m_Start(point.x - s_Length / 2, point.y),
@@ -90,7 +92,49 @@ void Connector::Draw(CDC *dc)
         dc->LineTo(m_End);
     }
 
+    DrawArrow(dc, 30, 7);
+
     dc->MoveTo(oldPosition);
+}
+
+void Connector::DrawArrow(CDC *dc, double theta, UINT32 length)
+{
+    double xx, yy, p1x, p1y, p2x, p2y;
+    xx = m_Start.x - m_End.x;
+    yy = m_Start.y - m_End.y;
+    theta = 3.1415926 * theta / 180;
+    p1x = xx * cos(theta) - yy * sin(theta);
+    p1y = xx * sin(theta) + yy * cos(theta);
+    p2x = xx * cos(theta) + yy * sin(theta);
+    p2y = xx * sin(-theta) + yy * cos(theta);
+
+    double p1, p2;
+    p1 = sqrt(p1x * p1x + p1y * p1y);
+    p2 = sqrt(p2x * p2x + p2y * p2y);
+
+    p1x = p1x * length / p1;
+    p1y = p1y * length / p1;
+    p2x = p2x * length / p2;
+    p2y = p2y * length / p2;
+
+    p1x = p1x + m_End.x;
+    p1y = p1y + m_End.y;
+
+    p2x = p2x + m_End.x;
+    p2y = p2y + m_End.y;
+
+    POINT triangle[3];
+    triangle[0] = m_End;
+    triangle[1].x = p1x + 0.5;
+    triangle[1].y = p1y + 0.5;
+    triangle[2].x = p2x + 0.5;
+    triangle[2].y = p2y + 0.5;
+
+    CBrush brush;
+    brush.CreateSolidBrush(RGB(0, 0, 0));
+    CBrush *oldBrush = dc->SelectObject(&brush);
+    dc->Polygon(&triangle[0], 3);
+    dc->SelectObject(oldBrush);
 }
 
 Connector::ConnectorSelectMode Connector::HitTest(CPoint point)
