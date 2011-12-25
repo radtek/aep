@@ -99,12 +99,14 @@ interface IComponent
 
 typedef vector<IComponent *> ComponentList;
 
-typedef mxArray Param;
-typedef mxArray Output;
+// typedef mxArray Param;
+// typedef mxArray Output;
+typedef vector<double> Param;
+typedef vector<double> Output;
 
 interface IParam : public IComponent
 {
-    virtual Param * _stdcall ToParam() = 0;
+    virtual Param * _stdcall ToParam(double time) = 0;
     virtual UINT32 _stdcall GetParamSize() = 0;
 };
 

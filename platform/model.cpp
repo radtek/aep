@@ -99,9 +99,24 @@ RC Model::Validate()
     return rc;
 }
 
-RC Model::Run()
+RC Model::Run(wostream &os)
 {
     RC rc;
+
+    for (UINT32 ic = 0; ic < m_ComponentList.size(); ++ic)
+    {
+        IComponent *component = m_ComponentList[ic];
+        IParam *iParam = (IParam *)(component->GetInterface(CIID_IPARAM));
+        if (iParam != NULL)
+        {
+            Param *param = iParam->ToParam(10);
+            for (UINT32 ip = 0; ip < param->size(); ++ip)
+            {
+                double data = (*param)[ip];
+                os << data << endl;
+            }
+        }
+    }
     return rc;
 }
 

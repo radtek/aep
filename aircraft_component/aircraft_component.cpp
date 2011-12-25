@@ -4,6 +4,7 @@
 #include "ulm.h"
 #include "alm.h"
 #include "white_noise.h"
+#include "atd.h"
 
 extern "C" __declspec(dllexport) void RegisterInterfaceType(InterfaceTypeMap &interfaceTypeMap)
 {
@@ -19,6 +20,10 @@ extern "C" __declspec(dllexport) void RegisterInterfaceType(InterfaceTypeMap &in
 
     interfaceType.InterfaceId = CLIENT_CIID_NOISE;
     interfaceType.InterfaceName = TEXT("‘Î…˘");
+    interfaceTypeMap[interfaceType.InterfaceId] = interfaceType;
+
+    interfaceType.InterfaceId = CLIENT_CIID_REAL_VALUE;
+    interfaceType.InterfaceName = TEXT("’Ê µ÷µ");
     interfaceTypeMap[interfaceType.InterfaceId] = interfaceType;
 }
 
@@ -48,6 +53,12 @@ extern "C" __declspec(dllexport) void RegisterComponentType(ComponentTypeMap &co
     componentType.TypeName = WhiteNoise::s_ComponentName;
     componentType.InterfaceId = CLIENT_CIID_NOISE;
     componentType.Factory = (ComponentFactory)WhiteNoise::Factory;
+    componentTypeMap[componentType.TypeId] = componentType;
+
+    componentType.TypeId = ATD::s_ComponentId;
+    componentType.TypeName = ATD::s_ComponentName;
+    componentType.InterfaceId = CLIENT_CIID_REAL_VALUE;
+    componentType.Factory = (ComponentFactory)ATD::Factory;
     componentTypeMap[componentType.TypeId] = componentType;
 }
 

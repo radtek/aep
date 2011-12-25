@@ -215,6 +215,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\atd.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\main.cpp"
 				>
 			</File>
@@ -262,6 +266,10 @@
 			</File>
 			<File
 				RelativePath=".\alm.h"
+				>
+			</File>
+			<File
+				RelativePath=".\atd.h"
 				>
 			</File>
 			<File

@@ -139,6 +139,10 @@ RC Client::SendModelFile(LPCWSTR fileName)
 
     CHECK_RC(m_Socket.SendFile(fileName));
 
+    wstring datFileName = fileName;
+    datFileName += TEXT(".dat");
+    CHECK_RC(m_Socket.RecvFile(datFileName.c_str()));
+
     RC _rc;
     CHECK_RC(m_Socket.RecvRC(_rc));
 

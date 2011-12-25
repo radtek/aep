@@ -8,6 +8,8 @@
 
 #include "vector.h"
 
+#include <math.h>
+
 Vector::Vector()
 :
 x(0),
@@ -113,4 +115,15 @@ const Vector &Vector::operator /=(double d)
     y /= d;
     z /= d;
     return *this;
+}
+
+double Distance(const Vector &v1, const Vector &v2)
+{
+    return sqrt(pow((double)(v1.z - v2.z), 2) + pow((double)(v1.y - v2.y), 2) + pow((double)(v1.x - v2.x), 2));
+}
+
+double Angle(const Vector &v1, const Vector &v2)
+{
+    // FIXME.
+    return 0;
 }

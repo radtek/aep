@@ -37,10 +37,8 @@ public:
     virtual RC _stdcall SetAttribute(UINT32 aid, void *attr);
     virtual bool _stdcall Connect(IComponent *component);
 
-    virtual Param * _stdcall ToParam();
-    virtual UINT32 _stdcall GetParamSize();
-
     virtual void _stdcall Fly(double time);
+    virtual Vector _stdcall GetCurrentCoordinate();
 
 public:
     Vector m_Coordinate;

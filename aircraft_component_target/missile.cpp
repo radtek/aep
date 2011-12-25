@@ -56,11 +56,7 @@ void *Missile::GetInterface(UINT32 iid)
     {
         iface = static_cast<IComponent *>(this);
     }
-    else if (CIID_IPARAM == iid)
-    {
-        iface = static_cast<IParam *>(this);
-    }
-    else if (CLIENT_CIID_AIRCRAFT == iid)
+    else if (CLIENT_CIID_TARGET == iid)
     {
         iface = static_cast<ITarget *>(this);
     }
@@ -162,43 +158,25 @@ bool Missile::Connect(IComponent *component)
     return false;
 }
 
-Param *Missile::ToParam()
-{
-    Param *param = mxCreateDoubleMatrix(1, 9, mxREAL);
-    /*
-    double *data = mxGetPr(param);
-    data[0] = m_CurrentCoordinate.x;
-    data[1] = m_CurrentCoordinate.y;
-    data[2] = m_CurrentCoordinate.z;
-    data[3] = m_CurrentVelocity.x;
-    data[4] = m_CurrentVelocity.y;
-    data[5] = m_CurrentVelocity.z;
-    data[6] = 0;
-    data[7] = 0;
-    data[8] = 0;
-    */
-    return param;
-}
-
-UINT32 Missile::GetParamSize()
-{
-    return 9;
-}
-
 void Missile::Fly(double time)
 {
     m_Motion->Move(m_Coordinate, time);
 }
 
+Vector Missile::GetCurrentCoordinate()
+{
+    return m_Coordinate;
+}
+
 Missile *Missile::Factory()
 {
-    Missile *aircraft = new Missile;
+    Missile *missile = new Missile;
     LPWSTR name = new wchar_t[256];
     wsprintf(name, TEXT("%s%u"), s_ComponentName, s_Count);
-    aircraft->m_Name = name;
+    missile->m_Name = name;
     ++s_Count;
     delete[] name;
-    return aircraft;
+    return missile;
 }
 
 LPCWSTR Missile::s_ComponentName = TEXT("µ¼µ¯");

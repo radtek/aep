@@ -21,7 +21,7 @@ public:
 public:
     RC Load(CArchive &ar);
     RC Validate();
-    RC Run();
+    RC Run(wostream &os);
 
 protected:
     bool Connect(UINT32 sourceId, UINT32 targetId);

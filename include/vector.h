@@ -33,4 +33,7 @@ struct Vector
     double x, y, z;
 };
 
+double Distance(const Vector &v1, const Vector &v2);
+double Angle(const Vector &v1, const Vector &v2);
+
 #endif // __VECTOR_H__
