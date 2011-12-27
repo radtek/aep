@@ -198,6 +198,10 @@
 			ReferencedProjectIdentifier="{3209C5E4-A0D1-4203-9F2D-1BF6290D72A9}"
 			RelativePathToProject=".\aircraft_component\aircraft_component.vcproj"
 		/>
+		<ProjectReference
+			ReferencedProjectIdentifier="{DB88E729-4C1F-4D0D-8DE8-78B8E8EF1151}"
+			RelativePathToProject=".\aircraft_component_target\aircraft_component_target.vcproj"
+		/>
 	</References>
 	<Files>
 		<Filter
