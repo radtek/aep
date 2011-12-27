@@ -30,7 +30,7 @@ public:
 
     virtual Param * _stdcall ToParam();
     virtual UINT32 _stdcall GetParamSize();
-    virtual RC _stdcall DrawFigure();
+    virtual RC _stdcall DrawFigure(Engine *engine);
 
 public:
     double m_Step;

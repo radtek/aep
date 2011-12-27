@@ -12,6 +12,7 @@
 #include <vector>
 #include <map>
 #include "rc.h"
+#include <engine.h>
 #include <mclmcrrt.h>
 
 using namespace std;
@@ -108,7 +109,7 @@ interface IParam : public IComponent
 {
     virtual Param * _stdcall ToParam() = 0;
     virtual UINT32 _stdcall GetParamSize() = 0;
-    virtual RC _stdcall DrawFigure() = 0;
+    virtual RC _stdcall DrawFigure(Engine *engine) = 0;
 };
 
 typedef IComponent *(*ComponentFactory)(void);

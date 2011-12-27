@@ -31,7 +31,8 @@ END_MESSAGE_MAP()
 
 CModelApp::CModelApp() :
 	CBCGPWorkspace (TRUE /* m_bResourceSmartUpdate */),
-        m_Platform(Platform::GetInstance())
+        m_Platform(Platform::GetInstance()),
+        m_Engine(NULL)
 {
 	// TODO: add construction code here,
 	// Place all significant initialization in InitInstance
@@ -52,6 +53,14 @@ BOOL CModelApp::InitInstance()
     {
         Utility::PromptErrorMessage(TEXT("初始化平台失败."));
         return FALSE;
+    }
+    if (!(m_Engine = engOpen(NULL)))
+    {
+        Utility::PromptErrorMessage(TEXT("Matlab引擎初始化失败, 绘图功能将不可用."));
+    }
+    else
+    {
+        engSetVisible(m_Engine, false);
     }
 	// InitCommonControlsEx() is required on Windows XP if an application
 	// manifest specifies use of ComCtl32.dll version 6 or later to enable
@@ -141,6 +150,13 @@ BOOL CModelApp::InitInstance()
 int CModelApp::ExitInstance() 
 {
 	BCGCBProCleanUp();
+
+    if (m_Engine)
+    {
+        engClose(m_Engine);
+    }
+
+    m_Platform.Shut();
 
 	return CWinApp::ExitInstance();
 }

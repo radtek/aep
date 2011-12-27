@@ -1,7 +1,5 @@
 #include "atd.h"
 
-#include "engine.h"
-
 ATD::ATD()
 :
 m_Step(0.5),
@@ -190,15 +188,9 @@ UINT32 ATD::GetParamSize()
     return 9;
 }
 
-RC ATD::DrawFigure()
+RC ATD::DrawFigure(Engine *engine)
 {
     RC rc;
-
-    Engine *engine;
-    if (!(engine = engOpen(NULL)))
-    {
-        return RC::MODEL_INIT_MATLAB_ENGINE_ERROR;
-    }
 
     Param *param = ToParam();
 
@@ -216,7 +208,10 @@ RC ATD::DrawFigure()
 
     engEvalString(engine, "plot(t, distance);");
 
-    engClose(engine);
+    mxDestroyArray(t);
+    mxDestroyArray(distance);
+
+    delete param;
 
     return rc;
 }

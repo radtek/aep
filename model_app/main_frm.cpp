@@ -607,9 +607,22 @@ void CMainFrame::OnFileExport()
 void CMainFrame::OnFileDraw()
 {
     CModelDoc *doc = DYNAMIC_DOWNCAST(CModelDoc, GetActiveDocument());
-    if (OK != doc->DrawData())
+    RC rc = doc->DrawData();
+    if (RC::MODEL_MATLAB_ENGINE_ERROR == rc)
     {
-        Utility::PromptErrorMessage(TEXT("绘制数据图形失败."));
+        Utility::PromptErrorMessage(TEXT("Matlab引擎未初始化, 无法绘制图形."));
+    }
+    else if (RC::MODEL_CONNECT_COMPONENT_ERROR == rc)
+    {
+        Utility::PromptErrorMessage(TEXT("模型中有非法的连接状态."));
+    }
+    else if (RC::MODEL_NO_PARAM_ERROR == rc)
+    {
+        Utility::PromptErrorMessage(TEXT("模型中没有可用的数据源."));
+    }
+    else if (OK != rc)
+    {
+        Utility::PromptErrorMessage(TEXT("未知错误, 绘制数据图形失败."));
     }
     else
     {

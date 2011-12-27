@@ -9,6 +9,7 @@
 #include "resource.h"       // main symbols
 
 #include "platform.h"
+#include <engine.h>
 
 // CModelApp:
 // See model_app.cpp for the implementation of this class
@@ -35,6 +36,7 @@ public:
 
 public:
     Platform &m_Platform;
+    Engine *m_Engine;
 };
 
 extern CModelApp theApp;

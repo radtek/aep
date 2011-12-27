@@ -162,6 +162,11 @@ RC CModelDoc::DrawData()
 {
     RC rc;
 
+    if (!theApp.m_Engine)
+    {
+        return RC::MODEL_MATLAB_ENGINE_ERROR;
+    }
+
     for (ConnectorList::iterator it = m_ConnectorList.begin();
         it != m_ConnectorList.end(); ++it)
     {
@@ -172,6 +177,7 @@ RC CModelDoc::DrawData()
         }
     }
 
+    bool hasParam = false;
     for (ModelCtrlList::iterator it = m_ModelCtrlList.begin();
         it != m_ModelCtrlList.end(); ++it)
     {
@@ -190,7 +196,13 @@ RC CModelDoc::DrawData()
         {
             continue;
         }
-        CHECK_RC(param->DrawFigure());
+        hasParam = true;
+        CHECK_RC(param->DrawFigure(theApp.m_Engine));
+    }
+
+    if (!hasParam)
+    {
+        return RC::MODEL_NO_PARAM_ERROR;
     }
 
     return rc;
