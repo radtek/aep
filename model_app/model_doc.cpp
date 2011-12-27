@@ -158,6 +158,44 @@ RC CModelDoc::ExportModel(CArchive &ar)
     return rc;
 }
 
+RC CModelDoc::DrawData()
+{
+    RC rc;
+
+    for (ConnectorList::iterator it = m_ConnectorList.begin();
+        it != m_ConnectorList.end(); ++it)
+    {
+        Connector *connector = (*it);
+        if (!connector->Connect())
+        {
+            return RC::MODEL_CONNECT_COMPONENT_ERROR;
+        }
+    }
+
+    for (ModelCtrlList::iterator it = m_ModelCtrlList.begin();
+        it != m_ModelCtrlList.end(); ++it)
+    {
+        ComponentCtrl *componentCtrl = dynamic_cast<ComponentCtrl *>(*it);
+        if (!componentCtrl)
+        {
+            continue;
+        }
+        IComponent *component = componentCtrl->GetComponent();
+        if (!component)
+        {
+            continue;
+        }
+        IParam *param = (IParam *)(component->GetInterface(CIID_IPARAM));
+        if (!param)
+        {
+            continue;
+        }
+        CHECK_RC(param->DrawFigure());
+    }
+
+    return rc;
+}
+
 // CModelDoc diagnostics
 
 #ifdef _DEBUG

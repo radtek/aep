@@ -66,6 +66,7 @@ protected:
 	UINT	m_nAppLook;
 public:
     afx_msg void OnFileExport();
+    afx_msg void OnFileDraw();
 };
 
 

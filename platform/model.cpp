@@ -109,7 +109,7 @@ RC Model::Run(wostream &os)
         IParam *iParam = (IParam *)(component->GetInterface(CIID_IPARAM));
         if (iParam != NULL)
         {
-            Param *param = iParam->ToParam(10);
+            Param *param = iParam->ToParam();
             for (UINT32 ip = 0; ip < param->size(); ++ip)
             {
                 double data = (*param)[ip];

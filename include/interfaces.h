@@ -106,8 +106,9 @@ typedef vector<double> Output;
 
 interface IParam : public IComponent
 {
-    virtual Param * _stdcall ToParam(double time) = 0;
+    virtual Param * _stdcall ToParam() = 0;
     virtual UINT32 _stdcall GetParamSize() = 0;
+    virtual RC _stdcall DrawFigure() = 0;
 };
 
 typedef IComponent *(*ComponentFactory)(void);

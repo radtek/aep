@@ -35,6 +35,10 @@ public:
 	virtual BOOL OnNewDocument();
 	virtual void Serialize(CArchive& ar);
     RC ExportModel(CArchive &ar);
+    RC DrawData();
+
+protected:
+    RC DrawSingleData(IParam *param);
 
 // Implementation
 public:

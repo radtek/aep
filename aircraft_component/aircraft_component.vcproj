@@ -68,7 +68,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="mclmcrrt.lib"
+				AdditionalDependencies="mclmcrrt.lib libmx.lib libmat.lib libeng.lib"
 				LinkIncremental="2"
 				ModuleDefinitionFile=".\aircraft_component.def"
 				GenerateDebugInformation="true"
@@ -151,7 +151,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="mclmcrrt.lib"
+				AdditionalDependencies="mclmcrrt.lib libmx.lib libmat.lib libeng.lib"
 				LinkIncremental="1"
 				ModuleDefinitionFile=".\aircraft_component.def"
 				GenerateDebugInformation="true"

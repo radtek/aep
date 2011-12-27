@@ -125,7 +125,7 @@ RC AlgorithmHelper::RunFunc(wstring dllFileName, wstring funcName, ParamList par
     vector<Param *> realParamList; \
     for (UINT32 i = 0; i < paramList.size(); ++i) \
     { \
-        realParamList.push_back(paramList[i]->ToParam(0)); \
+        realParamList.push_back(paramList[i]->ToParam()); \
     }
 
 #define RELEASE_REAL_PARAM_LIST \

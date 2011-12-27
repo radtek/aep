@@ -37,6 +37,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CBCGPFrameWnd)
 	ON_COMMAND_RANGE(ID_VIEW_APPLOOK_2000, ID_VIEW_APPLOOK_VS2008, OnAppLook)
 	ON_UPDATE_COMMAND_UI_RANGE(ID_VIEW_APPLOOK_2000, ID_VIEW_APPLOOK_VS2008, OnUpdateAppLook)
     ON_COMMAND(ID_FILE_EXPORT, &CMainFrame::OnFileExport)
+    ON_COMMAND(ID_FILE_DRAW, &CMainFrame::OnFileDraw)
 END_MESSAGE_MAP()
 
 static UINT indicators[] =
@@ -99,6 +100,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	lstBasicCommands.AddTail (ID_FILE_OPEN);
 	lstBasicCommands.AddTail (ID_FILE_SAVE);
 	lstBasicCommands.AddTail (ID_FILE_EXPORT);
+	lstBasicCommands.AddTail (ID_FILE_DRAW);
 	lstBasicCommands.AddTail (ID_FILE_PRINT);
 	lstBasicCommands.AddTail (ID_APP_EXIT);
 	lstBasicCommands.AddTail (ID_EDIT_CUT);
@@ -599,5 +601,18 @@ void CMainFrame::OnFileExport()
         {
             Utility::PromptMessage(TEXT("导出模型文件成功."));
         }
+    }
+}
+
+void CMainFrame::OnFileDraw()
+{
+    CModelDoc *doc = DYNAMIC_DOWNCAST(CModelDoc, GetActiveDocument());
+    if (OK != doc->DrawData())
+    {
+        Utility::PromptErrorMessage(TEXT("绘制数据图形失败."));
+    }
+    else
+    {
+        Utility::PromptMessage(TEXT("绘制数据图形成功."));
     }
 }

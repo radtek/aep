@@ -52,6 +52,11 @@ bool ComponentCtrl::Connect(ModelCtrl *modelCtrl)
     return false;
 }
 
+IComponent *ComponentCtrl::GetComponent()
+{
+    return m_Component;
+}
+
 UINT32 ComponentCtrl::GetId()
 {
     return m_Component->GetId();

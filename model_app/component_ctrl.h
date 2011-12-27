@@ -25,6 +25,8 @@ public:
 
     virtual bool Connect(ModelCtrl *modelCtrl);
 
+    IComponent *GetComponent();
+
 public:
     virtual UINT32 GetId();
     virtual bool SetId(UINT32 id);
