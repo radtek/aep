@@ -7,6 +7,7 @@
 */
 
 #include "utility.h"
+#include "massert.h"
 #include <strsafe.h>
 #include <locale.h>
 #include <math.h>
@@ -166,4 +167,25 @@ double Utility::DistanceToEdge(CPoint p1, CPoint p2, CPoint p)
 double Utility::DistanceToPoint(CPoint p1, CPoint p2)
 {
     return sqrt(pow((double)(p1.y - p2.y), 2) + pow((double)(p1.x - p2.x), 2));
+}
+
+bool Utility::DirectoryExists(LPCWSTR pathName)
+{
+    DWORD attr = GetFileAttributes(pathName);
+    return (attr != (DWORD)(-1)) &&
+        (attr & FILE_ATTRIBUTE_DIRECTORY);
+}
+
+wstring Utility::StripFilePath(LPCWSTR pathName)
+{
+    MASSERT(pathName);
+
+    wstring fileName = pathName;
+    wstring::size_type pos = fileName.find_last_of(TEXT("/\\"));
+    if (pos != wstring::npos)
+    {
+        fileName = fileName.substr(pos + 1, fileName.length());
+    }
+
+    return fileName;
 }

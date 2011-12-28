@@ -7,6 +7,7 @@
 #include "register_page.h"
 #include "login_page.h"
 #include "model_page.h"
+#include "file_transfer_page.h"
 
 // CClientDlg dialog
 class CClientDlg : public CBCGPPropertySheet
@@ -31,6 +32,7 @@ public:
     CRegisterPage m_RegisterPage;
     CLoginPage m_LoginPage;
     CModelPage m_ModelPage;
+    CFileTransferPage m_FileTransferPage;
 
 	HICON m_hIcon;
 

@@ -57,6 +57,10 @@ CClientDlg::CClientDlg(CWnd* pParent /*=NULL*/)
     AddPage(&m_LoginPage);
     AddPage(&m_ModelPage);
 
+#ifdef __FILE_TRANSFER_PRESENT__
+    AddPage(&m_FileTransferPage);
+#endif
+
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }
 

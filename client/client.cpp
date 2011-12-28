@@ -1,5 +1,7 @@
 #include "client.h"
 
+#include "utility.h"
+
 Client &Client::GetInstance()
 {
     if (!s_Initialized)
@@ -147,4 +149,51 @@ RC Client::SendModelFile(LPCWSTR fileName)
     CHECK_RC(m_Socket.RecvRC(_rc));
 
     return _rc;
+}
+
+RC Client::UploadFile(const wstring &fileName)
+{
+    RC rc;
+
+    CHECK_RC(m_Socket.SendCommand(CC::UPLOAD_FILE_COMMAND));
+
+    wstring fileNameWithoutPath = Utility::StripFilePath(fileName.c_str());
+    CHECK_RC(m_Socket.SendWString(fileNameWithoutPath.c_str()));
+    CHECK_RC(m_Socket.SendFile(fileName.c_str()));
+
+    return rc;
+}
+
+RC Client::GetFileList(vector<wstring> &fileList)
+{
+    RC rc;
+
+    CHECK_RC(m_Socket.SendCommand(CC::GET_FILE_LIST_COMMAND));
+
+    wstring fileName;
+    CHECK_RC(m_Socket.RecvWString(fileName));
+    while (fileName != TEXT(" "))
+    {
+        fileList.push_back(fileName);
+        CHECK_RC(m_Socket.RecvWString(fileName));
+    }
+
+    return rc;
+}
+
+RC Client::DownLoadFile(const wstring &fileName, const wstring &pathName)
+{
+    RC rc;
+
+    CHECK_RC(m_Socket.SendCommand(CC::DOWNLOAD_FILE_COMMAND));
+
+    CHECK_RC(m_Socket.SendWString(fileName.c_str()));
+    
+    RC _rc;
+    CHECK_RC(m_Socket.RecvRC(_rc));
+    CHECK_RC(_rc);
+
+    CHECK_RC(m_Socket.RecvFile(pathName.c_str()));
+
+    return rc;
 }

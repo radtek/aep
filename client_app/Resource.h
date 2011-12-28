@@ -14,6 +14,7 @@
 #define IDB_ICONS_HC                    135
 #define IDD_LOGIN_PAGE1                 135
 #define IDD_MODEL_PAGE                  135
+#define IDD_FILE_TRANSFER_PAGE          137
 #define IDC_LOGIN_NAME                  1001
 #define IDC_LOGIN_PASSWORD              1002
 #define IDC_LOGIN_PASSWORD_TITLE        1003
@@ -26,14 +27,21 @@
 #define IDC_REGISTER_PASSWORD_TITLE     1010
 #define IDC_REGISTER_NAME_TITLE         1011
 #define IDC_LOGIN_GROUP                 1012
+#define IDC_FILE_LIST                   1013
+#define IDC_FILE_TRANSFER_PROGRESS      1014
+#define IDC_FILE_TRANSFER_GROUP         1016
+#define IDC_UPLOAD_BUTTON               1017
+#define IDC_DOWNLOAD_BUTTON             1018
+#define IDC_BUTTON1                     1020
+#define IDC_UPDATE_FILE_LIST_BUTTON     1020
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        137
+#define _APS_NEXT_RESOURCE_VALUE        138
 #define _APS_NEXT_COMMAND_VALUE         32772
-#define _APS_NEXT_CONTROL_VALUE         1013
+#define _APS_NEXT_CONTROL_VALUE         1021
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

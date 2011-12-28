@@ -143,6 +143,12 @@ RC Server::ServiceThread::OnLogin()
     }
     CHECK_RC(m_ClientSocket->SendRC(_rc));
 
+    wstring pathName = TEXT(".//") + m_UserName;
+    if (!Utility::DirectoryExists(pathName.c_str()))
+    {
+        CreateDirectory(pathName.c_str(), NULL);
+    }
+
     return rc;
 }
 
@@ -202,6 +208,65 @@ RC Server::ServiceThread::OnSendModelFile()
     return rc;
 }
 
+RC Server::ServiceThread::OnUploadFile()
+{
+    RC rc;
+
+    wstring pathName = TEXT(".//") + m_UserName + TEXT("//");
+
+    wstring fileName;
+    CHECK_RC(m_ClientSocket->RecvWString(fileName));
+    fileName = pathName + fileName;
+    CHECK_RC(m_ClientSocket->RecvFile(fileName.c_str()));
+
+    return rc;
+}
+
+RC Server::ServiceThread::OnDownloadFile()
+{
+    RC rc;
+
+    wstring fileName;
+    CHECK_RC(m_ClientSocket->RecvWString(fileName));
+
+    fileName = TEXT(".//") + m_UserName + TEXT("//") + fileName;
+
+    RC _rc;
+    if (!Utility::FileExists(fileName.c_str()))
+    {
+        _rc = RC::DOWNLOAD_UNEXISTEFD_FILE_ERROR;
+        CHECK_RC(m_ClientSocket->SendRC(_rc));
+        return _rc;
+    }
+    CHECK_RC(m_ClientSocket->SendRC(_rc));
+
+    CHECK_RC(m_ClientSocket->SendFile(fileName.c_str()));
+
+    return rc;
+}
+
+RC Server::ServiceThread::OnGetFileList()
+{
+    RC rc;
+
+    CFileFind fileFind;
+    wstring path = TEXT(".//") + m_UserName + TEXT("//*.*");
+    BOOL found = fileFind.FindFile(path.c_str());
+    while(found)  
+    {  
+        found = fileFind.FindNextFile();
+        if (!fileFind.IsDots() &&
+            !fileFind.IsDirectory())
+        {
+            wstring fileName(fileFind.GetFileName());
+            CHECK_RC(m_ClientSocket->SendWString(fileName.c_str()));
+        }
+    }
+    CHECK_RC(m_ClientSocket->SendWString(TEXT(" ")));
+
+    return rc;
+}
+
 RC Server::ServiceThread::OnExit()
 {
     delete this;
@@ -232,6 +297,15 @@ DWORD WINAPI Server::Service(LPVOID lparam)
             break;
         case CC::SEND_MODEL_FILE_COMMAND:
             thread->OnSendModelFile();
+            break;
+        case CC::UPLOAD_FILE_COMMAND:
+            thread->OnUploadFile();
+            break;
+        case CC::GET_FILE_LIST_COMMAND:
+            thread->OnGetFileList();
+            break;
+        case CC::DOWNLOAD_FILE_COMMAND:
+            thread->OnDownloadFile();
             break;
         case CC::EXIT_COMMAND:
             thread->OnExit();

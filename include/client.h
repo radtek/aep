@@ -23,6 +23,10 @@ public:
 
     RC SendModelFile(LPCWSTR fileName);
 
+    RC UploadFile(const wstring &fileName);
+    RC GetFileList(vector<wstring> &fileList);
+    RC DownLoadFile(const wstring &fileName, const wstring &pathName);
+
 private:
     Platform &m_Platform;
     TcpSocket m_Socket;

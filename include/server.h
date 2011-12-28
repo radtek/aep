@@ -30,6 +30,9 @@ private:
         RC OnLogin();
         RC OnRegister();
         RC OnSendModelFile();
+        RC OnUploadFile();
+        RC OnGetFileList();
+        RC OnDownloadFile();
         RC OnExit();
 
     private:

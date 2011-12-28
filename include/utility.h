@@ -33,4 +33,7 @@ namespace Utility
 
     double DistanceToEdge(CPoint p1, CPoint p2, CPoint p);
     double DistanceToPoint(CPoint p1, CPoint p2);
+
+    bool DirectoryExists(LPCWSTR pathName);
+    wstring StripFilePath(LPCWSTR pathName);
 };
