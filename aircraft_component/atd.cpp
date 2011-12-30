@@ -207,6 +207,8 @@ RC ATD::DrawFigure(Engine *engine)
     engPutVariable(engine, "distance", distance);
 
     engEvalString(engine, "plot(t, distance);");
+    engEvalString(engine, "xlabel('时间');");
+    engEvalString(engine, "ylabel('飞行器-目标距离');");
 
     mxDestroyArray(t);
     mxDestroyArray(distance);
