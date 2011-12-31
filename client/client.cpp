@@ -47,7 +47,6 @@ RC Client::Init()
     CHECK_RC(m_Platform.Init());
     CHECK_RC(m_Socket.Init());
 
-    // FIXME:
     m_HostName = "localhost";
     m_Port = 10086;
 
@@ -66,11 +65,29 @@ RC Client::Shut()
     return rc;
 }
 
+RC Client::SetHostName(const char *hostName)
+{
+    RC rc;
+
+    m_HostName = hostName;
+
+    return rc;
+}
+
+RC Client::SetPort(int port)
+{
+    RC rc;
+
+    m_Port = port;
+
+    return rc;
+}
+
 RC Client::Connect()
 {
     RC rc;
 
-    CHECK_RC(m_Socket.Connect(m_HostName, m_Port));
+    CHECK_RC(m_Socket.Connect(m_HostName.c_str(), m_Port));
 
     m_IsConnected = true;
 

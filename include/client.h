@@ -12,6 +12,9 @@ public:
     RC Init();
     RC Shut();
 
+    RC SetHostName(const char *hostName);
+    RC SetPort(int port);
+
     RC Connect();
     RC Disconnect();
     bool IsConnected();
@@ -30,7 +33,7 @@ public:
 private:
     Platform &m_Platform;
     TcpSocket m_Socket;
-    const char *m_HostName;
+    string m_HostName;
     int m_Port;
     bool m_IsConnected;
     bool m_IsLogined;

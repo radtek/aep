@@ -222,6 +222,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\server_config_page.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\stdafx.cpp"
 				>
 				<FileConfiguration
@@ -273,6 +277,10 @@
 			</File>
 			<File
 				RelativePath=".\Resource.h"
+				>
+			</File>
+			<File
+				RelativePath=".\server_config_page.h"
 				>
 			</File>
 			<File

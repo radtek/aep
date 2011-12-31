@@ -4,6 +4,7 @@
 #pragma once
 
 #include "client.h"
+#include "server_config_page.h"
 #include "register_page.h"
 #include "login_page.h"
 #include "model_page.h"
@@ -29,6 +30,7 @@ public:
 	virtual BOOL OnInitDialog();
 
 public:
+    CServerConfigPage m_ServerConfigPage;
     CRegisterPage m_RegisterPage;
     CLoginPage m_LoginPage;
     CModelPage m_ModelPage;
