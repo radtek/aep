@@ -38,14 +38,13 @@
 #define IDC_SERVER_CONFIG_IP_TEXT       1022
 #define IDC_SERVER_CONFIG_PORT_TEXT     1024
 #define IDC_SERVER_CONFIG_PORT          1025
-#define IDC_EDIT1                       1027
 #define IDC_SERVER_CONFIG_IP            1027
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        140
+#define _APS_NEXT_RESOURCE_VALUE        142
 #define _APS_NEXT_COMMAND_VALUE         32772
 #define _APS_NEXT_CONTROL_VALUE         1028
 #define _APS_NEXT_SYMED_VALUE           101
