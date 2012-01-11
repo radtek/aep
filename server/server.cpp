@@ -106,6 +106,11 @@ RC Server::Listen()
     return OK;
 }
 
+void Server::SetPort(int port)
+{
+    m_Port = port;
+}
+
 Server::ServiceThread::ServiceThread(TcpSocket *clientSocket)
 :
 m_IsLogined(false),

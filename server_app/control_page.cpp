@@ -13,6 +13,7 @@ IMPLEMENT_DYNAMIC(CControlPage, CBCGPPropertyPage)
 CControlPage::CControlPage()
 	: CBCGPPropertyPage(CControlPage::IDD)
     , m_Server(Server::GetInstance())
+    , m_Port(10086)
 {
 
 }
@@ -23,7 +24,8 @@ CControlPage::~CControlPage()
 
 void CControlPage::DoDataExchange(CDataExchange* pDX)
 {
-	CDialog::DoDataExchange(pDX);
+    CDialog::DoDataExchange(pDX);
+    DDX_Text(pDX, IDC_CONTROL_PORT, m_Port);
 }
 
 
@@ -43,6 +45,8 @@ BOOL CControlPage::OnInitDialog()
 void CControlPage::OnBnClickedControlStart()
 {
     // TODO: Add your control notification handler code here
+    UpdateData();
+    m_Server.SetPort(m_Port);
     RC rc = m_Server.Listen();
     if (OK != rc)
     {

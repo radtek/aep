@@ -313,10 +313,6 @@
 				RelativePath=".\res\icons.png"
 				>
 			</File>
-			<File
-				RelativePath=".\res\idb_icon.bin"
-				>
-			</File>
 		</Filter>
 	</Files>
 	<Globals>

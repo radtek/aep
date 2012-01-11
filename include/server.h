@@ -15,6 +15,8 @@ public:
     /** @brief 进入监听服务状态. */
     RC Listen();
 
+    void SetPort(int port);
+
 private:
     Platform &m_Platform;
 

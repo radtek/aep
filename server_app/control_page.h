@@ -24,4 +24,5 @@ protected:
 private:
     Server &m_Server;
     afx_msg void OnBnClickedControlStart();
+    int m_Port;
 };
