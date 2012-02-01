@@ -47,11 +47,21 @@ RC::RC(INT32 rc)
     Set(rc);
 }
 
+/**
+* @param rc 结果代码值.
+*
+* RC拷贝构造函数.
+*/
 RC::RC(const RC &rc)
 {
     Set(rc.Get());
 }
 
+/**
+* @param rc 结果代码值.
+*
+* 清除结果代码值为OK.
+*/
 void RC::Clear()
 {
     m_Rc = OK;
@@ -69,6 +79,11 @@ const RC & RC::operator=(INT32 rc)
     return *this;
 }
 
+/**
+* @param rc 结果代码值.
+*
+* 将一个RC类型赋值给RC的赋值运算符.
+*/
 const RC & RC::operator=(const RC &rc)
 {
     Set(rc);
