@@ -2,6 +2,13 @@
 
 #include "utility.h"
 
+/**
+* @return Client类的唯一实例.
+*
+* 用户只能通过该函数获得Client类的唯一实例.
+* 若Client类还未被初始化, 则创建唯一的Client类对象,
+* 否则直接返回该对象.
+*/
 Client &Client::GetInstance()
 {
     if (!s_Initialized)
@@ -22,6 +29,13 @@ void Client::DestroyInstance()
     }
 }
 
+/**
+* 将Client类的唯一构造函数声明为私有,
+* 可以保证编译器不会帮助生成其他构造函数,
+* 并且该类不可以显式的实例化.
+* 该构造函数并不完成具体的初始化,
+* 初始化工作通过Init函数来完成.
+*/
 Client::Client()
 :
 m_Platform(Platform::GetInstance()),
@@ -34,10 +48,26 @@ Client *Client::s_Instance = NULL;
 
 bool Client::s_Initialized = false;
 
+/**
+* Client类的析构函数.
+* 该析构函数并不完成具体的销毁,
+* 销毁工作通过Shut函数来完成.
+*/
 Client::~Client()
 {
 }
 
+/**
+* @return 结果代码.
+*
+* 完成Client对象的初始化.
+* 它对Socket环境进行初始化,
+* 对平台进行初始化,
+* 对TcpSocket对象进行初始化.
+* 并且设置好默认的服务器主机地址和端口.
+* 当中任何一个步骤出现错误则直接返回对应的结果代码,
+* 全部成功返回OK.
+*/
 RC Client::Init()
 {
     RC rc;
@@ -53,6 +83,16 @@ RC Client::Init()
     return rc;
 }
 
+/**
+* @return 结果代码.
+*
+* 完成Client对象的销毁.
+* 它先销毁TcpSocket对象,
+* 然后销毁平台,
+* 最后清理Socket环境.
+* 当中任何一个步骤出现错误则直接返回对应的结果代码,
+* 全部成功返回OK.
+*/
 RC Client::Shut()
 {
     RC rc;
@@ -65,6 +105,9 @@ RC Client::Shut()
     return rc;
 }
 
+/**
+* @param hostName 服务器主机名或地址.
+*/
 RC Client::SetHostName(const char *hostName)
 {
     RC rc;
@@ -74,6 +117,9 @@ RC Client::SetHostName(const char *hostName)
     return rc;
 }
 
+/**
+* @param port 服务器主机端口.
+*/
 RC Client::SetPort(int port)
 {
     RC rc;
@@ -83,6 +129,15 @@ RC Client::SetPort(int port)
     return rc;
 }
 
+/**
+* @return 结果代码.
+*
+* 连接至服务器.
+* 使用TcpSocket对象连接至服务器.
+* 若连接失败则返回错误代码.
+* 当中任何一个步骤出现错误则直接返回对应的结果代码,
+* 全部成功返回OK.
+*/
 RC Client::Connect()
 {
     RC rc;
@@ -94,6 +149,16 @@ RC Client::Connect()
     return rc;
 }
 
+/**
+* @return 结果代码.
+*
+* 断开与服务器的连接.
+* 使用的方法是先关闭TcpSocket对象,
+* 然后再重新调用其初始化,
+* 保持TcpSocket对象可供下次连接使用.
+* 连接成功则设置m_IsConnected为true.
+* 返回OK.
+*/
 RC Client::Disconnect()
 {
     RC rc;
@@ -111,6 +176,20 @@ bool Client::IsConnected()
     return m_IsConnected;
 }
 
+/**
+* @param name 用户名.
+* @param password 密码.
+* @return 结果代码.
+*
+* 将用户名与密码发送至服务器进行登录.
+* 用户名密码均不能含有空格,
+* 但该函数并不做判断,
+* 这一点将由调用该函数的上层函数来保证.
+* 接收服务器返回的结果.
+* 若登陆失败, 则返回错误信息.
+* 否则将设置m_IsLogined为true,
+* 表示已经登陆.
+*/
 RC Client::Login(const wstring &name, const wstring &password)
 {
     RC rc;
@@ -135,6 +214,19 @@ bool Client::IsLogined()
     return m_IsLogined;
 }
 
+/**
+* @param name 用户名.
+* @param password 密码.
+* @return 结果代码.
+*
+* 将用户名与密码发送至服务器进行注册.
+* 用户名密码均不能含有空格,
+* 但该函数并不做判断,
+* 这一点将由调用该函数的上层函数来保证.
+* 接收服务器返回的结果.
+* 若注册失败, 则返回错误信息.
+* 否则返回OK.
+*/
 RC Client::Register(const wstring &name, const wstring &password)
 {
     RC rc;
@@ -150,6 +242,15 @@ RC Client::Register(const wstring &name, const wstring &password)
     return _rc;
 }
 
+/**
+* @param fileName 要发送的文件路径.
+* @return 结果代码.
+*
+* 将模型文件发送至服务器.
+* 接收服务器返回的结果.
+* 当中任何一个步骤出现错误则直接返回对应的结果代码,
+* 全部成功返回OK.
+*/
 RC Client::SendModelFile(LPCWSTR fileName)
 {
     RC rc;

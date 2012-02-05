@@ -12,6 +12,11 @@
 #include <locale.h>
 #include <math.h>
 
+/**
+* @param fileName 文件路径.
+*
+* 调用Windows库函数打开文件.
+*/
 bool Utility::FileExists(LPCWSTR fileName)
 {
     HANDLE handle =
@@ -30,6 +35,11 @@ bool Utility::FileExists(LPCWSTR fileName)
     return false;
 }
 
+/**
+* @param fileName 文件路径.
+*
+* 调用Windows库函数删除文件.
+*/
 RC Utility::DeleteFile(LPCWSTR fileName)
 {
     RC rc;
@@ -42,11 +52,17 @@ RC Utility::DeleteFile(LPCWSTR fileName)
     return rc;
 }
 
+/**
+* @param msg 提示信息.
+*/
 void Utility::PromptMessage(LPCWSTR msg)
 {
     MessageBox(NULL, msg, TEXT("消息"), MB_OK); 
 }
 
+/**
+* @param msg 提示信息.
+*/
 void Utility::PromptErrorMessage(LPCWSTR msg)
 {
     MessageBox(NULL, msg, TEXT("错误"), MB_OK); 
@@ -124,6 +140,11 @@ bool Utility::ContainSpace(LPCWSTR str)
     return wstring(str).find_first_of(whitespace) != wstring.npos;
 }
 
+/**
+* @param attributeType 属性类型.
+*
+* 将属性类型转化成对应的字符串.
+*/
 LPCWSTR Utility::AttributeTypeToString(Attribute::AttributeType attributeType)
 {
     switch (attributeType)
@@ -139,7 +160,12 @@ LPCWSTR Utility::AttributeTypeToString(Attribute::AttributeType attributeType)
     }
 }
 
-Attribute::AttributeType Utility::StringToAttributeType(wstring str)
+/**
+* @param str 属性类型字符串.
+*
+* 将属性类型字符串转化成对应的属性类型.
+*/
+ute::AttributeType Utility::StringToAttributeType(wstring str)
 {
     if (str == TEXT("整型"))
     {
@@ -159,11 +185,24 @@ Attribute::AttributeType Utility::StringToAttributeType(wstring str)
     }
 }
 
+/**
+* @param p1 直线端点1.
+* @param p2 直线端点2.
+* @param p 点.
+*
+* 计算点p到由点p1点p2描述的直线的距离.
+*/
 double Utility::DistanceToEdge(CPoint p1, CPoint p2, CPoint p)
 {
     return (fabs((double)((p2.y - p1.y) * p.x + (p1.x - p2.x) * p.y + ((p2.x * p1.y) - (p1.x * p2.y))))) / (sqrt(pow((double)(p2.y - p1.y), 2) + pow((double)(p1.x - p2.x), 2))); 
 }
 
+/**
+* @param p1 点1.
+* @param p2 点2.
+*
+* 计算点p1和点p2间的距离.
+*/
 double Utility::DistanceToPoint(CPoint p1, CPoint p2)
 {
     return sqrt(pow((double)(p1.y - p2.y), 2) + pow((double)(p1.x - p2.x), 2));
@@ -176,6 +215,11 @@ bool Utility::DirectoryExists(LPCWSTR pathName)
         (attr & FILE_ATTRIBUTE_DIRECTORY);
 }
 
+/**
+* @param pathName 文件路径.
+*
+* 从文件路径中提取文件名.
+*/
 wstring Utility::StripFilePath(LPCWSTR pathName)
 {
     MASSERT(pathName);
