@@ -5,6 +5,13 @@
 
 LPCWSTR Server::s_UserFileName = TEXT("user.dat");
 
+/**
+* @return Server类的唯一实例.
+*
+* 用户只能通过该函数获得Server类的唯一实例.
+* 若Server类还未被初始化, 则创建唯一的Server类对象,
+* 否则直接返回该对象.
+*/
 Server &Server::GetInstance()
 {
     if (!s_Initialized)
@@ -25,6 +32,13 @@ void Server::DestroyInstance()
     }
 }
 
+/**
+* 将Server类的唯一构造函数声明为私有,
+* 可以保证编译器不会帮助生成其他构造函数,
+* 并且该类不可以显式的实例化.
+* 该构造函数并不完成具体的初始化,
+* 初始化工作通过Init函数来完成.
+*/
 Server::Server()
 :
 m_Platform(Platform::GetInstance())
@@ -39,6 +53,17 @@ Server::~Server()
 {
 }
 
+/**
+* @return 结果代码.
+*
+* 完成Server对象的初始化.
+* 它对Socket环境进行初始化,
+* 对平台进行初始化,
+* 对TcpSocket对象进行初始化.
+* 并且设置好默认的服务端端口.
+* 当中任何一个步骤出现错误则直接返回对应的结果代码,
+* 全部成功返回OK.
+*/
 RC Server::Init()
 {
     RC rc;
@@ -48,12 +73,21 @@ RC Server::Init()
     CHECK_RC(m_Platform.Init());
     CHECK_RC(m_Socket.Init());
 
-    // FIXME
     m_Port = 10086;
 
     return rc;
 }
 
+/**
+* @return 结果代码.
+*
+* 完成Server对象的销毁.
+* 它先销毁TcpSocket对象,
+* 然后销毁平台,
+* 最后清理Socket环境.
+* 当中任何一个步骤出现错误则直接返回对应的结果代码,
+* 全部成功返回OK.
+*/
 RC Server::Shut()
 {
     RC rc;
@@ -69,13 +103,12 @@ RC Server::Shut()
 /**
 * @return 结果代码.
 *
-* 进入监听服务状态. 能够监听并服务1或多个客户端.
+* 令服务器进入监听服务状态. 能够监听并服务1或多个客户端.
 * 当有客户端连入, 接受连接, 得到客户端Socket.
-* 然后创建一个服务线程信息ThreadInfo, 将线程ID, 服务端及客户端Socket填充好.
-* 再通过系统调用创建出一个服务线程用于服务该客户端.
-* 该线程运行函数Dispatch, 并将ThreadInfo作为参入传入Dispatch函数.
-* 并由Dispatch函数完成最终对服务端程序运行函数Service的调用, 服务该客户端.
-* 在服务了的客户端打到可服务的最大客户端数后, 函数退出.
+* 创建一个ServiceThread对象, 将客户端Socket传入初始化该ServiceThread对象.
+* 再通过系统调用创建出一个服务线程用于服务该客户端,
+* 线程运行Service函数, 将该ServiceThread对象作为参数传入.
+* 具体的服务将由线程函数Service来完成.
 */
 RC Server::Listen()
 {
@@ -106,11 +139,21 @@ RC Server::Listen()
     return OK;
 }
 
+/**
+* @param port 服务端端口.
+*/
 void Server::SetPort(int port)
 {
     m_Port = port;
 }
 
+/**
+* @param clientSocket 客户端Socket.
+*
+* 接收一个客户端Socket对象初始化服务线程对象.
+* 将m_IsLogined初始化为false.
+* 并初始化用来服务客户端的TcpSocket对象.
+*/
 Server::ServiceThread::ServiceThread(TcpSocket *clientSocket)
 :
 m_IsLogined(false),
@@ -129,6 +172,15 @@ RC Server::ServiceThread::RecvCommand(CC &cc)
     return m_ClientSocket->RecvCommand(cc);
 }
 
+/**
+* @return 结果代码.
+*
+* 服务用户的登录请求.
+* 从客户端Socket接收一组用户名及密码,
+* 查询用户数据文件, 判断用户名密码是否正确,
+* 并发送对应的结果代码告之客户端.
+* 若登陆成功, 则再置m_IsLogined为true, 表示已经登录.
+*/
 RC Server::ServiceThread::OnLogin()
 {
     RC rc;
@@ -157,6 +209,17 @@ RC Server::ServiceThread::OnLogin()
     return rc;
 }
 
+/**
+* @return 结果代码.
+*
+* 服务用户的注册请求.
+* 从客户端Socket接收一组用户名, 密码及确认密码.
+* 查询用户数据文件, 判断用户是否已存在,
+* 并发送对应的结果代码告之客户端.
+* 若注册成功, 则更新用户数据文件, 将新的用户名密码添加.
+* 之后为该用户创建该用户在服务器上的工作目录,
+* 用于存放用户上传的模型或数据文件, 以及算法运行产生的数据结果文件.
+*/
 RC Server::ServiceThread::OnRegister()
 {
     RC rc;
@@ -173,6 +236,18 @@ RC Server::ServiceThread::OnRegister()
     return rc;
 }
 
+/**
+* @return 结果代码.
+*
+* 服务用户的发送模型文件请求.
+* 创建用户名+.mod的模型文件存放于用户的工作目录中.
+* 然后调用平台功能, 解析该模型文件,
+* 在服务端重建出该模型, 并调用算法运行该模型(FIXME),
+* 之后将产生的数据文件发送回客户端.
+* 最后发送结果代码,
+* 若前述步骤都无问题, 则返回OK.
+* 否则发送对应的错误信息告知用户.
+*/
 RC Server::ServiceThread::OnSendModelFile()
 {
     RC rc;
@@ -278,6 +353,17 @@ RC Server::ServiceThread::OnExit()
     return OK;
 }
 
+/**
+* @param lparam 实际类型为ServiceThread, 是一个具体的服务线程对象.
+*
+* 每个服务端线程都通过该函数服务一个特定的服务线程对象,
+* 即服务一个具体的客户端.
+* 该函数不断接收客户端发来的服务请求命令,
+* 解析该命令并调用对应的功能服务函数,
+* 如登陆, 注册等等.
+* 直至客户端发来退出请求, 该函数退出,
+* 同时线程结束其使命.
+*/
 DWORD WINAPI Server::Service(LPVOID lparam)
 {
     ServiceThread *thread = (ServiceThread *)lparam;
