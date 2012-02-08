@@ -2,18 +2,37 @@
 
 #include "platform.h"
 
+/**
+* @param componentList 带参数构造函数.
+*
+* 通过一个组件列表来构造模型.
+* 此时所有组件都是由外部创建,
+* 所以置m_SelfOwn为false.
+*/
 Model::Model(ComponentList &componentList)
 :
 m_SelfOwn(false)
 {
 }
 
+/**
+* 构造一个空模型.
+* 此时所有组件必定是由模型自身创建,
+* 所以置m_SelfOwn为true.
+*/
 Model::Model()
 :
 m_SelfOwn(true)
 {
 }
 
+/**
+* 在模型销毁的时候,
+* 需判断组件是否由自身创建.
+* 检查m_SelfOwn,
+* 若为true,
+* 则需要同时销毁所有组件.
+*/
 Model::~Model()
 {
     if (m_SelfOwn)
@@ -26,6 +45,17 @@ Model::~Model()
     }
 }
 
+/**
+* @param ar 模型保存的文件.
+* @return 结果代码.
+*
+* 首先从文件中读入所有组件数据,
+* 然后读入组件之间的关联关系,
+* 并且调用Connect函数对组件进行关联.
+* 整个过程中任何一个步骤出现错误,
+* 则返回对应的结果代码.
+* 否则返回OK.
+*/
 RC Model::Load(CArchive &ar)
 {
     RC rc;
@@ -99,6 +129,18 @@ RC Model::Validate()
     return rc;
 }
 
+/**
+* @param os 存放模型运行结果数据的流.
+* @return 结果代码.
+*
+* 遍历组件列表,
+* 找出其中的参数组件.
+* 对所有参数组件调用生成参数的函数ToParam.
+* 并将参数结果记录到流os中.
+* 整个过程中任何一个步骤出现错误,
+* 则返回对应的结果代码.
+* 否则返回OK.
+*/
 RC Model::Run(wostream &os)
 {
     RC rc;
@@ -120,6 +162,17 @@ RC Model::Run(wostream &os)
     return rc;
 }
 
+/**
+* @param sourceId 关联的头组件.
+* @param targetId 关联的尾组件.
+* @return 是否关联成功.
+*
+* 首先从组件列表中找到头组件和尾组件.
+* 若找到,
+* 则调用头组件的Connect函数关联尾组件.
+* 若可以关联, 则返回true,
+* 否则返回false.
+*/
 bool Model::Connect(UINT32 sourceId, UINT32 targetId)
 {
     IComponent *source = NULL, *target = NULL;

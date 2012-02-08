@@ -3,7 +3,7 @@
 * @brief 内部算法组件cpp文件.
 * @author ruoxi
 *
-* 实现了内部算法组件类.
+* 实现了内部算法类.
 */
 
 #include "internal_algorithm.h"
@@ -14,10 +14,21 @@
 
 using namespace std;
 
+/**
+* 构造一个空的内部算法实例.
+*/
 InternalAlgorithm::InternalAlgorithm()
 {
 }
 
+/**
+* @param id 算法ID
+* @param name 算法名称.
+* @param dllFileName 算法DLL文件名.
+* @param funcName 算法入口函数名称.
+*
+* 通过参数配置一个内部算法实例.
+*/
 InternalAlgorithm::InternalAlgorithm(UINT32 id,
                                      wstring name,
                                      wstring dllFileName,

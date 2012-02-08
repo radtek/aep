@@ -3,7 +3,7 @@
 * @brief 接口头文件.
 * @author ruoxi
 *
-* 定义了平台中的全部接口.
+* 定义了平台组件的全部接口.
 */
 
 #ifndef __INTERFACES_H__
@@ -17,7 +17,7 @@
 
 using namespace std;
 
-// 组件部分接口
+/** @brief 表示内部接口ID的枚举类型. */
 enum CIID
 {
     CIID_FIRST = 0,
@@ -27,16 +27,18 @@ enum CIID
     CIID_LAST,
 };
 
+/** @brief 用于开始声明外部接口ID的宏. */
 #define BEGIN_CLIENT_CIID \
     enum CLIENT_CIID \
     { \
         CLIENT_CIID_FIRST = CIID_LAST,
 
+/** @brief 用于结束声明外部接口ID的宏. */
 #define END_CLIENT_CIID \
         CLIENT_CIID_LAST, \
     };
 
-// 组件部分
+/** @brief 表示内部组件ID的枚举类型. */
 enum CCID
 {
     CCID_FIRST = 0,
@@ -45,29 +47,38 @@ enum CCID
     CCID_LAST,
 };
 
+/** @brief 用于开始声明外部组件ID的宏. */
 #define BEGIN_CLIENT_CCID \
     enum CLIENT_CCID \
     { \
         CLIENT_CCID_FIRST = CIID_LAST,
 
+/** @brief 用于结束声明外部组件ID的宏. */
 #define END_CLIENT_CCID \
         CLIENT_CCID_LAST, \
     };
 
 typedef vector<UINT32> InterfaceList;
 
+/** @brief 用来表示接口类型的结构体. */
 typedef struct
 {
+    /** @brief 接口ID. */
     UINT32 InterfaceId;
+    /** @brief 接口名称. */
     LPCWSTR InterfaceName;
 } InterfaceType;
 
 typedef map<UINT32, InterfaceType> InterfaceTypeMap;
 
+/** @brief 用来表示属性类型的结构体. */
 typedef struct
 {
+    /** @brief 属性ID. */
     UINT32 Id;
+    /** @brief 属性名称. */
     LPCWSTR Name;
+    /** @brief 属性类型. */
     enum AttributeType
     {
         TYPE_UNKNOWN,
@@ -79,21 +90,43 @@ typedef struct
 
 typedef vector<Attribute> AttributeList;
 
+/**
+* @class IComponent
+* @brief IComponent组件接口.
+*
+* 组件接口抽象了平台关于所有组件的一般性操作.
+* 对于平台来说, 它所看到的所有组件均是实现了该接口的实例.
+* 平台对于所有组件并不区别对待,
+* 而只是一般性的调用接口中的操作(即函数).
+*/
 interface IComponent
 {
     // virtual RC _stdcall Config() = 0;
+    /** @brief 获得组件类型ID. */
     virtual UINT32 _stdcall GetTypeId() = 0;
+    /** @brief 将组件保存至二进制文件. */
     virtual void Save(CArchive &ar) = 0;
+    /** @brief 从二进制文件中读取组件. */
     virtual void Load(CArchive &ar) = 0;
+    /** @brief 销毁组件. */
     virtual void _stdcall Destroy() = 0;
+    /** @brief 获得组件所实现的接口ID. */
     virtual void * _stdcall GetInterface(UINT32 iid) = 0;
+    /** @brief 获得组件实例ID. */
     virtual UINT32 _stdcall GetId() = 0;
+    /** @brief 设置组件实例ID. */
     virtual void _stdcall SetId(UINT32 id) = 0;
+    /** @brief 获得组件实例名称. */
     virtual wstring _stdcall GetName() = 0;
+    /** @brief 获得组件实例名称. */
     virtual void _stdcall SetName(wstring name) = 0;
+    /** @brief 获得组件的属性列表. */
     virtual void _stdcall GetAttributeList(AttributeList &attributeList) = 0;
+    /** @brief 获得组件的某一个属性值. */
     virtual RC _stdcall GetAttribute(UINT32 aid, void *attr) = 0;
+    /** @brief 设置组件的某一个属性值. */
     virtual RC _stdcall SetAttribute(UINT32 aid, void *attr) = 0;
+    /** @brief 将组件与另一组间相关联. */
     virtual bool _stdcall Connect(IComponent *component) = 0;
     // virtual bool _stdcall Validate() = 0;
 };
@@ -105,21 +138,34 @@ typedef vector<IComponent *> ComponentList;
 typedef vector<double> Param;
 typedef vector<double> Output;
 
+/**
+* @class IParam
+* @brief IParam参数接口.
+*
+* 参数接口继承自组件接口.
+* 它抽象了关于参数的一般性操作,
+*/
 interface IParam : public IComponent
 {
     virtual Param * _stdcall ToParam() = 0;
     virtual UINT32 _stdcall GetParamSize() = 0;
+    /** @brief 绘制参数曲线. */
     virtual RC _stdcall DrawFigure(Engine *engine) = 0;
 };
 
 typedef IComponent *(*ComponentFactory)(void);
 
+/** @brief 用来表示组件类型的结构体. */
 typedef struct
 {
+    /** @brief 获得组件类型ID. */
     UINT32 TypeId;
+    /** @brief 获得组件类型名称. */
     LPCWSTR TypeName;
+    /** @brief 获得接口ID. */
     UINT32 InterfaceId;
     // UINT32 *attributeList;
+    /** @brief 获得组件的工厂函数. */
     ComponentFactory Factory;
     // ComponentDestroy destroy;
     // void *iconHandle;
@@ -127,8 +173,16 @@ typedef struct
 
 typedef map<UINT32, ComponentType> ComponentTypeMap;
 
+/**
+* @class IAlgorithm
+* @brief IAlgorithm算法接口.
+*
+* 算法接口继承自组件接口.
+* 它抽象了关于算法的一般性操作,
+*/
 interface IAlgorithm : public IComponent
 {
+    /** @brief 运行算法. */
     virtual RC _stdcall Run() = 0;
 };
 

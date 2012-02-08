@@ -15,9 +15,11 @@ namespace Component
 {
     // 平台调组件
     typedef void (*RegisterInterfaceTypeFunc)(InterfaceTypeMap &interfaceTypeMap);
+    /** @brief 注册接口类型的函数名. */
     extern LPCSTR RegisterInterfaceTypeFuncName;
 
     typedef void (*RegisterComponentTypeFunc)(ComponentTypeMap &componentTypeMap);
+    /** @brief 注册组件类型的函数名. */
     extern LPCSTR RegisterComponentTypeFuncName;
 
     /*
@@ -33,6 +35,7 @@ namespace Component
     extern GetComponentListFunc GetComponentList;
 
     typedef void (*RegisterGetComponentListFuncFunc)(GetComponentListFunc getComponentListFunc);
+    /** @brief 用来表示组件类型的结构体. */
     extern LPCSTR RegisterGetComponentListFuncFuncName;
 };
 
