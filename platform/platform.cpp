@@ -12,6 +12,13 @@
 #include "algorithm_data_file.h"
 #include "component_type_data_file.h"
 
+/**
+* @return 平台类的唯一实例.
+*
+* 用户只能通过该函数获得平台类的唯一实例.
+* 若平台类还未被初始化, 则创建唯一的平台类对象,
+* 否则直接返回该对象.
+*/
 Platform &Platform::GetInstance()
 {
     if (!s_Initialized)
@@ -40,6 +47,18 @@ void GetComponentList(ComponentList &componentList)
     componentList = Platform::GetInstance().GetComponentList();
 }
 
+/**
+* @return 结果代码.
+*
+* 完成平台对象的初始化.
+* 首先读取平台配置文件,
+* 获得外部组件配置文件名以及算法配置文件名.
+* 然后注册所有的外部组件,
+* 初始化算法运行环境,
+* 注册内部算法.
+* 当中任何一个步骤出现错误则直接返回对应的结果代码,
+* 全部成功返回OK.
+*/
 RC Platform::Init()
 {
     RC rc;
@@ -60,6 +79,15 @@ RC Platform::Init()
     return rc;
 }
 
+/**
+* @return 结果代码.
+*
+* 完成平台对象的销毁.
+* 它先释放全部外部组件DLL文件,
+* 然后关闭算法运行环境.
+* 当中任何一个步骤出现错误则直接返回对应的结果代码,
+* 全部成功返回OK.
+*/
 RC Platform::Shut()
 {
     RC rc;
@@ -134,6 +162,23 @@ InternalAlgorithmMap &Platform::GetInternalAlgorithmMap()
     return m_InternalAlgorithmMap;
 }
 
+/**
+* @return 组件ID的初始值.
+*
+* 内部算法属于特殊的内部组件.
+* 它虽然继承了算法接口,
+* 但平台对其会进行特殊的管理,
+* 即每个内部算法只有一个实例,
+* 不同于其他内部外部组件可以有多个实例.
+* 而这些内部算法的实例在平台初始化时即已经构造完毕.
+* 他们内部都有一个组件实例ID,
+* 在平台外部对外部组件进行建模时,
+* 外部组件实例的多少是由用户行为决定的,
+* 而这些实例都要有自己的组件实例ID,
+* 为了平台能够统一的识别这些ID,
+* 需要平台提供外部组件ID的初始值,
+* 该值即为当前所有内部算法实例的组件实例ID的最大值加1.
+*/
 UINT32 Platform::GetComponentIdStart()
 {
     UINT32 idStart = 0;
@@ -172,6 +217,13 @@ RC Platform::RegisterInterfaceType()
     return rc;
 }
 
+/**
+* @return 结果代码.
+*
+* 遍历所有外部组件DLL文件,
+* 调用他们的导出函数RegisterInterfaceType完成所有外部接口的注册,
+* 再调用他们的导出函数RegisterComponentType完成所有外部组件的注册.
+*/
 RC Platform::RegisterComponentType()
 {
     RC rc;
@@ -248,6 +300,12 @@ RC Platform::RegisterAlgorithm()
     return rc;
 }
 
+/**
+* @return 结果代码.
+*
+* 读取内部算法配置文件,
+* 根据配置逐个实例化每个内部算法.
+*/
 RC Platform::RegisterInternalAlgorithm()
 {
     RC rc;
