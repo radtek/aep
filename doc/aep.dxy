@@ -26,7 +26,7 @@ DOXYFILE_ENCODING      = UTF-8
 # identify the project. Note that if you do not use Doxywizard you need 
 # to put quotes around the project name if it contains spaces.
 
-PROJECT_NAME           = 算法评估平台
+PROJECT_NAME           = 算法评估平台详细设计文档
 
 # The PROJECT_NUMBER tag can be used to enter a project or revision number. 
 # This could be handy for archiving the generated documentation or 
@@ -52,7 +52,7 @@ PROJECT_LOGO           =
 # If a relative path is entered, it will be relative to the location 
 # where doxygen was started. If left blank the current directory will be used.
 
-OUTPUT_DIRECTORY       = C:/git/aep/doc
+OUTPUT_DIRECTORY       = .
 
 # If the CREATE_SUBDIRS tag is set to YES, then doxygen will create 
 # 4096 sub-directories (in 2 levels) under the output directory of each output 
@@ -255,7 +255,7 @@ BUILTIN_STL_SUPPORT    = NO
 # If you use Microsoft's C++/CLI language, you should set this option to YES to 
 # enable parsing support.
 
-CPP_CLI_SUPPORT        = NO
+CPP_CLI_SUPPORT        = YES
 
 # Set the SIP_SUPPORT tag to YES if your project consists of sip sources only. 
 # Doxygen will parse them like normal C++ but will assume all classes use public 
@@ -679,7 +679,15 @@ RECURSIVE              = YES
 # subdirectory from a directory tree whose root is specified with the INPUT tag. 
 # Note that relative paths are relative to directory from which doxygen is run.
 
-EXCLUDE                = ../network_test
+EXCLUDE                = ../.git \
+                         ../aircraft_component \
+                         ../aircraft_component_target \
+                         ../bin \
+                         ../component_test \
+                         ../debug \
+                         ../release \
+                         ../doc \
+                         ../network_test
 
 # The EXCLUDE_SYMLINKS tag can be used select whether or not files or 
 # directories that are symbolic links (a Unix file system feature) are excluded 
@@ -1706,7 +1714,7 @@ INTERACTIVE_SVG        = NO
 # The tag DOT_PATH can be used to specify the path where the dot tool can be 
 # found. If left blank, it is assumed the dot tool can be found in the path.
 
-DOT_PATH               = "../../../Program Files/Graphviz2.29/bin"
+DOT_PATH               = "../../../../Program Files/Graphviz2.29/bin"
 
 # The DOTFILE_DIRS tag can be used to specify one or more directories that 
 # contain dot files that are included in the documentation (see the 

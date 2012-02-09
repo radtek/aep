@@ -60,7 +60,10 @@ enum CCID
 
 typedef vector<UINT32> InterfaceList;
 
-/** @brief 用来表示接口类型的结构体. */
+/**
+* @class InterfaceType
+* @brief 用来表示接口类型的结构体.
+*/
 typedef struct
 {
     /** @brief 接口ID. */
@@ -71,7 +74,10 @@ typedef struct
 
 typedef map<UINT32, InterfaceType> InterfaceTypeMap;
 
-/** @brief 用来表示属性类型的结构体. */
+/**
+* @class Attribute
+* @brief 用来表示属性类型的结构体.
+*/
 typedef struct
 {
     /** @brief 属性ID. */
@@ -99,15 +105,15 @@ typedef vector<Attribute> AttributeList;
 * 平台对于所有组件并不区别对待,
 * 而只是一般性的调用接口中的操作(即函数).
 */
-interface IComponent
+struct IComponent
 {
     // virtual RC _stdcall Config() = 0;
     /** @brief 获得组件类型ID. */
     virtual UINT32 _stdcall GetTypeId() = 0;
     /** @brief 将组件保存至二进制文件. */
-    virtual void Save(CArchive &ar) = 0;
+    virtual void _stdcall Save(CArchive &ar) = 0;
     /** @brief 从二进制文件中读取组件. */
-    virtual void Load(CArchive &ar) = 0;
+    virtual void _stdcall Load(CArchive &ar) = 0;
     /** @brief 销毁组件. */
     virtual void _stdcall Destroy() = 0;
     /** @brief 获得组件所实现的接口ID. */
@@ -145,7 +151,7 @@ typedef vector<double> Output;
 * 参数接口继承自组件接口.
 * 它抽象了关于参数的一般性操作,
 */
-interface IParam : public IComponent
+struct IParam : public IComponent
 {
     virtual Param * _stdcall ToParam() = 0;
     virtual UINT32 _stdcall GetParamSize() = 0;
@@ -155,7 +161,10 @@ interface IParam : public IComponent
 
 typedef IComponent *(*ComponentFactory)(void);
 
-/** @brief 用来表示组件类型的结构体. */
+/**
+* @class ComponentType
+* @brief 用来表示组件类型的结构体.
+*/
 typedef struct
 {
     /** @brief 获得组件类型ID. */
@@ -180,7 +189,7 @@ typedef map<UINT32, ComponentType> ComponentTypeMap;
 * 算法接口继承自组件接口.
 * 它抽象了关于算法的一般性操作,
 */
-interface IAlgorithm : public IComponent
+struct IAlgorithm : public IComponent
 {
     /** @brief 运行算法. */
     virtual RC _stdcall Run() = 0;

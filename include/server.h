@@ -43,10 +43,10 @@ private:
     Platform &m_Platform;
 
     /**
-    * @class ServerThread
-    * @brief ServerThread服务端服务线程类.
+    * @class ServiceThread
+    * @brief ServiceThread服务端服务线程类.
     *
-    * ServerThread服务端服务线程类抽象出了服务端对于每一个客户端的具体的服务操作,
+    * ServiceThread服务端服务线程类抽象出了服务端对于每一个客户端的具体的服务操作,
     * 服务端对于每个连接的客户端, 均创建一个独立的服务端线程对象进行服务,
     * 以达到并发服务多个客户的目的.
     * 服务端线程类的具体功能对应客户端的全部功能.
@@ -55,9 +55,9 @@ private:
     class ServiceThread
     {
     public:
-        /** @brief ServerThread构造函数. */
+        /** @brief ServiceThread构造函数. */
         ServiceThread(TcpSocket *clientSocket);
-        /** @brief ServerThread析构函数. */
+        /** @brief ServiceThread析构函数. */
         ~ServiceThread();
 
         /** @brief 接收客户端发来的命令. */

@@ -29,24 +29,24 @@ BEGIN_CLIENT_CCID
     CLIENT_CCID_ATD,
 END_CLIENT_CCID
 
-interface IMotion : IComponent
+struct IMotion : IComponent
 {
     virtual void _stdcall Move(Vector &coordinate, double time) = 0;
 };
 
-interface IAircraft : IComponent
+struct IAircraft : IComponent
 {
     virtual void _stdcall Fly(double time) = 0;
     virtual Vector _stdcall GetCurrentCoordinate() = 0;
 };
 
-interface ITarget : IComponent
+struct ITarget : IComponent
 {
     virtual void _stdcall Fly(double time) = 0;
     virtual Vector _stdcall GetCurrentCoordinate() = 0;
 };
 
-interface INoise : IComponent
+struct INoise : IComponent
 {
     virtual double _stdcall Affect(double data) = 0;
 
@@ -54,7 +54,7 @@ interface INoise : IComponent
     virtual double _stdcall GetVariance() = 0;
 };
 
-interface IRealValue : IParam
+struct IRealValue : IParam
 {
 };
 

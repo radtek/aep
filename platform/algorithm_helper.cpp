@@ -1,3 +1,11 @@
+/**
+* @file
+* @brief 算法辅助函数cpp文件.
+* @author ruoxi
+*
+* 实现了算法辅助函数.
+*/
+
 #include "algorithm_helper.h"
 #include "utility.h"
 #include "massert.h"
@@ -47,6 +55,20 @@ RC AlgorithmHelper::GetParamList(const ParamNameList &paramNameList, ComponentLi
     return rc;
 }
 
+/**
+* @param dllFileName 算法DLL文件名.
+* @param funcName 算法入口函数名.
+* @param paramList 算法参数列表.
+* @return 结果代码.
+*
+* 加载算法DLL文件,
+* 获得算法DLL中导出的算法初始化函数句柄,
+* 入口函数句柄以及清理函数句柄.
+* 按顺序调用算法初始化函数, 入口函数以及清理函数.
+* 对入口函数的调用, 使用了另外一个算法运行辅助函数RealRunFunc.
+* 当中任何一个步骤出现错误则直接返回对应的结果代码,
+* 全部成功返回OK.
+*/
 RC AlgorithmHelper::RunFunc(wstring dllFileName, wstring funcName, ParamList paramList)
 {
     RC rc;
@@ -134,6 +156,22 @@ RC AlgorithmHelper::RunFunc(wstring dllFileName, wstring funcName, ParamList par
         ReleaseParam(realParamList[i]); \
     }
 
+/**
+* @param algorithmDllHandle 算法DLL文件句柄.
+* @param fullFuncName 算法入口函数全名.
+* @param paramList 算法参数列表.
+* @param output 算法输出.
+* @param result 算法调用结果.
+* @return 结果代码.
+*
+* 该函数被算法运行辅助函数调用,
+* 用来实现对一个算法入口函数的具体调用.
+* 该函数接收算法DLL文件句柄以及算法入口函数全名(通常MatLab导出的函数会添加前缀),
+* 接收可变个数的参数,
+* 对参数个数进行遍历,
+* 实现对参数列表无差别调用(目前最大支持5个参数, 如有需要可随意增加),
+* 并且记录算法调用结果.
+*/
 RC AlgorithmHelper::RealRunFunc(HINSTANCE algorithmDllHandle, string fullFuncName, ParamList paramList, Param **&output, bool &result)
 {
     UINT32 paramCount = paramList.size();

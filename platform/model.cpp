@@ -1,3 +1,11 @@
+/**
+* @file
+* @brief 模型类cpp文件.
+* @author ruoxi
+*
+* 实现了模型类.
+*/
+
 #include "model.h"
 
 #include "platform.h"

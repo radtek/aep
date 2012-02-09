@@ -1,3 +1,11 @@
+/**
+* @file
+* @brief Server服务端类cpp文件.
+* @author ruoxi
+*
+* 实现了Server服务端类.
+*/
+
 #include "server.h"
 #include "utility.h"
 #include "user_data_file.h"

@@ -165,7 +165,7 @@ LPCWSTR Utility::AttributeTypeToString(Attribute::AttributeType attributeType)
 *
 * 将属性类型字符串转化成对应的属性类型.
 */
-ute::AttributeType Utility::StringToAttributeType(wstring str)
+Attribute::AttributeType Utility::StringToAttributeType(wstring str)
 {
     if (str == TEXT("整型"))
     {

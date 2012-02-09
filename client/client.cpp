@@ -1,3 +1,11 @@
+/**
+* @file
+* @brief Client客户端类cpp文件.
+* @author ruoxi
+*
+* 实现了Client客户端类.
+*/
+
 #include "client.h"
 
 #include "utility.h"
