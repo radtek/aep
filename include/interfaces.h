@@ -116,7 +116,7 @@ struct IComponent
     virtual void _stdcall Load(CArchive &ar) = 0;
     /** @brief 销毁组件. */
     virtual void _stdcall Destroy() = 0;
-    /** @brief 获得组件所实现的接口ID. */
+    /** @brief 得到该组件的某一接口. */
     virtual void * _stdcall GetInterface(UINT32 iid) = 0;
     /** @brief 获得组件实例ID. */
     virtual UINT32 _stdcall GetId() = 0;
@@ -124,7 +124,7 @@ struct IComponent
     virtual void _stdcall SetId(UINT32 id) = 0;
     /** @brief 获得组件实例名称. */
     virtual wstring _stdcall GetName() = 0;
-    /** @brief 获得组件实例名称. */
+    /** @brief 设置组件实例名称. */
     virtual void _stdcall SetName(wstring name) = 0;
     /** @brief 获得组件的属性列表. */
     virtual void _stdcall GetAttributeList(AttributeList &attributeList) = 0;
