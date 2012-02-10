@@ -10,6 +10,6 @@ call html-utf82gbk *.html
 
 "C:\Program Files\HTML Help Workshop\hhc.exe" index.hhp
 
-if exist index.chm copy index.chm ..\aep.chm
+if exist index.chm copy index.chm ..\≥Ã–Ú‘± ÷≤·.chm
 
 cd ..
