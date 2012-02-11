@@ -111,14 +111,41 @@ RC Server::Shut()
 /**
 * @return 结果代码.
 *
+* 开辟一个系统线程专门进行监听,
+* 以使主界面能够同时响应用户交互,
+* 避免假死.
+*/
+RC Server::Listen()
+{
+    RC rc;
+
+    HANDLE handle;
+    handle = CreateThread(NULL,
+        NULL,
+        ThreadListen,
+        (LPVOID)this,
+        0,
+        0);
+
+    if(handle == NULL)
+    {
+        return RC::THREAD_CREATE_ERROR;
+    }
+
+    return OK;
+}
+
+/**
+* @return 结果代码.
+*
 * 令服务器进入监听服务状态. 能够监听并服务1或多个客户端.
 * 当有客户端连入, 接受连接, 得到客户端Socket.
 * 创建一个ServiceThread对象, 将客户端Socket传入初始化该ServiceThread对象.
 * 再通过系统调用创建出一个服务线程用于服务该客户端,
-* 线程运行Service函数, 将该ServiceThread对象作为参数传入.
+* 线程运行ThreadService函数, 将该ServiceThread对象作为参数传入.
 * 具体的服务将由线程函数Service来完成.
 */
-RC Server::Listen()
+RC Server::RealListen()
 {
     RC rc;
 
@@ -135,7 +162,7 @@ RC Server::Listen()
         HANDLE handle;
         handle = CreateThread(NULL,
             NULL,
-            Service,
+            ThreadService,
             (LPVOID)thread,
             0,
             0);
@@ -362,6 +389,20 @@ RC Server::ServiceThread::OnExit()
 }
 
 /**
+* @param lparam 实际类型为Server对象的指针, 是一个具体的服务端实例.
+*
+* 通过传入的Server对象执行真正的监听函数.
+*/
+DWORD WINAPI Server::ThreadListen(LPVOID lparam)
+{
+    Server *server = (Server *)lparam;
+
+    server->RealListen();
+
+    return 0;
+}
+
+/**
 * @param lparam 实际类型为ServiceThread, 是一个具体的服务线程对象.
 *
 * 每个服务端线程都通过该函数服务一个特定的服务线程对象,
@@ -372,7 +413,7 @@ RC Server::ServiceThread::OnExit()
 * 直至客户端发来退出请求, 该函数退出,
 * 同时线程结束其使命.
 */
-DWORD WINAPI Server::Service(LPVOID lparam)
+DWORD WINAPI Server::ThreadService(LPVOID lparam)
 {
     ServiceThread *thread = (ServiceThread *)lparam;
 

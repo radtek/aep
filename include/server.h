@@ -35,6 +35,11 @@ public:
     /** @brief 监听服务函数. */
     RC Listen();
 
+private:
+    /** @brief 真正的监听服务函数. */
+    RC RealListen();
+
+public:
     /** @brief 设置服务端端口. */
     void SetPort(int port);
 
@@ -89,9 +94,14 @@ private:
     };
 
     /**
+    * @brief 线程的监听函数.
+    */
+    static DWORD WINAPI ThreadListen(LPVOID lparam);
+
+    /**
     * @brief 服务端静态服务函数.
     */
-    static DWORD WINAPI Service(LPVOID lparam);
+    static DWORD WINAPI ThreadService(LPVOID lparam);
 
     /** @brief 用来响应客户端连接的TcpSocket对象. */
     TcpSocket m_Socket;
