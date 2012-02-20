@@ -33,6 +33,7 @@ void CLoginPage::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(CLoginPage, CPropertyPage)
     ON_BN_CLICKED(IDOK, &CLoginPage::OnBnClickedOk)
+    ON_BN_CLICKED(IDB_LOGOUT, &CLoginPage::OnBnClickedLogout)
 END_MESSAGE_MAP()
 
 
@@ -122,4 +123,25 @@ void CLoginPage::OnBnClickedOk()
     }
 
     Utility::PromptMessage(TEXT("µÇÂ½³É¹¦."));
+}
+
+void CLoginPage::OnBnClickedLogout()
+{
+    if (!m_Client.IsLogined())
+    {
+        Utility::PromptErrorMessage(TEXT("ÄúÉÐÎ´µÇÂ½."));
+        return;
+    }
+
+    RC rc = m_Client.Logout();
+
+    if (OK != rc)
+    {
+        Utility::PromptErrorMessage(TEXT("ÍË³ö´íÎó."));
+        return;
+    }
+
+    Utility::PromptErrorMessage(TEXT("ÍË³ö³É¹¦."));
+
+    m_Client.Disconnect();
 }

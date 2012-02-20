@@ -2,6 +2,10 @@
 // Microsoft Visual C++ generated include file.
 // Used by client_app.rc
 //
+#define ID_TRANSFER                     2
+#define IDB_TRANSFER                    2
+#define IDOK2                           2
+#define IDB_LOGOUT                      2
 #define IDM_ABOUTBOX                    0x0010
 #define IDD_ABOUTBOX                    100
 #define IDS_ABOUTBOX                    101
@@ -12,7 +16,6 @@
 #define IDD_LOGIN_PAGE                  132
 #define IDD_REGISTER_PAGE               134
 #define IDB_ICONS_HC                    135
-#define IDD_LOGIN_PAGE1                 135
 #define IDD_MODEL_PAGE                  135
 #define IDD_FILE_TRANSFER_PAGE          137
 #define IDD_SERVER_CONFIG_PAGE          139
@@ -39,6 +42,8 @@
 #define IDC_SERVER_CONFIG_PORT_TEXT     1024
 #define IDC_SERVER_CONFIG_PORT          1025
 #define IDC_SERVER_CONFIG_IP            1027
+#define ID                              1028
+#define IDB_MODEL                       1028
 
 // Next default values for new objects
 // 
@@ -46,7 +51,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        142
 #define _APS_NEXT_COMMAND_VALUE         32772
-#define _APS_NEXT_CONTROL_VALUE         1028
+#define _APS_NEXT_CONTROL_VALUE         1029
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

@@ -28,4 +28,5 @@ public:
 private:
     Client &m_Client;
     afx_msg void OnBnClickedOk();
+    afx_msg void OnBnClickedLogout();
 };

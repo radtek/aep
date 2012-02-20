@@ -382,10 +382,14 @@ RC Server::ServiceThread::OnGetFileList()
     return rc;
 }
 
-RC Server::ServiceThread::OnExit()
+RC Server::ServiceThread::OnLogout()
 {
-    delete this;
-    return OK;
+    RC rc;
+
+    RC _rc;
+    CHECK_RC(m_ClientSocket->SendRC(_rc));
+
+    return rc;
 }
 
 /**
@@ -447,14 +451,15 @@ DWORD WINAPI Server::ThreadService(LPVOID lparam)
         case CC::DOWNLOAD_FILE_COMMAND:
             thread->OnDownloadFile();
             break;
-        case CC::EXIT_COMMAND:
-            thread->OnExit();
+        case CC::LOGOUT_COMMAND:
+            thread->OnLogout();
             break;
         default:
             break;
         }
-        if (CC::EXIT_COMMAND == cc.Get())
+        if (CC::LOGOUT_COMMAND == cc.Get())
         {
+            delete thread;
             break;
         }
     }

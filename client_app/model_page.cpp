@@ -29,15 +29,22 @@ void CModelPage::DoDataExchange(CDataExchange* pDX)
 
 
 BEGIN_MESSAGE_MAP(CModelPage, CDialog)
-    ON_BN_CLICKED(IDOK, &CModelPage::OnBnClickedOk)
+    ON_BN_CLICKED(IDB_TRANSFER, &CModelPage::OnBnClickedTransfer)
+    ON_BN_CLICKED(IDB_MODEL, &CModelPage::OnBnClickedModel)
 END_MESSAGE_MAP()
 
 
 // CModelPage message handlers
 
-void CModelPage::OnBnClickedOk()
+void CModelPage::OnBnClickedTransfer()
 {
     // TODO: Add your control notification handler code here
+    if (!m_Client.IsLogined())
+    {
+        Utility::PromptErrorMessage(TEXT("ÄúÉÐÎ´µÇÂ½."));
+        return;
+    }
+
     CString pathName;
 
     CFileDialog dlg(FALSE, TEXT("mod"), TEXT("Untitiled.mod"), 0, TEXT("Model Files (*.mod)|*.mod|All Files (*.*)|*.*||"));
@@ -50,12 +57,6 @@ void CModelPage::OnBnClickedOk()
         return;
     }
 
-    if (!m_Client.IsLogined())
-    {
-        Utility::PromptErrorMessage(TEXT("ÄúÉÐÎ´µÇÂ½."));
-        return;
-    }
-
     RC rc = m_Client.SendModelFile(pathName);
 
     if (OK != rc)
@@ -65,4 +66,16 @@ void CModelPage::OnBnClickedOk()
     }
 
     Utility::PromptMessage(TEXT("·¢ËÍÄ£ÐÍÎÄ¼þ³É¹¦."));
+}
+
+void CModelPage::OnBnClickedModel()
+{
+    // TODO: Add your control notification handler code here
+    if (!m_Client.IsLogined())
+    {
+        Utility::PromptErrorMessage(TEXT("ÄúÉÐÎ´µÇÂ½."));
+        return;
+    }
+
+    WinExec("model_app.exe", SW_SHOWNORMAL);
 }

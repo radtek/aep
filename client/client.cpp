@@ -222,6 +222,26 @@ bool Client::IsLogined()
     return m_IsLogined;
 }
 
+RC Client::Logout()
+{
+    RC rc;
+
+    if (!m_IsLogined)
+    {
+        return rc;
+    }
+
+    CHECK_RC(m_Socket.SendCommand(CC::LOGOUT_COMMAND));
+    RC _rc;
+    CHECK_RC(m_Socket.RecvRC(_rc));
+    if (OK == _rc)
+    {
+        m_IsLogined = false;
+    }
+
+    return _rc;
+}
+
 /**
 * @param name ”√ªß√˚.
 * @param password √‹¬Î.

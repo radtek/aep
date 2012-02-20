@@ -48,6 +48,8 @@ public:
     RC Login(const wstring &name, const wstring &password);
     /** @brief 判断是否已登陆至服务器. */
     bool IsLogined();
+    /** @brief 用户退出. */
+    RC Logout();
 
     /** @brief 用户注册. */
     RC Register(const wstring &name, const wstring &password);

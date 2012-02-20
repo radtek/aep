@@ -20,8 +20,9 @@ protected:
 
 	DECLARE_MESSAGE_MAP()
 public:
-    afx_msg void OnBnClickedOk();
+    afx_msg void OnBnClickedTransfer();
 
 private:
     Client &m_Client;
+    afx_msg void OnBnClickedModel();
 };

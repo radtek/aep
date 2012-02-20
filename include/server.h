@@ -82,7 +82,7 @@ private:
         /** @brief 服务下载文件请求(演示用). */
         RC OnDownloadFile();
         /** @brief 服务用户退出请求. */
-        RC OnExit();
+        RC OnLogout();
 
     private:
         /** @brief 记录该线程服务的用户名. */
