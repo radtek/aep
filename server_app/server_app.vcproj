@@ -202,6 +202,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\log_page.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\server_app.cpp"
 				>
 			</File>
@@ -237,6 +241,10 @@
 			>
 			<File
 				RelativePath=".\control_page.h"
+				>
+			</File>
+			<File
+				RelativePath=".\log_page.h"
 				>
 			</File>
 			<File

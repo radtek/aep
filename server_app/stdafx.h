@@ -51,6 +51,7 @@
 #endif // _AFX_NO_AFXCMN_SUPPORT
 
 #include <BCGCBProInc.h>			// BCGPro Control Bar
+#include <afxdlgs.h>
 
 
 

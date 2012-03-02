@@ -54,6 +54,7 @@ CServerDlg::CServerDlg(CWnd* pParent /*=NULL*/)
 	SetIconsList ((globalData.bIsWindows9x || globalData.bIsWindowsNT4) ? IDB_ICONS : IDB_ICONS_HC, 32);
 
     AddPage(&m_ControlPage);
+    AddPage(&m_LogPage);
 
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }

@@ -197,6 +197,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\include\logger.h"
+				>
+			</File>
+			<File
 				RelativePath="..\include\massert.h"
 				>
 			</File>

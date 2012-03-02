@@ -42,6 +42,7 @@ BOOL CControlPage::OnInitDialog()
 
     return TRUE;
 }
+
 void CControlPage::OnBnClickedControlStart()
 {
     // TODO: Add your control notification handler code here

@@ -31,10 +31,21 @@ STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSM
 CAPTION "服务器控制"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
-    DEFPUSHBUTTON   "开始",IDB_CONTROL_START,127,67,80,20
+    DEFPUSHBUTTON   "开始",IDB_CONTROL_START,126,67,80,20
     GROUPBOX        "服务器控制",IDC_CONTROL_GROUP,7,7,220,196
     LTEXT           "端口：",IDC_CONTROL_PORT_TITLE,27,27,80,20,0,WS_EX_RIGHT
-    EDITTEXT        IDC_CONTROL_PORT,127,27,80,20,ES_AUTOHSCROLL | ES_NUMBER
+    EDITTEXT        IDC_CONTROL_PORT,126,27,80,20,ES_AUTOHSCROLL | ES_NUMBER
+END
+
+IDD_LOG_PAGE DIALOGEX 0, 0, 234, 238
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "服务器日志"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "开始",IDB_LOG_CONTROL,27,197,80,20
+    GROUPBOX        "服务器日志",IDC_LOG_GROUP,7,7,220,224
+    EDITTEXT        IDC_LOG,27,27,180,150,ES_MULTILINE | ES_AUTOVSCROLL | ES_AUTOHSCROLL | WS_VSCROLL | WS_HSCROLL
+    PUSHBUTTON      "清除",IDC_LOG_CLEAR,127,197,80,20
 END
 
 
@@ -51,8 +62,8 @@ BEGIN
         LEFTMARGIN, 7
         RIGHTMARGIN, 227
         VERTGUIDE, 27
-        VERTGUIDE, 107
-        VERTGUIDE, 127
+        VERTGUIDE, 108
+        VERTGUIDE, 126
         VERTGUIDE, 207
         TOPMARGIN, 7
         BOTTOMMARGIN, 203
@@ -62,6 +73,27 @@ BEGIN
         HORZGUIDE, 87
         HORZGUIDE, 107
         HORZGUIDE, 127
+    END
+
+    IDD_LOG_PAGE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 227
+        VERTGUIDE, 27
+        VERTGUIDE, 107
+        VERTGUIDE, 127
+        VERTGUIDE, 207
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 231
+        HORZGUIDE, 27
+        HORZGUIDE, 47
+        HORZGUIDE, 67
+        HORZGUIDE, 87
+        HORZGUIDE, 107
+        HORZGUIDE, 127
+        HORZGUIDE, 177
+        HORZGUIDE, 197
+        HORZGUIDE, 217
     END
 END
 #endif    // APSTUDIO_INVOKED
@@ -98,7 +130,7 @@ END
 IDD_SERVER_APP_DIALOG DIALOGEX 0, 0, 320, 200
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
 EXSTYLE WS_EX_APPWINDOW
-CAPTION "服务器"
+CAPTION "Server"
 FONT 8, "MS Shell Dlg", 0, 0, 0x1
 BEGIN
     DEFPUSHBUTTON   "OK",IDOK,263,7,50,16
@@ -123,7 +155,7 @@ BEGIN
         BOTTOMMARGIN, 48
     END
 
-    "IDD_SERVER_APP_DIALOG", DIALOG
+    IDD_SERVER_APP_DIALOG, DIALOG
     BEGIN
         LEFTMARGIN, 7
         RIGHTMARGIN, 313
@@ -180,7 +212,7 @@ END
 
 STRINGTABLE 
 BEGIN
-    IDS_ABOUTBOX            "&About server_app..."
+    IDS_ABOUTBOX            "&About client_app..."
     IDS_SERVER_DIALOG_CAPTION "服务器"
 END
 
@@ -244,17 +276,17 @@ IDR_MAINFRAME           ICON                    "res\\server_app.ico"
 
 /////////////////////////////////////////////////////////////////////////////
 //
-// PNG
-//
-
-IDB_ICONS_HC            PNG                     "res\\icons.png"
-
-/////////////////////////////////////////////////////////////////////////////
-//
 // Bitmap
 //
 
 IDB_ICONS               BITMAP                  "res\\icons.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// PNG
+//
+
+IDB_ICONS_HC            PNG                     "res\\icons.png"
 #endif    // English (U.S.) resources
 /////////////////////////////////////////////////////////////////////////////
 

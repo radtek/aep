@@ -49,7 +49,8 @@ void Server::DestroyInstance()
 */
 Server::Server()
 :
-m_Platform(Platform::GetInstance())
+m_Platform(Platform::GetInstance()),
+m_Logger(NULL)
 {
 }
 
@@ -83,6 +84,8 @@ RC Server::Init()
 
     m_Port = 10086;
 
+    Log(TEXT("服务器初始化完成."));
+
     return rc;
 }
 
@@ -104,6 +107,8 @@ RC Server::Shut()
     CHECK_RC(m_Platform.Shut());
 
     CHECK_RC(Socket::Shut());
+
+    Log(TEXT("服务器销毁完成."));
 
     return rc;
 }
@@ -151,12 +156,15 @@ RC Server::RealListen()
 
     CHECK_RC(m_Socket.Listen(m_Port));
 
+    Log(TEXT("服务开始监听."));
+
     while (true)
     {
         TcpSocket *clientSocket = new TcpSocket();
 
         CHECK_RC(m_Socket.Accept(*clientSocket));
 
+        Log(TEXT("接收到一个新连接."));
         ServiceThread *thread = new ServiceThread(clientSocket);
 
         HANDLE handle;
@@ -183,6 +191,26 @@ void Server::SetPort(int port)
 }
 
 /**
+* @param logger 从服务端应用程序传来的日志记录器.
+*/
+void Server::SetLogger(Logger *logger)
+{
+    m_Logger = logger;
+}
+
+/**
+* @param msg 要写入日志的信息.
+*/
+void Server::Log(LPCWSTR msg)
+{
+    if (m_Logger == NULL)
+    {
+        return;
+    }
+    m_Logger->Log(msg);
+}
+
+/**
 * @param clientSocket 客户端Socket.
 *
 * 接收一个客户端Socket对象初始化服务线程对象.
@@ -192,14 +220,17 @@ void Server::SetPort(int port)
 Server::ServiceThread::ServiceThread(TcpSocket *clientSocket)
 :
 m_IsLogined(false),
-m_ClientSocket(clientSocket)
+m_ClientSocket(clientSocket),
+m_Id(s_Counter++)
 {
+    Log(TEXT("开始服务."));
 }
 
 Server::ServiceThread::~ServiceThread()
 {
     m_ClientSocket->Shut();
     delete m_ClientSocket;
+    Log(TEXT("退出服务."));
 }
 
 RC Server::ServiceThread::RecvCommand(CC &cc)
@@ -241,6 +272,9 @@ RC Server::ServiceThread::OnLogin()
         CreateDirectory(pathName.c_str(), NULL);
     }
 
+    wstring msg = TEXT("用户") + m_UserName + TEXT("已登录.");
+    Log(msg.c_str());
+
     return rc;
 }
 
@@ -267,6 +301,9 @@ RC Server::ServiceThread::OnRegister()
 
     RC _rc = userDataFile.InsertUser(name, password);
     CHECK_RC(m_ClientSocket->SendRC(_rc));
+
+    wstring msg = TEXT("注册用户") + m_UserName + TEXT("成功.");
+    Log(msg.c_str());
 
     return rc;
 }
@@ -320,6 +357,9 @@ RC Server::ServiceThread::OnSendModelFile()
 
     CHECK_RC(m_ClientSocket->SendRC(_rc));
 
+    wstring msg = TEXT("接收用户") + m_UserName + TEXT("模型文件成功.");
+    Log(msg.c_str());
+
     return rc;
 }
 
@@ -333,6 +373,9 @@ RC Server::ServiceThread::OnUploadFile()
     CHECK_RC(m_ClientSocket->RecvWString(fileName));
     fileName = pathName + fileName;
     CHECK_RC(m_ClientSocket->RecvFile(fileName.c_str()));
+
+    wstring msg = TEXT("响应用户") + m_UserName + TEXT("上传文件成功.");
+    Log(msg.c_str());
 
     return rc;
 }
@@ -356,6 +399,9 @@ RC Server::ServiceThread::OnDownloadFile()
     CHECK_RC(m_ClientSocket->SendRC(_rc));
 
     CHECK_RC(m_ClientSocket->SendFile(fileName.c_str()));
+
+    wstring msg = TEXT("响应用户")+ m_UserName + TEXT("下载文件成功.");
+    Log(msg.c_str());
 
     return rc;
 }
@@ -389,8 +435,21 @@ RC Server::ServiceThread::OnLogout()
     RC _rc;
     CHECK_RC(m_ClientSocket->SendRC(_rc));
 
+    wstring msg = TEXT("用户") + m_UserName + TEXT("已退出.");
+    Log(msg.c_str());
+
     return rc;
 }
+
+void Server::ServiceThread::Log(LPCWSTR msg)
+{
+    CString realMsg = TEXT("服务线程");
+    realMsg.AppendFormat(TEXT("%u: %s."), m_Id, msg);
+    Server &server = Server::GetInstance();
+    server.Log(realMsg);
+}
+
+UINT32 Server::ServiceThread::s_Counter = 0;
 
 /**
 * @param lparam 实际类型为Server对象的指针, 是一个具体的服务端实例.

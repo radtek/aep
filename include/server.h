@@ -11,6 +11,7 @@
 
 #include "platform.h"
 #include "tcp_socket.h"
+#include "logger.h"
 
 /**
 * @class Server
@@ -42,6 +43,10 @@ private:
 public:
     /** @brief 设置服务端端口. */
     void SetPort(int port);
+    /** @brief 设置日志. */
+    void SetLogger(Logger *logger);
+    /** @brief 记录日志. */
+    void Log(LPCWSTR msg);
 
 private:
     /** @brief 平台对象, 用来调用平台功能. */
@@ -84,6 +89,9 @@ private:
         /** @brief 服务用户退出请求. */
         RC OnLogout();
 
+    protected:
+        void Log(LPCWSTR msg);
+
     private:
         /** @brief 记录该线程服务的用户名. */
         wstring m_UserName;
@@ -91,6 +99,10 @@ private:
         bool m_IsLogined;
         /** @brief 用来服务客户端的TcpSocket对象. */
         TcpSocket *m_ClientSocket;
+        /** @brief 服务线程ID. */
+        UINT32 m_Id;
+        /** @brief 服务线程计数. */
+        static UINT32 s_Counter;
     };
 
     /**
@@ -107,6 +119,8 @@ private:
     TcpSocket m_Socket;
     /** @brief 服务端主机端口. */
     int m_Port;
+    /** @brief 日志记录器. */
+    Logger *m_Logger;
 
 private:
     /** @brief 用户数据文件名. */
