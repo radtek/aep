@@ -1,0 +1,6 @@
+; image_processing.def : Declares the module parameters for the DLL.
+
+LIBRARY      "image_processing"
+
+EXPORTS
+    ; Explicit exports can go here
