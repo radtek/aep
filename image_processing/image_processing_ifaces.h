@@ -31,6 +31,7 @@ typedef mxArray Array;
 
 struct IData : IComponent
 {
+    virtual RC _stdcall LoadFile() = 0;
     virtual Array * _stdcall GetArray() = 0;
     virtual UINT32 _stdcall GetSize() = 0;
 };

@@ -1,21 +1,21 @@
 /**
 * @file
-* @brief 导弹类头文件.
+* @brief 外部数据类头文件.
 * @author ruoxi
 *
-* 定义了导弹类.
+* 定义了外部数据类.
 */
 
-#ifndef __MISSILE_H__
-#define __MISSILE_H__
+#ifndef __EXTERNAL_DATA_H__
+#define __EXTERNAL_DATA_H__
 
-#include "aircraft_component_ifaces.h"
+#include "image_processing_ifaces.h"
 
-class Missile : public ITarget
+class ExternalData : public IData
 {
 public:
-    Missile();
-    virtual ~Missile();
+    ExternalData();
+    virtual ~ExternalData();
 
     virtual UINT32 _stdcall GetTypeId();
     virtual void _stdcall Save(CArchive &ar);
@@ -28,31 +28,31 @@ public:
     virtual void _stdcall SetName(wstring name);
     enum AAID
     {
-        AAID_COORD_X,
-        AAID_COORD_Y,
-        AAID_COORD_Z,
+        AAID_FILE_PATH,
     };
     virtual void _stdcall GetAttributeList(AttributeList &attributeList);
     virtual RC _stdcall GetAttribute(UINT32 aid, void *attr);
     virtual RC _stdcall SetAttribute(UINT32 aid, void *attr);
     virtual bool _stdcall Connect(IComponent *component);
 
-    virtual void _stdcall Fly(double time);
-    virtual Vector _stdcall GetCurrentCoordinate();
+    virtual RC _stdcall LoadFile();
+    virtual Array * _stdcall GetArray();
+    virtual UINT32 _stdcall GetSize();
 
 public:
-    Vector m_Coordinate;
-
-    IMotion *m_Motion;
+    wstring m_FilePath;
 
     UINT32 m_Id;
     wstring m_Name;
 
+private:
+    Array *m_Array;
+
 public:
-    static const CLIENT_CCID s_ComponentId = CLIENT_CCID_MISSILE;
-    static Missile *Factory();
+    static const CLIENT_CCID s_ComponentId = CLIENT_CCID_EXTERNAL_DATA;
+    static ExternalData *Factory();
     static LPCWSTR s_ComponentName;
     static UINT32 s_Count;
 };
 
-#endif // __MISSILE_H__
+#endif // __EXTERNAL_DATA_H__
