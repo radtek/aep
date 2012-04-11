@@ -199,11 +199,19 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
+				RelativePath=".\add.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\external_data.cpp"
 				>
 			</File>
 			<File
 				RelativePath=".\iarc.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\image.cpp"
 				>
 			</File>
 			<File
@@ -245,6 +253,10 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
+				RelativePath=".\add.h"
+				>
+			</File>
+			<File
 				RelativePath=".\external_data.h"
 				>
 			</File>
@@ -254,6 +266,10 @@
 			</File>
 			<File
 				RelativePath=".\iarc.h"
+				>
+			</File>
+			<File
+				RelativePath=".\image.h"
 				>
 			</File>
 			<File

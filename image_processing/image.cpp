@@ -1,29 +1,29 @@
 /**
 * @file
-* @brief 外部数据类cpp文件.
+* @brief 图像类cpp文件.
 * @author ruoxi
 *
-* 实现了外部数据类.
+* 实现了图像类.
 */
 
-#include "external_data.h"
+#include "image.h"
 
-ExternalData::ExternalData()
+Image::Image()
 :
 m_Array(NULL)
 {
 }
 
-ExternalData::~ExternalData()
+Image::~Image()
 {
 }
 
-UINT32 ExternalData::GetTypeId()
+UINT32 Image::GetTypeId()
 {
     return s_ComponentId;
 }
 
-void ExternalData::Save(CArchive &ar)
+void Image::Save(CArchive &ar)
 {
     ar << s_ComponentId
         << m_Id
@@ -31,7 +31,7 @@ void ExternalData::Save(CArchive &ar)
         << CString(m_FilePath.c_str());
 }
 
-void ExternalData::Load(CArchive &ar)
+void Image::Load(CArchive &ar)
 {
     ar >> m_Id;
 
@@ -43,12 +43,12 @@ void ExternalData::Load(CArchive &ar)
     m_FilePath = str;
 }
 
-void ExternalData::Destroy()
+void Image::Destroy()
 {
     delete this;
 }
 
-void *ExternalData::GetInterface(UINT32 iid)
+void *Image::GetInterface(UINT32 iid)
 {
     void *iface;
 
@@ -56,9 +56,9 @@ void *ExternalData::GetInterface(UINT32 iid)
     {
         iface = static_cast<IComponent *>(this);
     }
-    else if (CLIENT_CIID_EXTERNAL_DATA == iid)
+    else if (CLIENT_CIID_IMAGE == iid)
     {
-        iface = static_cast<IExternalData *>(this);
+        iface = static_cast<IImage *>(this);
     }
     else
     {
@@ -67,27 +67,27 @@ void *ExternalData::GetInterface(UINT32 iid)
     return iface;
 }
 
-UINT32 ExternalData::GetId()
+UINT32 Image::GetId()
 {
     return m_Id;
 }
 
-void ExternalData::SetId(UINT32 id)
+void Image::SetId(UINT32 id)
 {
     m_Id = id;
 }
 
-wstring ExternalData::GetName()
+wstring Image::GetName()
 {
     return m_Name;
 }
 
-void ExternalData::SetName(wstring name)
+void Image::SetName(wstring name)
 {
     m_Name = name;
 }
 
-void ExternalData::GetAttributeList(AttributeList &attributeList)
+void Image::GetAttributeList(AttributeList &attributeList)
 {
     Attribute attribute;
 
@@ -97,7 +97,7 @@ void ExternalData::GetAttributeList(AttributeList &attributeList)
     attributeList.push_back(attribute);
 }
 
-RC ExternalData::GetAttribute(UINT32 aid, void *attr)
+RC Image::GetAttribute(UINT32 aid, void *attr)
 {
     RC rc;
 
@@ -111,7 +111,7 @@ RC ExternalData::GetAttribute(UINT32 aid, void *attr)
     return rc;
 }
 
-RC ExternalData::SetAttribute(UINT32 aid, void *attr)
+RC Image::SetAttribute(UINT32 aid, void *attr)
 {
     RC rc;
 
@@ -125,28 +125,28 @@ RC ExternalData::SetAttribute(UINT32 aid, void *attr)
     return rc;
 }
 
-bool ExternalData::Connect(IComponent *component)
+bool Image::Connect(IComponent *component)
 {
     return false;
 }
 
-Array *ExternalData::GetArray()
+Array *Image::GetArray()
 {
     // FIXME
     return NULL;
 }
 
-ExternalData *ExternalData::Factory()
+Image *Image::Factory()
 {
-    ExternalData *externalData = new ExternalData;
+    Image *image = new Image;
     LPWSTR name = new wchar_t[256];
     wsprintf(name, TEXT("%s%u"), s_ComponentName, s_Count);
-    externalData->m_Name = name;
+    image->m_Name = name;
     ++s_Count;
     delete[] name;
-    return externalData;
+    return image;
 }
 
-LPCWSTR ExternalData::s_ComponentName = TEXT("外部数据");
+LPCWSTR Image::s_ComponentName = TEXT("图像");
 
-UINT32 ExternalData::s_Count = 0;
+UINT32 Image::s_Count = 0;

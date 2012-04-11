@@ -1,21 +1,21 @@
 /**
 * @file
-* @brief 外部数据类头文件.
+* @brief 加法类头文件.
 * @author ruoxi
 *
-* 定义了外部数据类.
+* 定义了加法类.
 */
 
-#ifndef __EXTERNAL_DATA_H__
-#define __EXTERNAL_DATA_H__
+#ifndef __ADD_H__
+#define __ADD_H__
 
 #include "image_processing_ifaces.h"
 
-class ExternalData : public IExternalData
+class Add : public IImageAlgorithm
 {
 public:
-    ExternalData();
-    virtual ~ExternalData();
+    Add();
+    virtual ~Add();
 
     virtual UINT32 _stdcall GetTypeId();
     virtual void _stdcall Save(CArchive &ar);
@@ -28,29 +28,30 @@ public:
     virtual void _stdcall SetName(wstring name);
     enum AAID
     {
-        AAID_FILE_PATH,
+        AAID_TEST_PARAM,
     };
     virtual void _stdcall GetAttributeList(AttributeList &attributeList);
     virtual RC _stdcall GetAttribute(UINT32 aid, void *attr);
     virtual RC _stdcall SetAttribute(UINT32 aid, void *attr);
     virtual bool _stdcall Connect(IComponent *component);
 
-    virtual Array * _stdcall GetArray();
+    virtual IARC _stdcall Run();
+    virtual Array * _stdcall GetOutput();
 
 public:
-    wstring m_FilePath;
+    double m_TestParam;
 
     UINT32 m_Id;
     wstring m_Name;
 
 protected:
-    Array *m_Array;
+    Array *m_Output;
 
 public:
-    static const CLIENT_CCID s_ComponentId = CLIENT_CCID_EXTERNAL_DATA;
-    static ExternalData *Factory();
+    static const CLIENT_CCID s_ComponentId = CLIENT_CCID_ADD;
+    static Add *Factory();
     static LPCWSTR s_ComponentName;
     static UINT32 s_Count;
 };
 
-#endif // __EXTERNAL_DATA_H__
+#endif // __ADD_H__

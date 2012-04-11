@@ -14,7 +14,8 @@
 #include "iarc.h"
 
 BEGIN_CLIENT_CIID
-    CLIENT_CIID_DATA,
+    CLIENT_CIID_EXTERNAL_DATA,
+    CLIENT_CIID_IMAGE,
     CLIENT_CIID_IMAGE_ALGORITHM,
     CLIENT_CIID_EVALUATE,
 END_CLIENT_CIID
@@ -29,17 +30,20 @@ END_CLIENT_CCID
 
 typedef mxArray Array;
 
-struct IData : IComponent
+struct IExternalData : IComponent
 {
-    virtual RC _stdcall LoadFile() = 0;
     virtual Array * _stdcall GetArray() = 0;
-    virtual UINT32 _stdcall GetSize() = 0;
+};
+
+struct IImage : IComponent
+{
+    virtual Array * _stdcall GetArray() = 0;
 };
 
 struct IImageAlgorithm : IComponent
 {
     virtual IARC _stdcall Run() = 0;
-    virtual IData * _stdcall GetOutput() = 0;
+    virtual Array * _stdcall GetOutput() = 0;
 };
 
 #endif // __IMAGE_PROCESSING_IFACES_H__

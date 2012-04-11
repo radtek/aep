@@ -1,21 +1,21 @@
 /**
 * @file
-* @brief 外部数据类头文件.
+* @brief 图像类头文件.
 * @author ruoxi
 *
-* 定义了外部数据类.
+* 定义了图像类.
 */
 
-#ifndef __EXTERNAL_DATA_H__
-#define __EXTERNAL_DATA_H__
+#ifndef __IMAGE_H__
+#define __IMAGE_H__
 
 #include "image_processing_ifaces.h"
 
-class ExternalData : public IExternalData
+class Image : public IImage
 {
 public:
-    ExternalData();
-    virtual ~ExternalData();
+    Image();
+    virtual ~Image();
 
     virtual UINT32 _stdcall GetTypeId();
     virtual void _stdcall Save(CArchive &ar);
@@ -47,10 +47,10 @@ protected:
     Array *m_Array;
 
 public:
-    static const CLIENT_CCID s_ComponentId = CLIENT_CCID_EXTERNAL_DATA;
-    static ExternalData *Factory();
+    static const CLIENT_CCID s_ComponentId = CLIENT_CCID_IMAGE;
+    static Image *Factory();
     static LPCWSTR s_ComponentName;
     static UINT32 s_Count;
 };
 
-#endif // __EXTERNAL_DATA_H__
+#endif // __IMAGE_H__
