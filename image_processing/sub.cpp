@@ -1,15 +1,15 @@
 /**
 * @file
-* @brief 加法类cpp文件.
+* @brief 减法类cpp文件.
 * @author ruoxi
 *
-* 实现了加法类.
+* 实现了减法类.
 */
 
-#include "add.h"
+#include "sub.h"
 #include "array_data.h"
 
-Add::Add()
+Sub::Sub()
 :
 m_Input(NULL),
 m_TestParam(0)
@@ -18,17 +18,17 @@ m_TestParam(0)
     m_Output = (IArrayData *)(arrayData->GetInterface(CLIENT_CIID_ARRAY_DATA));
 }
 
-Add::~Add()
+Sub::~Sub()
 {
     delete m_Output;
 }
 
-UINT32 Add::GetTypeId()
+UINT32 Sub::GetTypeId()
 {
     return s_ComponentId;
 }
 
-void Add::Save(CArchive &ar)
+void Sub::Save(CArchive &ar)
 {
     ar << s_ComponentId
         << m_Id
@@ -36,7 +36,7 @@ void Add::Save(CArchive &ar)
         << m_TestParam;
 }
 
-void Add::Load(CArchive &ar)
+void Sub::Load(CArchive &ar)
 {
     ar >> m_Id;
 
@@ -47,12 +47,12 @@ void Add::Load(CArchive &ar)
     ar >> m_TestParam;
 }
 
-void Add::Destroy()
+void Sub::Destroy()
 {
     delete this;
 }
 
-void *Add::GetInterface(UINT32 iid)
+void *Sub::GetInterface(UINT32 iid)
 {
     void *iface;
 
@@ -71,27 +71,27 @@ void *Add::GetInterface(UINT32 iid)
     return iface;
 }
 
-UINT32 Add::GetId()
+UINT32 Sub::GetId()
 {
     return m_Id;
 }
 
-void Add::SetId(UINT32 id)
+void Sub::SetId(UINT32 id)
 {
     m_Id = id;
 }
 
-wstring Add::GetName()
+wstring Sub::GetName()
 {
     return m_Name;
 }
 
-void Add::SetName(wstring name)
+void Sub::SetName(wstring name)
 {
     m_Name = name;
 }
 
-void Add::GetAttributeList(AttributeList &attributeList)
+void Sub::GetAttributeList(AttributeList &attributeList)
 {
     Attribute attribute;
 
@@ -101,7 +101,7 @@ void Add::GetAttributeList(AttributeList &attributeList)
     attributeList.push_back(attribute);
 }
 
-RC Add::GetAttribute(UINT32 aid, void *attr)
+RC Sub::GetAttribute(UINT32 aid, void *attr)
 {
     RC rc;
 
@@ -115,7 +115,7 @@ RC Add::GetAttribute(UINT32 aid, void *attr)
     return rc;
 }
 
-RC Add::SetAttribute(UINT32 aid, void *attr)
+RC Sub::SetAttribute(UINT32 aid, void *attr)
 {
     RC rc;
 
@@ -129,12 +129,12 @@ RC Add::SetAttribute(UINT32 aid, void *attr)
     return rc;
 }
 
-bool Add::Connect(IComponent *component)
+bool Sub::Connect(IComponent *component)
 {
     return false;
 }
 
-bool Add::SetInput(IData *input)
+bool Sub::SetInput(IData *input)
 {
     if (NULL == input)
     {
@@ -152,7 +152,7 @@ bool Add::SetInput(IData *input)
     return true;
 }
 
-IData *Add::GetOutput()
+IData *Sub::GetOutput()
 {
     if (NULL == m_Output)
     {
@@ -162,7 +162,7 @@ IData *Add::GetOutput()
     return (IData *)(m_Output->GetInterface(CIID_IDATA));
 }
 
-IARC Add::Run()
+IARC Sub::Run()
 {
     IARC iarc;
 
@@ -171,17 +171,17 @@ IARC Add::Run()
     return iarc;
 }
 
-Add *Add::Factory()
+Sub *Sub::Factory()
 {
-    Add *add = new Add;
+    Sub *sub = new Sub;
     LPWSTR name = new wchar_t[256];
     wsprintf(name, TEXT("%s%u"), s_ComponentName, s_Count);
-    add->m_Name = name;
+    sub->m_Name = name;
     ++s_Count;
     delete[] name;
-    return add;
+    return sub;
 }
 
-LPCWSTR Add::s_ComponentName = TEXT("加法");
+LPCWSTR Sub::s_ComponentName = TEXT("减法");
 
-UINT32 Add::s_Count = 0;
+UINT32 Sub::s_Count = 0;

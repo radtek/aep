@@ -7,15 +7,17 @@
 */
 
 #include "external_data.h"
+#include "array_data.h"
 
 ExternalData::ExternalData()
-:
-m_Array(NULL)
 {
+    ArrayData *arrayData = new ArrayData;
+    m_Output = (IArrayData *)(arrayData->GetInterface(CLIENT_CIID_ARRAY_DATA));
 }
 
 ExternalData::~ExternalData()
 {
+    delete m_Output;
 }
 
 UINT32 ExternalData::GetTypeId()
@@ -130,10 +132,14 @@ bool ExternalData::Connect(IComponent *component)
     return false;
 }
 
-Array *ExternalData::GetArray()
+bool ExternalData::SetInput(IData *input)
 {
-    // FIXME
-    return NULL;
+    return false;
+}
+
+IData *ExternalData::GetOutput()
+{
+    return (IData *)(m_Output->GetInterface(CIID_IDATA));
 }
 
 ExternalData *ExternalData::Factory()

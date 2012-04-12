@@ -203,6 +203,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\array_data.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\external_data.cpp"
 				>
 			</File>
@@ -246,6 +250,10 @@
 					/>
 				</FileConfiguration>
 			</File>
+			<File
+				RelativePath=".\sub.cpp"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -254,6 +262,10 @@
 			>
 			<File
 				RelativePath=".\add.h"
+				>
+			</File>
+			<File
+				RelativePath=".\array_data.h"
 				>
 			</File>
 			<File
@@ -286,6 +298,10 @@
 			</File>
 			<File
 				RelativePath=".\stdafx.h"
+				>
+			</File>
+			<File
+				RelativePath=".\sub.h"
 				>
 			</File>
 		</Filter>

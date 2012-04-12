@@ -35,7 +35,8 @@ public:
     virtual RC _stdcall SetAttribute(UINT32 aid, void *attr);
     virtual bool _stdcall Connect(IComponent *component);
 
-    virtual Array * _stdcall GetArray();
+    virtual bool _stdcall SetInput(IData *input);
+    virtual IData *GetOutput();
 
 public:
     wstring m_FilePath;
@@ -44,7 +45,7 @@ public:
     wstring m_Name;
 
 protected:
-    Array *m_Array;
+    IArrayData *m_Output;
 
 public:
     static const CLIENT_CCID s_ComponentId = CLIENT_CCID_EXTERNAL_DATA;

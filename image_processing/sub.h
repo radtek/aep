@@ -1,21 +1,21 @@
 /**
 * @file
-* @brief 图像类头文件.
+* @brief 减法类头文件.
 * @author ruoxi
 *
-* 定义了图像类.
+* 定义了减法类.
 */
 
-#ifndef __IMAGE_H__
-#define __IMAGE_H__
+#ifndef __SUB_H__
+#define __SUB_H__
 
 #include "image_processing_ifaces.h"
 
-class Image : public IImage
+class Sub : public IImageAlgorithm
 {
 public:
-    Image();
-    virtual ~Image();
+    Sub();
+    virtual ~Sub();
 
     virtual UINT32 _stdcall GetTypeId();
     virtual void _stdcall Save(CArchive &ar);
@@ -28,7 +28,7 @@ public:
     virtual void _stdcall SetName(wstring name);
     enum AAID
     {
-        AAID_FILE_PATH,
+        AAID_TEST_PARAM,
     };
     virtual void _stdcall GetAttributeList(AttributeList &attributeList);
     virtual RC _stdcall GetAttribute(UINT32 aid, void *attr);
@@ -38,20 +38,23 @@ public:
     virtual bool _stdcall SetInput(IData *input);
     virtual IData *GetOutput();
 
+    virtual IARC _stdcall Run();
+
 public:
-    wstring m_FilePath;
+    double m_TestParam;
 
     UINT32 m_Id;
     wstring m_Name;
 
 protected:
+    IArrayData *m_Input;
     IArrayData *m_Output;
 
 public:
-    static const CLIENT_CCID s_ComponentId = CLIENT_CCID_IMAGE;
-    static Image *Factory();
+    static const CLIENT_CCID s_ComponentId = CLIENT_CCID_SUB;
+    static Sub *Factory();
     static LPCWSTR s_ComponentName;
     static UINT32 s_Count;
 };
 
-#endif // __IMAGE_H__
+#endif // __SUB_H__

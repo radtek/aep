@@ -7,15 +7,17 @@
 */
 
 #include "image.h"
+#include "array_data.h"
 
 Image::Image()
-:
-m_Array(NULL)
 {
+    ArrayData *arrayData = new ArrayData;
+    m_Output = (IArrayData *)(arrayData->GetInterface(CLIENT_CIID_ARRAY_DATA));
 }
 
 Image::~Image()
 {
+    delete m_Output;
 }
 
 UINT32 Image::GetTypeId()
@@ -130,10 +132,14 @@ bool Image::Connect(IComponent *component)
     return false;
 }
 
-Array *Image::GetArray()
+bool Image::SetInput(IData *input)
 {
-    // FIXME
-    return NULL;
+    return false;
+}
+
+IData *Image::GetOutput()
+{
+    return (IData *)(m_Output->GetInterface(CIID_IDATA));
 }
 
 Image *Image::Factory()

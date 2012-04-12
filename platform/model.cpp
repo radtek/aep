@@ -200,7 +200,13 @@ bool Model::Connect(UINT32 sourceId, UINT32 targetId)
     if (source != NULL &&
         target != NULL)
     {
-        return source->Connect(target);
+        // return source->Connect(target);
+        IData *output = source->GetOutput();
+        if (NULL == output)
+        {
+            return false;
+        }
+        return target->SetInput(output);
     }
 
     return false;

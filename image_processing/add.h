@@ -35,8 +35,10 @@ public:
     virtual RC _stdcall SetAttribute(UINT32 aid, void *attr);
     virtual bool _stdcall Connect(IComponent *component);
 
+    virtual bool _stdcall SetInput(IData *input);
+    virtual IData *GetOutput();
+
     virtual IARC _stdcall Run();
-    virtual Array * _stdcall GetOutput();
 
 public:
     double m_TestParam;
@@ -45,7 +47,8 @@ public:
     wstring m_Name;
 
 protected:
-    Array *m_Output;
+    IArrayData *m_Input;
+    IArrayData *m_Output;
 
 public:
     static const CLIENT_CCID s_ComponentId = CLIENT_CCID_ADD;

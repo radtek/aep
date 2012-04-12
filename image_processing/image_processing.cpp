@@ -4,6 +4,7 @@
 #include "external_data.h"
 #include "image.h"
 #include "add.h"
+#include "sub.h"
 
 extern "C" __declspec(dllexport) void RegisterInterfaceType(InterfaceTypeMap &interfaceTypeMap)
 {
@@ -42,5 +43,11 @@ extern "C" __declspec(dllexport) void RegisterComponentType(ComponentTypeMap &co
     componentType.TypeName = Add::s_ComponentName;
     componentType.InterfaceId = CLIENT_CCID_ADD;
     componentType.Factory = (ComponentFactory)Add::Factory;
+    componentTypeMap[componentType.TypeId] = componentType;
+
+    componentType.TypeId = Sub::s_ComponentId;
+    componentType.TypeName = Sub::s_ComponentName;
+    componentType.InterfaceId = CLIENT_CCID_SUB;
+    componentType.Factory = (ComponentFactory)Sub::Factory;
     componentTypeMap[componentType.TypeId] = componentType;
 }

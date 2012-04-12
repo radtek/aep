@@ -135,6 +135,18 @@ bool InternalAlgorithm::Connect(IComponent *component)
     return false;
 }
 
+bool InternalAlgorithm::SetInput(IData *input)
+{
+    // FIXME
+    return false;
+}
+
+IData *InternalAlgorithm::GetOutput()
+{
+    // FIXME
+    return NULL;
+}
+
 RC InternalAlgorithm::Run()
 {
     RC rc;

@@ -21,6 +21,7 @@ using namespace std;
 enum CIID
 {
     CIID_FIRST = 0,
+    CIID_IDATA,
     CIID_ICOMPONENT,
     CIID_IPARAM,
     CIID_IALGORITHM,
@@ -97,6 +98,18 @@ typedef struct
 typedef vector<Attribute> AttributeList;
 
 /**
+* @class IData
+* @brief IData数据接口.
+*
+* 数据接口抽象了组件与组件之间通信的数据流(输入和输出).
+*/
+struct IData
+{
+    /** @brief 得到该数据的某一接口. */
+    virtual void * _stdcall GetInterface(UINT32 iid) = 0;
+};
+
+/**
 * @class IComponent
 * @brief IComponent组件接口.
 *
@@ -133,10 +146,13 @@ struct IComponent
     /** @brief 设置组件的某一个属性值. */
     virtual RC _stdcall SetAttribute(UINT32 aid, void *attr) = 0;
     /** @brief 将组件与另一组间相关联. */
-    virtual bool _stdcall Connect(IComponent *component) = 0;
+    // virtual bool _stdcall Connect(IComponent *component) = 0;
     // virtual bool _stdcall Validate() = 0;
-};
 
+    virtual bool _stdcall SetInput(IData *input) = 0;
+    virtual IData *GetOutput() = 0;
+};
+  
 typedef vector<IComponent *> ComponentList;
 
 // typedef mxArray Param;

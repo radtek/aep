@@ -47,7 +47,13 @@ bool ComponentCtrl::Connect(ModelCtrl *modelCtrl)
     ComponentCtrl *componentCtrl = dynamic_cast<ComponentCtrl *>(modelCtrl);
     if (NULL != componentCtrl)
     {
-        return m_Component->Connect(componentCtrl->m_Component);
+        // return m_Component->Connect(componentCtrl->m_Component);
+        IData *output = m_Component->GetOutput();
+        if (NULL == output)
+        {
+            return false;
+        }
+        return componentCtrl->m_Component->SetInput(output);
     }
     return false;
 }
