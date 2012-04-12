@@ -45,7 +45,7 @@ public:
     wstring m_Name;
 
 protected:
-    IArrayData *m_Output;
+    IImageOutput *m_Output;
 
 public:
     static const CLIENT_CCID s_ComponentId = CLIENT_CCID_IMAGE;

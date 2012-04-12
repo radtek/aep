@@ -14,9 +14,10 @@
 #include "iarc.h"
 
 BEGIN_CLIENT_CIID
-    CLIENT_CIID_ARRAY_DATA,
     CLIENT_CIID_EXTERNAL_DATA,
+    CLIENT_CIID_EXTERNAL_DATA_OUTPUT,
     CLIENT_CIID_IMAGE,
+    CLIENT_CIID_IMAGE_OUTPUT,
     CLIENT_CIID_IMAGE_ALGORITHM,
     CLIENT_CIID_EVALUATE,
 END_CLIENT_CIID
@@ -29,15 +30,21 @@ BEGIN_CLIENT_CCID
     CLIENT_CCID_EVALUATE,
 END_CLIENT_CCID
 
-struct IArrayData : IData
-{
-};
+typedef mxArray Array;
 
 struct IExternalData : IComponent
 {
 };
 
+struct IExternalDataOutput : IData
+{
+};
+
 struct IImage : IComponent
+{
+};
+
+struct IImageOutput : IData
 {
 };
 

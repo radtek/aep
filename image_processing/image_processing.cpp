@@ -29,25 +29,25 @@ extern "C" __declspec(dllexport) void RegisterComponentType(ComponentTypeMap &co
 
     componentType.TypeId = ExternalData::s_ComponentId;
     componentType.TypeName = ExternalData::s_ComponentName;
-    componentType.InterfaceId = CLIENT_CCID_EXTERNAL_DATA;
+    componentType.InterfaceId = CLIENT_CIID_EXTERNAL_DATA;
     componentType.Factory = (ComponentFactory)ExternalData::Factory;
     componentTypeMap[componentType.TypeId] = componentType;
 
     componentType.TypeId = Image::s_ComponentId;
     componentType.TypeName = Image::s_ComponentName;
-    componentType.InterfaceId = CLIENT_CCID_IMAGE;
+    componentType.InterfaceId = CLIENT_CIID_IMAGE;
     componentType.Factory = (ComponentFactory)Image::Factory;
     componentTypeMap[componentType.TypeId] = componentType;
 
     componentType.TypeId = Add::s_ComponentId;
     componentType.TypeName = Add::s_ComponentName;
-    componentType.InterfaceId = CLIENT_CCID_ADD;
+    componentType.InterfaceId = CLIENT_CIID_IMAGE_ALGORITHM;
     componentType.Factory = (ComponentFactory)Add::Factory;
     componentTypeMap[componentType.TypeId] = componentType;
 
     componentType.TypeId = Sub::s_ComponentId;
     componentType.TypeName = Sub::s_ComponentName;
-    componentType.InterfaceId = CLIENT_CCID_SUB;
+    componentType.InterfaceId = CLIENT_CIID_IMAGE_ALGORITHM;
     componentType.Factory = (ComponentFactory)Sub::Factory;
     componentTypeMap[componentType.TypeId] = componentType;
 }

@@ -7,12 +7,12 @@
 */
 
 #include "image.h"
-#include "array_data.h"
+#include "image_output.h"
 
 Image::Image()
 {
-    ArrayData *arrayData = new ArrayData;
-    m_Output = (IArrayData *)(arrayData->GetInterface(CLIENT_CIID_ARRAY_DATA));
+    ImageOutput *imageOutput = new ImageOutput;
+    m_Output = (IImageOutput *)(imageOutput->GetInterface(CLIENT_CIID_IMAGE_OUTPUT));
 }
 
 Image::~Image()

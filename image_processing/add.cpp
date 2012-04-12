@@ -7,15 +7,17 @@
 */
 
 #include "add.h"
-#include "array_data.h"
+#include "external_data_output.h"
+#include "image_output.h"
 
 Add::Add()
 :
+m_ExternalData(NULL),
 m_Input(NULL),
 m_TestParam(0)
 {
-    ArrayData *arrayData = new ArrayData;
-    m_Output = (IArrayData *)(arrayData->GetInterface(CLIENT_CIID_ARRAY_DATA));
+    ImageOutput *output = new ImageOutput;
+    m_Output = (IImageOutput *)(output->GetInterface(CLIENT_CIID_IMAGE_OUTPUT));
 }
 
 Add::~Add()
@@ -134,22 +136,28 @@ bool Add::Connect(IComponent *component)
     return false;
 }
 
-bool Add::SetInput(IData *input)
+bool Add::SetInput(IData *data)
 {
-    if (NULL == input)
+    if (NULL == data)
     {
         return false;
     }
 
-    IArrayData *arrayData = (IArrayData *)(input->GetInterface(CLIENT_CIID_ARRAY_DATA));
-    if (NULL == arrayData)
+    IExternalDataOutput *externalData = (IExternalDataOutput *)(data->GetInterface(CLIENT_CIID_EXTERNAL_DATA_OUTPUT));
+    if (NULL != externalData)
     {
-        return false;
+        m_ExternalData = externalData;
+        return true;
     }
 
-    m_Input = arrayData;
+    IImageOutput *input = (IImageOutput *)(data->GetInterface(CLIENT_CIID_IMAGE_OUTPUT));
+    if (NULL != input)
+    {
+        m_Input = input;
+        return true;
+    }
 
-    return true;
+    return false;
 }
 
 IData *Add::GetOutput()

@@ -7,12 +7,12 @@
 */
 
 #include "external_data.h"
-#include "array_data.h"
+#include "external_data_output.h"
 
 ExternalData::ExternalData()
 {
-    ArrayData *arrayData = new ArrayData;
-    m_Output = (IArrayData *)(arrayData->GetInterface(CLIENT_CIID_ARRAY_DATA));
+    ExternalDataOutput *output = new ExternalDataOutput;
+    m_Output = (IExternalDataOutput *)(output->GetInterface(CLIENT_CIID_EXTERNAL_DATA_OUTPUT));
 }
 
 ExternalData::~ExternalData()
