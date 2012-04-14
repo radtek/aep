@@ -149,8 +149,8 @@ struct IComponent
     // virtual bool _stdcall Connect(IComponent *component) = 0;
     // virtual bool _stdcall Validate() = 0;
 
-    virtual bool _stdcall SetInput(IData *input) = 0;
-    virtual IData *GetOutput() = 0;
+    virtual RC _stdcall SetInput(IData *input) = 0;
+    virtual RC _stdcall GetOutput(IData *&output) = 0;
 };
   
 typedef vector<IComponent *> ComponentList;

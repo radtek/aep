@@ -163,6 +163,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\utility\matlab_helper.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\utility\rc.cpp"
 				>
 			</File>
@@ -194,6 +198,10 @@
 			</File>
 			<File
 				RelativePath="..\include\massert.h"
+				>
+			</File>
+			<File
+				RelativePath="..\include\matlab_helper.h"
 				>
 			</File>
 			<File

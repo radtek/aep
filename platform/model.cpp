@@ -167,6 +167,7 @@ RC Model::Run(wostream &os)
             }
         }
     }
+
     return rc;
 }
 
@@ -201,12 +202,16 @@ bool Model::Connect(UINT32 sourceId, UINT32 targetId)
         target != NULL)
     {
         // return source->Connect(target);
-        IData *output = source->GetOutput();
-        if (NULL == output)
+        IData *output = NULL;
+        if ((OK != source->GetOutput(output)) && (output == NULL))
         {
             return false;
         }
-        return target->SetInput(output);
+        if (OK != target->SetInput(output))
+        {
+            return false;
+        }
+        return true;
     }
 
     return false;

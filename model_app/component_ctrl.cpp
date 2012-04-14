@@ -48,12 +48,16 @@ bool ComponentCtrl::Connect(ModelCtrl *modelCtrl)
     if (NULL != componentCtrl)
     {
         // return m_Component->Connect(componentCtrl->m_Component);
-        IData *output = m_Component->GetOutput();
-        if (NULL == output)
+        IData *output = NULL;
+        if ((OK != m_Component->GetOutput(output)) && output == NULL)
         {
             return false;
         }
-        return componentCtrl->m_Component->SetInput(output);
+        if (OK != componentCtrl->m_Component->SetInput(output))
+        {
+            return false;
+        }
+        return true;
     }
     return false;
 }

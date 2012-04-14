@@ -8,7 +8,6 @@
 
 #include "add.h"
 #include "external_data_output.h"
-#include "image_output.h"
 
 Add::Add()
 :
@@ -16,8 +15,7 @@ m_ExternalData(NULL),
 m_Input(NULL),
 m_TestParam(0)
 {
-    ImageOutput *output = new ImageOutput;
-    m_Output = (IImageOutput *)(output->GetInterface(CLIENT_CIID_IMAGE_OUTPUT));
+    m_Output = new IImageOutput;
 }
 
 Add::~Add()
@@ -136,38 +134,45 @@ bool Add::Connect(IComponent *component)
     return false;
 }
 
-bool Add::SetInput(IData *data)
+RC Add::SetInput(IData *data)
 {
     if (NULL == data)
     {
-        return false;
+        return RC::COMPONENT_SETINPUT_ERROR;
     }
 
     IExternalDataOutput *externalData = (IExternalDataOutput *)(data->GetInterface(CLIENT_CIID_EXTERNAL_DATA_OUTPUT));
     if (NULL != externalData)
     {
         m_ExternalData = externalData;
-        return true;
+        return OK;
     }
 
     IImageOutput *input = (IImageOutput *)(data->GetInterface(CLIENT_CIID_IMAGE_OUTPUT));
     if (NULL != input)
     {
         m_Input = input;
-        return true;
+        return OK;
     }
 
-    return false;
+    return RC::COMPONENT_SETINPUT_ERROR;
 }
 
-IData *Add::GetOutput()
+RC Add::GetOutput(IData *&output)
 {
     if (NULL == m_Output)
     {
-        return NULL;
+        output = NULL;
+        return RC::COMPONENT_GETOUTPUT_ERROR;
     }
 
-    return (IData *)(m_Output->GetInterface(CIID_IDATA));
+    output = (IData *)(m_Output->GetInterface(CIID_IDATA));
+    if (NULL == output)
+    {
+        return RC::COMPONENT_GETOUTPUT_ERROR;
+    }
+
+    return OK;
 }
 
 IARC Add::Run()

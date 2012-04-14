@@ -332,7 +332,9 @@ RC Server::ServiceThread::OnSendModelFile()
         CFile modFile(fileName.c_str(), CFile::modeRead);
         CArchive ar(&modFile, CArchive::load);
         Model model;
-        if (OK == model.Load(ar))
+        _rc = model.Load(ar);
+        CHECK_RC(m_ClientSocket->SendRC(_rc));
+        if (OK == _rc)
         {
             Utility::PromptMessage(TEXT("模型文件解析成功."));
             wstring datFileName = m_UserName + TEXT(".dat");
@@ -355,12 +357,10 @@ RC Server::ServiceThread::OnSendModelFile()
         }
     }
 
-    CHECK_RC(m_ClientSocket->SendRC(_rc));
-
     wstring msg = TEXT("接收用户") + m_UserName + TEXT("模型文件成功.");
     Log(msg.c_str());
 
-    return rc;
+    return _rc;
 }
 
 RC Server::ServiceThread::OnUploadFile()

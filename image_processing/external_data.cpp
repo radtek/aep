@@ -7,12 +7,11 @@
 */
 
 #include "external_data.h"
-#include "external_data_output.h"
+#include "utility.h"
 
 ExternalData::ExternalData()
 {
-    ExternalDataOutput *output = new ExternalDataOutput;
-    m_Output = (IExternalDataOutput *)(output->GetInterface(CLIENT_CIID_EXTERNAL_DATA_OUTPUT));
+    m_Output = new IExternalDataOutput;
 }
 
 ExternalData::~ExternalData()
@@ -132,14 +131,43 @@ bool ExternalData::Connect(IComponent *component)
     return false;
 }
 
-bool ExternalData::SetInput(IData *input)
+RC ExternalData::SetInput(IData *input)
 {
-    return false;
+    return RC::COMPONENT_SETINPUT_ERROR;
 }
 
-IData *ExternalData::GetOutput()
+RC ExternalData::GetOutput(IData *&output)
 {
-    return (IData *)(m_Output->GetInterface(CIID_IDATA));
+    /*
+    if (!Utility::FileExists(m_FilePath.c_str()))
+    {
+        return RC::FILE_OPEN_ERROR;
+    }
+
+    HANDLE file = CreateFile(
+        m_FilePath.c_str(),
+        GENERIC_READ,
+        FILE_SHARE_READ,
+        NULL,
+        OPEN_EXISTING,
+        FILE_ATTRIBUTE_NORMAL,
+        NULL);
+    if (file == INVALID_HANDLE_VALUE)
+    {
+        return RC::FILE_OPEN_ERROR;
+    }
+    UINT32 length = GetFileSize(file, NULL);
+    char *buf = new char[length];
+    DWORD read = 0;
+    ReadFile(file, buf, length, &read, NULL);
+    if (length != read)
+    {
+        return RC::FILE_OPEN_ERROR;
+    }
+    */
+
+    output = (IData *)(m_Output->GetInterface(CIID_IDATA));
+    return OK;
 }
 
 ExternalData *ExternalData::Factory()

@@ -11,6 +11,7 @@
 
 #include "image_processing_ifaces.h"
 
+/*
 class ImageOutput : IImageOutput
 {
 public:
@@ -20,5 +21,6 @@ public:
 
     Array *m_Array;
 };
+*/
 
 #endif // __IMAGE_OUTPUT_H__

@@ -11,6 +11,7 @@
 
 #include "image_processing_ifaces.h"
 
+/*
 class ExternalDataOutput : IExternalDataOutput
 {
 public:
@@ -20,5 +21,6 @@ public:
 
     Array *m_Array;
 };
+*/
 
 #endif // __EXTERNAL_DATA_OUTPUT_H__

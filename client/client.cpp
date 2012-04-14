@@ -284,15 +284,18 @@ RC Client::SendModelFile(LPCWSTR fileName)
     RC rc;
 
     CHECK_RC(m_Socket.SendCommand(CC::SEND_MODEL_FILE_COMMAND));
+    RC _rc = m_Socket.SendFile(fileName);
 
-    CHECK_RC(m_Socket.SendFile(fileName));
-
-    wstring datFileName = fileName;
-    datFileName += TEXT(".dat");
-    CHECK_RC(m_Socket.RecvFile(datFileName.c_str()));
-
-    RC _rc;
-    CHECK_RC(m_Socket.RecvRC(_rc));
+    if (OK == _rc)
+    {
+        CHECK_RC(m_Socket.RecvRC(_rc));
+        if (OK == _rc)
+        {
+            wstring datFileName = fileName;
+            datFileName += TEXT(".dat");
+            CHECK_RC(m_Socket.RecvFile(datFileName.c_str()));
+        }
+    }
 
     return _rc;
 }

@@ -7,12 +7,11 @@
 */
 
 #include "image.h"
-#include "image_output.h"
+#include "utility.h"
 
 Image::Image()
 {
-    ImageOutput *imageOutput = new ImageOutput;
-    m_Output = (IImageOutput *)(imageOutput->GetInterface(CLIENT_CIID_IMAGE_OUTPUT));
+    m_Output = new IImageOutput;
 }
 
 Image::~Image()
@@ -132,14 +131,43 @@ bool Image::Connect(IComponent *component)
     return false;
 }
 
-bool Image::SetInput(IData *input)
+RC Image::SetInput(IData *input)
 {
-    return false;
+    return RC::COMPONENT_SETINPUT_ERROR;
 }
 
-IData *Image::GetOutput()
+RC Image::GetOutput(IData *&output)
 {
-    return (IData *)(m_Output->GetInterface(CIID_IDATA));
+    /*
+    if (!Utility::FileExists(m_FilePath.c_str()))
+    {
+        return RC::FILE_OPEN_ERROR;
+    }
+
+    HANDLE file = CreateFile(
+        m_FilePath.c_str(),
+        GENERIC_READ,
+        FILE_SHARE_READ,
+        NULL,
+        OPEN_EXISTING,
+        FILE_ATTRIBUTE_NORMAL,
+        NULL);
+    if (file == INVALID_HANDLE_VALUE)
+    {
+        return RC::FILE_OPEN_ERROR;
+    }
+    UINT32 length = GetFileSize(file, NULL);
+    char *buf = new char[length];
+    DWORD read = 0;
+    ReadFile(file, buf, length, &read, NULL);
+    if (length != read)
+    {
+        return RC::FILE_OPEN_ERROR;
+    }
+    */
+
+    output = (IData *)(m_Output->GetInterface(CIID_IDATA));
+    return OK;
 }
 
 Image *Image::Factory()

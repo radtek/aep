@@ -35,8 +35,8 @@ public:
     virtual RC _stdcall SetAttribute(UINT32 aid, void *attr);
     virtual bool _stdcall Connect(IComponent *component);
 
-    virtual bool _stdcall SetInput(IData *data);
-    virtual IData *GetOutput();
+    virtual RC _stdcall SetInput(IData *data);
+    virtual RC _stdcall GetOutput(IData *&output);
 
     virtual IARC _stdcall Run();
 
