@@ -51,7 +51,8 @@ public:
     virtual bool _stdcall Connect(IComponent *component);
 
     virtual RC _stdcall SetInput(IData *input);
-    virtual RC _stdcall GetOutput(IData *&output);
+    virtual RC _stdcall GetOutput1(IData *&output);
+    virtual RC _stdcall GetOutput2(IData *&output);
 
     virtual RC _stdcall Run();
 

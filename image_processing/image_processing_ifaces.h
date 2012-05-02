@@ -19,6 +19,10 @@ BEGIN_CLIENT_CIID
     CLIENT_CIID_IMAGE,
     CLIENT_CIID_IMAGE_OUTPUT,
     CLIENT_CIID_IMAGE_ALGORITHM,
+    CLIENT_CIID_IMAGE_ALGORITHM_INPUT1,
+    CLIENT_CIID_IMAGE_ALGORITHM_INPUT2,
+    CLIENT_CIID_IMAGE_ALGORITHM_OUTPUT1,
+    CLIENT_CIID_IMAGE_ALGORITHM_OUTPUT2,
     CLIENT_CIID_EVALUATE,
 END_CLIENT_CIID
 
@@ -55,6 +59,30 @@ struct IImageOutput : IData
 struct IImageAlgorithm : IComponent
 {
     virtual IARC _stdcall Run() = 0;
+};
+
+struct IImageAlgorithmInput1 : IData
+{
+    virtual void * _stdcall GetInterface(UINT32 iid);
+    const Array *m_Array;
+};
+
+struct IImageAlgorithmInput2 : IData
+{
+    virtual void * _stdcall GetInterface(UINT32 iid);
+    const Array *m_Array;
+};
+
+struct IImageAlgorithmOutput1 : IData
+{
+    virtual void * _stdcall GetInterface(UINT32 iid);
+    Array *m_Array;
+};
+
+struct IImageAlgorithmOutput2 : IData
+{
+    virtual void * _stdcall GetInterface(UINT32 iid);
+    Array *m_Array;
 };
 
 #endif // __IMAGE_PROCESSING_IFACES_H__

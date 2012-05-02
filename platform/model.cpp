@@ -202,16 +202,22 @@ bool Model::Connect(UINT32 sourceId, UINT32 targetId)
         target != NULL)
     {
         // return source->Connect(target);
-        IData *output = NULL;
-        if ((OK != source->GetOutput(output)) && (output == NULL))
+        IData *output1 = NULL, *output2 = NULL;
+        RC rc1, rc2;
+        rc1 = source->GetOutput1(output1);
+        rc2 = source->GetOutput2(output2);
+        if (OK != rc1 && OK != rc2)
         {
             return false;
         }
-        if (OK != target->SetInput(output))
+        if ((OK == rc1) && (OK == target->SetInput(output1)))
         {
-            return false;
+            return true;
         }
-        return true;
+        if ((OK == rc2) && (OK == target->SetInput(output2)))
+        {
+            return true;
+        }
     }
 
     return false;

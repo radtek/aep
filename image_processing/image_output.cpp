@@ -6,7 +6,7 @@
 * 实现了图像输出类.
 */
 
-#include "image_output.h"
+#include "image_processing_ifaces.h"
 
 /*
 ImageOutput::ImageOutput()

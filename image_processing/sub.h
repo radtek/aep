@@ -36,7 +36,8 @@ public:
     virtual bool _stdcall Connect(IComponent *component);
 
     virtual RC _stdcall SetInput(IData *data);
-    virtual RC _stdcall GetOutput(IData *&output);
+    virtual RC _stdcall GetOutput1(IData *&output);
+    virtual RC _stdcall GetOutput2(IData *&output);
 
     virtual IARC _stdcall Run();
 
@@ -47,9 +48,10 @@ public:
     wstring m_Name;
 
 protected:
-    IExternalDataOutput *m_ExternalData;
-    IImageOutput *m_Input;
-    IImageOutput *m_Output;
+    IImageAlgorithmInput1 *m_Input1;
+    IImageAlgorithmInput2 *m_Input2;
+    IImageAlgorithmOutput1 *m_Output1;
+    IImageAlgorithmOutput2 *m_Output2;
 
 public:
     static const CLIENT_CCID s_ComponentId = CLIENT_CCID_SUB;

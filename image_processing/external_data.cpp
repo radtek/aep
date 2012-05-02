@@ -136,7 +136,7 @@ RC ExternalData::SetInput(IData *input)
     return RC::COMPONENT_SETINPUT_ERROR;
 }
 
-RC ExternalData::GetOutput(IData *&output)
+RC ExternalData::GetOutput1(IData *&output)
 {
     /*
     if (!Utility::FileExists(m_FilePath.c_str()))
@@ -168,6 +168,11 @@ RC ExternalData::GetOutput(IData *&output)
 
     output = (IData *)(m_Output->GetInterface(CIID_IDATA));
     return OK;
+}
+
+RC ExternalData::GetOutput2(IData *&output)
+{
+    return RC::COMPONENT_GETOUTPUT_ERROR;
 }
 
 ExternalData *ExternalData::Factory()

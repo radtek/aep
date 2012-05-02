@@ -144,7 +144,16 @@ RC InternalAlgorithm::SetInput(IData *input)
     return rc;
 }
 
-RC InternalAlgorithm::GetOutput(IData *&output)
+RC InternalAlgorithm::GetOutput1(IData *&output)
+{
+    RC rc;
+
+    // FIXME
+
+    return rc;
+}
+
+RC InternalAlgorithm::GetOutput2(IData *&output)
 {
     RC rc;
 

@@ -6,7 +6,7 @@
 * 实现了外部数据输出类.
 */
 
-#include "external_data_output.h"
+#include "image_processing_ifaces.h"
 
 /*
 ExternalDataOutput::ExternalDataOutput()

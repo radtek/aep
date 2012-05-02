@@ -10,16 +10,18 @@
 
 Sub::Sub()
 :
-m_ExternalData(NULL),
-m_Input(NULL),
 m_TestParam(0)
 {
-    m_Output = new IImageOutput;
+    m_Input1 = new IImageAlgorithmInput1;
+    m_Input2 = new IImageAlgorithmInput2;
+    m_Output1 = new IImageAlgorithmOutput1;
+    m_Output2 = new IImageAlgorithmOutput2;
 }
 
 Sub::~Sub()
 {
-    delete m_Output;
+    delete m_Output1;
+    delete m_Output2;
 }
 
 UINT32 Sub::GetTypeId()
@@ -140,32 +142,56 @@ RC Sub::SetInput(IData *data)
         return RC::COMPONENT_SETINPUT_ERROR;
     }
 
-    IExternalDataOutput *externalData = (IExternalDataOutput *)(data->GetInterface(CLIENT_CIID_EXTERNAL_DATA_OUTPUT));
-    if (NULL != externalData)
+    IExternalDataOutput *externalDataOutput = (IExternalDataOutput *)(data->GetInterface(CLIENT_CIID_EXTERNAL_DATA_OUTPUT));
+    if (NULL != externalDataOutput)
     {
-        m_ExternalData = externalData;
+        m_Input1->m_Array = externalDataOutput->m_Array;
         return OK;
     }
 
-    IImageOutput *input = (IImageOutput *)(data->GetInterface(CLIENT_CIID_IMAGE_OUTPUT));
-    if (NULL != input)
+    IImageOutput *imageOutput = (IImageOutput *)(data->GetInterface(CLIENT_CIID_IMAGE_OUTPUT));
+    if (NULL != imageOutput)
     {
-        m_Input = input;
+        m_Input2->m_Array = imageOutput->m_Array;
+        return OK;
+    }
+
+    IImageAlgorithmOutput1 *imageAlgorithmOutput1 = (IImageAlgorithmOutput1 *)(data->GetInterface(CLIENT_CIID_IMAGE_ALGORITHM_OUTPUT1));
+    if (NULL != imageAlgorithmOutput1)
+    {
+        m_Input2->m_Array = imageAlgorithmOutput1->m_Array;
         return OK;
     }
 
     return RC::COMPONENT_SETINPUT_ERROR;
 }
 
-RC Sub::GetOutput(IData *&output)
+RC Sub::GetOutput1(IData *&output)
 {
-    if (NULL == m_Output)
+    if (NULL == m_Output1)
     {
         output = NULL;
         return RC::COMPONENT_GETOUTPUT_ERROR;
     }
 
-    output = (IData *)(m_Output->GetInterface(CIID_IDATA));
+    output = (IData *)(m_Output1->GetInterface(CIID_IDATA));
+    if (NULL == output)
+    {
+        return RC::COMPONENT_GETOUTPUT_ERROR;
+    }
+
+    return OK;
+}
+
+RC Sub::GetOutput2(IData *&output)
+{
+    if (NULL == m_Output2)
+    {
+        output = NULL;
+        return RC::COMPONENT_GETOUTPUT_ERROR;
+    }
+
+    output = (IData *)(m_Output2->GetInterface(CIID_IDATA));
     if (NULL == output)
     {
         return RC::COMPONENT_GETOUTPUT_ERROR;
