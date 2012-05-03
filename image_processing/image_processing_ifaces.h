@@ -42,6 +42,7 @@ struct IExternalData : IComponent
 
 struct IExternalDataOutput : IData
 {
+    IExternalDataOutput();
     virtual void * _stdcall GetInterface(UINT32 iid);
     Array *m_Array;
 };
@@ -52,6 +53,7 @@ struct IImage : IComponent
 
 struct IImageOutput : IData
 {
+    IImageOutput();
     virtual void * _stdcall GetInterface(UINT32 iid);
     Array *m_Array;
 };
@@ -63,24 +65,28 @@ struct IImageAlgorithm : IComponent
 
 struct IImageAlgorithmInput1 : IData
 {
+    IImageAlgorithmInput1();
     virtual void * _stdcall GetInterface(UINT32 iid);
     const Array *m_Array;
 };
 
 struct IImageAlgorithmInput2 : IData
 {
+    IImageAlgorithmInput2();
     virtual void * _stdcall GetInterface(UINT32 iid);
     const Array *m_Array;
 };
 
 struct IImageAlgorithmOutput1 : IData
 {
+    IImageAlgorithmOutput1();
     virtual void * _stdcall GetInterface(UINT32 iid);
     Array *m_Array;
 };
 
 struct IImageAlgorithmOutput2 : IData
 {
+    IImageAlgorithmOutput2();
     virtual void * _stdcall GetInterface(UINT32 iid);
     Array *m_Array;
 };

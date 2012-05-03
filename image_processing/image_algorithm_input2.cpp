@@ -1,5 +1,11 @@
 #include "image_processing_ifaces.h"
 
+IImageAlgorithmInput2::IImageAlgorithmInput2()
+:
+m_Array(NULL)
+{
+}
+
 void *IImageAlgorithmInput2::GetInterface(UINT32 iid)
 {
     void *iface;

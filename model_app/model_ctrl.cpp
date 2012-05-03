@@ -28,6 +28,11 @@ void ModelCtrl::UnSelect()
     ClearAttributeBar();
 }
 
+void ModelCtrl::Config()
+{
+    return;
+}
+
 void ModelCtrl::AddConnector(Connector *connector)
 {
     m_ConnectorList.push_back(connector);

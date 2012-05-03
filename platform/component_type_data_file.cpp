@@ -30,6 +30,7 @@ RC ComponentTypeDataFile::ParseLine(const wstring &line)
     wstring dllFileName;
     ist >> dllFileName;
 
+    // FIXME: When release?
     HINSTANCE componentDllHandle = LoadLibrary(dllFileName.c_str());
 
     if (!componentDllHandle)
@@ -54,7 +55,7 @@ RC ComponentTypeDataFile::ParseLine(const wstring &line)
 
     if (registerComponentTypeFunc)
     {
-        registerComponentTypeFunc(m_ComponentTypeMap);
+        registerComponentTypeFunc(m_ComponentTypeMap, componentDllHandle);
     }
 
     return rc;

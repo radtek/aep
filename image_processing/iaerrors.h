@@ -12,3 +12,4 @@
 #undef __USE_IAERRORS__
 
 DEFINE_IAERROR(UNKNOWN_ERROR, "Unknown error occured.")
+DEFINE_IAERROR(ALGORITHM_INPUT_ERROR, "Algorithm input error.")

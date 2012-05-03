@@ -149,6 +149,7 @@ struct IComponent
     // virtual bool _stdcall Connect(IComponent *component) = 0;
     // virtual bool _stdcall Validate() = 0;
 
+    virtual RC _stdcall Config() = 0;
     virtual RC _stdcall SetInput(IData *input) = 0;
     virtual RC _stdcall GetOutput1(IData *&output) = 0;
     virtual RC _stdcall GetOutput2(IData *&output) = 0;
@@ -193,6 +194,10 @@ typedef struct
     // UINT32 *attributeList;
     /** @brief 获得组件的工厂函数. */
     ComponentFactory Factory;
+    /** @brief 组件所在DLL的句柄. */
+    HINSTANCE DllHandle;
+    /** @brief 组件所在DLL的VC工程文件名. */
+    LPCWSTR VcprojPath;
     // ComponentDestroy destroy;
     // void *iconHandle;
 } ComponentType;

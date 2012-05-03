@@ -6,11 +6,15 @@
 * 实现了加法类.
 */
 
+#include "stdafx.h"
+
 #include "add.h"
+#include "matlab_helper.h"
+#include "add_config_dlg.h"
 
 Add::Add()
 :
-m_TestParam(0)
+m_AddFactor(0)
 {
     m_Input1 = new IImageAlgorithmInput1;
     m_Input2 = new IImageAlgorithmInput2;
@@ -20,6 +24,10 @@ m_TestParam(0)
 
 Add::~Add()
 {
+    MatLabHelper::DestroyArray(m_Output1->m_Array);
+    MatLabHelper::DestroyArray(m_Output2->m_Array);
+    delete m_Input1;
+    delete m_Input2;
     delete m_Output1;
     delete m_Output2;
 }
@@ -34,7 +42,7 @@ void Add::Save(CArchive &ar)
     ar << s_ComponentId
         << m_Id
         << CString(m_Name.c_str())
-        << m_TestParam;
+        << m_AddFactor;
 }
 
 void Add::Load(CArchive &ar)
@@ -45,7 +53,7 @@ void Add::Load(CArchive &ar)
     ar >> str;
     m_Name = str;
 
-    ar >> m_TestParam;
+    ar >> m_AddFactor;
 }
 
 void Add::Destroy()
@@ -96,7 +104,7 @@ void Add::GetAttributeList(AttributeList &attributeList)
 {
     Attribute attribute;
 
-    attribute.Id = AAID_TEST_PARAM;
+    attribute.Id = AAID_ADD_FACTOR;
     attribute.Name = TEXT("测试参数");
     attribute.Type = Attribute::TYPE_DOUBLE;
     attributeList.push_back(attribute);
@@ -108,8 +116,8 @@ RC Add::GetAttribute(UINT32 aid, void *attr)
 
     switch (aid)
     {
-    case AAID_TEST_PARAM:
-        *((double *)attr) = m_TestParam;
+    case AAID_ADD_FACTOR:
+        *((double *)attr) = m_AddFactor;
         break;
     }
 
@@ -122,8 +130,8 @@ RC Add::SetAttribute(UINT32 aid, void *attr)
 
     switch (aid)
     {
-    case AAID_TEST_PARAM:
-        m_TestParam = *((double *)attr);
+    case AAID_ADD_FACTOR:
+        m_AddFactor = *((double *)attr);
         break;
     }
 
@@ -133,6 +141,28 @@ RC Add::SetAttribute(UINT32 aid, void *attr)
 bool Add::Connect(IComponent *component)
 {
     return false;
+}
+
+RC Add::Config()
+{
+    RC rc;
+
+    CAddConfigDlg dlg;
+    dlg.m_AddFactor = m_AddFactor;
+    INT_PTR nResponse = dlg.DoModal();
+	if (nResponse == IDOK)
+	{
+		// TODO: Place code here to handle when the dialog is
+		//  dismissed with OK
+        m_AddFactor = dlg.m_AddFactor;
+	}
+	else if (nResponse == IDCANCEL)
+	{
+		// TODO: Place code here to handle when the dialog is
+		//  dismissed with Cancel
+	}
+
+    return rc;
 }
 
 RC Add::SetInput(IData *data)
@@ -204,7 +234,28 @@ IARC Add::Run()
 {
     IARC iarc;
 
-    // FIXME
+    UINT32 x1 = mxGetM(m_Input1->m_Array);
+    UINT32 y1 = mxGetN(m_Input1->m_Array);
+    UINT32 x2 = mxGetM(m_Input2->m_Array);
+    UINT32 y2 = mxGetN(m_Input2->m_Array);
+
+    if (x1 != x2 || x2 != y2)
+    {
+        return IARC::ALGORITHM_INPUT_ERROR;
+    }
+
+    if (m_Output1 != NULL)
+    {
+        MatLabHelper::DestroyArray(m_Output1->m_Array);
+    }
+
+    if (m_Output2 != NULL)
+    {
+        MatLabHelper::DestroyArray(m_Output2->m_Array);
+    }
+
+    m_Output1->m_Array = MatLabHelper::CreateDoubleArray(x1, y1);
+    m_Output2->m_Array = MatLabHelper::CreateDoubleArray(x1, y1);
 
     return iarc;
 }

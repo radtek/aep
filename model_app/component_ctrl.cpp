@@ -68,6 +68,14 @@ bool ComponentCtrl::Connect(ModelCtrl *modelCtrl)
     return false;
 }
 
+void ComponentCtrl::Config()
+{
+    ComponentType componentType = Platform::GetInstance().GetComponentTypeMap()[m_Component->GetTypeId()];
+    AfxSetResourceHandle(componentType.DllHandle);
+    m_Component->Config();
+    AfxSetResourceHandle(AfxGetInstanceHandle());
+}
+
 IComponent *ComponentCtrl::GetComponent()
 {
     return m_Component;

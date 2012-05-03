@@ -8,9 +8,23 @@
 
 #include "matlab_helper.h"
 
-Array *MatLabHelper::CreateDoubleArray(UINT32 size, double *content)
+Array *MatLabHelper::CreateDoubleArray(UINT32 x, UINT32 y, const char *content)
 {
-    // FIXME
+    Array *a = mxCreateDoubleMatrix(x, y, mxREAL);
 
-    return NULL;
+    if (content)
+    {
+        double *p = mxGetPr(a);
+        for (UINT32 i = 0; i < x * y; ++i)
+        {
+            p[i] = content[i];
+        }
+    }
+
+    return a;
+}
+
+void MatLabHelper::DestroyArray(Array *a)
+{
+    mxDestroyArray(a);
 }

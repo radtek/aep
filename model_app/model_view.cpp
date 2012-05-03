@@ -28,6 +28,7 @@ BEGIN_MESSAGE_MAP(CModelView, CView)
     ON_WM_LBUTTONDOWN()
     ON_WM_MOUSEMOVE()
     ON_WM_LBUTTONUP()
+    ON_WM_LBUTTONDBLCLK()
 END_MESSAGE_MAP()
 
 // CModelView construction/destruction
@@ -381,4 +382,28 @@ void CModelView::OnLButtonUp(UINT nFlags, CPoint point)
     m_Moved = false;
 
     CView::OnLButtonUp(nFlags, point);
+}
+
+void CModelView::OnLButtonDblClk(UINT nFlags, CPoint point)
+{
+    // TODO: Add your message handler code here and/or call default
+    if (m_CurrentState == STATE_COMPONENT_SELECTED)
+    {
+        ModelCtrl *modelCtrl = HitTestModelCtrl(point);
+        if (modelCtrl != NULL)
+        {
+            modelCtrl->Config();
+            UnSelectCurrentModelCtrl();
+            SelectModelCtrl(modelCtrl);
+        }
+        else
+        {
+            m_CurrentState = STATE_NORMAL;
+            UnSelectCurrentModelCtrl();
+        }
+
+        Invalidate();
+    }
+
+    CView::OnLButtonDblClk(nFlags, point);
 }

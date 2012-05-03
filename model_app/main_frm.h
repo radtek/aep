@@ -67,6 +67,7 @@ protected:
 public:
     afx_msg void OnFileExport();
     afx_msg void OnFileDraw();
+    afx_msg void OnFileValidate();
 };
 
 

@@ -378,6 +378,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\add_config_dlg.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\external_data.cpp"
 				>
 			</File>
@@ -465,6 +469,10 @@
 				RelativePath=".\sub.cpp"
 				>
 			</File>
+			<File
+				RelativePath=".\sub_config_dlg.cpp"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -473,6 +481,10 @@
 			>
 			<File
 				RelativePath=".\add.h"
+				>
+			</File>
+			<File
+				RelativePath=".\add_config_dlg.h"
 				>
 			</File>
 			<File
@@ -511,6 +523,10 @@
 				RelativePath=".\sub.h"
 				>
 			</File>
+			<File
+				RelativePath=".\sub_config_dlg.h"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Resource Files"
@@ -528,5 +544,9 @@
 		</Filter>
 	</Files>
 	<Globals>
+		<Global
+			Name="RESOURCE_FILE"
+			Value="image_processing.rc"
+		/>
 	</Globals>
 </VisualStudioProject>

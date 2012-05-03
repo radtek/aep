@@ -35,6 +35,12 @@ void *ImageOutput::GetInterface(UINT32 iid)
 }
 */
 
+IImageOutput::IImageOutput()
+:
+m_Array(NULL)
+{
+}
+
 void *IImageOutput::GetInterface(UINT32 iid)
 {
     void *iface;

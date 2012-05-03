@@ -50,6 +50,7 @@ public:
     virtual RC _stdcall SetAttribute(UINT32 aid, void *attr);
     virtual bool _stdcall Connect(IComponent *component);
 
+    virtual RC _stdcall Config();
     virtual RC _stdcall SetInput(IData *input);
     virtual RC _stdcall GetOutput1(IData *&output);
     virtual RC _stdcall GetOutput2(IData *&output);

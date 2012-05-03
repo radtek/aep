@@ -25,6 +25,8 @@ public:
 
     virtual bool Connect(ModelCtrl *modelCtrl);
 
+    virtual void Config();
+
     IComponent *GetComponent();
 
 public:

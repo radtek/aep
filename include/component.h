@@ -18,7 +18,7 @@ namespace Component
     /** @brief 注册接口类型的函数名. */
     extern LPCSTR RegisterInterfaceTypeFuncName;
 
-    typedef void (*RegisterComponentTypeFunc)(ComponentTypeMap &componentTypeMap);
+    typedef void (*RegisterComponentTypeFunc)(ComponentTypeMap &componentTypeMap, HINSTANCE DllHandle);
     /** @brief 注册组件类型的函数名. */
     extern LPCSTR RegisterComponentTypeFuncName;
 

@@ -6,8 +6,11 @@
 * 实现了外部数据类.
 */
 
+#include "stdafx.h"
+
 #include "external_data.h"
 #include "utility.h"
+#include "matlab_helper.h"
 
 ExternalData::ExternalData()
 {
@@ -131,6 +134,13 @@ bool ExternalData::Connect(IComponent *component)
     return false;
 }
 
+RC ExternalData::Config()
+{
+    RC rc;
+
+    return rc;
+}
+
 RC ExternalData::SetInput(IData *input)
 {
     return RC::COMPONENT_SETINPUT_ERROR;
@@ -165,6 +175,24 @@ RC ExternalData::GetOutput1(IData *&output)
         return RC::FILE_OPEN_ERROR;
     }
     */
+    HBITMAP hBitmap = (HBITMAP)::LoadImage(
+        NULL,
+        m_FilePath.c_str(),
+        IMAGE_BITMAP,
+        0,
+        0,
+        LR_LOADFROMFILE | LR_CREATEDIBSECTION);
+    if (!hBitmap)
+    {
+        Utility::PromptLastErrorMessage();
+        return RC::FILE_OPEN_ERROR;
+    }
+    BITMAP bitmap;
+    ::GetObject(hBitmap, sizeof(bitmap), &bitmap); 
+
+    m_Output->m_Array = MatLabHelper::CreateDoubleArray(bitmap.bmWidthBytes, bitmap.bmHeight, (const char *)bitmap.bmBits);
+
+    ::DeleteObject(hBitmap);
 
     output = (IData *)(m_Output->GetInterface(CIID_IDATA));
     return OK;

@@ -28,13 +28,14 @@ public:
     virtual void _stdcall SetName(wstring name);
     enum AAID
     {
-        AAID_TEST_PARAM,
+        AAID_SUB_FACTOR,
     };
     virtual void _stdcall GetAttributeList(AttributeList &attributeList);
     virtual RC _stdcall GetAttribute(UINT32 aid, void *attr);
     virtual RC _stdcall SetAttribute(UINT32 aid, void *attr);
     virtual bool _stdcall Connect(IComponent *component);
 
+    virtual RC _stdcall Config();
     virtual RC _stdcall SetInput(IData *data);
     virtual RC _stdcall GetOutput1(IData *&output);
     virtual RC _stdcall GetOutput2(IData *&output);
@@ -42,7 +43,7 @@ public:
     virtual IARC _stdcall Run();
 
 public:
-    double m_TestParam;
+    double m_SubFactor;
 
     UINT32 m_Id;
     wstring m_Name;

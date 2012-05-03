@@ -23,7 +23,7 @@ extern "C" __declspec(dllexport) void RegisterInterfaceType(InterfaceTypeMap &in
     interfaceTypeMap[interfaceType.InterfaceId] = interfaceType;
 }
 
-extern "C" __declspec(dllexport) void RegisterComponentType(ComponentTypeMap &componentTypeMap)
+extern "C" __declspec(dllexport) void RegisterComponentType(ComponentTypeMap &componentTypeMap, HINSTANCE DllHandle)
 {
     ComponentType componentType;
 
@@ -31,23 +31,27 @@ extern "C" __declspec(dllexport) void RegisterComponentType(ComponentTypeMap &co
     componentType.TypeName = ExternalData::s_ComponentName;
     componentType.InterfaceId = CLIENT_CIID_EXTERNAL_DATA;
     componentType.Factory = (ComponentFactory)ExternalData::Factory;
+    componentType.DllHandle = DllHandle;
     componentTypeMap[componentType.TypeId] = componentType;
 
     componentType.TypeId = Image::s_ComponentId;
     componentType.TypeName = Image::s_ComponentName;
     componentType.InterfaceId = CLIENT_CIID_IMAGE;
     componentType.Factory = (ComponentFactory)Image::Factory;
+    componentType.DllHandle = DllHandle;
     componentTypeMap[componentType.TypeId] = componentType;
 
     componentType.TypeId = Add::s_ComponentId;
     componentType.TypeName = Add::s_ComponentName;
     componentType.InterfaceId = CLIENT_CIID_IMAGE_ALGORITHM;
     componentType.Factory = (ComponentFactory)Add::Factory;
+    componentType.DllHandle = DllHandle;
     componentTypeMap[componentType.TypeId] = componentType;
 
     componentType.TypeId = Sub::s_ComponentId;
     componentType.TypeName = Sub::s_ComponentName;
     componentType.InterfaceId = CLIENT_CIID_IMAGE_ALGORITHM;
     componentType.Factory = (ComponentFactory)Sub::Factory;
+    componentType.DllHandle = DllHandle;
     componentTypeMap[componentType.TypeId] = componentType;
 }

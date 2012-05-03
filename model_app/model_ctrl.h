@@ -40,6 +40,8 @@ public:
 
     virtual bool Connect(ModelCtrl *modelCtrl) = 0;
 
+    virtual void Config();
+
 public:
     virtual void AddConnector(Connector *connector);
     virtual void RemoveConnector(Connector *connector);

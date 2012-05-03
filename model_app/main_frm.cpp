@@ -7,6 +7,7 @@
 #include "main_frm.h"
 #include "model_view.h"
 
+#include "model.h"
 #include "utility.h"
 
 #ifdef _DEBUG
@@ -38,6 +39,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CBCGPFrameWnd)
 	ON_UPDATE_COMMAND_UI_RANGE(ID_VIEW_APPLOOK_2000, ID_VIEW_APPLOOK_VS2008, OnUpdateAppLook)
     ON_COMMAND(ID_FILE_EXPORT, &CMainFrame::OnFileExport)
     ON_COMMAND(ID_FILE_DRAW, &CMainFrame::OnFileDraw)
+    ON_COMMAND(ID_FILE_VALIDATE, &CMainFrame::OnFileValidate)
 END_MESSAGE_MAP()
 
 static UINT indicators[] =
@@ -100,6 +102,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	lstBasicCommands.AddTail (ID_FILE_OPEN);
 	lstBasicCommands.AddTail (ID_FILE_SAVE);
 	lstBasicCommands.AddTail (ID_FILE_EXPORT);
+	lstBasicCommands.AddTail (ID_FILE_VALIDATE);
 	lstBasicCommands.AddTail (ID_FILE_DRAW);
 	lstBasicCommands.AddTail (ID_FILE_PRINT);
 	lstBasicCommands.AddTail (ID_APP_EXIT);
@@ -627,5 +630,33 @@ void CMainFrame::OnFileDraw()
     else
     {
         Utility::PromptMessage(TEXT("绘制数据图形成功."));
+    }
+}
+
+void CMainFrame::OnFileValidate()
+{
+    // TODO: Add your command handler code here
+    CString pathName;
+
+    CFileDialog dlg(FALSE, TEXT("mod"), TEXT("Untitiled.mod"), 0, TEXT("Model Files (*.mod)|*.mod|All Files (*.*)|*.*||"));
+    if(dlg.DoModal() == IDOK)
+    {
+        pathName = dlg.GetPathName();
+    }
+    else
+    {
+        return;
+    }
+    CFile modFile(pathName, CFile::modeRead);
+    CArchive ar(&modFile, CArchive::load);
+    Model model;
+    RC rc = model.Load(ar);
+    if (OK == rc)
+    {
+        Utility::PromptMessage(TEXT("模型文件解析成功."));
+    }
+    else
+    {
+        Utility::PromptErrorMessage(TEXT("模型文件解析失败."));
     }
 }

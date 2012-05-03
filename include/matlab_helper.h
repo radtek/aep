@@ -15,7 +15,8 @@ typedef mxArray Array;
 
 namespace MatLabHelper
 {
-    Array *CreateDoubleArray(UINT32 size, double *content = NULL);
+    Array *CreateDoubleArray(UINT32 x, UINT32 y, const char *content = NULL);
+    void DestroyArray(Array *a);
 };
 
 #endif // __MATLAB_HELPER_H__

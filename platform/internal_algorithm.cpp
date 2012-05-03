@@ -135,6 +135,13 @@ bool InternalAlgorithm::Connect(IComponent *component)
     return false;
 }
 
+RC InternalAlgorithm::Config()
+{
+    RC rc;
+
+    return rc;
+}
+
 RC InternalAlgorithm::SetInput(IData *input)
 {
     RC rc;

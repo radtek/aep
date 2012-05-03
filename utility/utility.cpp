@@ -177,7 +177,7 @@ Attribute::AttributeType Utility::StringToAttributeType(wstring str)
     }
     else if (str == TEXT("×Ö·ûÐÍ"))
     {
-        return Attribute::TYPE_DOUBLE;
+        return Attribute::TYPE_STRING;
     }
     else
     {

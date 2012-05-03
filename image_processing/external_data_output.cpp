@@ -35,6 +35,12 @@ void *ExternalDataOutput::GetInterface(UINT32 iid)
 }
 */
 
+IExternalDataOutput::IExternalDataOutput()
+:
+m_Array(NULL)
+{
+}
+
 void *IExternalDataOutput::GetInterface(UINT32 iid)
 {
     void *iface;
