@@ -13,6 +13,9 @@
 #include "matlab_helper.h"
 
 ExternalData::ExternalData()
+:
+m_Width(0),
+m_Height(0)
 {
     m_Output = new IExternalDataOutput;
 }
@@ -32,7 +35,9 @@ void ExternalData::Save(CArchive &ar)
     ar << s_ComponentId
         << m_Id
         << CString(m_Name.c_str())
-        << CString(m_FilePath.c_str());
+        << CString(m_FilePath.c_str())
+        << m_Width
+        << m_Height;
 }
 
 void ExternalData::Load(CArchive &ar)
@@ -45,6 +50,8 @@ void ExternalData::Load(CArchive &ar)
 
     ar >> str;
     m_FilePath = str;
+
+    ar >> m_Width >> m_Height;
 }
 
 void ExternalData::Destroy()
@@ -99,6 +106,16 @@ void ExternalData::GetAttributeList(AttributeList &attributeList)
     attribute.Name = TEXT("数据文件路径");
     attribute.Type = Attribute::TYPE_STRING;
     attributeList.push_back(attribute);
+
+    attribute.Id = AAID_WIDTH;
+    attribute.Name = TEXT("宽度");
+    attribute.Type = Attribute::TYPE_INT;
+    attributeList.push_back(attribute);
+
+    attribute.Id = AAID_HEIGHT;
+    attribute.Name = TEXT("高度");
+    attribute.Type = Attribute::TYPE_INT;
+    attributeList.push_back(attribute);
 }
 
 RC ExternalData::GetAttribute(UINT32 aid, void *attr)
@@ -109,6 +126,12 @@ RC ExternalData::GetAttribute(UINT32 aid, void *attr)
     {
     case AAID_FILE_PATH:
         *((wstring *)attr) = m_FilePath;
+        break;
+    case AAID_WIDTH:
+        *((UINT32 *)attr) = m_Width;
+        break;
+    case AAID_HEIGHT:
+        *((UINT32 *)attr) = m_Height;
         break;
     }
 
@@ -124,6 +147,12 @@ RC ExternalData::SetAttribute(UINT32 aid, void *attr)
     case AAID_FILE_PATH:
         m_FilePath = *((wstring *)attr);
         break;
+    case AAID_WIDTH:
+        m_Width = *((UINT32 *)attr);
+        break;
+    case AAID_HEIGHT:
+        m_Height = *((UINT32 *)attr);
+        break;
     }
 
     return rc;
@@ -132,6 +161,17 @@ RC ExternalData::SetAttribute(UINT32 aid, void *attr)
 bool ExternalData::Connect(IComponent *component)
 {
     return false;
+}
+
+IComponent *ExternalData::Clone()
+{
+    ExternalData *externalData = new ExternalData();
+    externalData->m_FilePath = m_FilePath;
+    externalData->m_Width = m_Width;
+    externalData->m_Height = m_Height;
+    externalData->m_Id = m_Id;
+    externalData->m_Name = m_Name;
+    return externalData;
 }
 
 RC ExternalData::Config()
@@ -148,7 +188,6 @@ RC ExternalData::SetInput(IData *input)
 
 RC ExternalData::GetOutput1(IData *&output)
 {
-    /*
     if (!Utility::FileExists(m_FilePath.c_str()))
     {
         return RC::FILE_OPEN_ERROR;
@@ -174,25 +213,8 @@ RC ExternalData::GetOutput1(IData *&output)
     {
         return RC::FILE_OPEN_ERROR;
     }
-    */
-    HBITMAP hBitmap = (HBITMAP)::LoadImage(
-        NULL,
-        m_FilePath.c_str(),
-        IMAGE_BITMAP,
-        0,
-        0,
-        LR_LOADFROMFILE | LR_CREATEDIBSECTION);
-    if (!hBitmap)
-    {
-        Utility::PromptLastErrorMessage();
-        return RC::FILE_OPEN_ERROR;
-    }
-    BITMAP bitmap;
-    ::GetObject(hBitmap, sizeof(bitmap), &bitmap); 
 
-    m_Output->m_Array = MatLabHelper::CreateDoubleArray(bitmap.bmWidthBytes, bitmap.bmHeight, (const char *)bitmap.bmBits);
-
-    ::DeleteObject(hBitmap);
+    m_Output->m_Array = MatLabHelper::CreateDoubleArray(m_Width, m_Height, buf);
 
     output = (IData *)(m_Output->GetInterface(CIID_IDATA));
     return OK;

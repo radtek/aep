@@ -26,7 +26,7 @@ class Model
 {
 public:
     /** @brief Model带参数构造函数. */
-    Model(ComponentList &componentList);
+    Model(ComponentList &componentList, ConnectorList &connectorList);
     /** @brief Model默认构造函数. */
     Model();
     /** @brief Model析构函数. */
@@ -36,19 +36,28 @@ public:
     /** @brief 从文件中读取模型. */
     RC Load(CArchive &ar);
     /** @brief 验证模型是否有效. */
-    RC Validate();
+    RC Analyze();
     /** @brief 运行模型. */
-    RC Run(wostream &os);
+    RC Run();
 
 protected:
     /** @brief 将模型内部的组件相互关联. */
-    bool Connect(UINT32 sourceId, UINT32 targetId);
+    void Connect(UINT32 sourceId, UINT32 targetId);
+    bool Connect(IComponent *source, IComponent *target);
+    IAlgorithm *GetEntryAlgorithm();
+    IAlgorithm *GetNextAlgorithm(IAlgorithm *algorithm);
+    ComponentList GetInputList(IAlgorithm *algorithm);
+    bool CheckInputList(IAlgorithm *algorithm, ComponentList &inputList);
+    ComponentList GetOutputList(IAlgorithm *algorithm);
+    bool CheckOutputList(IAlgorithm *algorithm, ComponentList &outputList);
 
 private:
-    /** @brief 用来表示模型内的组件是否为模型自身创建. */
-    bool m_SelfOwn;
     /** @brief 组件列表. */
     ComponentList m_ComponentList;
+    ConnectorList m_ConnectorList;
+    AlgorithmList m_AlgorithmList;
+    vector<ComponentList> m_InputList;
+    vector<ComponentList> m_OutputList;
 };
 
 #endif // __MODEL_H__

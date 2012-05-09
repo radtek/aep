@@ -16,7 +16,7 @@
 using namespace std;
 
 class CAttributeBar;
-class Connector;
+class ConnectorCtrl;
 
 class ModelCtrl
 {
@@ -43,8 +43,8 @@ public:
     virtual void Config();
 
 public:
-    virtual void AddConnector(Connector *connector);
-    virtual void RemoveConnector(Connector *connector);
+    virtual void AddConnectorCtrl(ConnectorCtrl *connectorCtrl);
+    virtual void RemoveConnectorCtrl(ConnectorCtrl *connectorCtrl);
 
     virtual CPoint GetAttachPoint(CPoint point) = 0;
 
@@ -67,7 +67,7 @@ protected:
 
 protected:
     bool m_IsSelected;
-    list<Connector *> m_ConnectorList;
+    list<ConnectorCtrl *> m_ConnectorCtrlList;
 };
 
 typedef list<ModelCtrl *> ModelCtrlList;

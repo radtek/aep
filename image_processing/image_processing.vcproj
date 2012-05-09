@@ -71,7 +71,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="mclmcrrt.lib"
+				AdditionalDependencies="mclmcrrt.lib add/AddFunc.lib sub/SubFunc.lib"
 				LinkIncremental="2"
 				ModuleDefinitionFile=".\image_processing.def"
 				GenerateDebugInformation="true"
@@ -240,7 +240,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="mclmcrrt.lib"
+				AdditionalDependencies="mclmcrrt.lib add/AddFunc.lib sub/SubFunc.lib"
 				LinkIncremental="1"
 				ModuleDefinitionFile=".\image_processing.def"
 				GenerateDebugInformation="true"
@@ -488,6 +488,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\add\AddFunc.h"
+				>
+			</File>
+			<File
 				RelativePath=".\external_data.h"
 				>
 			</File>
@@ -525,6 +529,10 @@
 			</File>
 			<File
 				RelativePath=".\sub_config_dlg.h"
+				>
+			</File>
+			<File
+				RelativePath=".\sub\SubFunc.h"
 				>
 			</File>
 		</Filter>

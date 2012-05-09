@@ -3,7 +3,7 @@
 
 #include "rect_ctrl.h"
 
-#include "connector.h"
+#include "connector_ctrl.h"
 
 #include "utility.h"
 
@@ -52,8 +52,8 @@ bool RectCtrl::HitTest(CPoint point)
 void RectCtrl::Move(CPoint point)
 {
     m_Position += point;
-    for (list<Connector *>::iterator it = m_ConnectorList.begin();
-        it != m_ConnectorList.end(); ++it)
+    for (list<ConnectorCtrl *>::iterator it = m_ConnectorCtrlList.begin();
+        it != m_ConnectorCtrlList.end(); ++it)
     {
         (*it)->Move(point, this);
     }

@@ -65,6 +65,4 @@ private:
     ParamNameList m_ParamNameList;
 };
 
-typedef vector<Algorithm> AlgorithmList;
-
 #endif // __ALGORITHM_H__

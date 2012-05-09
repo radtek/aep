@@ -40,6 +40,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CBCGPFrameWnd)
     ON_COMMAND(ID_FILE_EXPORT, &CMainFrame::OnFileExport)
     ON_COMMAND(ID_FILE_DRAW, &CMainFrame::OnFileDraw)
     ON_COMMAND(ID_FILE_VALIDATE, &CMainFrame::OnFileValidate)
+    ON_COMMAND(ID_FILE_RUN, &CMainFrame::OnFileRun)
 END_MESSAGE_MAP()
 
 static UINT indicators[] =
@@ -104,6 +105,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	lstBasicCommands.AddTail (ID_FILE_EXPORT);
 	lstBasicCommands.AddTail (ID_FILE_VALIDATE);
 	lstBasicCommands.AddTail (ID_FILE_DRAW);
+	lstBasicCommands.AddTail (ID_FILE_RUN);
 	lstBasicCommands.AddTail (ID_FILE_PRINT);
 	lstBasicCommands.AddTail (ID_APP_EXIT);
 	lstBasicCommands.AddTail (ID_EDIT_CUT);
@@ -658,5 +660,35 @@ void CMainFrame::OnFileValidate()
     else
     {
         Utility::PromptErrorMessage(TEXT("模型文件解析失败."));
+    }
+}
+
+void CMainFrame::OnFileRun()
+{
+    // TODO: Add your command handler code here
+    CModelDoc *doc = DYNAMIC_DOWNCAST(CModelDoc, GetActiveDocument());
+    Model model = doc->ExportModel();
+    RC rc = model.Analyze();
+    if (rc == RC::MODEL_GET_ENTRY_ALGORITHM_ERROR)
+    {
+        Utility::PromptErrorMessage(TEXT("缺少入口算法."));
+    }
+    else if (rc == RC::MODEL_ALGORITHM_INPUT_ERROR)
+    {
+        Utility::PromptErrorMessage(TEXT("算法输入错误."));
+    }
+    else if (rc == RC::MODEL_ALGORITHM_OUTPUT_ERROR)
+    {
+        Utility::PromptErrorMessage(TEXT("算法输出错误."));
+    }
+
+    rc = model.Run();
+    if (OK != rc)
+    {
+        Utility::PromptErrorMessage(TEXT("模型运行失败."));
+    }
+    else
+    {
+        Utility::PromptMessage(TEXT("模型分析成功"));
     }
 }

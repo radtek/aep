@@ -2,7 +2,7 @@
 #include "model_app.h"
 
 #include "model_ctrl.h"
-#include "connector.h"
+#include "connector_ctrl.h"
 
 #include "model_doc.h"
 
@@ -11,7 +11,7 @@
 
 #include <math.h>
 
-Connector::Connector(CPoint point)
+ConnectorCtrl::ConnectorCtrl(CPoint point)
 :
 m_Start(point.x - s_Length / 2, point.y),
 m_End(point.x + s_Length / 2, point.y),
@@ -21,11 +21,11 @@ m_Target(NULL)
 {
 }
 
-Connector::~Connector()
+ConnectorCtrl::~ConnectorCtrl()
 {
 }
 
-void Connector::Save(CArchive &ar)
+void ConnectorCtrl::Save(CArchive &ar)
 {
     ar << m_Start
         << m_End;
@@ -37,7 +37,7 @@ void Connector::Save(CArchive &ar)
         << (m_Target != NULL ? m_Target->GetId() : 0);
 }
 
-void Connector::Load(CArchive &ar, CModelDoc &doc)
+void ConnectorCtrl::Load(CArchive &ar, CModelDoc &doc)
 {
     ar >> m_Start
         >> m_End;
@@ -56,17 +56,17 @@ void Connector::Load(CArchive &ar, CModelDoc &doc)
         if (sourceValid && modelCtrl->GetId() == sourceId)
         {
             m_Source = modelCtrl;
-            m_Source->AddConnector(this);
+            m_Source->AddConnectorCtrl(this);
         }
         if (targetValid && modelCtrl->GetId() == targetId)
         {
             m_Target = modelCtrl;
-            m_Target->AddConnector(this);
+            m_Target->AddConnectorCtrl(this);
         }
     }
 }
 
-void Connector::Export(CArchive &ar)
+void ConnectorCtrl::Export(CArchive &ar)
 {
     ar << (m_Source != NULL ? TRUE : FALSE)
         << (m_Target != NULL ? TRUE : FALSE);
@@ -75,7 +75,17 @@ void Connector::Export(CArchive &ar)
         << (m_Target != NULL ? m_Target->GetId() : 0);
 }
 
-void Connector::Draw(CDC *dc)
+ModelCtrl *ConnectorCtrl::GetSource()
+{
+    return m_Source;
+}
+
+ModelCtrl *ConnectorCtrl::GetTarget()
+{
+    return m_Target;
+}
+
+void ConnectorCtrl::Draw(CDC *dc)
 {
     CPoint oldPosition = dc->MoveTo(m_Start);
 
@@ -97,7 +107,7 @@ void Connector::Draw(CDC *dc)
     dc->MoveTo(oldPosition);
 }
 
-void Connector::DrawArrow(CDC *dc, double theta, UINT32 length)
+void ConnectorCtrl::DrawArrow(CDC *dc, double theta, UINT32 length)
 {
     double xx, yy, p1x, p1y, p2x, p2y;
     xx = m_Start.x - m_End.x;
@@ -137,7 +147,7 @@ void Connector::DrawArrow(CDC *dc, double theta, UINT32 length)
     dc->SelectObject(oldBrush);
 }
 
-Connector::ConnectorSelectMode Connector::HitTest(CPoint point)
+ConnectorCtrl::ConnectorCtrlSelectMode ConnectorCtrl::HitTest(CPoint point)
 {
     if (m_CurrentSelectMode == SM_NONE)
     {
@@ -171,17 +181,17 @@ Connector::ConnectorSelectMode Connector::HitTest(CPoint point)
     }
 }
 
-void Connector::Select(ConnectorSelectMode selectMode)
+void ConnectorCtrl::Select(ConnectorCtrlSelectMode selectMode)
 {
     m_CurrentSelectMode = selectMode;
 }
 
-Connector::ConnectorSelectMode Connector::GetSelectMode()
+ConnectorCtrl::ConnectorCtrlSelectMode ConnectorCtrl::GetSelectMode()
 {
     return m_CurrentSelectMode;
 }
 
-void Connector::Move(CPoint point, ModelCtrl *from)
+void ConnectorCtrl::Move(CPoint point, ModelCtrl *from)
 {
     if (from != NULL)
     {
@@ -222,7 +232,7 @@ void Connector::Move(CPoint point, ModelCtrl *from)
     }
 }
 
-void Connector::Connect(ModelCtrl *modelCtrl)
+void ConnectorCtrl::Connect(ModelCtrl *modelCtrl)
 {
     if (m_CurrentSelectMode == CSM_NONE)
     {
@@ -237,19 +247,19 @@ void Connector::Connect(ModelCtrl *modelCtrl)
     if (m_CurrentSelectMode == CSM_START)
     {
         m_Source = modelCtrl;
-        m_Source->AddConnector(this);
+        m_Source->AddConnectorCtrl(this);
         return;
     }
 
     if (m_CurrentSelectMode == CSM_END)
     {
         m_Target = modelCtrl;
-        m_Target->AddConnector(this);
+        m_Target->AddConnectorCtrl(this);
         return;
     }
 }
 
-void Connector::Disconnect()
+void ConnectorCtrl::Disconnect()
 {
     if (m_CurrentSelectMode == CSM_NONE)
     {
@@ -260,12 +270,12 @@ void Connector::Disconnect()
     {
         if (m_Source != NULL)
         {
-            m_Source->RemoveConnector(this);
+            m_Source->RemoveConnectorCtrl(this);
             m_Source = NULL;
         }
         if (m_Target != NULL)
         {
-            m_Target->RemoveConnector(this);
+            m_Target->RemoveConnectorCtrl(this);
             m_Target = NULL;
         }
         return;
@@ -275,7 +285,7 @@ void Connector::Disconnect()
     {
         if (m_Source != NULL)
         {
-            m_Source->RemoveConnector(this);
+            m_Source->RemoveConnectorCtrl(this);
             m_Source = NULL;
         }
         return;
@@ -285,14 +295,14 @@ void Connector::Disconnect()
     {
         if (m_Target != NULL)
         {
-            m_Target->RemoveConnector(this);
+            m_Target->RemoveConnectorCtrl(this);
             m_Target = NULL;
         }
         return;
     }
 }
 
-void Connector::SetAttachPoint(CPoint point)
+void ConnectorCtrl::SetAttachPoint(CPoint point)
 {
     if (m_CurrentSelectMode == CSM_START)
     {
@@ -304,12 +314,14 @@ void Connector::SetAttachPoint(CPoint point)
     }
 }
 
-bool Connector::Connect()
+/*
+bool ConnectorCtrl::Connect()
 {
     return m_Source->Connect(m_Target);
 }
+*/
 
-bool Connector::InBound(CPoint point)
+bool ConnectorCtrl::InBound(CPoint point)
 {
     INT32 left = min(m_Start.x, m_End.x) - s_Threshold,
         right = max(m_Start.x, m_End.x) + s_Threshold,
@@ -323,17 +335,17 @@ bool Connector::InBound(CPoint point)
         point.y <= down;
 }
 
-double Connector::Distance(CPoint point)
+double ConnectorCtrl::Distance(CPoint point)
 {
     return Utility::DistanceToEdge(m_Start, m_End, point);
 }
 
-double Connector::DistanceToStart(CPoint point)
+double ConnectorCtrl::DistanceToStart(CPoint point)
 {
     return Utility::DistanceToPoint(m_Start, point);
 }
 
-double Connector::DistanceToEnd(CPoint point)
+double ConnectorCtrl::DistanceToEnd(CPoint point)
 {
     return Utility::DistanceToPoint(m_End, point);
 }

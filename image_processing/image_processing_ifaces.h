@@ -18,7 +18,6 @@ BEGIN_CLIENT_CIID
     CLIENT_CIID_EXTERNAL_DATA_OUTPUT,
     CLIENT_CIID_IMAGE,
     CLIENT_CIID_IMAGE_OUTPUT,
-    CLIENT_CIID_IMAGE_ALGORITHM,
     CLIENT_CIID_IMAGE_ALGORITHM_INPUT1,
     CLIENT_CIID_IMAGE_ALGORITHM_INPUT2,
     CLIENT_CIID_IMAGE_ALGORITHM_OUTPUT1,
@@ -58,23 +57,18 @@ struct IImageOutput : IData
     Array *m_Array;
 };
 
-struct IImageAlgorithm : IComponent
-{
-    virtual IARC _stdcall Run() = 0;
-};
-
 struct IImageAlgorithmInput1 : IData
 {
     IImageAlgorithmInput1();
     virtual void * _stdcall GetInterface(UINT32 iid);
-    const Array *m_Array;
+    Array *m_Array;
 };
 
 struct IImageAlgorithmInput2 : IData
 {
     IImageAlgorithmInput2();
     virtual void * _stdcall GetInterface(UINT32 iid);
-    const Array *m_Array;
+    Array *m_Array;
 };
 
 struct IImageAlgorithmOutput1 : IData

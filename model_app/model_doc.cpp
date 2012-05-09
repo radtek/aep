@@ -8,7 +8,7 @@
 
 #include "component_ctrl.h"
 #include "internal_algorithm_ctrl.h"
-#include "connector.h"
+#include "connector_ctrl.h"
 
 #include "utility.h"
 
@@ -69,13 +69,13 @@ void CModelDoc::Serialize(CArchive& ar)
             modelCtrl->Save(ar);
         }
 
-        ar << m_ConnectorList.size();
+        ar << m_ConnectorCtrlList.size();
 
-        for (ConnectorList::iterator it = m_ConnectorList.begin();
-            it != m_ConnectorList.end(); ++it)
+        for (ConnectorCtrlList::iterator it = m_ConnectorCtrlList.begin();
+            it != m_ConnectorCtrlList.end(); ++it)
         {
-            Connector *connector = (*it);
-            connector->Save(ar);
+            ConnectorCtrl *connectorCtrl = (*it);
+            connectorCtrl->Save(ar);
         }
 
         ar << m_CurrentComponentId;
@@ -118,15 +118,15 @@ void CModelDoc::Serialize(CArchive& ar)
             }
         }
 
-        UINT32 connectorListSize = 0;
-        ar >> connectorListSize;
+        UINT32 connectorCtrlListSize = 0;
+        ar >> connectorCtrlListSize;
 
-        for (UINT32 i = 0; i < connectorListSize; ++i)
+        for (UINT32 i = 0; i < connectorCtrlListSize; ++i)
         {
-            Connector *connector = new Connector();
-            connector->Load(ar, *this);
+            ConnectorCtrl *connectorCtrl = new ConnectorCtrl();
+            connectorCtrl->Load(ar, *this);
 
-            m_ConnectorList.push_back(connector);
+            m_ConnectorCtrlList.push_back(connectorCtrl);
         }
 
         ar >> m_CurrentComponentId;
@@ -146,16 +146,59 @@ RC CModelDoc::ExportModel(CArchive &ar)
         modelCtrl->Export(ar);
     }
 
-    ar << m_ConnectorList.size();
+    ar << m_ConnectorCtrlList.size();
 
-    for (ConnectorList::iterator it = m_ConnectorList.begin();
-        it != m_ConnectorList.end(); ++it)
+    for (ConnectorCtrlList::iterator it = m_ConnectorCtrlList.begin();
+        it != m_ConnectorCtrlList.end(); ++it)
     {
-        Connector *connector = (*it);
-        connector->Export(ar);
+        ConnectorCtrl *connectorCtrl = (*it);
+        connectorCtrl->Export(ar);
     }
 
     return rc;
+}
+
+Model CModelDoc::ExportModel()
+{
+    ComponentList componentList;
+    for (ModelCtrlList::iterator it = m_ModelCtrlList.begin();
+        it != m_ModelCtrlList.end(); ++it)
+    {
+        ComponentCtrl *componentCtrl = dynamic_cast<ComponentCtrl *>(*it);
+        if (componentCtrl != NULL)
+        {
+            componentList.push_back(componentCtrl->GetComponent());
+        }
+    }
+
+    ConnectorList connectorList;
+    for (ConnectorCtrlList::iterator it = m_ConnectorCtrlList.begin();
+        it != m_ConnectorCtrlList.end(); ++it)
+    {
+        ConnectorCtrl *connectorCtrl = (*it);
+        ModelCtrl *source = connectorCtrl->GetSource();
+        ModelCtrl *target = connectorCtrl->GetTarget();
+        if (source != NULL && target != NULL)
+        {
+            Connector connector;
+            ComponentCtrl *componentCtrl = dynamic_cast<ComponentCtrl *>(source);
+            if (componentCtrl != NULL)
+            {
+                connector.Source = componentCtrl->GetComponent();
+            }
+            componentCtrl = dynamic_cast<ComponentCtrl *>(target);
+            if (componentCtrl != NULL)
+            {
+                connector.Target = componentCtrl->GetComponent();
+            }
+            if (connector.Source != NULL && connector.Target != NULL)
+            {
+                connectorList.push_back(connector);
+            }
+        }
+    }
+
+    return Model(componentList, connectorList);
 }
 
 RC CModelDoc::DrawData()
@@ -167,14 +210,14 @@ RC CModelDoc::DrawData()
         return RC::MODEL_MATLAB_ENGINE_ERROR;
     }
 
-    for (ConnectorList::iterator it = m_ConnectorList.begin();
-        it != m_ConnectorList.end(); ++it)
+    for (ConnectorCtrlList::iterator it = m_ConnectorCtrlList.begin();
+        it != m_ConnectorCtrlList.end(); ++it)
     {
-        Connector *connector = (*it);
-        if (!connector->Connect())
-        {
-            return RC::MODEL_CONNECT_COMPONENT_ERROR;
-        }
+        ConnectorCtrl *connectorCtrl = (*it);
+//        if (!connectorCtrl->Connect())
+//        {
+//            return RC::MODEL_CONNECT_COMPONENT_ERROR;
+//        }
     }
 
     bool hasParam = false;
@@ -257,13 +300,13 @@ bool CModelDoc::RemoveModelCtrl(ModelCtrl *modelCtrl)
     return false;
 }
 
-bool CModelDoc::AddConnector(Connector *connector)
+bool CModelDoc::AddConnectorCtrl(ConnectorCtrl *connectorCtrl)
 {
-    if (connector == NULL)
+    if (connectorCtrl == NULL)
     {
         return false;
     }
 
-    m_ConnectorList.push_front(connector);
+    m_ConnectorCtrlList.push_front(connectorCtrl);
     return true;
 }

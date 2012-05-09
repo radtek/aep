@@ -29,12 +29,15 @@ public:
     enum AAID
     {
         AAID_FILE_PATH,
+        AAID_WIDTH,
+        AAID_HEIGHT,
     };
     virtual void _stdcall GetAttributeList(AttributeList &attributeList);
     virtual RC _stdcall GetAttribute(UINT32 aid, void *attr);
     virtual RC _stdcall SetAttribute(UINT32 aid, void *attr);
     virtual bool _stdcall Connect(IComponent *component);
 
+    virtual IComponent * _stdcall Clone();
     virtual RC _stdcall Config();
     virtual RC _stdcall SetInput(IData *input);
     virtual RC _stdcall GetOutput1(IData *&output);
@@ -42,6 +45,8 @@ public:
 
 public:
     wstring m_FilePath;
+    UINT32 m_Width;
+    UINT32 m_Height;
 
     UINT32 m_Id;
     wstring m_Name;

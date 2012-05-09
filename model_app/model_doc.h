@@ -4,8 +4,9 @@
 
 #pragma once
 
+#include "model.h"
 #include "model_ctrl.h"
-#include "connector.h"
+#include "connector_ctrl.h"
 
 class CModelDoc : public CDocument
 {
@@ -17,7 +18,7 @@ protected: // create from serialization only
 public:
     ModelCtrlList m_ModelCtrlList;
 
-    ConnectorList m_ConnectorList;
+    ConnectorCtrlList m_ConnectorCtrlList;
 
 protected:
     UINT32 m_CurrentComponentId;
@@ -27,14 +28,15 @@ public:
     bool AddModelCtrl(ModelCtrl *modelCtrl);
     bool RemoveModelCtrl(ModelCtrl *modelCtrl);
 
-    bool AddConnector(Connector *connector);
-    bool RemoveConnector(Connector *connector);
+    bool AddConnectorCtrl(ConnectorCtrl *connectorCtrl);
+    bool RemoveConnectorCtrl(ConnectorCtrl *connectorCtrl);
 
 // Overrides
 	public:
 	virtual BOOL OnNewDocument();
 	virtual void Serialize(CArchive& ar);
     RC ExportModel(CArchive &ar);
+    Model ExportModel();
     RC DrawData();
 
 protected:

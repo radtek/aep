@@ -11,7 +11,7 @@
 
 #include "image_processing_ifaces.h"
 
-class Add : public IImageAlgorithm
+class Add : public IAlgorithm
 {
 public:
     Add();
@@ -35,12 +35,13 @@ public:
     virtual RC _stdcall SetAttribute(UINT32 aid, void *attr);
     virtual bool _stdcall Connect(IComponent *component);
 
+    virtual IComponent * _stdcall Clone();
     virtual RC _stdcall Config();
     virtual RC _stdcall SetInput(IData *data);
     virtual RC _stdcall GetOutput1(IData *&output);
     virtual RC _stdcall GetOutput2(IData *&output);
 
-    virtual IARC _stdcall Run();
+    virtual RC _stdcall Run();
 
 public:
     double m_AddFactor;

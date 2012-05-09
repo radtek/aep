@@ -6,27 +6,29 @@
 * 定义了连接线控件类.
 */
 
-#ifndef __CONNECTOR_H__
-#define __CONNECTOR_H__
+#ifndef __CONNECTOR_CTRL_H__
+#define __CONNECTOR_CTRL_H__
 
 class ModelCtrl;
 class CModelDoc;
 
-class Connector
+class ConnectorCtrl
 {
 public:
-    Connector(CPoint point = CPoint(0, 0));
-    virtual ~Connector();
+    ConnectorCtrl(CPoint point = CPoint(0, 0));
+    virtual ~ConnectorCtrl();
 
     void Save(CArchive &ar);
     void Load(CArchive &ar, CModelDoc &doc);
     void Export(CArchive &ar);
+    ModelCtrl *GetSource();
+    ModelCtrl *GetTarget();
 
 public:
     void Draw(CDC *dc);
     void DrawArrow(CDC *dc, double theta, UINT32 length);
 
-    enum ConnectorSelectMode
+    enum ConnectorCtrlSelectMode
     {
         CSM_NONE,
         CSM_ALL,
@@ -34,15 +36,15 @@ public:
         CSM_END,
     };
 
-    ConnectorSelectMode HitTest(CPoint point);
-    void Select(ConnectorSelectMode selectMode);
-    ConnectorSelectMode GetSelectMode();
+    ConnectorCtrlSelectMode HitTest(CPoint point);
+    void Select(ConnectorCtrlSelectMode selectMode);
+    ConnectorCtrlSelectMode GetSelectMode();
     void Move(CPoint point, ModelCtrl *from = NULL);
     void Connect(ModelCtrl *modelCtrl);
     void Disconnect();
     void SetAttachPoint(CPoint point);
 
-    bool Connect();
+    // bool Connect();
 
 protected:
     bool InBound(CPoint point);
@@ -54,7 +56,7 @@ protected:
     ModelCtrl *m_Source, *m_Target;
     CPoint m_Start, m_End;
 
-    ConnectorSelectMode m_CurrentSelectMode;
+    ConnectorCtrlSelectMode m_CurrentSelectMode;
 
 protected:
     static const UINT32 s_Length = 100;
@@ -64,6 +66,6 @@ public:
     static const UINT32 s_ModelCtrlId = 3;
 };
 
-typedef list<Connector *> ConnectorList;
+typedef list<ConnectorCtrl *> ConnectorCtrlList;
 
-#endif // __CONNECTOR_H__
+#endif // __CONNECTOR_CTRL_H__

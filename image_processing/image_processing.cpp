@@ -18,7 +18,7 @@ extern "C" __declspec(dllexport) void RegisterInterfaceType(InterfaceTypeMap &in
     interfaceType.InterfaceName = TEXT("Í¼Ïñ");
     interfaceTypeMap[interfaceType.InterfaceId] = interfaceType;
 
-    interfaceType.InterfaceId = CLIENT_CIID_IMAGE_ALGORITHM;
+    interfaceType.InterfaceId = CIID_IALGORITHM;
     interfaceType.InterfaceName = TEXT("Í¼ÏñËã·¨");
     interfaceTypeMap[interfaceType.InterfaceId] = interfaceType;
 }
@@ -43,14 +43,14 @@ extern "C" __declspec(dllexport) void RegisterComponentType(ComponentTypeMap &co
 
     componentType.TypeId = Add::s_ComponentId;
     componentType.TypeName = Add::s_ComponentName;
-    componentType.InterfaceId = CLIENT_CIID_IMAGE_ALGORITHM;
+    componentType.InterfaceId = CIID_IALGORITHM;
     componentType.Factory = (ComponentFactory)Add::Factory;
     componentType.DllHandle = DllHandle;
     componentTypeMap[componentType.TypeId] = componentType;
 
     componentType.TypeId = Sub::s_ComponentId;
     componentType.TypeName = Sub::s_ComponentName;
-    componentType.InterfaceId = CLIENT_CIID_IMAGE_ALGORITHM;
+    componentType.InterfaceId = CIID_IALGORITHM;
     componentType.Factory = (ComponentFactory)Sub::Factory;
     componentType.DllHandle = DllHandle;
     componentTypeMap[componentType.TypeId] = componentType;

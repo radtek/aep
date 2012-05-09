@@ -44,7 +44,9 @@ public:
     /** @brief 获得组件类型列表. */
     ComponentTypeMap &GetComponentTypeMap();
     /** @brief 获得组件实例列表. */
-    ComponentList &GetComponentList();
+    // ComponentList &GetComponentList();
+    /** @brief 获得连接器实例列表. */
+    // ComponentList &GetConnectorList();
 
     /** @brief 获得算法列表. */
     AlgorithmList &GetAlgorithmList();
@@ -61,7 +63,7 @@ private:
     RC RegisterInterfaceType();
     /** @brief 注册所有组件类型. */
     RC RegisterComponentType();
-    RC RegisterGetComponentListFuncToComponent();
+    // RC RegisterGetComponentListFuncToComponent();
     /** @brief 释放外部组件DLL文件. */
     RC UnloadComponentDll();
 
@@ -83,6 +85,7 @@ private:
     ComponentTypeMap m_ComponentTypeMap;
     /** @brief 组件实例列表. */
     ComponentList m_ComponentList;
+    ConnectorList m_ConnectorList;
 
     /** @brief 算法列表. */
     AlgorithmList m_AlgorithmList;

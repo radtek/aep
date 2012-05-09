@@ -12,6 +12,8 @@
 #include "matlab_helper.h"
 #include "sub_config_dlg.h"
 
+#include "sub/SubFunc.h"
+
 Sub::Sub()
 :
 m_SubFactor(0)
@@ -69,9 +71,9 @@ void *Sub::GetInterface(UINT32 iid)
     {
         iface = static_cast<IComponent *>(this);
     }
-    else if (CLIENT_CIID_IMAGE == iid)
+    else if (CIID_IALGORITHM == iid)
     {
-        iface = static_cast<IImageAlgorithm *>(this);
+        iface = static_cast<IAlgorithm *>(this);
     }
     else
     {
@@ -165,6 +167,15 @@ RC Sub::Config()
     return rc;
 }
 
+IComponent *Sub::Clone()
+{
+    Sub *sub = new Sub();
+    sub->m_SubFactor = m_SubFactor;
+    sub->m_Id = m_Id;
+    sub->m_Name = m_Name;
+    return sub;
+}
+
 RC Sub::SetInput(IData *data)
 {
     if (NULL == data)
@@ -230,26 +241,26 @@ RC Sub::GetOutput2(IData *&output)
     return OK;
 }
 
-IARC Sub::Run()
+RC Sub::Run()
 {
-    IARC iarc;
+    RC rc;
 
     UINT32 x1 = mxGetM(m_Input1->m_Array);
     UINT32 y1 = mxGetN(m_Input1->m_Array);
     UINT32 x2 = mxGetM(m_Input2->m_Array);
     UINT32 y2 = mxGetN(m_Input2->m_Array);
 
-    if (x1 != x2 || x2 != y2)
+    if (x1 != x2 || y1 != y2)
     {
-        return IARC::ALGORITHM_INPUT_ERROR;
+        return RC::ALGORITHM_INPUT_ERROR;
     }
 
-    if (m_Output1 != NULL)
+    if (m_Output1->m_Array != NULL)
     {
         MatLabHelper::DestroyArray(m_Output1->m_Array);
     }
 
-    if (m_Output2 != NULL)
+    if (m_Output2->m_Array != NULL)
     {
         MatLabHelper::DestroyArray(m_Output2->m_Array);
     }
@@ -257,7 +268,23 @@ IARC Sub::Run()
     m_Output1->m_Array = MatLabHelper::CreateDoubleArray(x1, y1);
     m_Output2->m_Array = MatLabHelper::CreateDoubleArray(x1, y1);
 
-    return iarc;
+    if (!SubFuncInitialize())
+    {
+        return RC::ALGORITHM_RUN_INITIALIZE_ERROR;
+    }
+    if (!mlfSubFunc(1, &m_Output1->m_Array, m_Input2->m_Array, m_Input1->m_Array))
+    {
+        SubFuncPrintStackTrace();
+        return RC::ALGORITHM_RUN_ERROR;
+    }
+    if (!mlfSubFunc(1, &m_Output2->m_Array, m_Input2->m_Array, m_Input1->m_Array))
+    {
+        SubFuncPrintStackTrace();
+        return RC::ALGORITHM_RUN_ERROR;
+    }
+    // SubFuncTerminate();
+
+    return rc;
 }
 
 Sub *Sub::Factory()

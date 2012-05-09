@@ -11,6 +11,7 @@
 #include "add.h"
 #include "matlab_helper.h"
 #include "add_config_dlg.h"
+#include "add/AddFunc.h"
 
 Add::Add()
 :
@@ -69,9 +70,9 @@ void *Add::GetInterface(UINT32 iid)
     {
         iface = static_cast<IComponent *>(this);
     }
-    else if (CLIENT_CIID_IMAGE == iid)
+    else if (CIID_IALGORITHM == iid)
     {
-        iface = static_cast<IImageAlgorithm *>(this);
+        iface = static_cast<IAlgorithm *>(this);
     }
     else
     {
@@ -141,6 +142,15 @@ RC Add::SetAttribute(UINT32 aid, void *attr)
 bool Add::Connect(IComponent *component)
 {
     return false;
+}
+
+IComponent *Add::Clone()
+{
+    Add *add = new Add();
+    add->m_AddFactor = m_AddFactor;
+    add->m_Id = m_Id;
+    add->m_Name = m_Name;
+    return add;
 }
 
 RC Add::Config()
@@ -230,26 +240,26 @@ RC Add::GetOutput2(IData *&output)
     return OK;
 }
 
-IARC Add::Run()
+RC Add::Run()
 {
-    IARC iarc;
+    RC rc;
 
     UINT32 x1 = mxGetM(m_Input1->m_Array);
     UINT32 y1 = mxGetN(m_Input1->m_Array);
     UINT32 x2 = mxGetM(m_Input2->m_Array);
     UINT32 y2 = mxGetN(m_Input2->m_Array);
 
-    if (x1 != x2 || x2 != y2)
+    if (x1 != x2 || y1 != y2)
     {
-        return IARC::ALGORITHM_INPUT_ERROR;
+        return RC::ALGORITHM_INPUT_ERROR;
     }
 
-    if (m_Output1 != NULL)
+    if (m_Output1->m_Array != NULL)
     {
         MatLabHelper::DestroyArray(m_Output1->m_Array);
     }
 
-    if (m_Output2 != NULL)
+    if (m_Output2->m_Array != NULL)
     {
         MatLabHelper::DestroyArray(m_Output2->m_Array);
     }
@@ -257,7 +267,23 @@ IARC Add::Run()
     m_Output1->m_Array = MatLabHelper::CreateDoubleArray(x1, y1);
     m_Output2->m_Array = MatLabHelper::CreateDoubleArray(x1, y1);
 
-    return iarc;
+    if (!AddFuncInitialize())
+    {
+        return RC::ALGORITHM_RUN_INITIALIZE_ERROR;
+    }
+    if (!mlfAddFunc(1, &m_Output1->m_Array, m_Input1->m_Array, m_Input2->m_Array))
+    {
+        AddFuncPrintStackTrace();
+        return RC::ALGORITHM_RUN_ERROR;
+    }
+    if (!mlfAddFunc(1, &m_Output2->m_Array, m_Input1->m_Array, m_Input2->m_Array))
+    {
+        AddFuncPrintStackTrace();
+        return RC::ALGORITHM_RUN_ERROR;
+    }
+    // AddFuncTerminate();
+
+    return rc;
 }
 
 Add *Add::Factory()

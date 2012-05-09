@@ -16,6 +16,6 @@ LPCSTR Component::RegisterComponentTypeFuncName = "RegisterComponentType";
 
 // LPCSTR Component::RunModelFuncName = "RunModel";
 
-Component::GetComponentListFunc Component::GetComponentList;
+// Component::GetComponentListFunc Component::GetComponentList;
 
-LPCSTR Component::RegisterGetComponentListFuncFuncName = "RegisterGetComponentListFunc";
+// LPCSTR Component::RegisterGetComponentListFuncFuncName = "RegisterGetComponentListFunc";

@@ -36,9 +36,9 @@ public:
     // New internal algorithm.
     INT32 m_CurrentInternalAlgorithmId;
 
-    // New connector.
+    // New connector ctrl.
     INT32 m_CurrentConnectorId;
-    Connector *m_CurrentConnector;
+    ConnectorCtrl *m_CurrentConnectorCtrl;
 
     // Normal.
     CPoint m_LastClickPosition;
@@ -47,11 +47,11 @@ public:
 // Operations
 public:
     ModelCtrl *HitTestModelCtrl(CPoint point);
-    Connector *HitTestConnector(CPoint point);
+    ConnectorCtrl *HitTestConnectorCtrl(CPoint point);
     void SelectModelCtrl(ModelCtrl *modelCtrl);
-    void SelectConnector(Connector *connector, CPoint point);
+    void SelectConnectorCtrl(ConnectorCtrl *connectorCtrl, CPoint point);
     void UnSelectCurrentModelCtrl();
-    void UnSelectCurrentConnector();
+    void UnSelectCurrentConnectorCtrl();
     void UnSelectAll();
 
 // Overrides

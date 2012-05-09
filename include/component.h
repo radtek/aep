@@ -31,12 +31,12 @@ namespace Component
     */
 
     // 组件及算法调平台
-    typedef void (*GetComponentListFunc)(ComponentList &componentList);
-    extern GetComponentListFunc GetComponentList;
+    // typedef void (*GetComponentListFunc)(ComponentList &componentList);
+    // extern GetComponentListFunc GetComponentList;
 
-    typedef void (*RegisterGetComponentListFuncFunc)(GetComponentListFunc getComponentListFunc);
+    // typedef void (*RegisterGetComponentListFuncFunc)(GetComponentListFunc getComponentListFunc);
     /** @brief 用来表示组件类型的结构体. */
-    extern LPCSTR RegisterGetComponentListFuncFuncName;
+    // extern LPCSTR RegisterGetComponentListFuncFuncName;
 };
 
 #endif // __COMPONENT_H__

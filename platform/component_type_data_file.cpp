@@ -1,5 +1,6 @@
 #include "component_type_data_file.h"
 #include "component.h"
+#include "utility.h"
 
 ComponentTypeDataFile::ComponentTypeDataFile(wstring fileName)
 :
@@ -35,6 +36,7 @@ RC ComponentTypeDataFile::ParseLine(const wstring &line)
 
     if (!componentDllHandle)
     {
+        Utility::PromptLastErrorMessage();
         return RC::PLATFORM_LOADDLL_ERROR;
     }
 

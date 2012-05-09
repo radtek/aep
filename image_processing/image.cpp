@@ -141,6 +141,15 @@ RC Image::Config()
     return rc;
 }
 
+IComponent *Image::Clone()
+{
+    Image *image = new Image();
+    image->m_FilePath = m_FilePath;
+    image->m_Id = m_Id;
+    image->m_Name = m_Name;
+    return image;
+}
+
 RC Image::SetInput(IData *input)
 {
     return RC::COMPONENT_SETINPUT_ERROR;

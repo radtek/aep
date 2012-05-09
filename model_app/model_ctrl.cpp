@@ -4,7 +4,7 @@
 
 #include "model_ctrl.h"
 
-#include "connector.h"
+#include "connector_ctrl.h"
 
 ModelCtrl::ModelCtrl()
 :
@@ -33,19 +33,19 @@ void ModelCtrl::Config()
     return;
 }
 
-void ModelCtrl::AddConnector(Connector *connector)
+void ModelCtrl::AddConnectorCtrl(ConnectorCtrl *connectorCtrl)
 {
-    m_ConnectorList.push_back(connector);
+    m_ConnectorCtrlList.push_back(connectorCtrl);
 }
 
-void ModelCtrl::RemoveConnector(Connector *connector)
+void ModelCtrl::RemoveConnectorCtrl(ConnectorCtrl *connectorCtrl)
 {
-    for (list<Connector *>::iterator it = m_ConnectorList.begin();
-        it != m_ConnectorList.end(); ++it)
+    for (list<ConnectorCtrl *>::iterator it = m_ConnectorCtrlList.begin();
+        it != m_ConnectorCtrlList.end(); ++it)
     {
-        if ((*it) == connector)
+        if ((*it) == connectorCtrl)
         {
-            m_ConnectorList.erase(it);
+            m_ConnectorCtrlList.erase(it);
             return;
         }
     }

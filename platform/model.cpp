@@ -17,10 +17,32 @@
 * 此时所有组件都是由外部创建,
 * 所以置m_SelfOwn为false.
 */
-Model::Model(ComponentList &componentList)
-:
-m_SelfOwn(false)
+Model::Model(ComponentList &componentList, ConnectorList &connectorList)
 {
+    for (UINT32 i = 0; i < componentList.size(); ++i)
+    {
+        IComponent *component = componentList[i]->Clone();
+        m_ComponentList.push_back(component);
+    }
+    for (UINT32 i = 0; i < connectorList.size(); ++i)
+    {
+        Connector connector = connectorList[i], connectorClone;
+        for (UINT32 i = 0; i < componentList.size(); ++i)
+        {
+            if (connector.Source == componentList[i])
+            {
+                connectorClone.Source = m_ComponentList[i];
+            }
+            if (connector.Target == componentList[i])
+            {
+                connectorClone.Target = m_ComponentList[i];
+            }
+        }
+        if (connectorClone.Source != NULL && connectorClone.Target != NULL)
+        {
+            m_ConnectorList.push_back(connectorClone);
+        }
+    }
 }
 
 /**
@@ -29,8 +51,6 @@ m_SelfOwn(false)
 * 所以置m_SelfOwn为true.
 */
 Model::Model()
-:
-m_SelfOwn(true)
 {
 }
 
@@ -43,13 +63,10 @@ m_SelfOwn(true)
 */
 Model::~Model()
 {
-    if (m_SelfOwn)
+    for (UINT32 i = 0; i < m_ComponentList.size(); ++i)
     {
-        for (UINT32 i = 0; i < m_ComponentList.size(); ++i)
-        {
-            IComponent *component = m_ComponentList[i];
-            component->Destroy();
-        }
+        IComponent *component = m_ComponentList[i];
+        component->Destroy();
     }
 }
 
@@ -69,7 +86,6 @@ RC Model::Load(CArchive &ar)
     RC rc;
 
     m_ComponentList.clear();
-    m_SelfOwn = true;
 
     UINT32 componentListSize = 0;
     ar >> componentListSize;
@@ -116,24 +132,47 @@ RC Model::Load(CArchive &ar)
         ar >> sourceValid >> targetValid;
 
         UINT32 sourceId, targetId;
-        ar >> sourceId
-            >> targetId;
+        ar >> sourceId >> targetId;
 
         if (sourceValid && targetValid)
         {
-            if (!Connect(sourceId, targetId))
-            {
-                return RC::MODEL_CONNECT_COMPONENT_ERROR;
-            }
+            Connect(sourceId, targetId);
         }
     }
 
     return rc;
 }
 
-RC Model::Validate()
+RC Model::Analyze()
 {
     RC rc;
+    
+    // 找到入口函数.
+    IAlgorithm *algorithm = GetEntryAlgorithm();
+    if (algorithm == NULL)
+    {
+        return RC::MODEL_GET_ENTRY_ALGORITHM_ERROR;
+    }
+
+    while (algorithm != NULL)
+    {
+        ComponentList inputList = GetInputList(algorithm);
+        if (!CheckInputList(algorithm, inputList))
+        {
+            return RC::MODEL_ALGORITHM_INPUT_ERROR;
+        }
+        ComponentList outputList = GetOutputList(algorithm);
+        if (!CheckOutputList(algorithm, outputList))
+        {
+            return RC::MODEL_ALGORITHM_OUTPUT_ERROR;
+        }
+        m_AlgorithmList.push_back(algorithm);
+        m_InputList.push_back(inputList);
+        m_OutputList.push_back(outputList);
+
+        algorithm = GetNextAlgorithm(algorithm);
+    }
+
     return rc;
 }
 
@@ -149,21 +188,38 @@ RC Model::Validate()
 * 则返回对应的结果代码.
 * 否则返回OK.
 */
-RC Model::Run(wostream &os)
+RC Model::Run()
 {
     RC rc;
 
-    for (UINT32 ic = 0; ic < m_ComponentList.size(); ++ic)
+    for (UINT32 i = 0; i < m_AlgorithmList.size(); ++i)
     {
-        IComponent *component = m_ComponentList[ic];
-        IParam *iParam = (IParam *)(component->GetInterface(CIID_IPARAM));
-        if (iParam != NULL)
+        IAlgorithm *algorithm = m_AlgorithmList[i];
+        ComponentList inputList = m_InputList[i];
+        for (UINT32 j = 0; j < inputList.size(); ++j)
         {
-            Param *param = iParam->ToParam();
-            for (UINT32 ip = 0; ip < param->size(); ++ip)
+            IComponent *component = inputList[j];
+            if (!Connect(component, (IComponent *)algorithm->GetInterface(CIID_ICOMPONENT)))
             {
-                double data = (*param)[ip];
-                os << data << endl;
+                return RC::MODEL_ALGORITHM_INPUT_ERROR;
+            }
+        }
+        CHECK_RC(algorithm->Run());
+        ComponentList outputList = m_OutputList[i];
+        for (UINT32 j = 0; j < outputList.size(); ++j)
+        {
+            IComponent *component = outputList[j];
+            if (!Connect((IComponent *)algorithm->GetInterface(CIID_ICOMPONENT), component))
+            {
+                return RC::MODEL_ALGORITHM_OUTPUT_ERROR;
+            }
+        }
+        if (i < m_AlgorithmList.size() - 1)
+        {
+            IAlgorithm *nextAlgorithm = m_AlgorithmList[i + 1];
+            if (!Connect((IComponent *)algorithm->GetInterface(CIID_ICOMPONENT), (IComponent *)nextAlgorithm->GetInterface(CIID_ICOMPONENT)))
+            {
+                return RC::MODEL_ALGORITHM_OUTPUT_ERROR;
             }
         }
     }
@@ -182,7 +238,7 @@ RC Model::Run(wostream &os)
 * 若可以关联, 则返回true,
 * 否则返回false.
 */
-bool Model::Connect(UINT32 sourceId, UINT32 targetId)
+void Model::Connect(UINT32 sourceId, UINT32 targetId)
 {
     IComponent *source = NULL, *target = NULL;
     for (UINT32 i = 0; i < m_ComponentList.size(); ++i)
@@ -201,24 +257,143 @@ bool Model::Connect(UINT32 sourceId, UINT32 targetId)
     if (source != NULL &&
         target != NULL)
     {
-        // return source->Connect(target);
-        IData *output1 = NULL, *output2 = NULL;
-        RC rc1, rc2;
-        rc1 = source->GetOutput1(output1);
-        rc2 = source->GetOutput2(output2);
-        if (OK != rc1 && OK != rc2)
+        Connector connector;
+        connector.Source = source;
+        connector.Target = target;
+        m_ConnectorList.push_back(connector);
+    }
+}
+
+bool Model::Connect(IComponent *source, IComponent *target)
+{
+    IData *output1 = NULL, *output2 = NULL;
+    RC rc1, rc2;
+    rc1 = source->GetOutput1(output1);
+    rc2 = source->GetOutput2(output2);
+    if (OK != rc1 && OK != rc2)
+    {
+        return false;
+    }
+    if ((OK == rc1) && (OK == target->SetInput(output1)))
+    {
+        return true;
+    }
+    if ((OK == rc2) && (OK == target->SetInput(output2)))
+    {
+        return true;
+    }
+    return false;
+}
+
+IAlgorithm *Model::GetEntryAlgorithm()
+{
+    for (UINT32 i = 0; i < m_ComponentList.size(); ++i)
+    {
+        IComponent *component = m_ComponentList[i];
+        IAlgorithm *algorithm = (IAlgorithm *)component->GetInterface(CIID_IALGORITHM);
+        if (algorithm != NULL)
         {
-            return false;
-        }
-        if ((OK == rc1) && (OK == target->SetInput(output1)))
-        {
-            return true;
-        }
-        if ((OK == rc2) && (OK == target->SetInput(output2)))
-        {
-            return true;
+            bool hasPrev = false;
+            for (UINT32 j = 0; j < m_ConnectorList.size(); ++j)
+            {
+                Connector connector = m_ConnectorList[j];
+                if (connector.Target == component)
+                {
+                    if (connector.Source->GetInterface(CIID_IALGORITHM) != NULL)
+                    {
+                        hasPrev = true;
+                        break;
+                    }
+                }
+            }
+            if (!hasPrev)
+            {
+                return algorithm;
+            }
         }
     }
 
-    return false;
+    return NULL;
+}
+
+IAlgorithm *Model::GetNextAlgorithm(IAlgorithm *algorithm)
+{
+    for (UINT32 i = 0; i < m_ConnectorList.size(); ++i)
+    {
+        Connector connector = m_ConnectorList[i];
+        if (connector.Source == algorithm->GetInterface(CIID_ICOMPONENT))
+        {
+            if (connector.Target->GetInterface(CIID_IALGORITHM) != NULL)
+            {
+                return (IAlgorithm *)connector.Target->GetInterface(CIID_IALGORITHM);
+            }
+        }
+    }
+    return NULL;
+}
+
+ComponentList Model::GetInputList(IAlgorithm *algorithm)
+{
+    ComponentList inputList;
+
+    for (UINT32 i = 0; i < m_ConnectorList.size(); ++i)
+    {
+        Connector connector = m_ConnectorList[i];
+        if (connector.Target == algorithm->GetInterface(CIID_ICOMPONENT))
+        {
+            if (connector.Source->GetInterface(CIID_IALGORITHM) == NULL)
+            {
+                inputList.push_back(connector.Source);
+            }
+        }
+    }
+
+    return inputList;
+}
+
+bool Model::CheckInputList(IAlgorithm *algorithm, ComponentList &inputList)
+{
+    for (UINT32 i = 0; i < inputList.size(); ++i)
+    {
+        IComponent *source = inputList[i];
+        IComponent *target = (IComponent *)algorithm->GetInterface(CIID_ICOMPONENT);
+        if (!Connect(source, target))
+        {
+            return false;
+        }
+    }
+    return true;
+}
+
+ComponentList Model::GetOutputList(IAlgorithm *algorithm)
+{
+    ComponentList outputList;
+
+    for (UINT32 i = 0; i < m_ConnectorList.size(); ++i)
+    {
+        Connector connector = m_ConnectorList[i];
+        if (connector.Source == algorithm->GetInterface(CIID_ICOMPONENT))
+        {
+            if (connector.Target->GetInterface(CIID_IALGORITHM) == NULL)
+            {
+                outputList.push_back(connector.Source);
+            }
+        }
+    }
+
+    return outputList;
+}
+
+bool Model::CheckOutputList(IAlgorithm *algorithm, ComponentList &outputList)
+{
+    for (UINT32 i = 0; i < outputList.size(); ++i)
+    {
+        IComponent *source = (IComponent *)algorithm->GetInterface(CIID_ICOMPONENT);
+        IComponent *target = outputList[i];
+        if (!Connect(source, target))
+        {
+            return false;
+        }
+    }
+    return true;
 }

@@ -149,12 +149,13 @@ struct IComponent
     // virtual bool _stdcall Connect(IComponent *component) = 0;
     // virtual bool _stdcall Validate() = 0;
 
+    virtual IComponent * _stdcall Clone() = 0;
     virtual RC _stdcall Config() = 0;
     virtual RC _stdcall SetInput(IData *input) = 0;
     virtual RC _stdcall GetOutput1(IData *&output) = 0;
     virtual RC _stdcall GetOutput2(IData *&output) = 0;
 };
-  
+
 typedef vector<IComponent *> ComponentList;
 
 // typedef mxArray Param;
@@ -216,5 +217,19 @@ struct IAlgorithm : public IComponent
     /** @brief ÔËÐÐËã·¨. */
     virtual RC _stdcall Run() = 0;
 };
+
+typedef vector<IAlgorithm *> AlgorithmList;
+
+struct Connector
+{
+    Connector(IComponent *source = NULL, IComponent *target = NULL)
+        :
+    Source(source), Target(target)
+    {}
+
+    IComponent *Source, *Target;
+};
+
+typedef vector<Connector> ConnectorList;
 
 #endif // __INTERFACES_H__

@@ -9,7 +9,7 @@
 
 #include "component_ctrl.h"
 #include "internal_algorithm_ctrl.h"
-#include "connector.h"
+#include "connector_ctrl.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -40,7 +40,7 @@ m_CurrentComponentTypeId(-1),
 m_CurrentModelCtrl(NULL),
 m_CurrentInternalAlgorithmId(-1),
 m_CurrentConnectorId(-1),
-m_CurrentConnector(NULL),
+m_CurrentConnectorCtrl(NULL),
 m_Moved(false)
 {
 	// TODO: add construction code here
@@ -75,12 +75,12 @@ void CModelView::OnDraw(CDC *dc)
         modelCtrl->Draw(dc);
     }
     
-    ConnectorList &connectorList = pDoc->m_ConnectorList;
-    for (ConnectorList::iterator it = connectorList.end();
-        it != connectorList.begin();)
+    ConnectorCtrlList &connectorCtrlList = pDoc->m_ConnectorCtrlList;
+    for (ConnectorCtrlList::iterator it = connectorCtrlList.end();
+        it != connectorCtrlList.begin();)
     {
-        Connector *connector = *(--it);
-        connector->Draw(dc);
+        ConnectorCtrl *connectorCtrl = *(--it);
+        connectorCtrl->Draw(dc);
     }
 }
 
@@ -135,10 +135,10 @@ void CModelView::UnSelectCurrentModelCtrl()
     m_CurrentModelCtrl = NULL;
 }
 
-void CModelView::UnSelectCurrentConnector()
+void CModelView::UnSelectCurrentConnectorCtrl()
 {
-    m_CurrentConnector->Select(Connector::CSM_NONE);
-    m_CurrentConnector = NULL;
+    m_CurrentConnectorCtrl->Select(ConnectorCtrl::CSM_NONE);
+    m_CurrentConnectorCtrl = NULL;
 }
 
 void CModelView::UnSelectAll()
@@ -151,9 +151,9 @@ void CModelView::UnSelectAll()
     }
 
     m_CurrentConnectorId = -1;
-    if (m_CurrentConnector != NULL)
+    if (m_CurrentConnectorCtrl != NULL)
     {
-        m_CurrentConnector->Select(Connector::CSM_NONE);
+        m_CurrentConnectorCtrl->Select(ConnectorCtrl::CSM_NONE);
     }
 }
 
@@ -173,17 +173,17 @@ ModelCtrl *CModelView::HitTestModelCtrl(CPoint point)
     return NULL;
 }
 
-Connector *CModelView::HitTestConnector(CPoint point)
+ConnectorCtrl *CModelView::HitTestConnectorCtrl(CPoint point)
 {
-    // Selecting connectors.
-    ConnectorList &connectorList = GetDocument()->m_ConnectorList;
-    for (ConnectorList::iterator it = connectorList.begin();
-        it != connectorList.end(); ++it)
+    // Selecting connector ctrls.
+    ConnectorCtrlList &connectorCtrlList = GetDocument()->m_ConnectorCtrlList;
+    for (ConnectorCtrlList::iterator it = connectorCtrlList.begin();
+        it != connectorCtrlList.end(); ++it)
     {
-        Connector *connector = *it;
-        if (connector->HitTest(point) != Connector::CSM_NONE)
+        ConnectorCtrl *connectorCtrl = *it;
+        if (connectorCtrl->HitTest(point) != ConnectorCtrl::CSM_NONE)
         {
-            return connector;
+            return connectorCtrl;
         }
     }
     return NULL;
@@ -195,10 +195,10 @@ void CModelView::SelectModelCtrl(ModelCtrl *modelCtrl)
     m_CurrentModelCtrl->Select();
 }
 
-void CModelView::SelectConnector(Connector *connector, CPoint point)
+void CModelView::SelectConnectorCtrl(ConnectorCtrl *connectorCtrl, CPoint point)
 {
-    m_CurrentConnector = connector;
-    m_CurrentConnector->Select(m_CurrentConnector->HitTest(point));
+    m_CurrentConnectorCtrl = connectorCtrl;
+    m_CurrentConnectorCtrl->Select(m_CurrentConnectorCtrl->HitTest(point));
 }
 
 // CModelView message handlers
@@ -232,20 +232,20 @@ void CModelView::OnLButtonDown(UINT nFlags, CPoint point)
     }
     else if (m_CurrentState == STATE_NEW_CONNECTOR)
     {
-        Connector *connector = new Connector(point);
-        GetDocument()->AddConnector(connector);
+        ConnectorCtrl *connectorCtrl = new ConnectorCtrl(point);
+        GetDocument()->AddConnectorCtrl(connectorCtrl);
         m_CurrentState = STATE_NORMAL;
         UnSelectAll();
         Invalidate();
     }
     else if (m_CurrentState == STATE_COMPONENT_SELECTED)
     {
-        Connector *connector = HitTestConnector(point);
-        if (connector != NULL)
+        ConnectorCtrl *connectorCtrl = HitTestConnectorCtrl(point);
+        if (connectorCtrl != NULL)
         {
             UnSelectCurrentModelCtrl();
             m_CurrentState = STATE_CONNECTOR_SELECTED;
-            SelectConnector(connector, point);
+            SelectConnectorCtrl(connectorCtrl, point);
         }
         else
         {
@@ -269,17 +269,17 @@ void CModelView::OnLButtonDown(UINT nFlags, CPoint point)
     }
     else if (m_CurrentState == STATE_CONNECTOR_SELECTED)
     {
-        Connector *connector = HitTestConnector(point);
-        if (connector != NULL)
+        ConnectorCtrl *connectorCtrl = HitTestConnectorCtrl(point);
+        if (connectorCtrl != NULL)
         {
-            if (connector != m_CurrentConnector)
+            if (connectorCtrl != m_CurrentConnectorCtrl)
             {
-                UnSelectCurrentConnector();
-                SelectConnector(connector, point);
+                UnSelectCurrentConnectorCtrl();
+                SelectConnectorCtrl(connectorCtrl, point);
             }
             else
             {
-                SelectConnector(connector, point);
+                SelectConnectorCtrl(connectorCtrl, point);
             }
         }
         else
@@ -287,14 +287,14 @@ void CModelView::OnLButtonDown(UINT nFlags, CPoint point)
             ModelCtrl *modelCtrl = HitTestModelCtrl(point);
             if (modelCtrl != NULL)
             {
-                UnSelectCurrentConnector();
+                UnSelectCurrentConnectorCtrl();
                 m_CurrentState = STATE_COMPONENT_SELECTED;
                 SelectModelCtrl(modelCtrl);
             }
             else
             {
                 m_CurrentState = STATE_NORMAL;
-                UnSelectCurrentConnector();
+                UnSelectCurrentConnectorCtrl();
             }
         }
 
@@ -302,11 +302,11 @@ void CModelView::OnLButtonDown(UINT nFlags, CPoint point)
     }
     else if (m_CurrentState == STATE_NORMAL)
     {
-        Connector *connector = HitTestConnector(point);
-        if (connector != NULL)
+        ConnectorCtrl *connectorCtrl = HitTestConnectorCtrl(point);
+        if (connectorCtrl != NULL)
         {
             m_CurrentState = STATE_CONNECTOR_SELECTED;
-            SelectConnector(connector, point);
+            SelectConnectorCtrl(connectorCtrl, point);
         }
         else
         {
@@ -346,7 +346,7 @@ void CModelView::OnMouseMove(UINT nFlags, CPoint point)
     else if (m_CurrentState == STATE_CONNECTOR_SELECTED)
     {
         CPoint d = point - m_LastClickPosition;
-        m_CurrentConnector->Move(d);
+        m_CurrentConnectorCtrl->Move(d);
 
         Invalidate();
     }
@@ -366,13 +366,13 @@ void CModelView::OnLButtonUp(UINT nFlags, CPoint point)
     {
         if (m_Moved)
         {
-            m_CurrentConnector->Disconnect();
+            m_CurrentConnectorCtrl->Disconnect();
 
             ModelCtrl *modelCtrl = HitTestModelCtrl(point);
             if (modelCtrl != NULL)
             {
-                m_CurrentConnector->SetAttachPoint(modelCtrl->GetAttachPoint(point));
-                m_CurrentConnector->Connect(modelCtrl);
+                m_CurrentConnectorCtrl->SetAttachPoint(modelCtrl->GetAttachPoint(point));
+                m_CurrentConnectorCtrl->Connect(modelCtrl);
             }
         }
 

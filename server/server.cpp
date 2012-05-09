@@ -339,7 +339,7 @@ RC Server::ServiceThread::OnSendModelFile()
             Utility::PromptMessage(TEXT("模型文件解析成功."));
             wstring datFileName = m_UserName + TEXT(".dat");
             wofstream os(datFileName.c_str());
-            model.Run(os);
+            model.Run();
             os.close();
             _rc = m_ClientSocket->SendFile(datFileName.c_str());
             if (_rc == OK)

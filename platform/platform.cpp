@@ -42,10 +42,12 @@ LPCWSTR Platform::s_ComponentDllFileNameKey = TEXT("COMPONENT_DLL_FILE_NAME");
 LPCWSTR Platform::s_ComponentCfgFileNameKey = TEXT("COMPONENT_CFG_FILE_NAME");
 LPCWSTR Platform::s_AlgorithmCfgFileNameKey = TEXT("ALGORITHM_CFG_FILE_NAME");
 
+/*
 void GetComponentList(ComponentList &componentList)
 {
     componentList = Platform::GetInstance().GetComponentList();
 }
+*/
 
 /**
 * @return ½á¹û´úÂë.
@@ -147,10 +149,12 @@ ComponentTypeMap &Platform::GetComponentTypeMap()
     return m_ComponentTypeMap;
 }
 
+/*
 ComponentList &Platform::GetComponentList()
 {
     return m_ComponentList;
 }
+*/
 
 AlgorithmList &Platform::GetAlgorithmList()
 {
@@ -236,6 +240,7 @@ RC Platform::RegisterComponentType()
     return rc;
 }
 
+/*
 RC Platform::RegisterGetComponentListFuncToComponent()
 {
     RC rc;
@@ -254,6 +259,7 @@ RC Platform::RegisterGetComponentListFuncToComponent()
 
     return rc;
 }
+*/
 
 RC Platform::UnloadComponentDll()
 {

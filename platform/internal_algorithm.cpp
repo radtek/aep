@@ -135,6 +135,11 @@ bool InternalAlgorithm::Connect(IComponent *component)
     return false;
 }
 
+IComponent *InternalAlgorithm::Clone()
+{
+    return NULL;
+}
+
 RC InternalAlgorithm::Config()
 {
     RC rc;

@@ -53,6 +53,8 @@ DEFINE_ERROR(ALGORITHM_PARAMMISSING_ERROR, "Some parameter missed for an algorit
 DEFINE_ERROR(ALGORITHM_INSERT_ERROR, "Algorithm insert failed.")
 DEFINE_ERROR(ALGORITHM_REMOVE_ERROR, "Algorithm remove failed.")
 
+DEFINE_ERROR(ALGORITHM_INPUT_ERROR, "Algorithm input error.")
+
 DEFINE_ERROR(THREAD_CREATE_ERROR, "Create thread failed.")
 
 DEFINE_ERROR(USER_EXISTED_ERROR, "User already existed.")
@@ -68,6 +70,10 @@ DEFINE_ERROR(MODEL_LOAD_COMPONENT_ERROR, "Load component error.")
 DEFINE_ERROR(MODEL_CONNECT_COMPONENT_ERROR, "Connect component error.")
 DEFINE_ERROR(MODEL_MATLAB_ENGINE_ERROR, "Matlab engine error.")
 DEFINE_ERROR(MODEL_NO_PARAM_ERROR, "No param component.")
+
+DEFINE_ERROR(MODEL_GET_ENTRY_ALGORITHM_ERROR, "No entry algorithm.")
+DEFINE_ERROR(MODEL_ALGORITHM_INPUT_ERROR, "Invalid algorithm input.")
+DEFINE_ERROR(MODEL_ALGORITHM_OUTPUT_ERROR, "Invalid algorithm output.")
 
 DEFINE_ERROR(COMPONENT_SETINPUT_ERROR, "Set component input error.")
 DEFINE_ERROR(COMPONENT_GETOUTPUT_ERROR, "Get component output error.")
