@@ -40,6 +40,7 @@ public:
     virtual IComponent * _stdcall Clone();
     virtual RC _stdcall Config();
     virtual RC _stdcall SetInput(IData *input);
+    virtual RC _stdcall Run();
     virtual RC _stdcall GetOutput1(IData *&output);
     virtual RC _stdcall GetOutput2(IData *&output);
 

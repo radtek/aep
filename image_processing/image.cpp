@@ -96,7 +96,7 @@ void Image::GetAttributeList(AttributeList &attributeList)
     Attribute attribute;
 
     attribute.Id = AAID_FILE_PATH;
-    attribute.Name = TEXT("数据文件路径");
+    attribute.Name = TEXT("图像文件路径");
     attribute.Type = Attribute::TYPE_STRING;
     attributeList.push_back(attribute);
 }
@@ -155,35 +155,10 @@ RC Image::SetInput(IData *input)
     return RC::COMPONENT_SETINPUT_ERROR;
 }
 
-RC Image::GetOutput1(IData *&output)
+RC Image::Run()
 {
-    /*
-    if (!Utility::FileExists(m_FilePath.c_str()))
-    {
-        return RC::FILE_OPEN_ERROR;
-    }
+    RC rc;
 
-    HANDLE file = CreateFile(
-        m_FilePath.c_str(),
-        GENERIC_READ,
-        FILE_SHARE_READ,
-        NULL,
-        OPEN_EXISTING,
-        FILE_ATTRIBUTE_NORMAL,
-        NULL);
-    if (file == INVALID_HANDLE_VALUE)
-    {
-        return RC::FILE_OPEN_ERROR;
-    }
-    UINT32 length = GetFileSize(file, NULL);
-    char *buf = new char[length];
-    DWORD read = 0;
-    ReadFile(file, buf, length, &read, NULL);
-    if (length != read)
-    {
-        return RC::FILE_OPEN_ERROR;
-    }
-    */
     HBITMAP hBitmap = (HBITMAP)::LoadImage(
         NULL,
         m_FilePath.c_str(),
@@ -198,11 +173,15 @@ RC Image::GetOutput1(IData *&output)
     }
     BITMAP bitmap;
     ::GetObject(hBitmap, sizeof(bitmap), &bitmap); 
-
     m_Output->m_Array = MatLabHelper::CreateDoubleArray(bitmap.bmWidthBytes, bitmap.bmHeight, (const char *)bitmap.bmBits);
-
     ::DeleteObject(hBitmap);
+    DeleteObject(hBitmap);
 
+    return rc;
+}
+
+RC Image::GetOutput1(IData *&output)
+{
     output = (IData *)(m_Output->GetInterface(CIID_IDATA));
     return OK;
 }

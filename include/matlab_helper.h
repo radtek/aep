@@ -27,6 +27,7 @@ namespace MatLabHelper
     extern LPCSTR TerminateFuncPrefix;
 
     Array *CreateDoubleArray(UINT32 x, UINT32 y, const char *content = NULL);
+    Array *CreateDoubleArray(UINT32 x, UINT32 y, const double *content);
     void DestroyArray(Array *a);
 
     RC RunFunc(wstring dllFileName, wstring funcName, vector<Array *> inputList, Array **output);

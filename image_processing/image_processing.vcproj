@@ -430,6 +430,18 @@
 				>
 			</File>
 			<File
+				RelativePath=".\output_external_data.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\output_file_input.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\output_image.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\stdafx.cpp"
 				>
 				<FileConfiguration
@@ -513,6 +525,14 @@
 			</File>
 			<File
 				RelativePath=".\main.h"
+				>
+			</File>
+			<File
+				RelativePath=".\output_external_data.h"
+				>
+			</File>
+			<File
+				RelativePath=".\output_image.h"
 				>
 			</File>
 			<File

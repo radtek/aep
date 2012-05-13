@@ -199,6 +199,7 @@ RC Model::Run()
         for (UINT32 j = 0; j < inputList.size(); ++j)
         {
             IComponent *component = inputList[j];
+            CHECK_RC(component->Run());
             if (!Connect(component, (IComponent *)algorithm->GetInterface(CIID_ICOMPONENT)))
             {
                 return RC::MODEL_ALGORITHM_INPUT_ERROR;
@@ -213,6 +214,7 @@ RC Model::Run()
             {
                 return RC::MODEL_ALGORITHM_OUTPUT_ERROR;
             }
+            CHECK_RC(component->Run());
         }
         if (i < m_AlgorithmList.size() - 1)
         {
@@ -376,7 +378,7 @@ ComponentList Model::GetOutputList(IAlgorithm *algorithm)
         {
             if (connector.Target->GetInterface(CIID_IALGORITHM) == NULL)
             {
-                outputList.push_back(connector.Source);
+                outputList.push_back(connector.Target);
             }
         }
     }

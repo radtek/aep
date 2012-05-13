@@ -186,8 +186,10 @@ RC ExternalData::SetInput(IData *input)
     return RC::COMPONENT_SETINPUT_ERROR;
 }
 
-RC ExternalData::GetOutput1(IData *&output)
+RC ExternalData::Run()
 {
+    RC rc;
+
     if (!Utility::FileExists(m_FilePath.c_str()))
     {
         return RC::FILE_OPEN_ERROR;
@@ -213,11 +215,19 @@ RC ExternalData::GetOutput1(IData *&output)
     {
         return RC::FILE_OPEN_ERROR;
     }
-
     m_Output->m_Array = MatLabHelper::CreateDoubleArray(m_Width, m_Height, buf);
+    CloseHandle(file);
+
+    return rc;
+}
+
+RC ExternalData::GetOutput1(IData *&output)
+{
+    RC rc;
 
     output = (IData *)(m_Output->GetInterface(CIID_IDATA));
-    return OK;
+
+    return rc;
 }
 
 RC ExternalData::GetOutput2(IData *&output)

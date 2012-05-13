@@ -1,7 +1,7 @@
 /*
  * MATLAB Compiler: 4.9 (R2008b)
- * Date: Thu May 10 04:29:58 2012
- * Arguments: "-B" "macro_default" "-W" "lib:SubFunc" "-T" "link:lib" "SubFunc" 
+ * Date: Sat May 12 01:37:12 2012
+ * Arguments: "-B" "macro_default" "-T" "link:lib" "-W" "lib:SubFunc" "SubFunc" 
  */
 
 #ifndef __SubFunc_h
@@ -81,7 +81,8 @@ long MW_CALL_CONV SubFuncGetMcrID() ;
 
 
 extern LIB_SubFunc_C_API bool MW_CALL_CONV mlfSubFunc(int nargout, mxArray** f
-                                                      , mxArray* a, mxArray* b);
+                                                      , mxArray* a, mxArray* b
+                                                      , mxArray* c);
 
 #ifdef __cplusplus
 }

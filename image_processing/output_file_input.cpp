@@ -1,20 +1,20 @@
 /**
 * @file
-* @brief 外部数据输出类cpp文件.
+* @brief 输出文件据输入类cpp文件.
 * @author ruoxi
 *
-* 实现了外部数据输出类.
+* 实现了输出文件输入类.
 */
 
 #include "image_processing_ifaces.h"
 
-IExternalDataOutput::IExternalDataOutput()
+IOutputFileInput::IOutputFileInput()
 :
 m_Array(NULL)
 {
 }
 
-void *IExternalDataOutput::GetInterface(UINT32 iid)
+void *IOutputFileInput::GetInterface(UINT32 iid)
 {
     void *iface;
 
@@ -22,7 +22,7 @@ void *IExternalDataOutput::GetInterface(UINT32 iid)
     {
         iface = static_cast<IData *>(this);
     }
-    else if (CLIENT_CIID_EXTERNAL_DATA_OUTPUT == iid)
+    else if (CLIENT_CIID_OUTPUT_FILE_INPUT == iid)
     {
         iface = this;
     }

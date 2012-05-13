@@ -18,10 +18,13 @@ BEGIN_CLIENT_CIID
     CLIENT_CIID_EXTERNAL_DATA_OUTPUT,
     CLIENT_CIID_IMAGE,
     CLIENT_CIID_IMAGE_OUTPUT,
+    CLIENT_CIID_IMAGE_ALGORITHM,
     CLIENT_CIID_IMAGE_ALGORITHM_INPUT1,
     CLIENT_CIID_IMAGE_ALGORITHM_INPUT2,
     CLIENT_CIID_IMAGE_ALGORITHM_OUTPUT1,
     CLIENT_CIID_IMAGE_ALGORITHM_OUTPUT2,
+    CLIENT_CIID_OUTPUT_FILE,
+    CLIENT_CIID_OUTPUT_FILE_INPUT,
     CLIENT_CIID_EVALUATE,
 END_CLIENT_CIID
 
@@ -30,6 +33,8 @@ BEGIN_CLIENT_CCID
     CLIENT_CCID_IMAGE,
     CLIENT_CCID_ADD,
     CLIENT_CCID_SUB,
+    CLIENT_CCID_OUTPUT_EXTERNAL_DATA,
+    CLIENT_CCID_OUTPUT_IMAGE,
     CLIENT_CCID_EVALUATE,
 END_CLIENT_CCID
 
@@ -57,6 +62,10 @@ struct IImageOutput : IData
     Array *m_Array;
 };
 
+struct IImageAlgorithm : IAlgorithm
+{
+};
+
 struct IImageAlgorithmInput1 : IData
 {
     IImageAlgorithmInput1();
@@ -81,6 +90,17 @@ struct IImageAlgorithmOutput1 : IData
 struct IImageAlgorithmOutput2 : IData
 {
     IImageAlgorithmOutput2();
+    virtual void * _stdcall GetInterface(UINT32 iid);
+    Array *m_Array;
+};
+
+struct IOutputFile : IComponent
+{
+};
+
+struct IOutputFileInput : IData
+{
+    IOutputFileInput();
     virtual void * _stdcall GetInterface(UINT32 iid);
     Array *m_Array;
 };

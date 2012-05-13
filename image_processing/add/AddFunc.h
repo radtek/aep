@@ -1,7 +1,7 @@
 /*
  * MATLAB Compiler: 4.9 (R2008b)
- * Date: Thu May 10 04:17:40 2012
- * Arguments: "-B" "macro_default" "-W" "lib:AddFunc" "-T" "link:lib" "AddFunc" 
+ * Date: Sat May 12 01:24:52 2012
+ * Arguments: "-B" "macro_default" "-T" "link:lib" "-W" "lib:AddFunc" "AddFunc" 
  */
 
 #ifndef __AddFunc_h
@@ -81,7 +81,8 @@ long MW_CALL_CONV AddFuncGetMcrID() ;
 
 
 extern LIB_AddFunc_C_API bool MW_CALL_CONV mlfAddFunc(int nargout, mxArray** f
-                                                      , mxArray* a, mxArray* b);
+                                                      , mxArray* a, mxArray* b
+                                                      , mxArray* c);
 
 #ifdef __cplusplus
 }

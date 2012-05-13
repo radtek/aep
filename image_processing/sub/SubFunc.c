@@ -1,7 +1,7 @@
 /*
  * MATLAB Compiler: 4.9 (R2008b)
- * Date: Thu May 10 04:29:58 2012
- * Arguments: "-B" "macro_default" "-W" "lib:SubFunc" "-T" "link:lib" "SubFunc" 
+ * Date: Sat May 12 01:37:12 2012
+ * Arguments: "-B" "macro_default" "-T" "link:lib" "-W" "lib:SubFunc" "SubFunc" 
  */
 
 #include <stdio.h>
@@ -97,7 +97,7 @@ bool MW_CALL_CONV SubFuncInitializeWithHandlers(
                                                      &__MCC_SubFunc_component_data,
                                                      true, NoObjectType,
                                                      LibTarget, error_handler,
-                                                     print_handler, 40134, path_to_dll))
+                                                     print_handler, 40170, path_to_dll))
     return false;
   return true;
 }
@@ -145,7 +145,8 @@ bool MW_CALL_CONV mlxSubFunc(int nlhs, mxArray *plhs[],
 }
 
 LIB_SubFunc_C_API 
-bool MW_CALL_CONV mlfSubFunc(int nargout, mxArray** f, mxArray* a, mxArray* b)
+bool MW_CALL_CONV mlfSubFunc(int nargout, mxArray** f, mxArray* a
+                             , mxArray* b, mxArray* c)
 {
-  return mclMlfFeval(_mcr_inst, "SubFunc", nargout, 1, 2, f, a, b);
+  return mclMlfFeval(_mcr_inst, "SubFunc", nargout, 1, 3, f, a, b, c);
 }

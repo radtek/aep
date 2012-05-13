@@ -1,2 +1,2 @@
-function f = SubFunc(a, b);
-f = a - b;
+function f = SubFunc(a, b, c)
+f = a - b - c(1, 1);

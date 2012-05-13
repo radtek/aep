@@ -12,6 +12,7 @@
 #include "matlab_helper.h"
 #include "add_config_dlg.h"
 #include "add/AddFunc.h"
+#include "utility.h"
 
 Add::Add()
 :
@@ -73,6 +74,10 @@ void *Add::GetInterface(UINT32 iid)
     else if (CIID_IALGORITHM == iid)
     {
         iface = static_cast<IAlgorithm *>(this);
+    }
+    else if (CLIENT_CIID_IMAGE_ALGORITHM == iid)
+    {
+        iface = static_cast<IImageAlgorithm *>(this);
     }
     else
     {
@@ -164,6 +169,11 @@ RC Add::Config()
 	{
 		// TODO: Place code here to handle when the dialog is
 		//  dismissed with OK
+        if (dlg.m_AddFactor > 10)
+        {
+            Utility::PromptErrorMessage(TEXT("测试参数不能大于10."));
+            return RC::COMPONENT_SETATTRIBUTE_ERROR;
+        }
         m_AddFactor = dlg.m_AddFactor;
 	}
 	else if (nResponse == IDCANCEL)
@@ -175,28 +185,28 @@ RC Add::Config()
     return rc;
 }
 
-RC Add::SetInput(IData *data)
+RC Add::SetInput(IData *input)
 {
-    if (NULL == data)
+    if (NULL == input)
     {
         return RC::COMPONENT_SETINPUT_ERROR;
     }
 
-    IExternalDataOutput *externalDataOutput = (IExternalDataOutput *)(data->GetInterface(CLIENT_CIID_EXTERNAL_DATA_OUTPUT));
+    IExternalDataOutput *externalDataOutput = (IExternalDataOutput *)(input->GetInterface(CLIENT_CIID_EXTERNAL_DATA_OUTPUT));
     if (NULL != externalDataOutput)
     {
         m_Input1->m_Array = externalDataOutput->m_Array;
         return OK;
     }
 
-    IImageOutput *imageOutput = (IImageOutput *)(data->GetInterface(CLIENT_CIID_IMAGE_OUTPUT));
+    IImageOutput *imageOutput = (IImageOutput *)(input->GetInterface(CLIENT_CIID_IMAGE_OUTPUT));
     if (NULL != imageOutput)
     {
         m_Input2->m_Array = imageOutput->m_Array;
         return OK;
     }
 
-    IImageAlgorithmOutput1 *imageAlgorithmOutput1 = (IImageAlgorithmOutput1 *)(data->GetInterface(CLIENT_CIID_IMAGE_ALGORITHM_OUTPUT1));
+    IImageAlgorithmOutput1 *imageAlgorithmOutput1 = (IImageAlgorithmOutput1 *)(input->GetInterface(CLIENT_CIID_IMAGE_ALGORITHM_OUTPUT1));
     if (NULL != imageAlgorithmOutput1)
     {
         m_Input2->m_Array = imageAlgorithmOutput1->m_Array;
@@ -264,6 +274,7 @@ RC Add::Run()
         MatLabHelper::DestroyArray(m_Output2->m_Array);
     }
 
+    Array *input3 = MatLabHelper::CreateDoubleArray(1, 1, &m_AddFactor);
     m_Output1->m_Array = MatLabHelper::CreateDoubleArray(x1, y1);
     m_Output2->m_Array = MatLabHelper::CreateDoubleArray(x1, y1);
 
@@ -271,17 +282,18 @@ RC Add::Run()
     {
         return RC::ALGORITHM_RUN_INITIALIZE_ERROR;
     }
-    if (!mlfAddFunc(1, &m_Output1->m_Array, m_Input1->m_Array, m_Input2->m_Array))
+    if (!mlfAddFunc(1, &m_Output1->m_Array, m_Input1->m_Array, m_Input2->m_Array, input3))
     {
         AddFuncPrintStackTrace();
         return RC::ALGORITHM_RUN_ERROR;
     }
-    if (!mlfAddFunc(1, &m_Output2->m_Array, m_Input1->m_Array, m_Input2->m_Array))
+    if (!mlfAddFunc(1, &m_Output2->m_Array, m_Input1->m_Array, m_Input2->m_Array, input3))
     {
         AddFuncPrintStackTrace();
         return RC::ALGORITHM_RUN_ERROR;
     }
     // AddFuncTerminate();
+    MatLabHelper::DestroyArray(input3);
 
     return rc;
 }

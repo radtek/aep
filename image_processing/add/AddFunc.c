@@ -1,7 +1,7 @@
 /*
  * MATLAB Compiler: 4.9 (R2008b)
- * Date: Thu May 10 04:17:40 2012
- * Arguments: "-B" "macro_default" "-W" "lib:AddFunc" "-T" "link:lib" "AddFunc" 
+ * Date: Sat May 12 01:24:52 2012
+ * Arguments: "-B" "macro_default" "-T" "link:lib" "-W" "lib:AddFunc" "AddFunc" 
  */
 
 #include <stdio.h>
@@ -97,7 +97,7 @@ bool MW_CALL_CONV AddFuncInitializeWithHandlers(
                                                      &__MCC_AddFunc_component_data,
                                                      true, NoObjectType,
                                                      LibTarget, error_handler,
-                                                     print_handler, 40113, path_to_dll))
+                                                     print_handler, 40167, path_to_dll))
     return false;
   return true;
 }
@@ -145,7 +145,8 @@ bool MW_CALL_CONV mlxAddFunc(int nlhs, mxArray *plhs[],
 }
 
 LIB_AddFunc_C_API 
-bool MW_CALL_CONV mlfAddFunc(int nargout, mxArray** f, mxArray* a, mxArray* b)
+bool MW_CALL_CONV mlfAddFunc(int nargout, mxArray** f, mxArray* a
+                             , mxArray* b, mxArray* c)
 {
-  return mclMlfFeval(_mcr_inst, "AddFunc", nargout, 1, 2, f, a, b);
+  return mclMlfFeval(_mcr_inst, "AddFunc", nargout, 1, 3, f, a, b, c);
 }

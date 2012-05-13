@@ -11,8 +11,8 @@
 #include "sub.h"
 #include "matlab_helper.h"
 #include "sub_config_dlg.h"
-
 #include "sub/SubFunc.h"
+#include "utility.h"
 
 Sub::Sub()
 :
@@ -156,6 +156,11 @@ RC Sub::Config()
 	{
 		// TODO: Place code here to handle when the dialog is
 		//  dismissed with OK
+        if (dlg.m_SubFactor > 10)
+        {
+            Utility::PromptErrorMessage(TEXT("测试参数不能大于10."));
+            return RC::COMPONENT_SETATTRIBUTE_ERROR;
+        }
         m_SubFactor = dlg.m_SubFactor;
 	}
 	else if (nResponse == IDCANCEL)
@@ -176,28 +181,28 @@ IComponent *Sub::Clone()
     return sub;
 }
 
-RC Sub::SetInput(IData *data)
+RC Sub::SetInput(IData *input)
 {
-    if (NULL == data)
+    if (NULL == input)
     {
         return RC::COMPONENT_SETINPUT_ERROR;
     }
 
-    IExternalDataOutput *externalDataOutput = (IExternalDataOutput *)(data->GetInterface(CLIENT_CIID_EXTERNAL_DATA_OUTPUT));
+    IExternalDataOutput *externalDataOutput = (IExternalDataOutput *)(input->GetInterface(CLIENT_CIID_EXTERNAL_DATA_OUTPUT));
     if (NULL != externalDataOutput)
     {
         m_Input1->m_Array = externalDataOutput->m_Array;
         return OK;
     }
 
-    IImageOutput *imageOutput = (IImageOutput *)(data->GetInterface(CLIENT_CIID_IMAGE_OUTPUT));
+    IImageOutput *imageOutput = (IImageOutput *)(input->GetInterface(CLIENT_CIID_IMAGE_OUTPUT));
     if (NULL != imageOutput)
     {
         m_Input2->m_Array = imageOutput->m_Array;
         return OK;
     }
 
-    IImageAlgorithmOutput1 *imageAlgorithmOutput1 = (IImageAlgorithmOutput1 *)(data->GetInterface(CLIENT_CIID_IMAGE_ALGORITHM_OUTPUT1));
+    IImageAlgorithmOutput1 *imageAlgorithmOutput1 = (IImageAlgorithmOutput1 *)(input->GetInterface(CLIENT_CIID_IMAGE_ALGORITHM_OUTPUT1));
     if (NULL != imageAlgorithmOutput1)
     {
         m_Input2->m_Array = imageAlgorithmOutput1->m_Array;
@@ -265,6 +270,7 @@ RC Sub::Run()
         MatLabHelper::DestroyArray(m_Output2->m_Array);
     }
 
+    Array *input3 = MatLabHelper::CreateDoubleArray(1, 1, &m_SubFactor);
     m_Output1->m_Array = MatLabHelper::CreateDoubleArray(x1, y1);
     m_Output2->m_Array = MatLabHelper::CreateDoubleArray(x1, y1);
 
@@ -272,17 +278,18 @@ RC Sub::Run()
     {
         return RC::ALGORITHM_RUN_INITIALIZE_ERROR;
     }
-    if (!mlfSubFunc(1, &m_Output1->m_Array, m_Input2->m_Array, m_Input1->m_Array))
+    if (!mlfSubFunc(1, &m_Output1->m_Array, m_Input2->m_Array, m_Input1->m_Array, input3))
     {
         SubFuncPrintStackTrace();
         return RC::ALGORITHM_RUN_ERROR;
     }
-    if (!mlfSubFunc(1, &m_Output2->m_Array, m_Input2->m_Array, m_Input1->m_Array))
+    if (!mlfSubFunc(1, &m_Output2->m_Array, m_Input2->m_Array, m_Input1->m_Array, input3))
     {
         SubFuncPrintStackTrace();
         return RC::ALGORITHM_RUN_ERROR;
     }
     // SubFuncTerminate();
+    MatLabHelper::DestroyArray(input3);
 
     return rc;
 }

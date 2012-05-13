@@ -5,6 +5,8 @@
 #include "image.h"
 #include "add.h"
 #include "sub.h"
+#include "output_external_data.h"
+#include "output_image.h"
 
 extern "C" __declspec(dllexport) void RegisterInterfaceType(InterfaceTypeMap &interfaceTypeMap)
 {
@@ -18,8 +20,12 @@ extern "C" __declspec(dllexport) void RegisterInterfaceType(InterfaceTypeMap &in
     interfaceType.InterfaceName = TEXT("Í¼Ïñ");
     interfaceTypeMap[interfaceType.InterfaceId] = interfaceType;
 
-    interfaceType.InterfaceId = CIID_IALGORITHM;
+    interfaceType.InterfaceId = CLIENT_CIID_IMAGE_ALGORITHM;
     interfaceType.InterfaceName = TEXT("Í¼ÏñËã·¨");
+    interfaceTypeMap[interfaceType.InterfaceId] = interfaceType;
+
+    interfaceType.InterfaceId = CLIENT_CIID_OUTPUT_FILE;
+    interfaceType.InterfaceName = TEXT("Êä³ö");
     interfaceTypeMap[interfaceType.InterfaceId] = interfaceType;
 }
 
@@ -43,15 +49,29 @@ extern "C" __declspec(dllexport) void RegisterComponentType(ComponentTypeMap &co
 
     componentType.TypeId = Add::s_ComponentId;
     componentType.TypeName = Add::s_ComponentName;
-    componentType.InterfaceId = CIID_IALGORITHM;
+    componentType.InterfaceId = CLIENT_CIID_IMAGE_ALGORITHM;
     componentType.Factory = (ComponentFactory)Add::Factory;
     componentType.DllHandle = DllHandle;
     componentTypeMap[componentType.TypeId] = componentType;
 
     componentType.TypeId = Sub::s_ComponentId;
     componentType.TypeName = Sub::s_ComponentName;
-    componentType.InterfaceId = CIID_IALGORITHM;
+    componentType.InterfaceId = CLIENT_CIID_IMAGE_ALGORITHM;
     componentType.Factory = (ComponentFactory)Sub::Factory;
+    componentType.DllHandle = DllHandle;
+    componentTypeMap[componentType.TypeId] = componentType;
+
+    componentType.TypeId = OutputExternalData::s_ComponentId;
+    componentType.TypeName = OutputExternalData::s_ComponentName;
+    componentType.InterfaceId = CLIENT_CIID_OUTPUT_FILE;
+    componentType.Factory = (ComponentFactory)OutputExternalData::Factory;
+    componentType.DllHandle = DllHandle;
+    componentTypeMap[componentType.TypeId] = componentType;
+
+    componentType.TypeId = OutputImage::s_ComponentId;
+    componentType.TypeName = OutputImage::s_ComponentName;
+    componentType.InterfaceId = CLIENT_CIID_OUTPUT_FILE;
+    componentType.Factory = (ComponentFactory)OutputImage::Factory;
     componentType.DllHandle = DllHandle;
     componentTypeMap[componentType.TypeId] = componentType;
 }

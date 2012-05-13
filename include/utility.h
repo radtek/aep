@@ -51,4 +51,7 @@ namespace Utility
     bool DirectoryExists(LPCWSTR pathName);
     /** @brief 去掉文件路径. */
     wstring StripFilePath(LPCWSTR pathName);
+
+    // bool SaveBmpFile(HBITMAP hBitmap, CString fileName);
+    bool SaveBmpFile(CString fileName, const char *content, UINT32 width, UINT32 height, UINT32 depth, RGBQUAD *colorTable);
 };

@@ -689,6 +689,6 @@ void CMainFrame::OnFileRun()
     }
     else
     {
-        Utility::PromptMessage(TEXT("模型分析成功"));
+        Utility::PromptMessage(TEXT("模型运行成功"));
     }
 }

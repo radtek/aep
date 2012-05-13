@@ -152,6 +152,8 @@ struct IComponent
     virtual IComponent * _stdcall Clone() = 0;
     virtual RC _stdcall Config() = 0;
     virtual RC _stdcall SetInput(IData *input) = 0;
+    /** @brief 运行组件. */
+    virtual RC _stdcall Run() = 0;
     virtual RC _stdcall GetOutput1(IData *&output) = 0;
     virtual RC _stdcall GetOutput2(IData *&output) = 0;
 };
@@ -214,8 +216,6 @@ typedef map<UINT32, ComponentType> ComponentTypeMap;
 */
 struct IAlgorithm : public IComponent
 {
-    /** @brief 运行算法. */
-    virtual RC _stdcall Run() = 0;
 };
 
 typedef vector<IAlgorithm *> AlgorithmList;
