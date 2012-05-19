@@ -20,6 +20,10 @@ protected:
 
 	DECLARE_MESSAGE_MAP()
 public:
-    double m_SubFactor;
+    double m_SubFactor1;
+    double m_SubFactor2;
+    double m_SubFactor3;
+    double m_SubFactor4;
+    double m_SubFactor5;
     afx_msg void OnBnClickedOk();
 };

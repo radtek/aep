@@ -124,7 +124,7 @@ CBCGPGridRow *CAttributeBar::CreateComponentAttributeRow(const Attribute &attrib
     CBCGPGridRow *row = CreateNewRow();
 
     row->GetItem(IC_ID)->SetValue(attribute.Id);
-    row->GetItem(IC_NAME)->SetValue(attribute.Name);
+    row->GetItem(IC_NAME)->SetValue(attribute.Name.c_str());
     row->GetItem(IC_TYPE)->SetValue(Utility::AttributeTypeToString(attribute.Type));
     
     switch (attribute.Type)

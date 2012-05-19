@@ -15,23 +15,25 @@
 #include "utility.h"
 
 Add::Add()
-:
-m_AddFactor(0)
 {
     m_Input1 = new IImageAlgorithmInput1;
     m_Input2 = new IImageAlgorithmInput2;
-    m_Output1 = new IImageAlgorithmOutput1;
-    m_Output2 = new IImageAlgorithmOutput2;
+    m_Output = new IImageAlgorithmOutput(m_OutputCount);
+    for (UINT32 i = 0; i < m_OutputCount; ++i)
+    {
+        m_AddFactor[i] = 0;
+    }
 }
 
 Add::~Add()
 {
-    MatLabHelper::DestroyArray(m_Output1->m_Array);
-    MatLabHelper::DestroyArray(m_Output2->m_Array);
     delete m_Input1;
     delete m_Input2;
-    delete m_Output1;
-    delete m_Output2;
+    for (UINT32 i = 0; i < m_OutputCount; ++i)
+    {
+        MatLabHelper::DestroyArray(m_Output->m_Array[i]);
+    }
+    delete m_Output;
 }
 
 UINT32 Add::GetTypeId()
@@ -43,8 +45,12 @@ void Add::Save(CArchive &ar)
 {
     ar << s_ComponentId
         << m_Id
-        << CString(m_Name.c_str())
-        << m_AddFactor;
+        << CString(m_Name.c_str());
+
+    for (UINT32 i = 0; i < m_OutputCount; ++i)
+    {
+        ar << m_AddFactor[i];
+    }
 }
 
 void Add::Load(CArchive &ar)
@@ -55,7 +61,10 @@ void Add::Load(CArchive &ar)
     ar >> str;
     m_Name = str;
 
-    ar >> m_AddFactor;
+    for (UINT32 i = 0; i < m_OutputCount; ++i)
+    {
+        ar >> m_AddFactor[i];
+    }
 }
 
 void Add::Destroy()
@@ -110,38 +119,47 @@ void Add::GetAttributeList(AttributeList &attributeList)
 {
     Attribute attribute;
 
-    attribute.Id = AAID_ADD_FACTOR;
-    attribute.Name = TEXT("测试参数");
-    attribute.Type = Attribute::TYPE_DOUBLE;
-    attributeList.push_back(attribute);
+    for (UINT32 i = AAID_ADD_FACTOR1; i <= AAID_ADD_FACTOR5; ++i)
+    {
+        attribute.Id = i;
+        CString name = TEXT("加法因子");
+        name.AppendFormat(TEXT("%u"), i + 1);
+        attribute.Name = name;
+        attribute.Type = Attribute::TYPE_DOUBLE;
+        attributeList.push_back(attribute);
+    }
 }
 
 RC Add::GetAttribute(UINT32 aid, void *attr)
 {
     RC rc;
 
-    switch (aid)
+    for (UINT32 i = AAID_ADD_FACTOR1; i <= AAID_ADD_FACTOR5; ++i)
     {
-    case AAID_ADD_FACTOR:
-        *((double *)attr) = m_AddFactor;
-        break;
+        if (aid == i)
+        {
+            *((double *)attr) = m_AddFactor[i];
+            return rc;
+        }
     }
 
-    return rc;
+    return RC::COMPONENT_GETATTRIBUTE_ERROR;
 }
 
 RC Add::SetAttribute(UINT32 aid, void *attr)
 {
     RC rc;
 
-    switch (aid)
+    for (UINT32 i = AAID_ADD_FACTOR1; i <= AAID_ADD_FACTOR5; ++i)
     {
-    case AAID_ADD_FACTOR:
-        m_AddFactor = *((double *)attr);
-        break;
+        if (aid == i)
+        {
+            m_AddFactor[i] = *((double *)attr);
+            return rc;
+        }
     }
 
-    return rc;
+    return RC::COMPONENT_SETATTRIBUTE_ERROR;
 }
 
 bool Add::Connect(IComponent *component)
@@ -152,10 +170,24 @@ bool Add::Connect(IComponent *component)
 IComponent *Add::Clone()
 {
     Add *add = new Add();
-    add->m_AddFactor = m_AddFactor;
+    for (UINT32 i = 0; i < m_OutputCount; ++i)
+    {
+        add->m_AddFactor[i] = m_AddFactor[i];
+    }
     add->m_Id = m_Id;
     add->m_Name = m_Name;
     return add;
+}
+
+void Add::Reset()
+{
+    m_Input1->m_Array = 0;
+    m_Input2->m_Array = 0;
+    for (UINT32 i = 0; i < m_OutputCount; ++i)
+    {
+        MatLabHelper::DestroyArray(m_Output->m_Array[i]);
+    }
+    m_Output->Reset();
 }
 
 RC Add::Config()
@@ -163,18 +195,21 @@ RC Add::Config()
     RC rc;
 
     CAddConfigDlg dlg;
-    dlg.m_AddFactor = m_AddFactor;
+    dlg.m_AddFactor1 = m_AddFactor[0];
+    dlg.m_AddFactor2 = m_AddFactor[1];
+    dlg.m_AddFactor3 = m_AddFactor[2];
+    dlg.m_AddFactor4 = m_AddFactor[3];
+    dlg.m_AddFactor5 = m_AddFactor[4];
     INT_PTR nResponse = dlg.DoModal();
 	if (nResponse == IDOK)
 	{
 		// TODO: Place code here to handle when the dialog is
 		//  dismissed with OK
-        if (dlg.m_AddFactor > 10)
-        {
-            Utility::PromptErrorMessage(TEXT("测试参数不能大于10."));
-            return RC::COMPONENT_SETATTRIBUTE_ERROR;
-        }
-        m_AddFactor = dlg.m_AddFactor;
+        m_AddFactor[0] = dlg.m_AddFactor1;
+        m_AddFactor[1] = dlg.m_AddFactor2;
+        m_AddFactor[2] = dlg.m_AddFactor3;
+        m_AddFactor[3] = dlg.m_AddFactor4;
+        m_AddFactor[4] = dlg.m_AddFactor5;
 	}
 	else if (nResponse == IDCANCEL)
 	{
@@ -206,46 +241,19 @@ RC Add::SetInput(IData *input)
         return OK;
     }
 
-    IImageAlgorithmOutput1 *imageAlgorithmOutput1 = (IImageAlgorithmOutput1 *)(input->GetInterface(CLIENT_CIID_IMAGE_ALGORITHM_OUTPUT1));
-    if (NULL != imageAlgorithmOutput1)
+    IImageAlgorithmOutput *imageAlgorithmOutput = (IImageAlgorithmOutput *)(input->GetInterface(CLIENT_CIID_IMAGE_ALGORITHM_OUTPUT));
+    if (NULL != imageAlgorithmOutput)
     {
-        m_Input2->m_Array = imageAlgorithmOutput1->m_Array;
+        m_Input2->m_Array = imageAlgorithmOutput->m_Array[0];
         return OK;
     }
 
     return RC::COMPONENT_SETINPUT_ERROR;
 }
 
-RC Add::GetOutput1(IData *&output)
+RC Add::GetOutput(IData *&output)
 {
-    if (NULL == m_Output1)
-    {
-        output = NULL;
-        return RC::COMPONENT_GETOUTPUT_ERROR;
-    }
-
-    output = (IData *)(m_Output1->GetInterface(CIID_IDATA));
-    if (NULL == output)
-    {
-        return RC::COMPONENT_GETOUTPUT_ERROR;
-    }
-
-    return OK;
-}
-
-RC Add::GetOutput2(IData *&output)
-{
-    if (NULL == m_Output2)
-    {
-        output = NULL;
-        return RC::COMPONENT_GETOUTPUT_ERROR;
-    }
-
-    output = (IData *)(m_Output2->GetInterface(CIID_IDATA));
-    if (NULL == output)
-    {
-        return RC::COMPONENT_GETOUTPUT_ERROR;
-    }
+    output = (IData *)(m_Output->GetInterface(CIID_IDATA));
 
     return OK;
 }
@@ -264,36 +272,28 @@ RC Add::Run()
         return RC::ALGORITHM_INPUT_ERROR;
     }
 
-    if (m_Output1->m_Array != NULL)
-    {
-        MatLabHelper::DestroyArray(m_Output1->m_Array);
-    }
-
-    if (m_Output2->m_Array != NULL)
-    {
-        MatLabHelper::DestroyArray(m_Output2->m_Array);
-    }
-
-    Array *input3 = MatLabHelper::CreateDoubleArray(1, 1, &m_AddFactor);
-    m_Output1->m_Array = MatLabHelper::CreateDoubleArray(x1, y1);
-    m_Output2->m_Array = MatLabHelper::CreateDoubleArray(x1, y1);
-
     if (!AddFuncInitialize())
     {
         return RC::ALGORITHM_RUN_INITIALIZE_ERROR;
     }
-    if (!mlfAddFunc(1, &m_Output1->m_Array, m_Input1->m_Array, m_Input2->m_Array, input3))
+
+    for (UINT32 i = 0; i < m_OutputCount; ++i)
     {
-        AddFuncPrintStackTrace();
-        return RC::ALGORITHM_RUN_ERROR;
+        if (m_Output->m_Array[i] != NULL)
+        {
+            MatLabHelper::DestroyArray(m_Output->m_Array[i]);
+        }
+        Array *input3 = MatLabHelper::CreateDoubleArray(1, 1, &m_AddFactor[i]);
+        m_Output->m_Array[i] = MatLabHelper::CreateDoubleArray(x1, y1);
+        if (!mlfAddFunc(1, &m_Output->m_Array[i], m_Input1->m_Array, m_Input2->m_Array, input3))
+        {
+            AddFuncPrintStackTrace();
+            return RC::ALGORITHM_RUN_ERROR;
+        }
+        MatLabHelper::DestroyArray(input3);
     }
-    if (!mlfAddFunc(1, &m_Output2->m_Array, m_Input1->m_Array, m_Input2->m_Array, input3))
-    {
-        AddFuncPrintStackTrace();
-        return RC::ALGORITHM_RUN_ERROR;
-    }
+
     // AddFuncTerminate();
-    MatLabHelper::DestroyArray(input3);
 
     return rc;
 }
@@ -301,11 +301,10 @@ RC Add::Run()
 Add *Add::Factory()
 {
     Add *add = new Add;
-    LPWSTR name = new wchar_t[256];
-    wsprintf(name, TEXT("%s%u"), s_ComponentName, s_Count);
+    CString name = s_ComponentName;
+    name.AppendFormat(TEXT("%u"), s_Count + 1);
     add->m_Name = name;
     ++s_Count;
-    delete[] name;
     return add;
 }
 

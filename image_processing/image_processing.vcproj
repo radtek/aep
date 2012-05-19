@@ -406,11 +406,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\image_algorithm_output1.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\image_algorithm_output2.cpp"
+				RelativePath=".\image_algorithm_output.cpp"
 				>
 			</File>
 			<File

@@ -11,7 +11,11 @@ IMPLEMENT_DYNAMIC(CAddConfigDlg, CDialog)
 
 CAddConfigDlg::CAddConfigDlg(CWnd* pParent /*=NULL*/)
 	: CDialog(CAddConfigDlg::IDD, pParent)
-    , m_AddFactor(0)
+    , m_AddFactor1(0)
+    , m_AddFactor2(0)
+    , m_AddFactor3(0)
+    , m_AddFactor4(0)
+    , m_AddFactor5(0)
 {
 
 }
@@ -23,7 +27,11 @@ CAddConfigDlg::~CAddConfigDlg()
 void CAddConfigDlg::DoDataExchange(CDataExchange* pDX)
 {
     CDialog::DoDataExchange(pDX);
-    DDX_Text(pDX, IDC_ADD_FACTOR_TEXT, m_AddFactor);
+    DDX_Text(pDX, IDC_ADD_FACTOR1_TEXT, m_AddFactor1);
+    DDX_Text(pDX, IDC_ADD_FACTOR2_TEXT, m_AddFactor2);
+    DDX_Text(pDX, IDC_ADD_FACTOR3_TEXT, m_AddFactor3);
+    DDX_Text(pDX, IDC_ADD_FACTOR4_TEXT, m_AddFactor4);
+    DDX_Text(pDX, IDC_ADD_FACTOR5_TEXT, m_AddFactor5);
 }
 
 

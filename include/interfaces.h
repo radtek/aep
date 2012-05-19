@@ -84,7 +84,7 @@ typedef struct
     /** @brief 属性ID. */
     UINT32 Id;
     /** @brief 属性名称. */
-    LPCWSTR Name;
+    wstring Name;
     /** @brief 属性类型. */
     enum AttributeType
     {
@@ -150,12 +150,12 @@ struct IComponent
     // virtual bool _stdcall Validate() = 0;
 
     virtual IComponent * _stdcall Clone() = 0;
+    virtual void _stdcall Reset() = 0;
     virtual RC _stdcall Config() = 0;
     virtual RC _stdcall SetInput(IData *input) = 0;
     /** @brief 运行组件. */
     virtual RC _stdcall Run() = 0;
-    virtual RC _stdcall GetOutput1(IData *&output) = 0;
-    virtual RC _stdcall GetOutput2(IData *&output) = 0;
+    virtual RC _stdcall GetOutput(IData *&output) = 0;
 };
 
 typedef vector<IComponent *> ComponentList;

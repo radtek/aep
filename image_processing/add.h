@@ -28,7 +28,11 @@ public:
     virtual void _stdcall SetName(wstring name);
     enum AAID
     {
-        AAID_ADD_FACTOR,
+        AAID_ADD_FACTOR1 = 0,
+        AAID_ADD_FACTOR2,
+        AAID_ADD_FACTOR3,
+        AAID_ADD_FACTOR4,
+        AAID_ADD_FACTOR5,
     };
     virtual void _stdcall GetAttributeList(AttributeList &attributeList);
     virtual RC _stdcall GetAttribute(UINT32 aid, void *attr);
@@ -36,24 +40,24 @@ public:
     virtual bool _stdcall Connect(IComponent *component);
 
     virtual IComponent * _stdcall Clone();
+    virtual void _stdcall Reset();
     virtual RC _stdcall Config();
     virtual RC _stdcall SetInput(IData *input);
-    virtual RC _stdcall GetOutput1(IData *&output);
-    virtual RC _stdcall GetOutput2(IData *&output);
+    virtual RC _stdcall GetOutput(IData *&output);
 
     virtual RC _stdcall Run();
-
-public:
-    double m_AddFactor;
-
-    UINT32 m_Id;
-    wstring m_Name;
 
 protected:
     IImageAlgorithmInput1 *m_Input1;
     IImageAlgorithmInput2 *m_Input2;
-    IImageAlgorithmOutput1 *m_Output1;
-    IImageAlgorithmOutput2 *m_Output2;
+    static const UINT32 m_OutputCount = 5;
+    IImageAlgorithmOutput *m_Output;
+
+public:
+    double m_AddFactor[m_OutputCount];
+
+    UINT32 m_Id;
+    wstring m_Name;
 
 public:
     static const CLIENT_CCID s_ComponentId = CLIENT_CCID_ADD;

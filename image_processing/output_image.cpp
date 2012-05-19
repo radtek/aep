@@ -16,7 +16,11 @@ OutputImage::OutputImage()
 :
 m_Depth(24)
 {
-    m_Input = new IOutputFileInput;
+    m_Input = new IOutputFileInput(m_OutputCount);
+    for (UINT32 i = 0; i < m_OutputCount; ++i)
+    {
+        m_OutputId[i] = 0;
+    }
 }
 
 OutputImage::~OutputImage()
@@ -33,9 +37,19 @@ void OutputImage::Save(CArchive &ar)
 {
     ar << s_ComponentId
         << m_Id
-        << CString(m_Name.c_str())
-        << CString(m_FilePath.c_str())
-        << m_Depth;
+        << CString(m_Name.c_str());
+
+    for (UINT32 i = 0; i < m_OutputCount; ++i)
+    {
+        ar << m_OutputId[i];
+    }
+
+    for (UINT32 i = 0; i < m_OutputCount; ++i)
+    {
+        ar << CString(m_FilePath[i].c_str());
+    }
+
+    ar << m_Depth;
 }
 
 void OutputImage::Load(CArchive &ar)
@@ -46,8 +60,16 @@ void OutputImage::Load(CArchive &ar)
     ar >> str;
     m_Name = str;
 
-    ar >> str;
-    m_FilePath = str;
+    for (UINT32 i = 0; i < m_OutputCount; ++i)
+    {
+        ar >> m_OutputId[i];
+    }
+
+    for (UINT32 i = 0; i < m_OutputCount; ++i)
+    {
+        ar >> str;
+        m_FilePath[i] = str;
+    }
 
     ar >> m_Depth;
 }
@@ -100,10 +122,25 @@ void OutputImage::GetAttributeList(AttributeList &attributeList)
 {
     Attribute attribute;
 
-    attribute.Id = AAID_FILE_PATH;
-    attribute.Name = TEXT("图像文件路径");
-    attribute.Type = Attribute::TYPE_STRING;
-    attributeList.push_back(attribute);
+    for (UINT32 i = AAID_OUTPUT_ID1; i <= AAID_OUTPUT_ID5; ++i)
+    {
+        attribute.Id = i;
+        CString name = TEXT("算法输出ID");
+        name.AppendFormat(TEXT("%u"), i + 1);
+        attribute.Name = name;
+        attribute.Type = Attribute::TYPE_INT;
+        attributeList.push_back(attribute);
+    }
+
+    for (UINT32 i = 0; i <= AAID_FILE_PATH5 - AAID_FILE_PATH1; ++i)
+    {
+        attribute.Id = i + AAID_FILE_PATH1;
+        CString name = TEXT("图像文件路径");
+        name.AppendFormat(TEXT("%u"), i + 1);
+        attribute.Name = name;
+        attribute.Type = Attribute::TYPE_STRING;
+        attributeList.push_back(attribute);
+    }
 
     attribute.Id = AAID_DEPTH;
     attribute.Name = TEXT("位深");
@@ -115,34 +152,60 @@ RC OutputImage::GetAttribute(UINT32 aid, void *attr)
 {
     RC rc;
 
-    switch (aid)
+    for (UINT32 i = AAID_OUTPUT_ID1; i <= AAID_OUTPUT_ID5; ++i)
     {
-    case AAID_FILE_PATH:
-        *((wstring *)attr) = m_FilePath;
-        break;
-    case AAID_DEPTH:
-        *((UINT32 *)attr) = m_Depth;
-        break;
+        if (aid == i)
+        {
+            *((UINT32 *)attr) = m_OutputId[i];
+            return rc;
+        }
     }
 
-    return rc;
+    for (UINT32 i = AAID_FILE_PATH1; i <= AAID_FILE_PATH5; ++i)
+    {
+        if (aid == i)
+        {
+            *((wstring *)attr) = m_FilePath[i - AAID_FILE_PATH1];
+            return rc;
+        }
+    }
+
+    if (aid == AAID_DEPTH)
+    {
+         *((UINT32 *)attr) = m_Depth;
+    }
+
+    return RC::COMPONENT_GETATTRIBUTE_ERROR;
 }
 
 RC OutputImage::SetAttribute(UINT32 aid, void *attr)
 {
     RC rc;
 
-    switch (aid)
+    for (UINT32 i = AAID_OUTPUT_ID1; i <= AAID_OUTPUT_ID5; ++i)
     {
-    case AAID_FILE_PATH:
-        m_FilePath = *((wstring *)attr);
-        break;
-    case AAID_DEPTH:
-        m_Depth = *((UINT32 *)attr);
-        break;
+        if (aid == i)
+        {
+            m_OutputId[i] = *((UINT32 *)attr);
+            return rc;
+        }
     }
 
-    return rc;
+    for (UINT32 i = AAID_FILE_PATH1; i <= AAID_FILE_PATH5; ++i)
+    {
+        if (aid == i)
+        {
+            m_FilePath[i - AAID_FILE_PATH1] = *((wstring *)attr);
+            return rc;
+        }
+    }
+
+    if (aid == AAID_DEPTH)
+    {
+        m_Depth = *((UINT32 *)attr);
+    }
+
+    return RC::COMPONENT_SETATTRIBUTE_ERROR;
 }
 
 bool OutputImage::Connect(IComponent *component)
@@ -153,11 +216,20 @@ bool OutputImage::Connect(IComponent *component)
 IComponent *OutputImage::Clone()
 {
     OutputImage *outputImage = new OutputImage();
-    outputImage->m_FilePath = m_FilePath;
+    for (UINT32 i = 0; i < m_OutputCount; ++i)
+    {
+        outputImage->m_OutputId[i] = m_OutputId[i];
+        outputImage->m_FilePath[i] = m_FilePath[i];
+    }
     outputImage->m_Depth = m_Depth;
     outputImage->m_Id = m_Id;
     outputImage->m_Name = m_Name;
     return outputImage;
+}
+
+void OutputImage::Reset()
+{
+    m_Input->Reset();
 }
 
 RC OutputImage::Config()
@@ -177,28 +249,30 @@ RC OutputImage::SetInput(IData *input)
     IExternalDataOutput *externalDataOutput = (IExternalDataOutput *)(input->GetInterface(CLIENT_CIID_EXTERNAL_DATA_OUTPUT));
     if (NULL != externalDataOutput)
     {
-        m_Input->m_Array = externalDataOutput->m_Array;
+        m_Input->m_Array[0] = externalDataOutput->m_Array;
         return OK;
     }
 
     IImageOutput *imageOutput = (IImageOutput *)(input->GetInterface(CLIENT_CIID_IMAGE_OUTPUT));
     if (NULL != imageOutput)
     {
-        m_Input->m_Array = imageOutput->m_Array;
+        m_Input->m_Array[0] = imageOutput->m_Array;
         return OK;
     }
 
-    IImageAlgorithmOutput1 *imageAlgorithmOutput1 = (IImageAlgorithmOutput1 *)(input->GetInterface(CLIENT_CIID_IMAGE_ALGORITHM_OUTPUT1));
-    if (NULL != imageAlgorithmOutput1)
+    IImageAlgorithmOutput *imageAlgorithmOutput = (IImageAlgorithmOutput *)(input->GetInterface(CLIENT_CIID_IMAGE_ALGORITHM_OUTPUT));
+    if (NULL != imageAlgorithmOutput)
     {
-        m_Input->m_Array = imageAlgorithmOutput1->m_Array;
-        return OK;
-    }
-
-    IImageAlgorithmOutput2 *imageAlgorithmOutput2 = (IImageAlgorithmOutput2 *)(input->GetInterface(CLIENT_CIID_IMAGE_ALGORITHM_OUTPUT2));
-    if (NULL != imageAlgorithmOutput2)
-    {
-        m_Input->m_Array = imageAlgorithmOutput2->m_Array;
+        m_Input->m_Array = imageAlgorithmOutput->m_Array;
+        for (UINT32 i = 0; i < m_OutputCount; ++i)
+        {
+            UINT32 outputId = m_OutputId[i];
+            if (outputId >= m_OutputCount)
+            {
+                return RC::COMPONENT_SETINPUT_ERROR;
+            }
+            m_Input->m_Array[i] = imageAlgorithmOutput->m_Array[outputId];
+        }
         return OK;
     }
 
@@ -209,28 +283,27 @@ RC OutputImage::Run()
 {
     RC rc;
 
-    UINT32 width = mxGetM(m_Input->m_Array) / (m_Depth / 8);
-    UINT32 height = mxGetN(m_Input->m_Array);
-    UINT32 size = width * height * (m_Depth / 8);
-    char *buf = new char[size];
-    double *content = mxGetPr(m_Input->m_Array);
-    for (UINT32 i = 0; i < size; ++i)
+    for (UINT32 i = 0; i < m_OutputCount; ++i)
     {
-        buf[i] = (char)content[i];
-    }
+        UINT32 width = mxGetM(m_Input->m_Array[i]) / (m_Depth / 8);
+        UINT32 height = mxGetN(m_Input->m_Array[i]);
+        UINT32 size = width * height * (m_Depth / 8);
+        char *buf = new char[size];
+        double *content = mxGetPr(m_Input->m_Array[i]);
+        for (UINT32 j = 0; j < size; ++j)
+        {
+            buf[j] = (char)content[j];
+        }
 
-    // Utility::SaveBmpFile(bitmap, m_FilePath.c_str());
-    Utility::SaveBmpFile(m_FilePath.c_str(), buf, width, height, m_Depth, NULL);
+        // Utility::SaveBmpFile(bitmap, m_FilePath.c_str());
+        Utility::SaveBmpFile(m_FilePath[i].c_str(), buf, width, height, m_Depth, NULL);
+        delete buf;
+    }
 
     return rc;
 }
 
-RC OutputImage::GetOutput1(IData *&output)
-{
-    return RC::COMPONENT_GETOUTPUT_ERROR;
-}
-
-RC OutputImage::GetOutput2(IData *&output)
+RC OutputImage::GetOutput(IData *&output)
 {
     return RC::COMPONENT_GETOUTPUT_ERROR;
 }
@@ -238,11 +311,10 @@ RC OutputImage::GetOutput2(IData *&output)
 OutputImage *OutputImage::Factory()
 {
     OutputImage *outputImage = new OutputImage;
-    LPWSTR name = new wchar_t[256];
-    wsprintf(name, TEXT("%s%u"), s_ComponentName, s_Count);
+    CString name = s_ComponentName;
+    name.AppendFormat(TEXT("%u"), s_Count + 1);
     outputImage->m_Name = name;
     ++s_Count;
-    delete[] name;
     return outputImage;
 }
 

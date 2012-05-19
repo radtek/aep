@@ -22,6 +22,7 @@ m_Height(0)
 
 ExternalData::~ExternalData()
 {
+    MatLabHelper::DestroyArray(m_Output->m_Array);
     delete m_Output;
 }
 
@@ -174,6 +175,12 @@ IComponent *ExternalData::Clone()
     return externalData;
 }
 
+void ExternalData::Reset()
+{
+    MatLabHelper::DestroyArray(m_Output->m_Array);
+    m_Output->m_Array = 0;
+}
+
 RC ExternalData::Config()
 {
     RC rc;
@@ -221,7 +228,7 @@ RC ExternalData::Run()
     return rc;
 }
 
-RC ExternalData::GetOutput1(IData *&output)
+RC ExternalData::GetOutput(IData *&output)
 {
     RC rc;
 
@@ -230,19 +237,13 @@ RC ExternalData::GetOutput1(IData *&output)
     return rc;
 }
 
-RC ExternalData::GetOutput2(IData *&output)
-{
-    return RC::COMPONENT_GETOUTPUT_ERROR;
-}
-
 ExternalData *ExternalData::Factory()
 {
     ExternalData *externalData = new ExternalData;
-    LPWSTR name = new wchar_t[256];
-    wsprintf(name, TEXT("%s%u"), s_ComponentName, s_Count);
+    CString name = s_ComponentName;
+    name.AppendFormat(TEXT("%u"), s_Count + 1);
     externalData->m_Name = name;
     ++s_Count;
-    delete[] name;
     return externalData;
 }
 

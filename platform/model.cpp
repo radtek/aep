@@ -268,23 +268,16 @@ void Model::Connect(UINT32 sourceId, UINT32 targetId)
 
 bool Model::Connect(IComponent *source, IComponent *target)
 {
-    IData *output1 = NULL, *output2 = NULL;
-    RC rc1, rc2;
-    rc1 = source->GetOutput1(output1);
-    rc2 = source->GetOutput2(output2);
-    if (OK != rc1 && OK != rc2)
+    IData *output = NULL;
+    if (OK != source->GetOutput(output))
     {
         return false;
     }
-    if ((OK == rc1) && (OK == target->SetInput(output1)))
+    if (OK != target->SetInput(output))
     {
-        return true;
+        return false;
     }
-    if ((OK == rc2) && (OK == target->SetInput(output2)))
-    {
-        return true;
-    }
-    return false;
+    return true;
 }
 
 IAlgorithm *Model::GetEntryAlgorithm()

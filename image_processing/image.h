@@ -36,11 +36,11 @@ public:
     virtual bool _stdcall Connect(IComponent *component);
 
     virtual IComponent * _stdcall Clone();
+    virtual void _stdcall Reset();
     virtual RC _stdcall Config();
-    virtual RC _stdcall SetInput(IData *input);
     virtual RC _stdcall Run();
-    virtual RC _stdcall GetOutput1(IData *&output);
-    virtual RC _stdcall GetOutput2(IData *&output);
+    virtual RC _stdcall SetInput(IData *input);
+    virtual RC _stdcall GetOutput(IData *&output);
 
 public:
     wstring m_FilePath;

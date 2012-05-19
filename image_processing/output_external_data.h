@@ -28,7 +28,16 @@ public:
     virtual void _stdcall SetName(wstring name);
     enum AAID
     {
-        AAID_FILE_PATH,
+        AAID_OUTPUT_ID1 = 0,
+        AAID_OUTPUT_ID2,
+        AAID_OUTPUT_ID3,
+        AAID_OUTPUT_ID4,
+        AAID_OUTPUT_ID5,
+        AAID_FILE_PATH1,
+        AAID_FILE_PATH2,
+        AAID_FILE_PATH3,
+        AAID_FILE_PATH4,
+        AAID_FILE_PATH5,
     };
     virtual void _stdcall GetAttributeList(AttributeList &attributeList);
     virtual RC _stdcall GetAttribute(UINT32 aid, void *attr);
@@ -36,14 +45,16 @@ public:
     virtual bool _stdcall Connect(IComponent *component);
 
     virtual IComponent * _stdcall Clone();
+    virtual void _stdcall Reset();
     virtual RC _stdcall Config();
-    virtual RC _stdcall SetInput(IData *data);
     virtual RC _stdcall Run();
-    virtual RC _stdcall GetOutput1(IData *&output);
-    virtual RC _stdcall GetOutput2(IData *&output);
+    virtual RC _stdcall SetInput(IData *input);
+    virtual RC _stdcall GetOutput(IData *&output);
 
 public:
-    wstring m_FilePath;
+    static const UINT32 m_OutputCount = 5;
+    UINT32 m_OutputId[m_OutputCount];
+    wstring m_FilePath[m_OutputCount];
 
     UINT32 m_Id;
     wstring m_Name;

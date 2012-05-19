@@ -1,14 +1,6 @@
-/**
-* @file
-* @brief 输出文件据输入类cpp文件.
-* @author ruoxi
-*
-* 实现了输出文件输入类.
-*/
-
 #include "image_processing_ifaces.h"
 
-IOutputFileInput::IOutputFileInput(UINT32 size)
+IImageAlgorithmOutput::IImageAlgorithmOutput(UINT32 size)
 :
 m_Size(size)
 {
@@ -19,7 +11,7 @@ m_Size(size)
     }
 }
 
-void *IOutputFileInput::GetInterface(UINT32 iid)
+void *IImageAlgorithmOutput::GetInterface(UINT32 iid)
 {
     void *iface;
 
@@ -27,7 +19,7 @@ void *IOutputFileInput::GetInterface(UINT32 iid)
     {
         iface = static_cast<IData *>(this);
     }
-    else if (CLIENT_CIID_OUTPUT_FILE_INPUT == iid)
+    else if (CLIENT_CIID_IMAGE_ALGORITHM_OUTPUT == iid)
     {
         iface = this;
     }
@@ -39,7 +31,7 @@ void *IOutputFileInput::GetInterface(UINT32 iid)
     return iface;
 }
 
-void IOutputFileInput::Reset()
+void IImageAlgorithmOutput::Reset()
 {
     for (UINT32 i = 0; i < m_Size; ++i)
     {

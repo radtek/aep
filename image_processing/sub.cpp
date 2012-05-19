@@ -15,23 +15,25 @@
 #include "utility.h"
 
 Sub::Sub()
-:
-m_SubFactor(0)
 {
     m_Input1 = new IImageAlgorithmInput1;
     m_Input2 = new IImageAlgorithmInput2;
-    m_Output1 = new IImageAlgorithmOutput1;
-    m_Output2 = new IImageAlgorithmOutput2;
+    m_Output = new IImageAlgorithmOutput(m_OutputCount);
+    for (UINT32 i = 0; i < m_OutputCount; ++i)
+    {
+        m_SubFactor[i] = 0;
+    }
 }
 
 Sub::~Sub()
 {
-    MatLabHelper::DestroyArray(m_Output1->m_Array);
-    MatLabHelper::DestroyArray(m_Output2->m_Array);
     delete m_Input1;
     delete m_Input2;
-    delete m_Output1;
-    delete m_Output2;
+    for (UINT32 i = 0; i < m_OutputCount; ++i)
+    {
+        MatLabHelper::DestroyArray(m_Output->m_Array[i]);
+    }
+    delete m_Output;
 }
 
 UINT32 Sub::GetTypeId()
@@ -43,8 +45,12 @@ void Sub::Save(CArchive &ar)
 {
     ar << s_ComponentId
         << m_Id
-        << CString(m_Name.c_str())
-        << m_SubFactor;
+        << CString(m_Name.c_str());
+
+    for (UINT32 i = 0; i < m_OutputCount; ++i)
+    {
+        ar << m_SubFactor[i];
+    }
 }
 
 void Sub::Load(CArchive &ar)
@@ -55,7 +61,10 @@ void Sub::Load(CArchive &ar)
     ar >> str;
     m_Name = str;
 
-    ar >> m_SubFactor;
+    for (UINT32 i = 0; i < m_OutputCount; ++i)
+    {
+        ar >> m_SubFactor[i];
+    }
 }
 
 void Sub::Destroy()
@@ -74,6 +83,10 @@ void *Sub::GetInterface(UINT32 iid)
     else if (CIID_IALGORITHM == iid)
     {
         iface = static_cast<IAlgorithm *>(this);
+    }
+    else if (CLIENT_CIID_IMAGE_ALGORITHM == iid)
+    {
+        iface = static_cast<IImageAlgorithm *>(this);
     }
     else
     {
@@ -106,21 +119,28 @@ void Sub::GetAttributeList(AttributeList &attributeList)
 {
     Attribute attribute;
 
-    attribute.Id = AAID_SUB_FACTOR;
-    attribute.Name = TEXT("测试参数");
-    attribute.Type = Attribute::TYPE_DOUBLE;
-    attributeList.push_back(attribute);
+    for (UINT32 i = AAID_SUB_FACTOR1; i <= AAID_SUB_FACTOR5; ++i)
+    {
+        attribute.Id = i;
+        CString name = TEXT("减法因子");
+        name.AppendFormat(TEXT("%u"), i + 1);
+        attribute.Name = name;
+        attribute.Type = Attribute::TYPE_DOUBLE;
+        attributeList.push_back(attribute);
+    }
 }
 
 RC Sub::GetAttribute(UINT32 aid, void *attr)
 {
     RC rc;
 
-    switch (aid)
+    for (UINT32 i = AAID_SUB_FACTOR1; i <= AAID_SUB_FACTOR5; ++i)
     {
-    case AAID_SUB_FACTOR:
-        *((double *)attr) = m_SubFactor;
-        break;
+        if (aid == i)
+        {
+            *((double *)attr) = m_SubFactor[i];
+            return rc;
+        }
     }
 
     return rc;
@@ -130,11 +150,13 @@ RC Sub::SetAttribute(UINT32 aid, void *attr)
 {
     RC rc;
 
-    switch (aid)
+    for (UINT32 i = AAID_SUB_FACTOR1; i <= AAID_SUB_FACTOR5; ++i)
     {
-    case AAID_SUB_FACTOR:
-        m_SubFactor = *((double *)attr);
-        break;
+        if (aid == i)
+        {
+            m_SubFactor[i] = *((double *)attr);
+            return rc;
+        }
     }
 
     return rc;
@@ -145,23 +167,49 @@ bool Sub::Connect(IComponent *component)
     return false;
 }
 
+IComponent *Sub::Clone()
+{
+    Sub *sub = new Sub();
+    for (UINT32 i = 0; i < m_OutputCount; ++i)
+    {
+        sub->m_SubFactor[i] = m_SubFactor[i];
+    }
+    sub->m_Id = m_Id;
+    sub->m_Name = m_Name;
+    return sub;
+}
+
+void Sub::Reset()
+{
+    m_Input1->m_Array = 0;
+    m_Input2->m_Array = 0;
+    for (UINT32 i = 0; i < m_OutputCount; ++i)
+    {
+        MatLabHelper::DestroyArray(m_Output->m_Array[i]);
+    }
+    m_Output->Reset();
+}
+
 RC Sub::Config()
 {
     RC rc;
 
     CSubConfigDlg dlg;
-    dlg.m_SubFactor = m_SubFactor;
+    dlg.m_SubFactor1 = m_SubFactor[0];
+    dlg.m_SubFactor2 = m_SubFactor[1];
+    dlg.m_SubFactor3 = m_SubFactor[2];
+    dlg.m_SubFactor4 = m_SubFactor[3];
+    dlg.m_SubFactor5 = m_SubFactor[4];
     INT_PTR nResponse = dlg.DoModal();
 	if (nResponse == IDOK)
 	{
 		// TODO: Place code here to handle when the dialog is
 		//  dismissed with OK
-        if (dlg.m_SubFactor > 10)
-        {
-            Utility::PromptErrorMessage(TEXT("测试参数不能大于10."));
-            return RC::COMPONENT_SETATTRIBUTE_ERROR;
-        }
-        m_SubFactor = dlg.m_SubFactor;
+        m_SubFactor[0] = dlg.m_SubFactor1;
+        m_SubFactor[1] = dlg.m_SubFactor2;
+        m_SubFactor[2] = dlg.m_SubFactor3;
+        m_SubFactor[3] = dlg.m_SubFactor4;
+        m_SubFactor[4] = dlg.m_SubFactor5;
 	}
 	else if (nResponse == IDCANCEL)
 	{
@@ -170,15 +218,6 @@ RC Sub::Config()
 	}
 
     return rc;
-}
-
-IComponent *Sub::Clone()
-{
-    Sub *sub = new Sub();
-    sub->m_SubFactor = m_SubFactor;
-    sub->m_Id = m_Id;
-    sub->m_Name = m_Name;
-    return sub;
 }
 
 RC Sub::SetInput(IData *input)
@@ -202,46 +241,19 @@ RC Sub::SetInput(IData *input)
         return OK;
     }
 
-    IImageAlgorithmOutput1 *imageAlgorithmOutput1 = (IImageAlgorithmOutput1 *)(input->GetInterface(CLIENT_CIID_IMAGE_ALGORITHM_OUTPUT1));
-    if (NULL != imageAlgorithmOutput1)
+    IImageAlgorithmOutput *imageAlgorithmOutput = (IImageAlgorithmOutput *)(input->GetInterface(CLIENT_CIID_IMAGE_ALGORITHM_OUTPUT));
+    if (NULL != imageAlgorithmOutput)
     {
-        m_Input2->m_Array = imageAlgorithmOutput1->m_Array;
+        m_Input2->m_Array = imageAlgorithmOutput->m_Array[0];
         return OK;
     }
 
     return RC::COMPONENT_SETINPUT_ERROR;
 }
 
-RC Sub::GetOutput1(IData *&output)
+RC Sub::GetOutput(IData *&output)
 {
-    if (NULL == m_Output1)
-    {
-        output = NULL;
-        return RC::COMPONENT_GETOUTPUT_ERROR;
-    }
-
-    output = (IData *)(m_Output1->GetInterface(CIID_IDATA));
-    if (NULL == output)
-    {
-        return RC::COMPONENT_GETOUTPUT_ERROR;
-    }
-
-    return OK;
-}
-
-RC Sub::GetOutput2(IData *&output)
-{
-    if (NULL == m_Output2)
-    {
-        output = NULL;
-        return RC::COMPONENT_GETOUTPUT_ERROR;
-    }
-
-    output = (IData *)(m_Output2->GetInterface(CIID_IDATA));
-    if (NULL == output)
-    {
-        return RC::COMPONENT_GETOUTPUT_ERROR;
-    }
+    output = (IData *)(m_Output->GetInterface(CIID_IDATA));
 
     return OK;
 }
@@ -260,36 +272,28 @@ RC Sub::Run()
         return RC::ALGORITHM_INPUT_ERROR;
     }
 
-    if (m_Output1->m_Array != NULL)
-    {
-        MatLabHelper::DestroyArray(m_Output1->m_Array);
-    }
-
-    if (m_Output2->m_Array != NULL)
-    {
-        MatLabHelper::DestroyArray(m_Output2->m_Array);
-    }
-
-    Array *input3 = MatLabHelper::CreateDoubleArray(1, 1, &m_SubFactor);
-    m_Output1->m_Array = MatLabHelper::CreateDoubleArray(x1, y1);
-    m_Output2->m_Array = MatLabHelper::CreateDoubleArray(x1, y1);
-
     if (!SubFuncInitialize())
     {
         return RC::ALGORITHM_RUN_INITIALIZE_ERROR;
     }
-    if (!mlfSubFunc(1, &m_Output1->m_Array, m_Input2->m_Array, m_Input1->m_Array, input3))
+
+    for (UINT32 i = 0; i < m_OutputCount; ++i)
     {
-        SubFuncPrintStackTrace();
-        return RC::ALGORITHM_RUN_ERROR;
+        if (m_Output->m_Array[i] != NULL)
+        {
+            MatLabHelper::DestroyArray(m_Output->m_Array[i]);
+        }
+        Array *input3 = MatLabHelper::CreateDoubleArray(1, 1, &m_SubFactor[i]);
+        m_Output->m_Array[i] = MatLabHelper::CreateDoubleArray(x1, y1);
+        if (!mlfSubFunc(1, &m_Output->m_Array[i], m_Input2->m_Array, m_Input1->m_Array, input3))
+        {
+            SubFuncPrintStackTrace();
+            return RC::ALGORITHM_RUN_ERROR;
+        }
+        MatLabHelper::DestroyArray(input3);
     }
-    if (!mlfSubFunc(1, &m_Output2->m_Array, m_Input2->m_Array, m_Input1->m_Array, input3))
-    {
-        SubFuncPrintStackTrace();
-        return RC::ALGORITHM_RUN_ERROR;
-    }
+
     // SubFuncTerminate();
-    MatLabHelper::DestroyArray(input3);
 
     return rc;
 }
@@ -297,11 +301,10 @@ RC Sub::Run()
 Sub *Sub::Factory()
 {
     Sub *sub = new Sub;
-    LPWSTR name = new wchar_t[256];
-    wsprintf(name, TEXT("%s%u"), s_ComponentName, s_Count);
+    CString name = s_ComponentName;
+    name.AppendFormat(TEXT("%u"), s_Count + 1);
     sub->m_Name = name;
     ++s_Count;
-    delete[] name;
     return sub;
 }
 

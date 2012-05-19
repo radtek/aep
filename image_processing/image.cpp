@@ -19,6 +19,7 @@ Image::Image()
 
 Image::~Image()
 {
+    MatLabHelper::DestroyArray(m_Output->m_Array);
     delete m_Output;
 }
 
@@ -150,6 +151,12 @@ IComponent *Image::Clone()
     return image;
 }
 
+void Image::Reset()
+{
+    MatLabHelper::DestroyArray(m_Output->m_Array);
+    m_Output->m_Array = 0;
+}
+
 RC Image::SetInput(IData *input)
 {
     return RC::COMPONENT_SETINPUT_ERROR;
@@ -180,25 +187,19 @@ RC Image::Run()
     return rc;
 }
 
-RC Image::GetOutput1(IData *&output)
+RC Image::GetOutput(IData *&output)
 {
     output = (IData *)(m_Output->GetInterface(CIID_IDATA));
     return OK;
 }
 
-RC Image::GetOutput2(IData *&output)
-{
-    return RC::COMPONENT_GETOUTPUT_ERROR;
-}
-
 Image *Image::Factory()
 {
     Image *image = new Image;
-    LPWSTR name = new wchar_t[256];
-    wsprintf(name, TEXT("%s%u"), s_ComponentName, s_Count);
+    CString name = s_ComponentName;
+    name.AppendFormat(TEXT("%u"), s_Count + 1);
     image->m_Name = name;
     ++s_Count;
-    delete[] name;
     return image;
 }
 

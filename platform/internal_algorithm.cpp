@@ -140,6 +140,10 @@ IComponent *InternalAlgorithm::Clone()
     return NULL;
 }
 
+void InternalAlgorithm::Reset()
+{
+}
+
 RC InternalAlgorithm::Config()
 {
     RC rc;
@@ -156,16 +160,7 @@ RC InternalAlgorithm::SetInput(IData *input)
     return rc;
 }
 
-RC InternalAlgorithm::GetOutput1(IData *&output)
-{
-    RC rc;
-
-    // FIXME
-
-    return rc;
-}
-
-RC InternalAlgorithm::GetOutput2(IData *&output)
+RC InternalAlgorithm::GetOutput(IData *&output)
 {
     RC rc;
 
