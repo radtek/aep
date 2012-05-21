@@ -297,6 +297,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\batch.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\component_type_data_file.cpp"
 				>
 			</File>
@@ -348,6 +352,10 @@
 			</File>
 			<File
 				RelativePath="..\include\algorithm_helper.h"
+				>
+			</File>
+			<File
+				RelativePath="..\include\batch.h"
 				>
 			</File>
 			<File

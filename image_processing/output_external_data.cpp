@@ -171,6 +171,7 @@ RC OutputExternalData::SetAttribute(UINT32 aid, void *attr)
         if (aid == i)
         {
             m_OutputId[i] = *((UINT32 *)attr);
+            return rc;
         }
     }
 
@@ -179,6 +180,7 @@ RC OutputExternalData::SetAttribute(UINT32 aid, void *attr)
         if (aid == i)
         {
             m_FilePath[i - AAID_FILE_PATH1] = *((wstring *)attr);
+            return rc;
         }
     }
 

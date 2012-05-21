@@ -229,6 +229,32 @@ RC Model::Run()
     return rc;
 }
 
+RC Model::Reset()
+{
+    RC rc;
+
+    for (UINT32 i = 0; i < m_ComponentList.size(); ++i)
+    {
+        IComponent *component = m_ComponentList[i];
+        component->Reset();
+    }
+
+    return rc;
+}
+
+IComponent *Model::GetComponentByName(const wstring &name)
+{
+    for (UINT32 i = 0; i < m_ComponentList.size(); ++i)
+    {
+        IComponent *component = m_ComponentList[i];
+        if (component->GetName() == name)
+        {
+            return component;
+        }
+    }
+    return NULL;
+}
+
 /**
 * @param sourceId 关联的头组件.
 * @param targetId 关联的尾组件.

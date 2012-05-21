@@ -203,6 +203,7 @@ RC OutputImage::SetAttribute(UINT32 aid, void *attr)
     if (aid == AAID_DEPTH)
     {
         m_Depth = *((UINT32 *)attr);
+        return rc;
     }
 
     return RC::COMPONENT_SETATTRIBUTE_ERROR;

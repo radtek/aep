@@ -8,6 +8,7 @@
 #include "model_view.h"
 
 #include "model.h"
+#include "batch.h"
 #include "utility.h"
 
 #ifdef _DEBUG
@@ -672,16 +673,20 @@ void CMainFrame::OnFileRun()
     if (rc == RC::MODEL_GET_ENTRY_ALGORITHM_ERROR)
     {
         Utility::PromptErrorMessage(TEXT("缺少入口算法."));
+        return;
     }
     else if (rc == RC::MODEL_ALGORITHM_INPUT_ERROR)
     {
         Utility::PromptErrorMessage(TEXT("算法输入错误."));
+        return;
     }
     else if (rc == RC::MODEL_ALGORITHM_OUTPUT_ERROR)
     {
         Utility::PromptErrorMessage(TEXT("算法输出错误."));
+        return;
     }
 
+    /*
     rc = model.Run();
     if (OK != rc)
     {
@@ -690,5 +695,23 @@ void CMainFrame::OnFileRun()
     else
     {
         Utility::PromptMessage(TEXT("模型运行成功"));
+    }
+    */
+
+    Batch batch(model);
+    rc == batch.Parse(TEXT("image.batch"));
+    if (rc == RC::BATCH_PARSE_FILE_ERROR)
+    {
+        Utility::PromptErrorMessage(TEXT("批文件格式错误."));
+        return;
+    }
+    rc = batch.Run();
+    if (rc == RC::BATCH_CONFIG_MODEL_ERROR)
+    {
+        Utility::PromptErrorMessage(TEXT("配置模型错误."));
+    }
+    else if (rc == RC::BATCH_CONFIG_COMPONENT_ERROR)
+    {
+        Utility::PromptErrorMessage(TEXT("配置组件错误."));
     }
 }

@@ -40,6 +40,10 @@ public:
     /** @brief 运行模型. */
     RC Run();
 
+    RC Reset();
+
+    IComponent *GetComponentByName(const wstring &name);
+
 protected:
     /** @brief 将模型内部的组件相互关联. */
     void Connect(UINT32 sourceId, UINT32 targetId);

@@ -79,3 +79,7 @@ DEFINE_ERROR(COMPONENT_SETINPUT_ERROR, "Set component input error.")
 DEFINE_ERROR(COMPONENT_GETOUTPUT_ERROR, "Get component output error.")
 
 DEFINE_ERROR(DOWNLOAD_UNEXISTEFD_FILE_ERROR, "File unexists.")
+
+DEFINE_ERROR(BATCH_PARSE_FILE_ERROR, "Invalid batch file format.")
+DEFINE_ERROR(BATCH_CONFIG_MODEL_ERROR, "Couldn't find component in model.")
+DEFINE_ERROR(BATCH_CONFIG_COMPONENT_ERROR, "Couldn't find attribute in component.")
