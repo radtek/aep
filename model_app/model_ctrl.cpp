@@ -4,8 +4,6 @@
 
 #include "model_ctrl.h"
 
-#include "connector_ctrl.h"
-
 ModelCtrl::ModelCtrl()
 :
 m_IsSelected(false)

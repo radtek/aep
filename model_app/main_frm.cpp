@@ -7,6 +7,7 @@
 #include "main_frm.h"
 #include "model_view.h"
 
+#include "console_dlg.h"
 #include "model.h"
 #include "batch.h"
 #include "utility.h"
@@ -669,6 +670,8 @@ void CMainFrame::OnFileRun()
     // TODO: Add your command handler code here
     CModelDoc *doc = DYNAMIC_DOWNCAST(CModelDoc, GetActiveDocument());
     Model model = doc->ExportModel();
+    ShowConsoleDlg(model);
+    AFX_MANAGE_STATE(AfxGetStaticModuleState());
     RC rc = model.Analyze();
     if (rc == RC::MODEL_GET_ENTRY_ALGORITHM_ERROR)
     {
