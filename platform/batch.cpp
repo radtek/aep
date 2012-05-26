@@ -56,20 +56,46 @@ RC Batch::Run()
 
     for (UINT32 i = 1; i <= m_Count; ++i)
     {
-        ModList::iterator it = m_ModList.find(i);
-        if (it == m_ModList.end())
-        {
-            continue;
-        }
-
-        CompList &compList = it->second;
-        CHECK_RC(ConfigModel(compList));
-
-        CHECK_RC(m_Model.Reset());
-        CHECK_RC(m_Model.Run());
+        CHECK_RC(RunSingleModel(i));
     }
 
     return rc;
+}
+
+RC Batch::ConfigModel(UINT32 modId)
+{
+    RC rc;
+
+    ModList::iterator it = m_ModList.find(modId);
+    if (it == m_ModList.end())
+    {
+        return OK;
+    }
+
+    CompList &compList = it->second;
+    CHECK_RC(ConfigModel(compList));
+    CHECK_RC(m_Model.Reset());
+
+    return rc;
+}
+
+RC Batch::RunSingleModel(UINT32 modId)
+{
+    RC rc;
+
+    CHECK_RC(ConfigModel(modId));
+
+    for (UINT32 i = 0; i < m_Model.GetAlgorithmCount(); ++i)
+    {
+        CHECK_RC(m_Model.RunSingleAlgorithm(i));
+    }
+
+    return rc;
+}
+
+Model &Batch::GetModel()
+{
+    return m_Model;
 }
 
 RC Batch::ParseLine(const wstring &line)
@@ -111,6 +137,11 @@ RC Batch::ParseLine(const wstring &line)
     }
 
     return rc;
+}
+
+UINT32 Batch::GetCount()
+{
+    return m_Count;
 }
 
 RC Batch::ConfigModel(CompList &compList)

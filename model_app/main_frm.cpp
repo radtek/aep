@@ -670,8 +670,6 @@ void CMainFrame::OnFileRun()
     // TODO: Add your command handler code here
     CModelDoc *doc = DYNAMIC_DOWNCAST(CModelDoc, GetActiveDocument());
     Model model = doc->ExportModel();
-    ShowConsoleDlg(model);
-    AFX_MANAGE_STATE(AfxGetStaticModuleState());
     RC rc = model.Analyze();
     if (rc == RC::MODEL_GET_ENTRY_ALGORITHM_ERROR)
     {
@@ -689,6 +687,8 @@ void CMainFrame::OnFileRun()
         return;
     }
 
+    ShowConsoleDlg(model);
+    AFX_MANAGE_STATE(AfxGetStaticModuleState());
     /*
     rc = model.Run();
     if (OK != rc)
@@ -701,6 +701,7 @@ void CMainFrame::OnFileRun()
     }
     */
 
+    /*
     Batch batch(model);
     rc == batch.Parse(TEXT("image.batch"));
     if (rc == RC::BATCH_PARSE_FILE_ERROR)
@@ -717,4 +718,5 @@ void CMainFrame::OnFileRun()
     {
         Utility::PromptErrorMessage(TEXT("ÅäÖÃ×é¼þ´íÎó."));
     }
+    */
 }

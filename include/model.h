@@ -22,6 +22,9 @@
 * 组织模型中组件的交互关系,
 * 还能够运行模型.
 */
+typedef IAlgorithm DrawItem;
+typedef vector<DrawItem *> DrawItemList;
+
 class Model
 {
 public:
@@ -40,9 +43,14 @@ public:
     /** @brief 运行模型. */
     RC Run();
 
+    RC RunSingleAlgorithm(UINT32 id);
+
     RC Reset();
 
+    UINT32 GetAlgorithmCount();
     IComponent *GetComponentByName(const wstring &name);
+
+    const DrawItemList &GetDrawItemList();
 
 protected:
     /** @brief 将模型内部的组件相互关联. */
@@ -59,6 +67,7 @@ private:
     /** @brief 组件列表. */
     ComponentList m_ComponentList;
     ConnectorList m_ConnectorList;
+
     AlgorithmList m_AlgorithmList;
     vector<ComponentList> m_InputList;
     vector<ComponentList> m_OutputList;

@@ -54,4 +54,8 @@ namespace Utility
 
     // bool SaveBmpFile(HBITMAP hBitmap, CString fileName);
     bool SaveBmpFile(CString fileName, const char *content, UINT32 width, UINT32 height, UINT32 depth, RGBQUAD *colorTable);
+
+    wstring ModifyPathSpec(const wstring &path, bool addSpec);
+    bool CreateDirectoryNested(LPCWSTR dirPath);
+    bool CreateFileNested(LPCWSTR filePath);
 };

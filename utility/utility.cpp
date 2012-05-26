@@ -11,6 +11,7 @@
 #include <strsafe.h>
 #include <locale.h>
 #include <math.h>
+#include "Shlwapi.h"
 
 /**
 * @param fileName 文件路径.
@@ -270,6 +271,13 @@ bool Utility::SaveBmpFile(CString fileName, const char *content, UINT32 width, U
     bih.biClrImportant = 0;
     bih.biClrUsed = 0;
 
+    if (!FileExists(fileName))
+    {
+        if (!CreateFileNested(fileName))
+        {
+            return false;
+        }
+    }
     HANDLE file = CreateFile(fileName, GENERIC_WRITE, 0, NULL, CREATE_ALWAYS,
         FILE_ATTRIBUTE_NORMAL | FILE_FLAG_SEQUENTIAL_SCAN, NULL);
     UINT32 written = 0;
@@ -386,3 +394,105 @@ bool Utility::SaveBmpFile(HBITMAP hBitmap, CString fileName)
     return     true;       
 }
 */
+
+wstring Utility::ModifyPathSpec(const wstring &path, bool addSpec)
+{
+    if (path.empty())
+    {
+        return TEXT("");
+    }
+
+    wstring modified = path;
+    wchar_t ch = path[path.length() - 1];
+    if ((ch == TEXT('\\')) || (ch == _T('/')))
+    {
+        if (!addSpec)
+        {
+            modified.erase(path.length() - 1);
+        }
+    }
+    else
+    {
+        if (addSpec)
+        {
+            modified + TEXT('\\');
+        }
+    }
+    return modified;
+}
+
+bool Utility::CreateDirectoryNested(LPCWSTR dirPath)
+{
+    if (::PathIsDirectory(dirPath))
+    {
+        return true;
+    }
+
+    wstring modifiedDirPath = ModifyPathSpec(dirPath, false);
+
+    //获取上级目录
+    wchar_t *parentDirPath = new wchar_t[modifiedDirPath.length() + 1];
+    memcpy(parentDirPath, modifiedDirPath.c_str(), modifiedDirPath.length() * sizeof(wchar_t));
+    parentDirPath[modifiedDirPath.length()] = 0;
+    BOOL getPreDir = ::PathRemoveFileSpec(parentDirPath);
+    if (!getPreDir)
+    {
+        delete[] parentDirPath;
+        return false;
+    }
+
+    //如果上级目录不存在,则递归创建上级目录
+    if (!::PathIsDirectory(parentDirPath))
+    {
+        CreateDirectoryNested(parentDirPath);
+    }
+
+    delete[] parentDirPath;
+
+    return ::CreateDirectory(modifiedDirPath.c_str(), NULL);
+}
+
+bool Utility::CreateFileNested(LPCWSTR filePath)
+{
+    if (::PathFileExists(filePath))
+    {
+        return true;
+    }
+
+    //获取文件目录
+    wstring wsFilePath(filePath);
+    if (::PathIsRelative(filePath))
+    {
+        wsFilePath = TEXT(".\\") + wsFilePath;
+    }
+    wchar_t *parentDirPath = new wchar_t[wsFilePath.length() + 1];
+    memcpy(parentDirPath, wsFilePath.c_str(), wsFilePath.length() * sizeof(wchar_t));
+    parentDirPath[wsFilePath.length()] = 0;
+    BOOL getDir = ::PathRemoveFileSpec(parentDirPath);
+    if (!getDir)
+    {
+        delete[] parentDirPath;
+        return false;
+    }
+
+    //创建文件目录
+    if (!CreateDirectoryNested(parentDirPath))
+    {
+        delete[] parentDirPath;
+        return false;
+    }
+
+    HANDLE file = ::CreateFile(filePath, GENERIC_READ|GENERIC_WRITE, FILE_SHARE_READ|FILE_SHARE_WRITE, NULL,
+        CREATE_ALWAYS, FILE_FLAG_BACKUP_SEMANTICS, NULL);
+
+    if (file == INVALID_HANDLE_VALUE)
+    {
+        delete[] parentDirPath;
+        return false;
+    }
+
+    delete[] parentDirPath;
+    ::CloseHandle(file);
+
+    return true;
+}

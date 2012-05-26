@@ -267,6 +267,13 @@ RC OutputExternalData::Run()
         {
             continue;
         }
+        if (!Utility::FileExists(m_FilePath[i].c_str()))
+        {
+            if (!Utility::CreateFileNested(m_FilePath[i].c_str()))
+            {
+                return RC::FILE_OPEN_ERROR;
+            }
+        }
         HANDLE file = CreateFile(
             m_FilePath[i].c_str(),
             GENERIC_READ | GENERIC_WRITE,

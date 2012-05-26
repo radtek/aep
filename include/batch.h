@@ -16,7 +16,12 @@ class Batch
 public:
     Batch( Model &model);
     RC Parse(wstring fileName);
+    UINT32 GetCount();
     RC Run();
+    RC ConfigModel(UINT32 modId);
+    RC RunSingleModel(UINT32 modId);
+
+    Model &GetModel();
 
 private:
     UINT32 m_Count;

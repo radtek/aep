@@ -80,8 +80,19 @@ private:
         if (OK != (rc = (f))) \
         { \
             Utility::PromptErrorMessage(rc.Message()); \
+            return rc; \
         } \
-        return rc; \
+    } while(0)
+
+/** @brief 检测函数返回的RC是否为错误的宏并打印错误信息. */
+#define CHECK_RC_MSG_VOID(f) \
+    do \
+    { \
+        if (OK != (rc = (f))) \
+        { \
+            Utility::PromptErrorMessage(rc.Message()); \
+            return; \
+        } \
     } while(0)
 
 /** @brief 检测函数返回的RC是否为错误的宏并打印错误信息但不返回. */

@@ -194,36 +194,7 @@ RC Model::Run()
 
     for (UINT32 i = 0; i < m_AlgorithmList.size(); ++i)
     {
-        IAlgorithm *algorithm = m_AlgorithmList[i];
-        ComponentList inputList = m_InputList[i];
-        for (UINT32 j = 0; j < inputList.size(); ++j)
-        {
-            IComponent *component = inputList[j];
-            CHECK_RC(component->Run());
-            if (!Connect(component, (IComponent *)algorithm->GetInterface(CIID_ICOMPONENT)))
-            {
-                return RC::MODEL_ALGORITHM_INPUT_ERROR;
-            }
-        }
-        CHECK_RC(algorithm->Run());
-        ComponentList outputList = m_OutputList[i];
-        for (UINT32 j = 0; j < outputList.size(); ++j)
-        {
-            IComponent *component = outputList[j];
-            if (!Connect((IComponent *)algorithm->GetInterface(CIID_ICOMPONENT), component))
-            {
-                return RC::MODEL_ALGORITHM_OUTPUT_ERROR;
-            }
-            CHECK_RC(component->Run());
-        }
-        if (i < m_AlgorithmList.size() - 1)
-        {
-            IAlgorithm *nextAlgorithm = m_AlgorithmList[i + 1];
-            if (!Connect((IComponent *)algorithm->GetInterface(CIID_ICOMPONENT), (IComponent *)nextAlgorithm->GetInterface(CIID_ICOMPONENT)))
-            {
-                return RC::MODEL_ALGORITHM_OUTPUT_ERROR;
-            }
-        }
+        CHECK_RC(RunSingleAlgorithm(i));
     }
 
     return rc;
@@ -240,6 +211,16 @@ RC Model::Reset()
     }
 
     return rc;
+}
+
+UINT32 Model::GetAlgorithmCount()
+{
+    return m_AlgorithmList.size();
+}
+
+const DrawItemList &Model::GetDrawItemList()
+{
+    return m_AlgorithmList;
 }
 
 IComponent *Model::GetComponentByName(const wstring &name)
@@ -417,4 +398,42 @@ bool Model::CheckOutputList(IAlgorithm *algorithm, ComponentList &outputList)
         }
     }
     return true;
+}
+
+RC Model::RunSingleAlgorithm(UINT32 id)
+{
+    RC rc;
+
+    IAlgorithm *algorithm = m_AlgorithmList[id];
+    ComponentList inputList = m_InputList[id];
+    for (UINT32 j = 0; j < inputList.size(); ++j)
+    {
+        IComponent *component = inputList[j];
+        CHECK_RC(component->Run());
+        if (!Connect(component, (IComponent *)algorithm->GetInterface(CIID_ICOMPONENT)))
+        {
+            return RC::MODEL_ALGORITHM_INPUT_ERROR;
+        }
+    }
+    CHECK_RC(algorithm->Run());
+    ComponentList outputList = m_OutputList[id];
+    for (UINT32 j = 0; j < outputList.size(); ++j)
+    {
+        IComponent *component = outputList[j];
+        if (!Connect((IComponent *)algorithm->GetInterface(CIID_ICOMPONENT), component))
+        {
+            return RC::MODEL_ALGORITHM_OUTPUT_ERROR;
+        }
+        CHECK_RC(component->Run());
+    }
+    if (id < m_AlgorithmList.size() - 1)
+    {
+        IAlgorithm *nextAlgorithm = m_AlgorithmList[id + 1];
+        if (!Connect((IComponent *)algorithm->GetInterface(CIID_ICOMPONENT), (IComponent *)nextAlgorithm->GetInterface(CIID_ICOMPONENT)))
+        {
+            return RC::MODEL_ALGORITHM_OUTPUT_ERROR;
+        }
+    }
+
+    return rc;
 }
