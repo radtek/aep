@@ -286,6 +286,10 @@ RC OutputImage::Run()
 
     for (UINT32 i = 0; i < m_OutputCount; ++i)
     {
+        if (!m_Input->m_Array[i] || m_FilePath[i].empty())
+        {
+            continue;
+        }
         UINT32 width = mxGetM(m_Input->m_Array[i]) / (m_Depth / 8);
         UINT32 height = mxGetN(m_Input->m_Array[i]);
         UINT32 size = width * height * (m_Depth / 8);
