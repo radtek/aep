@@ -60,7 +60,7 @@ BOOL CModelApp::InitInstance()
     }
     else
     {
-        engSetVisible(m_Engine, false);
+        // engSetVisible(m_Engine, false);
     }
 	// InitCommonControlsEx() is required on Windows XP if an application
 	// manifest specifies use of ComCtl32.dll version 6 or later to enable

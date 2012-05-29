@@ -3,6 +3,8 @@
 
 #include "external_data.h"
 #include "image.h"
+#include "dat_image.h"
+#include "image_algorithm.h"
 #include "add.h"
 #include "sub.h"
 #include "output_external_data.h"
@@ -47,6 +49,21 @@ extern "C" __declspec(dllexport) void RegisterComponentType(ComponentTypeMap &co
     componentType.DllHandle = DllHandle;
     componentTypeMap[componentType.TypeId] = componentType;
 
+    componentType.TypeId = DatImage::s_ComponentId;
+    componentType.TypeName = DatImage::s_ComponentName;
+    componentType.InterfaceId = CLIENT_CIID_IMAGE;
+    componentType.Factory = (ComponentFactory)DatImage::Factory;
+    componentType.DllHandle = DllHandle;
+    componentTypeMap[componentType.TypeId] = componentType;
+
+    componentType.TypeId = ImageAlgorithm::s_ComponentId;
+    componentType.TypeName = ImageAlgorithm::s_ComponentName;
+    componentType.InterfaceId = CLIENT_CIID_IMAGE_ALGORITHM;
+    componentType.Factory = (ComponentFactory)ImageAlgorithm::Factory;
+    componentType.DllHandle = DllHandle;
+    componentTypeMap[componentType.TypeId] = componentType;
+
+    /*
     componentType.TypeId = Add::s_ComponentId;
     componentType.TypeName = Add::s_ComponentName;
     componentType.InterfaceId = CLIENT_CIID_IMAGE_ALGORITHM;
@@ -60,6 +77,7 @@ extern "C" __declspec(dllexport) void RegisterComponentType(ComponentTypeMap &co
     componentType.Factory = (ComponentFactory)Sub::Factory;
     componentType.DllHandle = DllHandle;
     componentTypeMap[componentType.TypeId] = componentType;
+    */
 
     componentType.TypeId = OutputExternalData::s_ComponentId;
     componentType.TypeName = OutputExternalData::s_ComponentName;

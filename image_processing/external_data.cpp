@@ -220,9 +220,10 @@ RC ExternalData::Run()
     ReadFile(file, buf, length, &read, NULL);
     if (length != read)
     {
+        delete[] buf;
         return RC::FILE_OPEN_ERROR;
     }
-    m_Output->m_Array = MatLabHelper::CreateDoubleArray(m_Width, m_Height, buf);
+    m_Output->m_Array = MatLabHelper::CreateDoubleArray(m_Width, m_Height, buf, length);
     CloseHandle(file);
 
     return rc;

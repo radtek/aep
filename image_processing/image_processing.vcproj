@@ -71,7 +71,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="mclmcrrt.lib add/AddFunc.lib sub/SubFunc.lib"
+				AdditionalDependencies="mclmcrrt.lib"
 				LinkIncremental="2"
 				ModuleDefinitionFile=".\image_processing.def"
 				GenerateDebugInformation="true"
@@ -240,7 +240,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="mclmcrrt.lib add/AddFunc.lib sub/SubFunc.lib"
+				AdditionalDependencies="mclmcrrt.lib"
 				LinkIncremental="1"
 				ModuleDefinitionFile=".\image_processing.def"
 				GenerateDebugInformation="true"
@@ -374,11 +374,11 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\add.cpp"
+				RelativePath=".\add_config_dlg.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\add_config_dlg.cpp"
+				RelativePath=".\dat_image.cpp"
 				>
 			</File>
 			<File
@@ -395,6 +395,10 @@
 			</File>
 			<File
 				RelativePath=".\image.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\image_algorithm.cpp"
 				>
 			</File>
 			<File
@@ -474,10 +478,6 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\sub.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\sub_config_dlg.cpp"
 				>
 			</File>
@@ -488,15 +488,11 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath=".\add.h"
-				>
-			</File>
-			<File
 				RelativePath=".\add_config_dlg.h"
 				>
 			</File>
 			<File
-				RelativePath=".\add\AddFunc.h"
+				RelativePath=".\dat_image.h"
 				>
 			</File>
 			<File
@@ -513,6 +509,10 @@
 			</File>
 			<File
 				RelativePath=".\image.h"
+				>
+			</File>
+			<File
+				RelativePath=".\image_algorithm.h"
 				>
 			</File>
 			<File
@@ -540,15 +540,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\sub.h"
-				>
-			</File>
-			<File
 				RelativePath=".\sub_config_dlg.h"
-				>
-			</File>
-			<File
-				RelativePath=".\sub\SubFunc.h"
 				>
 			</File>
 		</Filter>

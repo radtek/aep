@@ -1,2 +1,2 @@
-function f = AddFunc(a, b, c)
-f = a + b + c(1, 1);
+function f = AddFunc(a, b)
+f = a + b;

@@ -14,16 +14,22 @@ LPCSTR MatLabHelper::InitializeFuncPrefix = "Initialize";
 
 LPCSTR MatLabHelper::FuncPrefix = "mlf";
 
+LPCSTR MatLabHelper::PrintStackFuncPrefix = "PrintStackTrace";
+
 LPCSTR MatLabHelper::TerminateFuncPrefix = "Terminate";
 
-Array *MatLabHelper::CreateDoubleArray(UINT32 x, UINT32 y, const char *content)
+Array *MatLabHelper::CreateDoubleArray(UINT32 x, UINT32 y, const char *content, UINT32 size)
 {
     Array *a = mxCreateDoubleMatrix(x, y, mxREAL);
 
     if (content)
     {
         double *p = mxGetPr(a);
-        for (UINT32 i = 0; i < x * y; ++i)
+        if (size)
+        {
+            size = min(size, x * y);
+        }
+        for (UINT32 i = 0; i < size; ++i)
         {
             p[i] = content[i];
         }
@@ -32,14 +38,18 @@ Array *MatLabHelper::CreateDoubleArray(UINT32 x, UINT32 y, const char *content)
     return a;
 }
 
-Array *MatLabHelper::CreateDoubleArray(UINT32 x, UINT32 y, const double *content)
+Array *MatLabHelper::CreateDoubleArray(UINT32 x, UINT32 y, const double *content, UINT32 size)
 {
     Array *a = mxCreateDoubleMatrix(x, y, mxREAL);
 
     if (content)
     {
         double *p = mxGetPr(a);
-        for (UINT32 i = 0; i < x * y; ++i)
+        if (size)
+        {
+            size = min(size, x * y);
+        }
+        for (UINT32 i = 0; i < size; ++i)
         {
             p[i] = content[i];
         }
@@ -53,7 +63,7 @@ void MatLabHelper::DestroyArray(Array *a)
     mxDestroyArray(a);
 }
 
-RC MatLabHelper::RunFunc(wstring dllFileName, wstring funcName, vector<Array *> inputList, Array **output)
+RC MatLabHelper::RunFunc(wstring dllFileName, wstring funcName, UINT32 outputCount, Array **output, const vector<Array *> &inputList)
 {
     RC rc;
 
@@ -91,10 +101,19 @@ RC MatLabHelper::RunFunc(wstring dllFileName, wstring funcName, vector<Array *> 
     string fullFuncName = FuncPrefix;
     fullFuncName += sFuncName;
 
-    RealRunFunc(algorithmDllHandle, fullFuncName, inputList, output, result);
+    CHECK_RC(RealRunFunc(algorithmDllHandle, fullFuncName, outputCount, output, inputList, result));
 
     if (!result)
     {
+        string printStackFuncName = sFuncName;
+        printStackFuncName += PrintStackFuncPrefix;
+
+        PrintStackFunc printStackFunc = (PrintStackFunc)GetProcAddress(
+            (HMODULE)algorithmDllHandle,
+            printStackFuncName.c_str());
+
+        printStackFunc();
+
         return RC::ALGORITHM_RUN_ERROR;
     }
 
@@ -111,7 +130,7 @@ RC MatLabHelper::RunFunc(wstring dllFileName, wstring funcName, vector<Array *> 
         return RC::ALGORITHM_GETPROC_ERROR;
     }
 
-    terminateFunc();
+    // terminateFunc();
 
     return rc;
 }
@@ -142,24 +161,23 @@ RC MatLabHelper::RunFunc(wstring dllFileName, wstring funcName, vector<Array *> 
 * 实现对参数列表无差别调用(目前最大支持5个参数, 如有需要可随意增加),
 * 并且记录算法调用结果.
 */
-RC MatLabHelper::RealRunFunc(HINSTANCE algorithmDllHandle, string fullFuncName, vector<Array *> inputList, Array **&output, bool &result)
+RC MatLabHelper::RealRunFunc(HINSTANCE algorithmDllHandle, string fullFuncName, UINT32 outputCount, Array **output, const vector<Array *> &inputList, bool &result)
 {
     UINT32 inputCount = inputList.size();
-    UINT32 inputSize = mxGetM(inputList[0]) * mxGetN(inputList[0]);
     switch (inputCount)
     {
     case 1:
         {
             typedef bool (*Func)(int, Array **, Array *);
             GET_FUNC_PROC_ADDR;
-            result = func(inputSize, output, inputList[0]);
+            result = func(outputCount, output, inputList[0]);
             break;
         }
     case 2:
         {
             typedef bool (*Func)(int, Array **, Array *, Array *);
             GET_FUNC_PROC_ADDR;
-            result = func(inputSize, output, inputList[0], inputList[1]);
+            result = func(outputCount, output, inputList[0], inputList[1]);
             break;
         }
     default:

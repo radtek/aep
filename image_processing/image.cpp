@@ -13,6 +13,9 @@
 #include "matlab_helper.h"
 
 Image::Image()
+:
+m_Width(0),
+m_Height(0)
 {
     m_Output = new IImageOutput;
 }
@@ -33,7 +36,9 @@ void Image::Save(CArchive &ar)
     ar << s_ComponentId
         << m_Id
         << CString(m_Name.c_str())
-        << CString(m_FilePath.c_str());
+        << CString(m_FilePath.c_str())
+        << m_Width
+        << m_Height;
 }
 
 void Image::Load(CArchive &ar)
@@ -46,6 +51,8 @@ void Image::Load(CArchive &ar)
 
     ar >> str;
     m_FilePath = str;
+
+    ar >> m_Width >> m_Height;
 }
 
 void Image::Destroy()
@@ -100,6 +107,16 @@ void Image::GetAttributeList(AttributeList &attributeList)
     attribute.Name = TEXT("图像文件路径");
     attribute.Type = Attribute::TYPE_STRING;
     attributeList.push_back(attribute);
+
+    attribute.Id = AAID_WIDTH;
+    attribute.Name = TEXT("宽度");
+    attribute.Type = Attribute::TYPE_INT;
+    attributeList.push_back(attribute);
+
+    attribute.Id = AAID_HEIGHT;
+    attribute.Name = TEXT("高度");
+    attribute.Type = Attribute::TYPE_INT;
+    attributeList.push_back(attribute);
 }
 
 RC Image::GetAttribute(UINT32 aid, void *attr)
@@ -110,6 +127,12 @@ RC Image::GetAttribute(UINT32 aid, void *attr)
     {
     case AAID_FILE_PATH:
         *((wstring *)attr) = m_FilePath;
+        break;
+    case AAID_WIDTH:
+        *((UINT32 *)attr) = m_Width;
+        break;
+    case AAID_HEIGHT:
+        *((UINT32 *)attr) = m_Height;
         break;
     }
 
@@ -124,6 +147,12 @@ RC Image::SetAttribute(UINT32 aid, void *attr)
     {
     case AAID_FILE_PATH:
         m_FilePath = *((wstring *)attr);
+        break;
+    case AAID_WIDTH:
+        m_Width = *((UINT32 *)attr);
+        break;
+    case AAID_HEIGHT:
+        m_Height = *((UINT32 *)attr);
         break;
     }
 
@@ -146,6 +175,8 @@ IComponent *Image::Clone()
 {
     Image *image = new Image();
     image->m_FilePath = m_FilePath;
+    image->m_Width = m_Width;
+    image->m_Height = m_Height;
     image->m_Id = m_Id;
     image->m_Name = m_Name;
     return image;
@@ -180,8 +211,14 @@ RC Image::Run()
     }
     BITMAP bitmap;
     ::GetObject(hBitmap, sizeof(bitmap), &bitmap); 
-    m_Output->m_Array = MatLabHelper::CreateDoubleArray(bitmap.bmWidthBytes, bitmap.bmHeight, (const char *)bitmap.bmBits);
-    ::DeleteObject(hBitmap);
+    UINT32 width = m_Width;
+    UINT32 height = m_Height;
+    if (m_Width == 0 || m_Height == 0)
+    {
+        width = m_Width * bitmap.bmBitsPixel / 8;
+        height = m_Height;
+    }
+    m_Output->m_Array = MatLabHelper::CreateDoubleArray(width, height, (const char *)bitmap.bmBits, bitmap.bmWidthBytes * bitmap.bmHeight);
     DeleteObject(hBitmap);
 
     return rc;
@@ -203,6 +240,6 @@ Image *Image::Factory()
     return image;
 }
 
-LPCWSTR Image::s_ComponentName = TEXT("图像");
+LPCWSTR Image::s_ComponentName = TEXT("BMP图像");
 
 UINT32 Image::s_Count = 0;

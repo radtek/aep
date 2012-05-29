@@ -1,7 +1,0 @@
-AddFuncInitialize
-AddFuncInitializeWithHandlers
-AddFuncTerminate
-AddFuncPrintStackTrace
-AddFuncGetMcrID
-mlxAddFunc
-mlfAddFunc
