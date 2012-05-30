@@ -12,46 +12,131 @@
 
 LPCSTR MatLabHelper::InitializeFuncPrefix = "Initialize";
 
-LPCSTR MatLabHelper::FuncPrefix = "mlf";
+LPCSTR MatLabHelper::FuncPrefix = "mlx";
+//LPCSTR MatLabHelper::FuncPrefix = "mlf";
 
 LPCSTR MatLabHelper::PrintStackFuncPrefix = "PrintStackTrace";
 
 LPCSTR MatLabHelper::TerminateFuncPrefix = "Terminate";
 
-Array *MatLabHelper::CreateDoubleArray(UINT32 x, UINT32 y, const char *content, UINT32 size)
+Array *MatLabHelper::CreateDoubleArray(UINT32 x, UINT32 y,
+                                       const char *content,
+                                       UINT32 width, UINT32 height,
+                                       UINT32 startX, UINT32 startY)
 {
     Array *a = mxCreateDoubleMatrix(x, y, mxREAL);
 
+    double *p = mxGetPr(a);
+    memset(p, 0, x * y * sizeof(double));
     if (content)
     {
-        double *p = mxGetPr(a);
-        if (size)
+        if (width && height)
         {
-            size = min(size, x * y);
+            for (UINT32 yy = 0; yy < min(y, height - startY); ++yy)
+            {
+                for (UINT32 xx = 0; xx < min(x, width - startX); ++xx)
+                {
+                    p[yy * x + xx] = content[(startY + yy) * width + startX + xx];
+                }
+            }
         }
-        for (UINT32 i = 0; i < size; ++i)
+        else
         {
-            p[i] = content[i];
+            for (UINT32 i = 0; i < x * y; ++i)
+            {
+                p[i] = content[i];
+            }
         }
     }
 
     return a;
 }
 
-Array *MatLabHelper::CreateDoubleArray(UINT32 x, UINT32 y, const double *content, UINT32 size)
+Array *MatLabHelper::CreateDoubleArray(UINT32 x, UINT32 y,
+                                       const double *content,
+                                       UINT32 width, UINT32 height,
+                                       UINT32 startX, UINT32 startY)
 {
     Array *a = mxCreateDoubleMatrix(x, y, mxREAL);
 
+    double *p = mxGetPr(a);
+    memset(p, 0, x * y * sizeof(double));
     if (content)
     {
-        double *p = mxGetPr(a);
+        if (width && height)
+        {
+            for (UINT32 yy = 0; yy < min(y, height - startY); ++yy)
+            {
+                for (UINT32 xx = 0; xx < min(x, width - startX); ++xx)
+                {
+                    p[yy * x + xx] = content[(startY + yy) * width + startX + xx];
+                }
+            }
+        }
+        else
+        {
+            for (UINT32 i = 0; i < x * y; ++i)
+            {
+                p[i] = content[i];
+            }
+        }
+    }
+
+    return a;
+}
+
+Array *MatLabHelper::CreateDoubleArray(UINT32 x, UINT32 y,
+                                       const char *content,
+                                       UINT32 size, UINT32 start)
+{
+    Array *a = mxCreateDoubleMatrix(x, y, mxREAL);
+
+    double *p = mxGetPr(a);
+    memset(p, 0, x * y * sizeof(double));
+    if (content)
+    {
         if (size)
         {
-            size = min(size, x * y);
+            for (UINT32 i = 0; i < min(x * y, size - start); ++i)
+            {
+                p[i] = content[start + i];
+            }
         }
-        for (UINT32 i = 0; i < size; ++i)
+        else
         {
-            p[i] = content[i];
+            for (UINT32 i = 0; i < x * y; ++i)
+            {
+                p[i] = content[i];
+            }
+        }
+    }
+
+    return a;
+}
+
+Array *MatLabHelper::CreateDoubleArray(UINT32 x, UINT32 y,
+                                       const double *content,
+                                       UINT32 size, UINT32 start)
+{
+    Array *a = mxCreateDoubleMatrix(x, y, mxREAL);
+
+    double *p = mxGetPr(a);
+    memset(p, 0, x * y * sizeof(double));
+    if (content)
+    {
+        if (size)
+        {
+            for (UINT32 i = 0; i < min(x * y, size - start); ++i)
+            {
+                p[i] = content[start + i];
+            }
+        }
+        else
+        {
+            for (UINT32 i = 0; i < x * y; ++i)
+            {
+                p[i] = content[i];
+            }
         }
     }
 
@@ -63,7 +148,7 @@ void MatLabHelper::DestroyArray(Array *a)
     mxDestroyArray(a);
 }
 
-RC MatLabHelper::RunFunc(wstring dllFileName, wstring funcName, UINT32 outputCount, Array **output, const vector<Array *> &inputList)
+RC MatLabHelper::RunFunc(wstring dllFileName, wstring funcName, vector<Array *> &outputList, vector<Array *> &inputList)
 {
     RC rc;
 
@@ -101,7 +186,7 @@ RC MatLabHelper::RunFunc(wstring dllFileName, wstring funcName, UINT32 outputCou
     string fullFuncName = FuncPrefix;
     fullFuncName += sFuncName;
 
-    CHECK_RC(RealRunFunc(algorithmDllHandle, fullFuncName, outputCount, output, inputList, result));
+    CHECK_RC(RealRunFunc(algorithmDllHandle, fullFuncName, outputList, inputList, result));
 
     if (!result)
     {
@@ -145,6 +230,29 @@ RC MatLabHelper::RunFunc(wstring dllFileName, wstring funcName, UINT32 outputCou
         return RC::ALGORITHM_GETPROC_ERROR; \
     } \
 
+/*
+#define SWITCH_INPUT_COUNT(...) \
+    switch (inputCount) \
+    { \
+    case 1: \
+        {
+            typedef bool (*Func)(int, Array **, Array *); \
+            GET_FUNC_PROC_ADDR; \
+            result = func(outputCount, __VA_ARGS__, inputList[0]); \
+            break; \
+        } \
+    case 2: \
+        { \
+            typedef bool (*Func)(int, Array **, Array *, Array *); \
+            GET_FUNC_PROC_ADDR; \
+            result = func(outputCount, __VA_ARGS__, inputList[0], inputList[1]); \
+            break; \
+        } \
+    default: \
+        return RC::ALGORITHM_OVERMAXPARAMNUM_ERROR; \
+    } \
+    */
+
 /**
 * @param algorithmDllHandle 算法DLL文件句柄.
 * @param fullFuncName 算法入口函数全名.
@@ -161,28 +269,53 @@ RC MatLabHelper::RunFunc(wstring dllFileName, wstring funcName, UINT32 outputCou
 * 实现对参数列表无差别调用(目前最大支持5个参数, 如有需要可随意增加),
 * 并且记录算法调用结果.
 */
-RC MatLabHelper::RealRunFunc(HINSTANCE algorithmDllHandle, string fullFuncName, UINT32 outputCount, Array **output, const vector<Array *> &inputList, bool &result)
+RC MatLabHelper::RealRunFunc(HINSTANCE algorithmDllHandle, string fullFuncName, vector<Array *> &outputList, vector<Array *> &inputList, bool &result)
 {
+    UINT32 outputCount = outputList.size();
     UINT32 inputCount = inputList.size();
-    switch (inputCount)
+
+    typedef bool (*Func)(int, Array *[], int, Array *[]);
+    Func func = (Func)GetProcAddress(
+        algorithmDllHandle,
+        fullFuncName.c_str());
+    if (!func)
+    {
+        Utility::PromptLastErrorMessage();
+        return RC::ALGORITHM_GETPROC_ERROR;
+    }
+    result = func(outputCount, &outputList[0], inputCount, &inputList[0]);
+    /*
+    switch (outputCount)
     {
     case 1:
         {
-            typedef bool (*Func)(int, Array **, Array *);
-            GET_FUNC_PROC_ADDR;
-            result = func(outputCount, output, inputList[0]);
+            SWITCH_INPUT_COUNT(outputList[0])
             break;
         }
     case 2:
         {
-            typedef bool (*Func)(int, Array **, Array *, Array *);
-            GET_FUNC_PROC_ADDR;
-            result = func(outputCount, output, inputList[0], inputList[1]);
+            SWITCH_INPUT_COUNT(outputList[0], outputList[1])
+            break;
+        }
+    case 3:
+        {
+            SWITCH_INPUT_COUNT(outputList[0], outputList[1], outputList[2])
+            break;
+        }
+    case 4:
+        {
+            SWITCH_INPUT_COUNT(outputList[0], outputList[1], outputList[2], outputList[3])
+            break;
+        }
+    case 5:
+        {
+            SWITCH_INPUT_COUNT(outputList[0], outputList[1], outputList[2], outputList[3], outputList[4])
             break;
         }
     default:
-        return RC::ALGORITHM_OVERMAXPARAMNUM_ERROR;
+        return RC::ALGORITHM_OVERMAXOUTPUT_ERROR;
     }
+    */
 
     return OK;
 }

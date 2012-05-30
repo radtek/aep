@@ -235,9 +235,31 @@ wstring Utility::StripFilePath(LPCWSTR pathName)
     return fileName;
 }
 
-bool Utility::SaveBmpFile(CString fileName, const char *content, UINT32 width, UINT32 height, UINT32 depth, RGBQUAD *colorTable)
+RC Utility::SaveBmpFile(CString fileName, UINT32 x, UINT32 y,
+                        const char *content,
+                        UINT32 width, UINT32 height,
+                        UINT32 startX, UINT32 startY,
+                        UINT32 depth, RGBQUAD *colorTable)
 {
     RC rc;
+
+    if (x == 0 || y == 0)
+    {
+        return RC::UTILITY_SAVE_IMAGE_ERROR;
+    }
+
+    if (width == 0)
+    {
+        width = x;
+    }
+    if (height == 0)
+    {
+        height = y;
+    }
+    if (startX >= width || startY >= height)
+    {
+        return RC::UTILITY_SAVE_IMAGE_ERROR;
+    }
 
     UINT32 colorTableSize = 0;
     if (depth == 8)
@@ -245,13 +267,25 @@ bool Utility::SaveBmpFile(CString fileName, const char *content, UINT32 width, U
         colorTableSize = 1024;
     }
 
+    UINT32 xByte = (x * (depth / 8) + 3) / 4 * 4;
     UINT32 widthByte = (width * (depth / 8) + 3) / 4 * 4;
+    UINT32 startXByte = (startX * (depth / 8) + 3) / 4 * 4;
+
+    char *buf = new char[xByte * y];
+    memset(buf, 0, xByte * y * sizeof(char));
+    for (UINT32 yy = 0; yy < min(y, height - startY); ++yy)
+    {
+        for (UINT32 xx = 0; xx < min(xByte, widthByte - startXByte); ++xx)
+        {
+            buf[yy * xByte + xx] = content[(startY + yy) * widthByte + startXByte + xx];
+        }
+    }
 
     BITMAPFILEHEADER bfh;
     bfh.bfType = 0x4D42;
 
     bfh.bfSize = sizeof(BITMAPFILEHEADER) + sizeof(BITMAPINFOHEADER)
-        + colorTableSize + widthByte * height;
+        + colorTableSize + xByte * y;
     bfh.bfReserved1 = 0;
     bfh.bfReserved2 = 0;
 
@@ -260,12 +294,12 @@ bool Utility::SaveBmpFile(CString fileName, const char *content, UINT32 width, U
     BITMAPINFOHEADER bih;
 
     bih.biSize = sizeof(BITMAPINFOHEADER);
-    bih.biWidth = width;
-    bih.biHeight = height;
+    bih.biWidth = x;
+    bih.biHeight = y;
     bih.biPlanes = 1;
     bih.biBitCount = depth;
     bih.biCompression = BI_RGB;
-    bih.biSizeImage = widthByte * height;
+    bih.biSizeImage = xByte * y;
     bih.biXPelsPerMeter = 0;
     bih.biYPelsPerMeter = 0;
     bih.biClrImportant = 0;
@@ -275,19 +309,37 @@ bool Utility::SaveBmpFile(CString fileName, const char *content, UINT32 width, U
     {
         if (!CreateFileNested(fileName))
         {
-            return false;
+            delete[] buf;
+            return RC::UTILITY_SAVE_IMAGE_ERROR;
         }
     }
     HANDLE file = CreateFile(fileName, GENERIC_WRITE, 0, NULL, CREATE_ALWAYS,
         FILE_ATTRIBUTE_NORMAL | FILE_FLAG_SEQUENTIAL_SCAN, NULL);
     UINT32 written = 0;
-    WriteFile(file, (LPCVOID)&bfh, sizeof(BITMAPFILEHEADER), (LPDWORD)&written, NULL);
-    WriteFile(file, (LPCVOID)&bih, sizeof(BITMAPINFOHEADER), (LPDWORD)&written, NULL);
+    if (FALSE == WriteFile(file, (LPCVOID)&bfh, sizeof(BITMAPFILEHEADER), (LPDWORD)&written, NULL))
+    {
+        delete[] buf;
+        return RC::UTILITY_SAVE_IMAGE_ERROR;
+    }
+    if (FALSE == WriteFile(file, (LPCVOID)&bih, sizeof(BITMAPINFOHEADER), (LPDWORD)&written, NULL))
+    {
+        delete[] buf;
+        return RC::UTILITY_SAVE_IMAGE_ERROR;
+    }
     if (depth == 8)
     {
-        WriteFile(file, (LPCVOID)colorTable, colorTableSize, (LPDWORD)&written, NULL);
+        if (FALSE == WriteFile(file, (LPCVOID)colorTable, colorTableSize, (LPDWORD)&written, NULL))
+        {
+            delete[] buf;
+            return RC::UTILITY_SAVE_IMAGE_ERROR;
+        }
     }
-    WriteFile(file, (LPCVOID)content, widthByte * height, (LPDWORD)&written, NULL);
+    if (FALSE == WriteFile(file, (LPCVOID)buf, xByte * y, (LPDWORD)&written, NULL))
+    {
+        delete[] buf;
+        return RC::UTILITY_SAVE_IMAGE_ERROR;
+    }
+    delete[] buf;
     CloseHandle(file);
 
     return rc;

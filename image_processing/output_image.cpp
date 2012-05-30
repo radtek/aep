@@ -20,6 +20,8 @@ m_Depth(24)
     for (UINT32 i = 0; i < m_OutputCount; ++i)
     {
         m_OutputId[i] = 0;
+        m_Width[i] = 0;
+        m_Height[i] = 0;
     }
 }
 
@@ -42,10 +44,8 @@ void OutputImage::Save(CArchive &ar)
     for (UINT32 i = 0; i < m_OutputCount; ++i)
     {
         ar << m_OutputId[i];
-    }
-
-    for (UINT32 i = 0; i < m_OutputCount; ++i)
-    {
+        ar << m_Width[i];
+        ar << m_Height[i];
         ar << CString(m_FilePath[i].c_str());
     }
 
@@ -63,10 +63,8 @@ void OutputImage::Load(CArchive &ar)
     for (UINT32 i = 0; i < m_OutputCount; ++i)
     {
         ar >> m_OutputId[i];
-    }
-
-    for (UINT32 i = 0; i < m_OutputCount; ++i)
-    {
+        ar >> m_Width[i];
+        ar >> m_Height[i];
         ar >> str;
         m_FilePath[i] = str;
     }
@@ -122,20 +120,31 @@ void OutputImage::GetAttributeList(AttributeList &attributeList)
 {
     Attribute attribute;
 
-    for (UINT32 i = AAID_OUTPUT_ID1; i <= AAID_OUTPUT_ID5; ++i)
+    for (UINT32 i = 0; i < m_OutputCount; ++i)
     {
-        attribute.Id = i;
+        attribute.Id = AAID_OUTPUT_ID1 + i;
         CString name = TEXT("算法输出ID");
         name.AppendFormat(TEXT("%u"), i + 1);
         attribute.Name = name;
         attribute.Type = Attribute::TYPE_INT;
         attributeList.push_back(attribute);
-    }
 
-    for (UINT32 i = 0; i <= AAID_FILE_PATH5 - AAID_FILE_PATH1; ++i)
-    {
-        attribute.Id = i + AAID_FILE_PATH1;
-        CString name = TEXT("图像文件路径");
+        attribute.Id = AAID_WIDTH1 + i;
+        name = TEXT("输出宽度");
+        name.AppendFormat(TEXT("%u"), i + 1);
+        attribute.Name = name;
+        attribute.Type = Attribute::TYPE_INT;
+        attributeList.push_back(attribute);
+
+        attribute.Id = AAID_HEIGHT1 + i;
+        name = TEXT("输出高度");
+        name.AppendFormat(TEXT("%u"), i + 1);
+        attribute.Name = name;
+        attribute.Type = Attribute::TYPE_INT;
+        attributeList.push_back(attribute);
+
+        attribute.Id = AAID_FILE_PATH1 + i;
+        name = TEXT("输出BMP图像路径");
         name.AppendFormat(TEXT("%u"), i + 1);
         attribute.Name = name;
         attribute.Type = Attribute::TYPE_STRING;
@@ -156,7 +165,25 @@ RC OutputImage::GetAttribute(UINT32 aid, void *attr)
     {
         if (aid == i)
         {
-            *((UINT32 *)attr) = m_OutputId[i];
+            *((UINT32 *)attr) = m_OutputId[i - AAID_OUTPUT_ID1];
+            return rc;
+        }
+    }
+
+    for (UINT32 i = AAID_WIDTH1; i <= AAID_HEIGHT5; ++i)
+    {
+        if (aid == i)
+        {
+            *((UINT32 *)attr) = m_Width[i - AAID_WIDTH1];
+            return rc;
+        }
+    }
+
+    for (UINT32 i = AAID_HEIGHT1; i <= AAID_OUTPUT_ID5; ++i)
+    {
+        if (aid == i)
+        {
+            *((UINT32 *)attr) = m_Height[i- AAID_HEIGHT1];
             return rc;
         }
     }
@@ -186,7 +213,25 @@ RC OutputImage::SetAttribute(UINT32 aid, void *attr)
     {
         if (aid == i)
         {
-            m_OutputId[i] = *((UINT32 *)attr);
+            m_OutputId[i - AAID_OUTPUT_ID1] = *((UINT32 *)attr);
+            return rc;
+        }
+    }
+
+    for (UINT32 i = AAID_WIDTH1; i <= AAID_WIDTH5; ++i)
+    {
+        if (aid == i)
+        {
+            m_Width[i - AAID_WIDTH1] = *((UINT32 *)attr);
+            return rc;
+        }
+    }
+
+    for (UINT32 i = AAID_HEIGHT1; i <= AAID_HEIGHT5; ++i)
+    {
+        if (aid == i)
+        {
+            m_Height[i - AAID_HEIGHT1] = *((UINT32 *)attr);
             return rc;
         }
     }
@@ -220,6 +265,8 @@ IComponent *OutputImage::Clone()
     for (UINT32 i = 0; i < m_OutputCount; ++i)
     {
         outputImage->m_OutputId[i] = m_OutputId[i];
+        outputImage->m_Width[i] = m_Width[i];
+        outputImage->m_Height[i] = m_Height[i];
         outputImage->m_FilePath[i] = m_FilePath[i];
     }
     outputImage->m_Depth = m_Depth;
@@ -290,9 +337,20 @@ RC OutputImage::Run()
         {
             continue;
         }
-        UINT32 width = mxGetM(m_Input->m_Array[i]) / (m_Depth / 8);
-        UINT32 height = mxGetN(m_Input->m_Array[i]);
-        UINT32 size = width * height * (m_Depth / 8);
+        UINT32 x = m_Width[i];
+        UINT32 m = mxGetM(m_Input->m_Array[i]) / (m_Depth / 8);
+        if (!x)
+        {
+            x = m;
+        }
+        UINT32 y = m_Height[i];
+        UINT32 n = mxGetN(m_Input->m_Array[i]);
+        if (!y)
+        {
+            y = n;
+        }
+
+        UINT32 size = m * n * (m_Depth / 8);
         char *buf = new char[size];
         double *content = mxGetPr(m_Input->m_Array[i]);
         for (UINT32 j = 0; j < size; ++j)
@@ -301,7 +359,7 @@ RC OutputImage::Run()
         }
 
         // Utility::SaveBmpFile(bitmap, m_FilePath.c_str());
-        Utility::SaveBmpFile(m_FilePath[i].c_str(), buf, width, height, m_Depth, NULL);
+        CHECK_RC(Utility::SaveBmpFile(m_FilePath[i].c_str(), x, y, buf, m, n, 0, 0, m_Depth, NULL));
         delete buf;
     }
 
@@ -323,6 +381,6 @@ OutputImage *OutputImage::Factory()
     return outputImage;
 }
 
-LPCWSTR OutputImage::s_ComponentName = TEXT("输出图像");
+LPCWSTR OutputImage::s_ComponentName = TEXT("输出BMP图像");
 
 UINT32 OutputImage::s_Count = 0;

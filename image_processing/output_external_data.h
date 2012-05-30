@@ -33,6 +33,16 @@ public:
         AAID_OUTPUT_ID3,
         AAID_OUTPUT_ID4,
         AAID_OUTPUT_ID5,
+        AAID_WIDTH1,
+        AAID_WIDTH2,
+        AAID_WIDTH3,
+        AAID_WIDTH4,
+        AAID_WIDTH5,
+        AAID_HEIGHT1,
+        AAID_HEIGHT2,
+        AAID_HEIGHT3,
+        AAID_HEIGHT4,
+        AAID_HEIGHT5,
         AAID_FILE_PATH1,
         AAID_FILE_PATH2,
         AAID_FILE_PATH3,
@@ -54,6 +64,8 @@ public:
 public:
     static const UINT32 m_OutputCount = 5;
     UINT32 m_OutputId[m_OutputCount];
+    UINT32 m_Width[m_OutputCount];
+    UINT32 m_Height[m_OutputCount];
     wstring m_FilePath[m_OutputCount];
 
     UINT32 m_Id;

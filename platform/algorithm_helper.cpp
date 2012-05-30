@@ -224,7 +224,7 @@ RC AlgorithmHelper::RealRunFunc(HINSTANCE algorithmDllHandle, string fullFuncNam
             break;
         }
     default:
-        return RC::ALGORITHM_OVERMAXPARAMNUM_ERROR;
+        return RC::ALGORITHM_OVERMAXINPUTNUM_ERROR;
     }
 
     return OK;

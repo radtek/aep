@@ -18,6 +18,8 @@ OutputExternalData::OutputExternalData()
     for (UINT32 i = 0; i < m_OutputCount; ++i)
     {
         m_OutputId[i] = 0;
+        m_Width[i] = 0;
+        m_Height[i] = 0;
     }
 }
 
@@ -40,10 +42,8 @@ void OutputExternalData::Save(CArchive &ar)
     for (UINT32 i = 0; i < m_OutputCount; ++i)
     {
         ar << m_OutputId[i];
-    }
-
-    for (UINT32 i = 0; i < m_OutputCount; ++i)
-    {
+        ar << m_Width[i];
+        ar << m_Height[i];
         ar << CString(m_FilePath[i].c_str());
     }
 }
@@ -59,10 +59,8 @@ void OutputExternalData::Load(CArchive &ar)
     for (UINT32 i = 0; i < m_OutputCount; ++i)
     {
         ar >> m_OutputId[i];
-    }
-
-    for (UINT32 i = 0; i < m_OutputCount; ++i)
-    {
+        ar >> m_Width[i];
+        ar >> m_Height[i];
         ar >> str;
         m_FilePath[i] = str;
     }
@@ -116,20 +114,31 @@ void OutputExternalData::GetAttributeList(AttributeList &attributeList)
 {
     Attribute attribute;
 
-    for (UINT32 i = AAID_OUTPUT_ID1; i <= AAID_OUTPUT_ID5; ++i)
+    for (UINT32 i = 0; i < m_OutputCount; ++i)
     {
-        attribute.Id = i;
+        attribute.Id = AAID_OUTPUT_ID1 + i;
         CString name = TEXT("算法输出ID");
         name.AppendFormat(TEXT("%u"), i + 1);
         attribute.Name = name;
         attribute.Type = Attribute::TYPE_INT;
         attributeList.push_back(attribute);
-    }
 
-    for (UINT32 i = 0; i <= AAID_FILE_PATH5 - AAID_FILE_PATH1; ++i)
-    {
-        attribute.Id = i + AAID_FILE_PATH1;
-        CString name = TEXT("数据文件路径");
+        attribute.Id = AAID_WIDTH1 + i;
+        name = TEXT("输出宽度");
+        name.AppendFormat(TEXT("%u"), i + 1);
+        attribute.Name = name;
+        attribute.Type = Attribute::TYPE_INT;
+        attributeList.push_back(attribute);
+
+        attribute.Id = AAID_HEIGHT1 + i;
+        name = TEXT("输出高度");
+        name.AppendFormat(TEXT("%u"), i + 1);
+        attribute.Name = name;
+        attribute.Type = Attribute::TYPE_INT;
+        attributeList.push_back(attribute);
+
+        attribute.Id = AAID_FILE_PATH1 + i;
+        name = TEXT("输出DAT数据文件路径");
         name.AppendFormat(TEXT("%u"), i + 1);
         attribute.Name = name;
         attribute.Type = Attribute::TYPE_STRING;
@@ -145,7 +154,25 @@ RC OutputExternalData::GetAttribute(UINT32 aid, void *attr)
     {
         if (aid == i)
         {
-            *((UINT32 *)attr) = m_OutputId[i];
+            *((UINT32 *)attr) = m_OutputId[i - AAID_OUTPUT_ID1];
+            return rc;
+        }
+    }
+
+    for (UINT32 i = AAID_WIDTH1; i <= AAID_HEIGHT5; ++i)
+    {
+        if (aid == i)
+        {
+            *((UINT32 *)attr) = m_Width[i - AAID_WIDTH1];
+            return rc;
+        }
+    }
+
+    for (UINT32 i = AAID_HEIGHT1; i <= AAID_OUTPUT_ID5; ++i)
+    {
+        if (aid == i)
+        {
+            *((UINT32 *)attr) = m_Height[i- AAID_HEIGHT1];
             return rc;
         }
     }
@@ -170,7 +197,25 @@ RC OutputExternalData::SetAttribute(UINT32 aid, void *attr)
     {
         if (aid == i)
         {
-            m_OutputId[i] = *((UINT32 *)attr);
+            m_OutputId[i - AAID_OUTPUT_ID1] = *((UINT32 *)attr);
+            return rc;
+        }
+    }
+
+    for (UINT32 i = AAID_WIDTH1; i <= AAID_WIDTH5; ++i)
+    {
+        if (aid == i)
+        {
+            m_Width[i - AAID_WIDTH1] = *((UINT32 *)attr);
+            return rc;
+        }
+    }
+
+    for (UINT32 i = AAID_HEIGHT1; i <= AAID_HEIGHT5; ++i)
+    {
+        if (aid == i)
+        {
+            m_Height[i - AAID_HEIGHT1] = *((UINT32 *)attr);
             return rc;
         }
     }
@@ -198,6 +243,8 @@ IComponent *OutputExternalData::Clone()
     for (UINT32 i = 0; i < m_OutputCount; ++i)
     {
         outputExternalData->m_OutputId[i] = m_OutputId[i];
+        outputExternalData->m_Width[i] = m_Width[i];
+        outputExternalData->m_Height[i] = m_Height[i];
         outputExternalData->m_FilePath[i] = m_FilePath[i];
     }
     outputExternalData->m_Id = m_Id;
@@ -263,7 +310,8 @@ RC OutputExternalData::Run()
 
     for (UINT32 i = 0; i < m_OutputCount; ++i)
     {
-        if (!m_Input->m_Array[i] || m_FilePath[i].empty())
+        if (!m_Input->m_Array[i] ||
+            m_FilePath[i].empty())
         {
             continue;
         }
@@ -286,19 +334,33 @@ RC OutputExternalData::Run()
         {
             return RC::FILE_OPEN_ERROR;
         }
-        UINT32 x = mxGetM(m_Input->m_Array[i]);
-        UINT32 y = mxGetN(m_Input->m_Array[i]);
-        UINT32 length = x * y;
-        char *buf = new char[length];
-        double *content = mxGetPr(m_Input->m_Array[i]);
-        for (UINT32 j = 0; j < length; ++j)
+        UINT32 x = m_Width[i];
+        UINT32 m = mxGetM(m_Input->m_Array[i]);
+        if (!x)
         {
-            buf[j] = (char)content[j];
+            x = m;
+        }
+        UINT32 y = m_Height[i];
+        UINT32 n = mxGetN(m_Input->m_Array[i]);
+        if (!y)
+        {
+            y = n;
+        }
+        UINT32 length = x * y;
+        double *buf = new double[length];
+        memset(buf, 0, length * sizeof(char));
+        double *content = mxGetPr(m_Input->m_Array[i]);
+        for (UINT32 yy = 0; yy < min(n, y); ++yy)
+        {
+            for (UINT32 xx = 0; xx < min(m, x); ++xx)
+            {
+                buf[yy * x + xx] = content[yy * m + xx];
+            }
         }
         DWORD written = 0;
-        WriteFile(file, buf, length, &written, NULL);
-        if (length != written)
+        if (FALSE == WriteFile(file, (char *)buf, length * sizeof(double), &written, NULL))
         {
+            delete[] buf;
             return RC::FILE_WRITE_ERROR;
         }
         delete[] buf;
@@ -323,6 +385,6 @@ OutputExternalData *OutputExternalData::Factory()
     return outputExternalData;
 }
 
-LPCWSTR OutputExternalData::s_ComponentName = TEXT("输出外部数据");
+LPCWSTR OutputExternalData::s_ComponentName = TEXT("输出DAT数据");
 
 UINT32 OutputExternalData::s_Count = 0;

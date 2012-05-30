@@ -104,7 +104,7 @@ void Image::GetAttributeList(AttributeList &attributeList)
     Attribute attribute;
 
     attribute.Id = AAID_FILE_PATH;
-    attribute.Name = TEXT("图像文件路径");
+    attribute.Name = TEXT("BMP图像文件路径");
     attribute.Type = Attribute::TYPE_STRING;
     attributeList.push_back(attribute);
 
@@ -211,14 +211,14 @@ RC Image::Run()
     }
     BITMAP bitmap;
     ::GetObject(hBitmap, sizeof(bitmap), &bitmap); 
-    UINT32 width = m_Width;
+    UINT32 width = m_Width * bitmap.bmBitsPixel / 8;
     UINT32 height = m_Height;
-    if (m_Width == 0 || m_Height == 0)
+    if (width == 0 || height == 0)
     {
-        width = m_Width * bitmap.bmBitsPixel / 8;
-        height = m_Height;
+        width = bitmap.bmWidthBytes;
+        height = bitmap.bmHeight;
     }
-    m_Output->m_Array = MatLabHelper::CreateDoubleArray(width, height, (const char *)bitmap.bmBits, bitmap.bmWidthBytes * bitmap.bmHeight);
+    m_Output->m_Array = MatLabHelper::CreateDoubleArray(width, height, (const char *)bitmap.bmBits, bitmap.bmWidthBytes, bitmap.bmHeight, 0, 0);
     DeleteObject(hBitmap);
 
     return rc;
