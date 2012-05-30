@@ -402,6 +402,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\image_algorithm_dlg.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\image_algorithm_input1.cpp"
 				>
 			</File>
@@ -513,6 +517,10 @@
 			</File>
 			<File
 				RelativePath=".\image_algorithm.h"
+				>
+			</File>
+			<File
+				RelativePath=".\image_algorithm_dlg.h"
 				>
 			</File>
 			<File
