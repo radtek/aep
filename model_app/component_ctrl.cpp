@@ -92,10 +92,20 @@ wstring ComponentCtrl::GetTitle()
 
 void ComponentCtrl::UpdateAttributeBar()
 {
-    GetAttributeBar().SetComponent(m_Component);
+    CAttributeBar *attributeBar = GetAttributeBar();
+    if (!attributeBar)
+    {
+        return;
+    }
+    attributeBar->SetComponent(m_Component);
 }
 
 void ComponentCtrl::ClearAttributeBar()
 {
-    GetAttributeBar().Clear();
+    CAttributeBar *attributeBar = GetAttributeBar();
+    if (!attributeBar)
+    {
+        return;
+    }
+    attributeBar->Clear();
 }

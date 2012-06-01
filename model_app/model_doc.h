@@ -23,6 +23,44 @@ public:
 protected:
     UINT32 m_CurrentComponentId;
 
+public:
+    enum State
+    {
+        STATE_NORMAL,
+        STATE_NEW_COMPONENT,
+        STATE_NEW_INTERNAL_ALGORITHM,
+        STATE_NEW_EXTERNAL_ALGORITHM,
+        STATE_NEW_CONNECTOR,
+        STATE_COMPONENT_SELECTED,
+        STATE_CONNECTOR_SELECTED,
+    } m_CurrentState;
+
+    // New component.
+    INT32 m_CurrentComponentTypeId;
+    ModelCtrl *m_CurrentModelCtrl;
+
+    // New internal algorithm.
+    INT32 m_CurrentInternalAlgorithmId;
+
+    // New connector ctrl.
+    INT32 m_CurrentConnectorId;
+    ConnectorCtrl *m_CurrentConnectorCtrl;
+
+    // Normal.
+    CPoint m_LastClickPosition;
+    bool m_Moved;
+
+// Operations
+public:
+    void SelectModelCtrl(ModelCtrl *modelCtrl);
+    void SelectConnectorCtrl(ConnectorCtrl *connectorCtrl, CPoint point);
+    void UnSelectCurrentModelCtrl();
+    void UnSelectCurrentConnectorCtrl();
+    void UnSelectAll();
+
+    void RemoveCurrentModelCtrl();
+    void RemoveCurrentConnectorCtrl();
+
 // Operations
 public:
     bool AddModelCtrl(ModelCtrl *modelCtrl);
@@ -34,7 +72,10 @@ public:
 // Overrides
 	public:
 	virtual BOOL OnNewDocument();
+    virtual void DeleteContents();
 	virtual void Serialize(CArchive& ar);
+
+// Interfaces
     RC ExportModel(CArchive &ar);
     Model ExportModel();
     RC DrawData();

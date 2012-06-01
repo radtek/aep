@@ -259,6 +259,26 @@ void ConnectorCtrl::Connect(ModelCtrl *modelCtrl)
     }
 }
 
+void ConnectorCtrl::Disconnect(ModelCtrl *modelCtrl)
+{
+    if (m_Source != NULL)
+    {
+        if (m_Source == modelCtrl)
+        {
+            // m_Source->RemoveConnectorCtrl(this);
+            m_Source = NULL;
+        }
+    }
+    else if (m_Target != NULL)
+    {
+        if (m_Target == modelCtrl)
+        {
+            // m_Target->RemoveConnectorCtrl(this);
+            m_Target = NULL;
+        }
+    }
+}
+
 void ConnectorCtrl::Disconnect()
 {
     if (m_CurrentSelectMode == CSM_NONE)
@@ -299,6 +319,20 @@ void ConnectorCtrl::Disconnect()
             m_Target = NULL;
         }
         return;
+    }
+}
+
+void ConnectorCtrl::DisconnectAll()
+{
+    if (m_Source != NULL)
+    {
+        m_Source->RemoveConnectorCtrl(this);
+        m_Source = NULL;
+    }
+    if (m_Target != NULL)
+    {
+        m_Target->RemoveConnectorCtrl(this);
+        m_Target = NULL;
     }
 }
 

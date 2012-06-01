@@ -18,41 +18,8 @@ public:
 
 	CModelDoc* GetDocument() const;
 
-    enum State
-    {
-        STATE_NORMAL,
-        STATE_NEW_COMPONENT,
-        STATE_NEW_INTERNAL_ALGORITHM,
-        STATE_NEW_EXTERNAL_ALGORITHM,
-        STATE_NEW_CONNECTOR,
-        STATE_COMPONENT_SELECTED,
-        STATE_CONNECTOR_SELECTED,
-    } m_CurrentState;
-
-    // New component.
-    INT32 m_CurrentComponentTypeId;
-    ModelCtrl *m_CurrentModelCtrl;
-
-    // New internal algorithm.
-    INT32 m_CurrentInternalAlgorithmId;
-
-    // New connector ctrl.
-    INT32 m_CurrentConnectorId;
-    ConnectorCtrl *m_CurrentConnectorCtrl;
-
-    // Normal.
-    CPoint m_LastClickPosition;
-    bool m_Moved;
-
-// Operations
-public:
     ModelCtrl *HitTestModelCtrl(CPoint point);
     ConnectorCtrl *HitTestConnectorCtrl(CPoint point);
-    void SelectModelCtrl(ModelCtrl *modelCtrl);
-    void SelectConnectorCtrl(ConnectorCtrl *connectorCtrl, CPoint point);
-    void UnSelectCurrentModelCtrl();
-    void UnSelectCurrentConnectorCtrl();
-    void UnSelectAll();
 
 // Overrides
 	public:
@@ -84,6 +51,7 @@ public:
 public:
     afx_msg void OnLButtonUp(UINT nFlags, CPoint point);
     afx_msg void OnLButtonDblClk(UINT nFlags, CPoint point);
+    afx_msg void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
 };
 
 #ifndef _DEBUG  // debug version in model_view.cpp

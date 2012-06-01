@@ -41,7 +41,9 @@ public:
     ConnectorCtrlSelectMode GetSelectMode();
     void Move(CPoint point, ModelCtrl *from = NULL);
     void Connect(ModelCtrl *modelCtrl);
+    void Disconnect(ModelCtrl *modelCtrl);
     void Disconnect();
+    void DisconnectAll();
     void SetAttachPoint(CPoint point);
 
     // bool Connect();

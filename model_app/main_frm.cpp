@@ -282,26 +282,26 @@ void CMainFrame::OnComponentType(UINT id)
 {
 	// TODO: process shortcuts bar commands here...
     UINT32 componentId = id - ID_COMPONENT_TYPE_BEGIN;
-    CModelView *view = DYNAMIC_DOWNCAST(CModelView, GetActiveView());
-    if (view->m_CurrentState == CModelView::STATE_NEW_COMPONENT &&
-        componentId == view->m_CurrentComponentTypeId)
+    CModelDoc *doc = DYNAMIC_DOWNCAST(CModelDoc, GetActiveDocument());
+    if (doc->m_CurrentState == CModelDoc::STATE_NEW_COMPONENT &&
+        componentId == doc->m_CurrentComponentTypeId)
     {
-        view->m_CurrentState = CModelView::STATE_NORMAL;
-        view->m_CurrentComponentTypeId = -1;
+        doc->m_CurrentState = CModelDoc::STATE_NORMAL;
+        doc->m_CurrentComponentTypeId = -1;
     }
     else
     {
-        view->m_CurrentState = CModelView::STATE_NEW_COMPONENT;
-        view->m_CurrentComponentTypeId = componentId;
+        doc->m_CurrentState = CModelDoc::STATE_NEW_COMPONENT;
+        doc->m_CurrentComponentTypeId = componentId;
     }
 }
 
 void CMainFrame::OnUpdateComponentTypeUI(CCmdUI *cmdUI)
 {
-    CModelView *view = DYNAMIC_DOWNCAST(CModelView, GetActiveView());
+    CModelDoc *doc = DYNAMIC_DOWNCAST(CModelDoc, GetActiveDocument());
     UINT32 uiId = cmdUI->m_nID - ID_COMPONENT_TYPE_BEGIN;
-    if (view->m_CurrentState == CModelView::STATE_NEW_COMPONENT &&
-        uiId == view->m_CurrentComponentTypeId)
+    if (doc->m_CurrentState == CModelDoc::STATE_NEW_COMPONENT &&
+        uiId == doc->m_CurrentComponentTypeId)
     {
         cmdUI->SetCheck();
         return;
@@ -316,26 +316,26 @@ void CMainFrame::OnInternalAlgorithm(UINT id)
 {
 	// TODO: process shortcuts bar commands here...
     UINT32 internalAlgorithmId = id - ID_INTERNAL_ALGORITHM_BEGIN;
-        CModelView *view = DYNAMIC_DOWNCAST(CModelView, GetActiveView());
-    if (view->m_CurrentState == CModelView::STATE_NEW_INTERNAL_ALGORITHM &&
-        internalAlgorithmId == view->m_CurrentInternalAlgorithmId)
+    CModelDoc *doc = DYNAMIC_DOWNCAST(CModelDoc, GetActiveDocument());
+    if (doc->m_CurrentState == CModelDoc::STATE_NEW_INTERNAL_ALGORITHM &&
+        internalAlgorithmId == doc->m_CurrentInternalAlgorithmId)
     {
-        view->m_CurrentState = CModelView::STATE_NORMAL;
-        view->m_CurrentInternalAlgorithmId = -1;
+        doc->m_CurrentState = CModelDoc::STATE_NORMAL;
+        doc->m_CurrentInternalAlgorithmId = -1;
     }
     else
     {
-        view->m_CurrentState = CModelView::STATE_NEW_INTERNAL_ALGORITHM;
-        view->m_CurrentInternalAlgorithmId = internalAlgorithmId;
+        doc->m_CurrentState = CModelDoc::STATE_NEW_INTERNAL_ALGORITHM;
+        doc->m_CurrentInternalAlgorithmId = internalAlgorithmId;
     }
 }
 
 void CMainFrame::OnUpdateInternalAlgorithmUI(CCmdUI *cmdUI)
 {
-    CModelView *view = DYNAMIC_DOWNCAST(CModelView, GetActiveView());
+    CModelDoc *doc = DYNAMIC_DOWNCAST(CModelDoc, GetActiveDocument());
     UINT32 uiId = cmdUI->m_nID - ID_INTERNAL_ALGORITHM_BEGIN;
-    if (view->m_CurrentState == CModelView::STATE_NEW_INTERNAL_ALGORITHM &&
-        uiId == view->m_CurrentInternalAlgorithmId)
+    if (doc->m_CurrentState == CModelDoc::STATE_NEW_INTERNAL_ALGORITHM &&
+        uiId == doc->m_CurrentInternalAlgorithmId)
     {
         cmdUI->SetCheck();
         return;
@@ -352,9 +352,9 @@ void CMainFrame::OnExternalAlgorithm(UINT id)
 
 void CMainFrame::OnUpdateExternalAlgorithmUI(CCmdUI *cmdUI)
 {
-    CModelView *view = DYNAMIC_DOWNCAST(CModelView, GetActiveView());
+    CModelDoc *doc = DYNAMIC_DOWNCAST(CModelDoc, GetActiveDocument());
     UINT32 uiId = cmdUI->m_nID - ID_EXTERNAL_ALGORITHM_BEGIN;
-    if (view->m_CurrentState == CModelView::STATE_NEW_EXTERNAL_ALGORITHM)
+    if (doc->m_CurrentState == CModelDoc::STATE_NEW_EXTERNAL_ALGORITHM)
     {
         cmdUI->SetCheck();
         return;
@@ -368,26 +368,26 @@ void CMainFrame::OnUpdateExternalAlgorithmUI(CCmdUI *cmdUI)
 void CMainFrame::OnConnector(UINT id)
 {
     UINT32 connectorId = id - ID_CONNECTOR_BEGIN;
-    CModelView *view = DYNAMIC_DOWNCAST(CModelView, GetActiveView());
-    if (view->m_CurrentState == CModelView::STATE_NEW_CONNECTOR &&
-        connectorId == view->m_CurrentConnectorId)
+    CModelDoc *doc = DYNAMIC_DOWNCAST(CModelDoc, GetActiveDocument());
+    if (doc->m_CurrentState == CModelDoc::STATE_NEW_CONNECTOR &&
+        connectorId == doc->m_CurrentConnectorId)
     {
-        view->m_CurrentState = CModelView::STATE_NORMAL;
-        view->m_CurrentConnectorId = -1;
+        doc->m_CurrentState = CModelDoc::STATE_NORMAL;
+        doc->m_CurrentConnectorId = -1;
     }
     else
     {
-        view->m_CurrentState = CModelView::STATE_NEW_CONNECTOR;
-        view->m_CurrentConnectorId = connectorId;
+        doc->m_CurrentState = CModelDoc::STATE_NEW_CONNECTOR;
+        doc->m_CurrentConnectorId = connectorId;
     }
 }
 
 void CMainFrame::OnUpdateConnectorUI(CCmdUI *cmdUI)
 {
-    CModelView *view = DYNAMIC_DOWNCAST(CModelView, GetActiveView());
+    CModelDoc *doc = DYNAMIC_DOWNCAST(CModelDoc, GetActiveDocument());
     UINT32 uiId = cmdUI->m_nID - ID_CONNECTOR_BEGIN;
-    if (view->m_CurrentState == CModelView::STATE_NEW_CONNECTOR &&
-        uiId == view->m_CurrentConnectorId)
+    if (doc->m_CurrentState == CModelDoc::STATE_NEW_CONNECTOR &&
+        uiId == doc->m_CurrentConnectorId)
     {
         cmdUI->SetCheck();
         return;
@@ -450,6 +450,7 @@ BOOL CMainFrame::CreateShortcutsBar ()
         pane->EnableDocking (CBRS_ALIGN_ANY);
     }
 
+    /*
     InternalAlgorithmMap &internalAlgorithmMap = theApp.m_Platform.GetInternalAlgorithmMap();
     CBCGPOutlookBarPane *internalAlgorithmPane = new CBCGPOutlookBarPane;
     m_PaneList.push_back(internalAlgorithmPane);
@@ -473,15 +474,10 @@ BOOL CMainFrame::CreateShortcutsBar ()
     externalAlgorithmPane->SetOwner (this);
     externalAlgorithmPane->EnableTextLabels ();
     externalAlgorithmPane->EnableDocking (CBRS_ALIGN_ANY);
-    /*
-    for (UINT32 i = 0; i < internalAlgorithmList.size(); ++i)
-    {
-        InternalAlgorithm &internalAlgorithm = internalAlgorithmList[i];
-        externalAlgorithmPane->AddButton (images.ExtractIcon (interfaceTypeMap.size()), internalAlgorithm.GetName().c_str(), ID_EXTERNAL_ALGORITHM_BEGIN + externalAlgorithm.GetId());
-    }
-    */
-    pShortcutsBarContainer->AddTab (externalAlgorithmPane, TEXT("外部算法")/*InternalAlgorithm::s_ComponentName*/, -1, FALSE);
+
+    pShortcutsBarContainer->AddTab (externalAlgorithmPane, TEXT("外部算法"), -1, FALSE);
     externalAlgorithmPane->EnableDocking (CBRS_ALIGN_ANY);
+    */
 
     CBCGPOutlookBarPane *connectorPane = new CBCGPOutlookBarPane;
     m_PaneList.push_back(connectorPane);

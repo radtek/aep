@@ -49,8 +49,17 @@ void ModelCtrl::RemoveConnectorCtrl(ConnectorCtrl *connectorCtrl)
     }
 }
 
-CAttributeBar &ModelCtrl::GetAttributeBar()
+void ModelCtrl::RemoveAllConnectorCtrl()
+{
+    m_ConnectorCtrlList.clear();
+}
+
+CAttributeBar *ModelCtrl::GetAttributeBar()
 {
     CMainFrame *mainFrame = DYNAMIC_DOWNCAST(CMainFrame, theApp.m_pMainWnd);
-    return mainFrame->GetAttributeBar();
+    if (!mainFrame)
+    {
+        return NULL;
+    }
+    return &mainFrame->GetAttributeBar();
 }

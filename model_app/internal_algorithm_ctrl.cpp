@@ -52,5 +52,20 @@ bool InternalAlgorithmCtrl::SetId(UINT32 id)
 
 void InternalAlgorithmCtrl::UpdateAttributeBar()
 {
-    GetAttributeBar().SetInternalAlgorithm(m_InternalAlgorithm);
+    CAttributeBar *attributeBar = GetAttributeBar();
+    if (!attributeBar)
+    {
+        return;
+    }
+    attributeBar->SetInternalAlgorithm(m_InternalAlgorithm);
+}
+
+void InternalAlgorithmCtrl::ClearAttributeBar()
+{
+    CAttributeBar *attributeBar = GetAttributeBar();
+    if (!attributeBar)
+    {
+        return;
+    }
+    attributeBar->Clear();
 }

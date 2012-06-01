@@ -5,6 +5,9 @@
 #include "model_app.h"
 
 #include "model_doc.h"
+#include "model_view.h"
+
+#include "main_frm.h"
 
 #include "component_ctrl.h"
 #include "internal_algorithm_ctrl.h"
@@ -29,6 +32,13 @@ END_MESSAGE_MAP()
 
 CModelDoc::CModelDoc()
 :
+m_CurrentState(STATE_NORMAL),
+m_CurrentComponentTypeId(-1),
+m_CurrentModelCtrl(NULL),
+m_CurrentInternalAlgorithmId(-1),
+m_CurrentConnectorId(-1),
+m_CurrentConnectorCtrl(NULL),
+m_Moved(false),
 m_CurrentComponentId(theApp.m_Platform.GetComponentIdStart())
 {
 	// TODO: add one-time construction code here
@@ -37,6 +47,7 @@ m_CurrentComponentId(theApp.m_Platform.GetComponentIdStart())
 
 CModelDoc::~CModelDoc()
 {
+    DeleteContents();
 }
 
 BOOL CModelDoc::OnNewDocument()
@@ -50,8 +61,13 @@ BOOL CModelDoc::OnNewDocument()
 	return TRUE;
 }
 
-
-
+void CModelDoc::DeleteContents()
+{
+    m_CurrentState = STATE_NORMAL;
+    UnSelectAll();
+    m_ModelCtrlList.clear();
+    m_ConnectorCtrlList.clear();
+}
 
 // CModelDoc serialization
 
@@ -268,6 +284,78 @@ void CModelDoc::Dump(CDumpContext& dc) const
 
 // CModelDoc commands
 
+void CModelDoc::SelectModelCtrl(ModelCtrl *modelCtrl)
+{
+    m_CurrentModelCtrl = modelCtrl;
+    m_CurrentModelCtrl->Select();
+}
+
+void CModelDoc::SelectConnectorCtrl(ConnectorCtrl *connectorCtrl, CPoint point)
+{
+    m_CurrentConnectorCtrl = connectorCtrl;
+    m_CurrentConnectorCtrl->Select(m_CurrentConnectorCtrl->HitTest(point));
+}
+
+void CModelDoc::UnSelectCurrentModelCtrl()
+{
+    m_CurrentModelCtrl->UnSelect();
+    m_CurrentModelCtrl = NULL;
+}
+
+void CModelDoc::UnSelectCurrentConnectorCtrl()
+{
+    m_CurrentConnectorCtrl->Select(ConnectorCtrl::CSM_NONE);
+    m_CurrentConnectorCtrl = NULL;
+}
+
+void CModelDoc::UnSelectAll()
+{
+    m_CurrentComponentTypeId = -1;
+    if (m_CurrentModelCtrl != NULL)
+    {
+        m_CurrentModelCtrl->UnSelect();
+        m_CurrentModelCtrl = NULL;
+    }
+
+    m_CurrentConnectorId = -1;
+    if (m_CurrentConnectorCtrl != NULL)
+    {
+        m_CurrentConnectorCtrl->Select(ConnectorCtrl::CSM_NONE);
+    }
+}
+
+void CModelDoc::RemoveCurrentModelCtrl()
+{
+    m_CurrentModelCtrl->UnSelect();
+    m_CurrentModelCtrl->RemoveAllConnectorCtrl();
+    for (ModelCtrlList::iterator it = m_ModelCtrlList.begin();
+        it != m_ModelCtrlList.end(); ++it)
+    {
+        if (m_CurrentModelCtrl == (*it))
+        {
+            m_ModelCtrlList.erase(it);
+            break;
+        }
+    }
+    m_CurrentModelCtrl = NULL;
+}
+
+void CModelDoc::RemoveCurrentConnectorCtrl()
+{
+    m_CurrentConnectorCtrl->Select(ConnectorCtrl::CSM_NONE);
+    m_CurrentConnectorCtrl->DisconnectAll();
+    for (ConnectorCtrlList::iterator it = m_ConnectorCtrlList.begin();
+        it != m_ConnectorCtrlList.end(); ++it)
+    {
+        if (m_CurrentConnectorCtrl == (*it))
+        {
+            m_ConnectorCtrlList.erase(it);
+            break;
+        }
+    }
+    m_CurrentConnectorCtrl = NULL;
+}
+
 // Operations
 bool CModelDoc::AddModelCtrl(ModelCtrl *modelCtrl)
 {
@@ -287,6 +375,11 @@ bool CModelDoc::AddModelCtrl(ModelCtrl *modelCtrl)
 
 bool CModelDoc::RemoveModelCtrl(ModelCtrl *modelCtrl)
 {
+    if (modelCtrl == NULL)
+    {
+        return false;
+    }
+
     for (ModelCtrlList::iterator it = m_ModelCtrlList.begin();
         it != m_ModelCtrlList.end();
         ++it)
@@ -309,4 +402,23 @@ bool CModelDoc::AddConnectorCtrl(ConnectorCtrl *connectorCtrl)
 
     m_ConnectorCtrlList.push_front(connectorCtrl);
     return true;
+}
+
+bool CModelDoc::RemoveConnectorCtrl(ConnectorCtrl *connectorCtrl)
+{
+    if (connectorCtrl == NULL)
+    {
+        return false;
+    }
+
+    for (ConnectorCtrlList::iterator it = m_ConnectorCtrlList.begin();
+        it != m_ConnectorCtrlList.end();
+        ++it)
+    {
+        if ((*it) == connectorCtrl)
+        {
+            m_ConnectorCtrlList.erase(it);
+            return true;
+        }
+    }
 }

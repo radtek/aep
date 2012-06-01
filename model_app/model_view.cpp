@@ -29,19 +29,12 @@ BEGIN_MESSAGE_MAP(CModelView, CView)
     ON_WM_MOUSEMOVE()
     ON_WM_LBUTTONUP()
     ON_WM_LBUTTONDBLCLK()
+    ON_WM_KEYDOWN()
 END_MESSAGE_MAP()
 
 // CModelView construction/destruction
 
 CModelView::CModelView()
-:
-m_CurrentState(STATE_NORMAL),
-m_CurrentComponentTypeId(-1),
-m_CurrentModelCtrl(NULL),
-m_CurrentInternalAlgorithmId(-1),
-m_CurrentConnectorId(-1),
-m_CurrentConnectorCtrl(NULL),
-m_Moved(false)
 {
 	// TODO: add construction code here
 
@@ -129,34 +122,6 @@ CModelDoc* CModelView::GetDocument() const // non-debug version is inline
 }
 #endif //_DEBUG
 
-void CModelView::UnSelectCurrentModelCtrl()
-{
-    m_CurrentModelCtrl->UnSelect();
-    m_CurrentModelCtrl = NULL;
-}
-
-void CModelView::UnSelectCurrentConnectorCtrl()
-{
-    m_CurrentConnectorCtrl->Select(ConnectorCtrl::CSM_NONE);
-    m_CurrentConnectorCtrl = NULL;
-}
-
-void CModelView::UnSelectAll()
-{
-    m_CurrentComponentTypeId = -1;
-    if (m_CurrentModelCtrl != NULL)
-    {
-        m_CurrentModelCtrl->UnSelect();
-        m_CurrentModelCtrl = NULL;
-    }
-
-    m_CurrentConnectorId = -1;
-    if (m_CurrentConnectorCtrl != NULL)
-    {
-        m_CurrentConnectorCtrl->Select(ConnectorCtrl::CSM_NONE);
-    }
-}
-
 ModelCtrl *CModelView::HitTestModelCtrl(CPoint point)
 {
     // Selecting model controls.
@@ -189,18 +154,6 @@ ConnectorCtrl *CModelView::HitTestConnectorCtrl(CPoint point)
     return NULL;
 }
 
-void CModelView::SelectModelCtrl(ModelCtrl *modelCtrl)
-{
-    m_CurrentModelCtrl = modelCtrl;
-    m_CurrentModelCtrl->Select();
-}
-
-void CModelView::SelectConnectorCtrl(ConnectorCtrl *connectorCtrl, CPoint point)
-{
-    m_CurrentConnectorCtrl = connectorCtrl;
-    m_CurrentConnectorCtrl->Select(m_CurrentConnectorCtrl->HitTest(point));
-}
-
 // CModelView message handlers
 
 void CModelView::OnLButtonDown(UINT nFlags, CPoint point)
@@ -208,78 +161,78 @@ void CModelView::OnLButtonDown(UINT nFlags, CPoint point)
     // TODO: Add your message handler code here and/or call default
     SetCapture();
 
-    if (m_CurrentState == STATE_NEW_COMPONENT)
+    if (GetDocument()->m_CurrentState == CModelDoc::STATE_NEW_COMPONENT)
     {
-        ComponentType &info = theApp.m_Platform.GetComponentTypeMap()[m_CurrentComponentTypeId];
+        ComponentType &info = theApp.m_Platform.GetComponentTypeMap()[GetDocument()->m_CurrentComponentTypeId];
         IComponent *component = info.Factory();
         ModelCtrl *modelCtrl = new ComponentCtrl(component, point);
         GetDocument()->AddModelCtrl(modelCtrl);
-        m_CurrentState = STATE_NORMAL;
-        UnSelectAll();
+        GetDocument()->m_CurrentState = CModelDoc::STATE_NORMAL;
+        GetDocument()->UnSelectAll();
         Invalidate();
     }
-    else if (m_CurrentState == STATE_NEW_INTERNAL_ALGORITHM)
+    else if (GetDocument()->m_CurrentState == CModelDoc::STATE_NEW_INTERNAL_ALGORITHM)
     {
-        InternalAlgorithm &internalAlgorithm = theApp.m_Platform.GetInternalAlgorithmMap()[m_CurrentInternalAlgorithmId];
+        InternalAlgorithm &internalAlgorithm = theApp.m_Platform.GetInternalAlgorithmMap()[GetDocument()->m_CurrentInternalAlgorithmId];
         ModelCtrl *modelCtrl = new InternalAlgorithmCtrl(&internalAlgorithm, point);
         GetDocument()->AddModelCtrl(modelCtrl);
-        m_CurrentState = STATE_NORMAL;
-        UnSelectAll();
+        GetDocument()->m_CurrentState = CModelDoc::STATE_NORMAL;
+        GetDocument()->UnSelectAll();
         Invalidate();
     }
-    else if (m_CurrentState == STATE_NEW_EXTERNAL_ALGORITHM)
+    else if (GetDocument()->m_CurrentState == CModelDoc::STATE_NEW_EXTERNAL_ALGORITHM)
     {
     }
-    else if (m_CurrentState == STATE_NEW_CONNECTOR)
+    else if (GetDocument()->m_CurrentState == CModelDoc::STATE_NEW_CONNECTOR)
     {
         ConnectorCtrl *connectorCtrl = new ConnectorCtrl(point);
         GetDocument()->AddConnectorCtrl(connectorCtrl);
-        m_CurrentState = STATE_NORMAL;
-        UnSelectAll();
+        GetDocument()->m_CurrentState = CModelDoc::STATE_NORMAL;
+        GetDocument()->UnSelectAll();
         Invalidate();
     }
-    else if (m_CurrentState == STATE_COMPONENT_SELECTED)
+    else if (GetDocument()->m_CurrentState == CModelDoc::STATE_COMPONENT_SELECTED)
     {
         ConnectorCtrl *connectorCtrl = HitTestConnectorCtrl(point);
         if (connectorCtrl != NULL)
         {
-            UnSelectCurrentModelCtrl();
-            m_CurrentState = STATE_CONNECTOR_SELECTED;
-            SelectConnectorCtrl(connectorCtrl, point);
+            GetDocument()->UnSelectCurrentModelCtrl();
+            GetDocument()->m_CurrentState = CModelDoc::STATE_CONNECTOR_SELECTED;
+            GetDocument()->SelectConnectorCtrl(connectorCtrl, point);
         }
         else
         {
             ModelCtrl *modelCtrl = HitTestModelCtrl(point);
             if (modelCtrl != NULL)
             {
-                if (modelCtrl != m_CurrentModelCtrl)
+                if (modelCtrl != GetDocument()->m_CurrentModelCtrl)
                 {
-                    UnSelectCurrentModelCtrl();
-                    SelectModelCtrl(modelCtrl);
+                    GetDocument()->UnSelectCurrentModelCtrl();
+                    GetDocument()->SelectModelCtrl(modelCtrl);
                 }
             }
             else
             {
-                m_CurrentState = STATE_NORMAL;
-                UnSelectCurrentModelCtrl();
+                GetDocument()->m_CurrentState = CModelDoc::STATE_NORMAL;
+                GetDocument()->UnSelectCurrentModelCtrl();
             }
         }
 
         Invalidate();
     }
-    else if (m_CurrentState == STATE_CONNECTOR_SELECTED)
+    else if (GetDocument()->m_CurrentState == CModelDoc::STATE_CONNECTOR_SELECTED)
     {
         ConnectorCtrl *connectorCtrl = HitTestConnectorCtrl(point);
         if (connectorCtrl != NULL)
         {
-            if (connectorCtrl != m_CurrentConnectorCtrl)
+            if (connectorCtrl != GetDocument()->m_CurrentConnectorCtrl)
             {
-                UnSelectCurrentConnectorCtrl();
-                SelectConnectorCtrl(connectorCtrl, point);
+                GetDocument()->UnSelectCurrentConnectorCtrl();
+                GetDocument()->SelectConnectorCtrl(connectorCtrl, point);
             }
             else
             {
-                SelectConnectorCtrl(connectorCtrl, point);
+                GetDocument()->SelectConnectorCtrl(connectorCtrl, point);
             }
         }
         else
@@ -287,42 +240,42 @@ void CModelView::OnLButtonDown(UINT nFlags, CPoint point)
             ModelCtrl *modelCtrl = HitTestModelCtrl(point);
             if (modelCtrl != NULL)
             {
-                UnSelectCurrentConnectorCtrl();
-                m_CurrentState = STATE_COMPONENT_SELECTED;
-                SelectModelCtrl(modelCtrl);
+                GetDocument()->UnSelectCurrentConnectorCtrl();
+                GetDocument()->m_CurrentState = CModelDoc::STATE_COMPONENT_SELECTED;
+                GetDocument()->SelectModelCtrl(modelCtrl);
             }
             else
             {
-                m_CurrentState = STATE_NORMAL;
-                UnSelectCurrentConnectorCtrl();
+                GetDocument()->m_CurrentState = CModelDoc::STATE_NORMAL;
+                GetDocument()->UnSelectCurrentConnectorCtrl();
             }
         }
 
         Invalidate();
     }
-    else if (m_CurrentState == STATE_NORMAL)
+    else if (GetDocument()->m_CurrentState == CModelDoc::STATE_NORMAL)
     {
         ConnectorCtrl *connectorCtrl = HitTestConnectorCtrl(point);
         if (connectorCtrl != NULL)
         {
-            m_CurrentState = STATE_CONNECTOR_SELECTED;
-            SelectConnectorCtrl(connectorCtrl, point);
+            GetDocument()->m_CurrentState = CModelDoc::STATE_CONNECTOR_SELECTED;
+            GetDocument()->SelectConnectorCtrl(connectorCtrl, point);
         }
         else
         {
             ModelCtrl *modelCtrl = HitTestModelCtrl(point);
             if (modelCtrl != NULL)
             {
-                m_CurrentState = STATE_COMPONENT_SELECTED;
-                SelectModelCtrl(modelCtrl);
+                GetDocument()->m_CurrentState = CModelDoc::STATE_COMPONENT_SELECTED;
+                GetDocument()->SelectModelCtrl(modelCtrl);
             }
         }
 
         Invalidate();
     }
 
-    m_LastClickPosition = point;
-    m_Moved = false;
+    GetDocument()->m_LastClickPosition = point;
+    GetDocument()->m_Moved = false;
 
     CView::OnLButtonDown(nFlags, point);
 }
@@ -335,24 +288,24 @@ void CModelView::OnMouseMove(UINT nFlags, CPoint point)
         return;
     }
 
-    if (m_CurrentState == STATE_COMPONENT_SELECTED)
+    if (GetDocument()->m_CurrentState == CModelDoc::STATE_COMPONENT_SELECTED)
     {
-        CPoint d = point - m_LastClickPosition;
-        m_CurrentModelCtrl->Move(d);
+        CPoint d = point - GetDocument()->m_LastClickPosition;
+        GetDocument()->m_CurrentModelCtrl->Move(d);
 
         Invalidate();
     }
 
-    else if (m_CurrentState == STATE_CONNECTOR_SELECTED)
+    else if (GetDocument()->m_CurrentState == CModelDoc::STATE_CONNECTOR_SELECTED)
     {
-        CPoint d = point - m_LastClickPosition;
-        m_CurrentConnectorCtrl->Move(d);
+        CPoint d = point - GetDocument()->m_LastClickPosition;
+        GetDocument()->m_CurrentConnectorCtrl->Move(d);
 
         Invalidate();
     }
 
-    m_LastClickPosition = point;
-    m_Moved = true;
+    GetDocument()->m_LastClickPosition = point;
+    GetDocument()->m_Moved = true;
 
     CView::OnMouseMove(nFlags, point);
 }
@@ -362,24 +315,24 @@ void CModelView::OnLButtonUp(UINT nFlags, CPoint point)
     // TODO: Add your message handler code here and/or call default
     ReleaseCapture();
 
-    if (m_CurrentState == STATE_CONNECTOR_SELECTED)
+    if (GetDocument()->m_CurrentState == CModelDoc::STATE_CONNECTOR_SELECTED)
     {
-        if (m_Moved)
+        if (GetDocument()->m_Moved)
         {
-            m_CurrentConnectorCtrl->Disconnect();
+            GetDocument()->m_CurrentConnectorCtrl->Disconnect();
 
             ModelCtrl *modelCtrl = HitTestModelCtrl(point);
             if (modelCtrl != NULL)
             {
-                m_CurrentConnectorCtrl->SetAttachPoint(modelCtrl->GetAttachPoint(point));
-                m_CurrentConnectorCtrl->Connect(modelCtrl);
+                GetDocument()->m_CurrentConnectorCtrl->SetAttachPoint(modelCtrl->GetAttachPoint(point));
+                GetDocument()->m_CurrentConnectorCtrl->Connect(modelCtrl);
             }
         }
 
         Invalidate();
     }
 
-    m_Moved = false;
+    GetDocument()->m_Moved = false;
 
     CView::OnLButtonUp(nFlags, point);
 }
@@ -387,23 +340,47 @@ void CModelView::OnLButtonUp(UINT nFlags, CPoint point)
 void CModelView::OnLButtonDblClk(UINT nFlags, CPoint point)
 {
     // TODO: Add your message handler code here and/or call default
-    if (m_CurrentState == STATE_COMPONENT_SELECTED)
+    if (GetDocument()->m_CurrentState == CModelDoc::STATE_COMPONENT_SELECTED)
     {
         ModelCtrl *modelCtrl = HitTestModelCtrl(point);
         if (modelCtrl != NULL)
         {
             modelCtrl->Config();
-            UnSelectCurrentModelCtrl();
-            SelectModelCtrl(modelCtrl);
+            GetDocument()->UnSelectCurrentModelCtrl();
+            GetDocument()->SelectModelCtrl(modelCtrl);
         }
         else
         {
-            m_CurrentState = STATE_NORMAL;
-            UnSelectCurrentModelCtrl();
+            GetDocument()->m_CurrentState = CModelDoc::STATE_NORMAL;
+            GetDocument()->UnSelectCurrentModelCtrl();
         }
 
         Invalidate();
     }
 
     CView::OnLButtonDblClk(nFlags, point);
+}
+
+void CModelView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
+{
+    // TODO: Add your message handler code here and/or call default
+    switch (nChar)
+    {
+    case VK_BACK:
+    case VK_DELETE:
+        if (GetDocument()->m_CurrentState == CModelDoc::STATE_COMPONENT_SELECTED)
+        {
+            GetDocument()->RemoveCurrentModelCtrl();
+            GetDocument()->m_CurrentState = CModelDoc::STATE_NORMAL;
+        }
+        else if (GetDocument()->m_CurrentState == CModelDoc::STATE_CONNECTOR_SELECTED)
+        {
+            GetDocument()->RemoveCurrentConnectorCtrl();
+            GetDocument()->m_CurrentState = CModelDoc::STATE_NORMAL;
+        }
+        Invalidate();
+        break;
+    }
+
+    CView::OnKeyDown(nChar, nRepCnt, nFlags);
 }

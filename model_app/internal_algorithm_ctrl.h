@@ -26,6 +26,7 @@ public:
 public:
     virtual bool SetId(UINT32 id);
     virtual void UpdateAttributeBar();
+    virtual void ClearAttributeBar();
 
 protected:
     InternalAlgorithm *m_InternalAlgorithm;

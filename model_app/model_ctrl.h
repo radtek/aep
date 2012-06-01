@@ -45,6 +45,7 @@ public:
 public:
     virtual void AddConnectorCtrl(ConnectorCtrl *connectorCtrl);
     virtual void RemoveConnectorCtrl(ConnectorCtrl *connectorCtrl);
+    virtual void RemoveAllConnectorCtrl();
 
     virtual CPoint GetAttachPoint(CPoint point) = 0;
 
@@ -61,7 +62,7 @@ public:
     virtual CPoint BottomCenter() = 0;
 
 protected:
-    virtual CAttributeBar &GetAttributeBar();
+    virtual CAttributeBar *GetAttributeBar();
     virtual void UpdateAttributeBar() = 0;
     virtual void ClearAttributeBar() = 0;
 
