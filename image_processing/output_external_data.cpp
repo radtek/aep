@@ -10,6 +10,7 @@
 
 #include "output_external_data.h"
 #include "utility.h"
+#include "output_external_data_dlg.h"
 #include "matlab_helper.h"
 
 OutputExternalData::OutputExternalData()
@@ -260,6 +261,54 @@ void OutputExternalData::Reset()
 RC OutputExternalData::Config()
 {
     RC rc;
+
+    COutputExternalDataDlg dlg;
+    dlg.m_OutputId1 = m_OutputId[0];
+    dlg.m_OutputId2 = m_OutputId[1];
+    dlg.m_OutputId3 = m_OutputId[2];
+    dlg.m_OutputId4 = m_OutputId[3];
+    dlg.m_OutputId5 = m_OutputId[4];
+    dlg.m_Width1 = m_Width[0];
+    dlg.m_Width2 = m_Width[1];
+    dlg.m_Width3 = m_Width[2];
+    dlg.m_Width4 = m_Width[3];
+    dlg.m_Width5 = m_Width[4];
+    dlg.m_Height1 = m_Height[0];
+    dlg.m_Height2 = m_Height[1];
+    dlg.m_Height3 = m_Height[2];
+    dlg.m_Height4 = m_Height[3];
+    dlg.m_Height5 = m_Height[4];
+    dlg.m_FilePath1 = m_FilePath[0].c_str();
+    dlg.m_FilePath2 = m_FilePath[1].c_str();
+    dlg.m_FilePath3 = m_FilePath[2].c_str();
+    dlg.m_FilePath4 = m_FilePath[3].c_str();
+    dlg.m_FilePath5 = m_FilePath[4].c_str();
+    INT_PTR nResponse = dlg.DoModal();
+	if (nResponse == IDOK)
+	{
+		// TODO: Place code here to handle when the dialog is
+		//  dismissed with OK
+        m_OutputId[0] = dlg.m_OutputId1;
+        m_OutputId[1] = dlg.m_OutputId2;
+        m_OutputId[2] = dlg.m_OutputId3;
+        m_OutputId[3] = dlg.m_OutputId4;
+        m_OutputId[4] = dlg.m_OutputId5;
+        m_Width[0] = dlg.m_Width1;
+        m_Width[1] = dlg.m_Width2;
+        m_Width[2] = dlg.m_Width3;
+        m_Width[3] = dlg.m_Width4;
+        m_Width[4] = dlg.m_Width5;
+        m_Height[0] = dlg.m_Height1;
+        m_Height[1] = dlg.m_Height2;
+        m_Height[2] = dlg.m_Height3;
+        m_Height[3] = dlg.m_Height4;
+        m_Height[4] = dlg.m_Height5;
+        m_FilePath[0] = dlg.m_FilePath1;
+        m_FilePath[1] = dlg.m_FilePath2;
+        m_FilePath[2] = dlg.m_FilePath3;
+        m_FilePath[3] = dlg.m_FilePath4;
+        m_FilePath[4] = dlg.m_FilePath5;
+	}
 
     return rc;
 }

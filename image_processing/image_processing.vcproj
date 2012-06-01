@@ -438,11 +438,19 @@
 				>
 			</File>
 			<File
+				RelativePath=".\output_external_data_dlg.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\output_file_input.cpp"
 				>
 			</File>
 			<File
 				RelativePath=".\output_image.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\output_image_dlg.cpp"
 				>
 			</File>
 			<File
@@ -536,7 +544,15 @@
 				>
 			</File>
 			<File
+				RelativePath=".\output_external_data_dlg.h"
+				>
+			</File>
+			<File
 				RelativePath=".\output_image.h"
+				>
+			</File>
+			<File
+				RelativePath=".\output_image_dlg.h"
 				>
 			</File>
 			<File
