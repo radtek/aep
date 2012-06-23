@@ -13,6 +13,11 @@
 #include "output_external_data_dlg.h"
 #include "matlab_helper.h"
 
+#include <fstream>
+#include <iostream>
+
+using namespace std;
+
 OutputExternalData::OutputExternalData()
 {
     m_Input = new IOutputFileInput(m_OutputCount);
@@ -371,18 +376,13 @@ RC OutputExternalData::Run()
                 return RC::FILE_OPEN_ERROR;
             }
         }
-        HANDLE file = CreateFile(
-            m_FilePath[i].c_str(),
-            GENERIC_READ | GENERIC_WRITE,
-            FILE_SHARE_WRITE,
-            NULL,
-            CREATE_ALWAYS,
-            FILE_ATTRIBUTE_NORMAL,
-            NULL);
-        if (NULL == file)
+
+        wofstream ofs(m_FilePath[i].c_str());
+        if (!ofs)
         {
             return RC::FILE_OPEN_ERROR;
         }
+
         UINT32 x = m_Width[i];
         UINT32 m = mxGetM(m_Input->m_Array[i]);
         if (!x)
@@ -397,7 +397,7 @@ RC OutputExternalData::Run()
         }
         UINT32 length = x * y;
         double *buf = new double[length];
-        memset(buf, 0, length * sizeof(char));
+        memset(buf, 0, length * sizeof(double));
         double *content = mxGetPr(m_Input->m_Array[i]);
         for (UINT32 yy = 0; yy < min(n, y); ++yy)
         {
@@ -406,14 +406,18 @@ RC OutputExternalData::Run()
                 buf[yy * x + xx] = content[yy * m + xx];
             }
         }
-        DWORD written = 0;
-        if (FALSE == WriteFile(file, (char *)buf, length * sizeof(double), &written, NULL))
+        ofs << x << endl;
+        ofs << y << endl;
+        for (UINT32 yy = 0; yy < y; ++yy)
         {
-            delete[] buf;
-            return RC::FILE_WRITE_ERROR;
+            for (UINT32 xx = 0; xx < x; ++xx)
+            {
+                ofs << buf[yy * x + xx] << TEXT(' ');
+            }
+            ofs << endl;
         }
         delete[] buf;
-        CloseHandle(file);
+        ofs.close();
     }
 
     return rc;

@@ -12,6 +12,11 @@
 #include "utility.h"
 #include "matlab_helper.h"
 
+#include <fstream>
+#include <iostream>
+
+using namespace std;
+
 DatImage::DatImage()
 :
 m_Width(0),
@@ -197,34 +202,33 @@ RC DatImage::Run()
 {
     RC rc;
 
-    if (!Utility::FileExists(m_FilePath.c_str()))
+    wifstream ifs(m_FilePath.c_str());
+    if (!ifs)
     {
         return RC::FILE_OPEN_ERROR;
+    }
+    UINT32 width, height, size;
+    ifs >> width >> height;
+    size = width * height;
+    double *buf = new double[size];
+    memset(buf, 0, size * sizeof(double));
+
+    for (UINT32 i = 0; i < size; ++i)
+    {
+        if (ifs.eof())
+        {
+            delete[] buf;
+            return RC::FILE_OPEN_ERROR;
+        }
+        double data;
+        ifs >> data;
+        buf[i] = data;
     }
 
-    HANDLE file = CreateFile(
-        m_FilePath.c_str(),
-        GENERIC_READ,
-        FILE_SHARE_READ,
-        NULL,
-        OPEN_EXISTING,
-        FILE_ATTRIBUTE_NORMAL,
-        NULL);
-    if (file == INVALID_HANDLE_VALUE)
-    {
-        return RC::FILE_OPEN_ERROR;
-    }
-    UINT32 length = GetFileSize(file, NULL);
-    char *buf = new char[length];
-    DWORD read = 0;
-    ReadFile(file, buf, length, &read, NULL);
-    if (length != read)
-    {
-        delete[] buf;
-        return RC::FILE_OPEN_ERROR;
-    }
-    m_Output->m_Array = MatLabHelper::CreateDoubleArray(m_Width, m_Height, (double *)buf, length / sizeof(double), 0);
-    CloseHandle(file);
+    m_Output->m_Array = MatLabHelper::CreateDoubleArray(m_Width, m_Height, buf, size, 0);
+
+    delete[] buf;
+    ifs.close();
 
     return rc;
 }
