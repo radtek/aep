@@ -183,8 +183,9 @@ RC MatLabHelper::RunFunc(wstring dllFileName, wstring funcName, vector<Array *> 
         return RC::ALGORITHM_RUN_INITIALIZE_ERROR;
     }
 
-    string fullFuncName = FuncPrefix;
-    fullFuncName += sFuncName;
+    string fullFuncName = sFuncName;
+    fullFuncName[0] = toupper(fullFuncName[0]);
+    fullFuncName = FuncPrefix + fullFuncName;
 
     CHECK_RC(RealRunFunc(algorithmDllHandle, fullFuncName, outputList, inputList, result));
 
