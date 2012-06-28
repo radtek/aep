@@ -34,7 +34,10 @@ ImageAlgorithm::~ImageAlgorithm()
     delete m_Input2;
     for (UINT32 i = 0; i < m_OutputCount; ++i)
     {
-        MatLabHelper::DestroyArray(m_Output->m_Array[i]);
+        if (m_Output->m_Array[i])
+        {
+            MatLabHelper::DestroyArray(m_Output->m_Array[i]);
+        }
     }
     delete m_Output;
 }
