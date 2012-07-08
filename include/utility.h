@@ -57,7 +57,7 @@ namespace Utility
         const char *content,
         UINT32 width, UINT32 height,
         UINT32 startX, UINT32 startY,
-        UINT32 depth, RGBQUAD *colorTable);
+        UINT32 depth);
 
     wstring ModifyPathSpec(const wstring &path, bool addSpec);
     bool CreateDirectoryNested(LPCWSTR dirPath);

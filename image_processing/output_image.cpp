@@ -410,7 +410,7 @@ RC OutputImage::Run()
         }
 
         // Utility::SaveBmpFile(bitmap, m_FilePath.c_str());
-        CHECK_RC(Utility::SaveBmpFile(m_FilePath[i].c_str(), x, y, buf, m, n, 0, 0, m_Depth, NULL));
+        CHECK_RC(Utility::SaveBmpFile(m_FilePath[i].c_str(), x, y, buf, m, n, 0, 0, m_Depth));
         delete buf;
     }
 

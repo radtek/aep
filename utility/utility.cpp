@@ -239,7 +239,7 @@ RC Utility::SaveBmpFile(CString fileName, UINT32 x, UINT32 y,
                         const char *content,
                         UINT32 width, UINT32 height,
                         UINT32 startX, UINT32 startY,
-                        UINT32 depth, RGBQUAD *colorTable)
+                        UINT32 depth)
 {
     RC rc;
 
@@ -262,14 +262,22 @@ RC Utility::SaveBmpFile(CString fileName, UINT32 x, UINT32 y,
     }
 
     UINT32 colorTableSize = 0;
+	RGBQUAD colorTable[256];
     if (depth == 8)
     {
         colorTableSize = 1024;
+		for (UINT32 i = 0; i < 256; ++i)
+		{
+			colorTable[i].rgbBlue = i;
+			colorTable[i].rgbGreen = i;
+			colorTable[i].rgbRed = i;
+			colorTable[i].rgbReserved = 0;
+		}
     }
 
     UINT32 xByte = (x * (depth / 8) + 3) / 4 * 4;
-    UINT32 widthByte = (width * (depth / 8) + 3) / 4 * 4;
-    UINT32 startXByte = (startX * (depth / 8) + 3) / 4 * 4;
+    UINT32 widthByte = width * (depth / 8);
+    UINT32 startXByte = startX * (depth / 8);
 
     char *buf = new char[xByte * y];
     memset(buf, 0, xByte * y * sizeof(char));

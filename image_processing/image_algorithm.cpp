@@ -453,8 +453,25 @@ RC ImageAlgorithm::Run()
     }
 
     vector<Array *> input;
-    input.push_back(m_Input1->m_Array);
-    input.push_back(m_Input2->m_Array);
+    Array *tempInput1 = NULL, *tempInput2 = NULL;
+    if (m_Input1->m_Array == NULL)
+    {
+        tempInput1 = mxCreateDoubleMatrix(1, 1, mxREAL);
+        input.push_back(tempInput1);
+    }
+    else
+    {
+        input.push_back(m_Input1->m_Array);
+    }
+    if (m_Input2->m_Array == NULL)
+    {
+        tempInput2 = mxCreateDoubleMatrix(1, 1, mxREAL);
+        input.push_back(tempInput2);
+    }
+    else
+    {
+        input.push_back(m_Input2->m_Array);
+    }
     for (UINT32 i = 0; i < m_OutputCount; ++i)
     {
         Array *a = MatLabHelper::CreateDoubleArray(1, 1, &m_Factor[i], 0, 0, 0, 0);
@@ -464,6 +481,14 @@ RC ImageAlgorithm::Run()
     // Array *output[1] = {m_Output->m_Array[i]};
     CHECK_RC(MatLabHelper::RunFunc(m_DllFileName, m_FuncName, output/*&m_Output->m_Array[0]*/, input));
     //memcpy(&m_Output->m_Array[0], &output[0], m_OutputCount * sizeof(Array *));
+    if (tempInput1 != NULL)
+    {
+        MatLabHelper::DestroyArray(tempInput1);
+    }
+    if (tempInput2 != NULL)
+    {
+        MatLabHelper::DestroyArray(tempInput2);
+    }
     for (UINT32 i = 0; i < m_OutputCount; ++i)
     {
         if (m_Output->m_Array[i] != NULL)
