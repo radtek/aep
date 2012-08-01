@@ -236,9 +236,10 @@ wstring Utility::StripFilePath(LPCWSTR pathName)
 }
 
 RC Utility::SaveBmpFile(CString fileName, UINT32 x, UINT32 y,
-                        const char *content,
-                        UINT32 width, UINT32 height,
-                        UINT32 startX, UINT32 startY,
+                        // const char *content,
+                        const double *content,
+                        UINT32 widthByte, UINT32 height,
+                        UINT32 startXByte, UINT32 startY,
                         UINT32 depth)
 {
     RC rc;
@@ -248,15 +249,15 @@ RC Utility::SaveBmpFile(CString fileName, UINT32 x, UINT32 y,
         return RC::UTILITY_SAVE_IMAGE_ERROR;
     }
 
-    if (width == 0)
+    if (widthByte == 0)
     {
-        width = x;
+        widthByte = x * depth / 8;
     }
     if (height == 0)
     {
         height = y;
     }
-    if (startX >= width || startY >= height)
+    if (startXByte >= widthByte || startY >= height)
     {
         return RC::UTILITY_SAVE_IMAGE_ERROR;
     }
@@ -276,8 +277,6 @@ RC Utility::SaveBmpFile(CString fileName, UINT32 x, UINT32 y,
     }
 
     UINT32 xByte = (x * (depth / 8) + 3) / 4 * 4;
-    UINT32 widthByte = width * (depth / 8);
-    UINT32 startXByte = startX * (depth / 8);
 
     char *buf = new char[xByte * y];
     memset(buf, 0, xByte * y * sizeof(char));

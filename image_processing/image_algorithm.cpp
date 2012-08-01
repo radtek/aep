@@ -431,6 +431,7 @@ RC ImageAlgorithm::Run()
     }
     */
 
+    /*
     for (UINT32 i = 0; i < m_OutputCount; ++i)
     {
         if (m_Output->m_Array[i] != NULL)
@@ -449,8 +450,9 @@ RC ImageAlgorithm::Run()
             ImageAlgorithmFuncPrintStackTrace();
             return RC::ALGORITHM_RUN_ERROR;
         }
-        */
+        //
     }
+    */
 
     vector<Array *> input;
     Array *tempInput1 = NULL, *tempInput2 = NULL;

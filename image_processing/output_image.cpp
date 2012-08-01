@@ -389,10 +389,11 @@ RC OutputImage::Run()
             continue;
         }
         UINT32 x = m_Width[i];
-        UINT32 m = mxGetM(m_Input->m_Array[i]) / (m_Depth / 8);
+        UINT32 m = mxGetM(m_Input->m_Array[i]);
         if (!x)
         {
-            x = m;
+            UINT32 bpp = m_Depth / 8;
+            x = (m + bpp - 1) / bpp;
         }
         UINT32 y = m_Height[i];
         UINT32 n = mxGetN(m_Input->m_Array[i]);
@@ -402,16 +403,18 @@ RC OutputImage::Run()
         }
 
         UINT32 size = m * n * (m_Depth / 8);
-        char *buf = new char[size];
+        // char *buf = new char[size];
         double *content = mxGetPr(m_Input->m_Array[i]);
+        /*
         for (UINT32 j = 0; j < size; ++j)
         {
             buf[j] = (char)content[j];
         }
+        */
 
         // Utility::SaveBmpFile(bitmap, m_FilePath.c_str());
-        CHECK_RC(Utility::SaveBmpFile(m_FilePath[i].c_str(), x, y, buf, m, n, 0, 0, m_Depth));
-        delete buf;
+        CHECK_RC(Utility::SaveBmpFile(m_FilePath[i].c_str(), x, y, content, m, n, 0, 0, m_Depth));
+        // delete[] buf;
     }
 
     return rc;

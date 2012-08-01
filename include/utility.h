@@ -54,9 +54,10 @@ namespace Utility
 
     // bool SaveBmpFile(HBITMAP hBitmap, CString fileName);
     RC SaveBmpFile(CString fileName, UINT32 x, UINT32 y,
-        const char *content,
-        UINT32 width, UINT32 height,
-        UINT32 startX, UINT32 startY,
+        // const char *content,
+        const double *content,
+        UINT32 widthByte, UINT32 height,
+        UINT32 startXByte, UINT32 startY,
         UINT32 depth);
 
     wstring ModifyPathSpec(const wstring &path, bool addSpec);
