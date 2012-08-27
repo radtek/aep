@@ -178,4 +178,9 @@ RC InternalAlgorithm::Run()
     return rc;
 }
 
+bool InternalAlgorithm::IsEntrance()
+{
+    return false;
+}
+
 LPCWSTR InternalAlgorithm::s_ComponentName = TEXT("ÄÚ²¿Ëã·¨");

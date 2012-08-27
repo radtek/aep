@@ -426,6 +426,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\image_scissor.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\main.cpp"
 				>
 			</File>
@@ -521,6 +525,10 @@
 			</File>
 			<File
 				RelativePath=".\image_processing_ifaces.h"
+				>
+			</File>
+			<File
+				RelativePath=".\image_scissor.h"
 				>
 			</File>
 			<File

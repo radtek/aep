@@ -2,7 +2,7 @@
 #include "Resource.h"
 
 #include "model_ctrl.h"
-#include "model.h"
+#include "model2.h"
 #include "afxwin.h"
 #include "afxcmn.h"
 
@@ -13,7 +13,7 @@ class __declspec(dllexport) CConsoleDlg : public CDialog
 	DECLARE_DYNAMIC(CConsoleDlg)
 
 public:
-	CConsoleDlg(Model &model, CWnd* pParent = NULL);   // standard constructor
+	CConsoleDlg(Model2 &model, CWnd* pParent = NULL);   // standard constructor
 	virtual ~CConsoleDlg();
 
 // Dialog Data
@@ -38,7 +38,7 @@ public:
 
 public:
     CModelCtrl m_ModelCtrl;
-    Model &m_Model;
+    Model2 &m_Model;
     CButton m_RunButton;
     CButton m_StepButton;
     CButton m_ResetButton;
@@ -53,4 +53,4 @@ public:
     afx_msg void OnBnClickedBatchButton();
 };
 
-void __declspec(dllexport) ShowConsoleDlg(Model &model);
+void __declspec(dllexport) ShowConsoleDlg(Model2 &model);

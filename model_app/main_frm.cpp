@@ -8,7 +8,7 @@
 #include "model_view.h"
 
 #include "console_dlg.h"
-#include "model.h"
+#include "model2.h"
 #include "batch.h"
 #include "utility.h"
 
@@ -665,11 +665,16 @@ void CMainFrame::OnFileRun()
 {
     // TODO: Add your command handler code here
     CModelDoc *doc = DYNAMIC_DOWNCAST(CModelDoc, GetActiveDocument());
-    Model model = doc->ExportModel();
+    Model2 model = doc->ExportModel();
     RC rc = model.Analyze();
-    if (rc == RC::MODEL_GET_ENTRY_ALGORITHM_ERROR)
+    if (rc == RC::MODEL_GET_ENTRY_ALGORITHM_ERROR || rc == RC::MODEL_NO_ENTRANCE_ALGORITHM_ERROR)
     {
         Utility::PromptErrorMessage(TEXT("缺少入口算法."));
+        return;
+    }
+    else if (rc == RC::MODEL_MULTI_ENTRANCE_ALGORITHM_ERROR)
+    {
+        Utility::PromptErrorMessage(TEXT("多个入口算法."));
         return;
     }
     else if (rc == RC::MODEL_ALGORITHM_INPUT_ERROR)

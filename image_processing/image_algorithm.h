@@ -46,6 +46,7 @@ public:
         AAID_FACTOR3,
         AAID_FACTOR4,
         AAID_FACTOR5,
+        AAID_IS_ENTRANCE,
     };
     virtual void _stdcall GetAttributeList(AttributeList &attributeList);
     virtual RC _stdcall GetAttribute(UINT32 aid, void *attr);
@@ -60,6 +61,8 @@ public:
 
     virtual RC _stdcall Run();
 
+    virtual bool _stdcall IsEntrance();
+
 protected:
     IImageAlgorithmInput1 *m_Input1;
     IImageAlgorithmInput2 *m_Input2;
@@ -69,6 +72,7 @@ protected:
     wstring m_DllFileName;
     wstring m_FuncName;
     UINT32 m_FromAlgorithmOutputIndex;
+    UINT32 m_IsEntrance;
     double m_Factor[m_OutputCount];
 
 public:

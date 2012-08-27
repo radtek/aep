@@ -11,7 +11,7 @@
 
 using namespace std;
 
-Batch::Batch(Model &model)
+Batch::Batch(Model2 &model)
 :
 m_Model(model),
 m_Count(1)
@@ -93,7 +93,7 @@ RC Batch::RunSingleModel(UINT32 modId)
     return rc;
 }
 
-Model &Batch::GetModel()
+Model2 &Batch::GetModel()
 {
     return m_Model;
 }

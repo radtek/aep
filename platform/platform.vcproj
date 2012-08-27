@@ -329,6 +329,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\model2.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\platform.cpp"
 				>
 			</File>
@@ -388,6 +392,10 @@
 			</File>
 			<File
 				RelativePath="..\include\model.h"
+				>
+			</File>
+			<File
+				RelativePath="..\include\model2.h"
 				>
 			</File>
 			<File

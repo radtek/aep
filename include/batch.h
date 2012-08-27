@@ -9,19 +9,19 @@
 #ifndef __BATCH_H__
 #define __BATCH_H__
 
-#include "model.h"
+#include "model2.h"
 
 class Batch
 {
 public:
-    Batch( Model &model);
+    Batch(Model2 &model);
     RC Parse(wstring fileName);
     UINT32 GetCount();
     RC Run();
     RC ConfigModel(UINT32 modId);
     RC RunSingleModel(UINT32 modId);
 
-    Model &GetModel();
+    Model2 &GetModel();
 
 private:
     UINT32 m_Count;
@@ -48,7 +48,7 @@ protected:
     RC ConfigComponent(IComponent *component, AttrList &attrList);
 
 private:
-    Model &m_Model;
+    Model2 &m_Model;
 
     ModList m_ModList;
 

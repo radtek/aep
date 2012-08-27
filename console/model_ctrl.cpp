@@ -2,7 +2,7 @@
 
 #include <math.h>
 
-CModelCtrl::CModelCtrl(Model &model)
+CModelCtrl::CModelCtrl(Model2 &model)
 : m_Model(model)
 , m_Width(0)
 , m_Height(0)
@@ -81,7 +81,7 @@ void CModelCtrl::CreateDrawItemCtrlList()
 
 void CModelCtrl::DrawDrawItemCtrlList(CDC *dc)
 {
-    for (UINT32 i = 0; i < m_DrawItemCtrlList.size(); ++i)
+    for (INT32 i = 0; i < m_DrawItemCtrlList.size(); ++i)
     {
         m_DrawItemCtrlList[i].Draw(dc);
     }
@@ -89,7 +89,7 @@ void CModelCtrl::DrawDrawItemCtrlList(CDC *dc)
 
 void CModelCtrl::DrawConnectors(CDC *dc)
 {
-    for (UINT32 i = 0; i < m_DrawItemCtrlList.size() - 1; ++i)
+    for (INT32 i = 0; i < m_DrawItemCtrlList.size() - 1; ++i)
     {
         CPoint start = m_DrawItemCtrlList[i].RightCenter();
         CPoint end = m_DrawItemCtrlList[i + 1].LeftCenter();

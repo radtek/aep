@@ -39,11 +39,11 @@ public:
     /** @brief 从文件中读取模型. */
     RC Load(CArchive &ar);
     /** @brief 验证模型是否有效. */
-    RC Analyze();
+    virtual RC Analyze();
     /** @brief 运行模型. */
     RC Run();
 
-    RC RunSingleAlgorithm(UINT32 id);
+    virtual RC RunSingleAlgorithm(UINT32 id);
 
     RC Reset();
 
@@ -63,7 +63,7 @@ protected:
     ComponentList GetOutputList(IAlgorithm *algorithm);
     bool CheckOutputList(IAlgorithm *algorithm, ComponentList &outputList);
 
-private:
+protected:
     /** @brief 组件列表. */
     ComponentList m_ComponentList;
     ConnectorList m_ConnectorList;

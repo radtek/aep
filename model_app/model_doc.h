@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "model.h"
+#include "model2.h"
 #include "model_ctrl.h"
 #include "connector_ctrl.h"
 
@@ -77,7 +77,7 @@ public:
 
 // Interfaces
     RC ExportModel(CArchive &ar);
-    Model ExportModel();
+    Model2 ExportModel();
     RC DrawData();
 
 protected:

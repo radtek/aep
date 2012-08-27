@@ -4,6 +4,7 @@
 #include "external_data.h"
 #include "image.h"
 #include "dat_image.h"
+#include "image_scissor.h"
 #include "image_algorithm.h"
 #include "add.h"
 #include "sub.h"
@@ -53,6 +54,13 @@ extern "C" __declspec(dllexport) void RegisterComponentType(ComponentTypeMap &co
     componentType.TypeName = DatImage::s_ComponentName;
     componentType.InterfaceId = CLIENT_CIID_IMAGE;
     componentType.Factory = (ComponentFactory)DatImage::Factory;
+    componentType.DllHandle = DllHandle;
+    componentTypeMap[componentType.TypeId] = componentType;
+
+    componentType.TypeId = ImageScissor::s_ComponentId;
+    componentType.TypeName = ImageScissor::s_ComponentName;
+    componentType.InterfaceId = CLIENT_CIID_IMAGE;
+    componentType.Factory = (ComponentFactory)ImageScissor::Factory;
     componentType.DllHandle = DllHandle;
     componentTypeMap[componentType.TypeId] = componentType;
 

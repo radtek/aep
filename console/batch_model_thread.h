@@ -8,7 +8,7 @@
 class BatchModelThread
 {
 public:
-    BatchModelThread(CConsoleDlg &dlg, Model &model, const wstring &batchFile);
+    BatchModelThread(CConsoleDlg &dlg, Model2 &model, const wstring &batchFile);
 
     HANDLE Start();
 
@@ -19,7 +19,7 @@ private:
 
 private:
     CConsoleDlg &m_ConsoleDlg;
-    Model &m_Model;
+    Model2 &m_Model;
     Batch m_Batch;
     wstring m_BatchFile;
 

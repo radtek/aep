@@ -1,12 +1,12 @@
 #include "stdafx.h"
 
-#include "model.h"
+#include "model2.h"
 #include "draw_item_ctrl.h"
 
 class CModelCtrl : public CStatic
 {
 public:
-	CModelCtrl(Model &model);
+	CModelCtrl(Model2 &model);
 	~CModelCtrl(void);
     void Init(CRect &rect);
 
@@ -17,7 +17,7 @@ public:
 	afx_msg void OnPaint();
 
 private:
-    Model &m_Model;
+    Model2 &m_Model;
     UINT32 m_Width, m_Height, m_VerMargin, m_HorMargin;
     UINT32 m_ComponentWidth, m_ComponentHeight;
     DrawItemCtrlList m_DrawItemCtrlList;

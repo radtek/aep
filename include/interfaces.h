@@ -216,6 +216,7 @@ typedef map<UINT32, ComponentType> ComponentTypeMap;
 */
 struct IAlgorithm : public IComponent
 {
+    virtual bool _stdcall IsEntrance() = 0;
 };
 
 typedef vector<IAlgorithm *> AlgorithmList;

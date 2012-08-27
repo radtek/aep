@@ -16,7 +16,7 @@
 
 IMPLEMENT_DYNAMIC(CConsoleDlg, CDialog)
 
-CConsoleDlg::CConsoleDlg(Model &model, CWnd* pParent /*=NULL*/)
+CConsoleDlg::CConsoleDlg(Model2 &model, CWnd* pParent /*=NULL*/)
 	: CDialog(CConsoleDlg::IDD, pParent)
     , m_Model(model)
     , m_ModelCtrl(model)
@@ -65,7 +65,7 @@ END_MESSAGE_MAP()
 
 // CConsoleDlg message handlers
 
-void __declspec(dllexport) ShowConsoleDlg(Model &model)
+void __declspec(dllexport) ShowConsoleDlg(Model2 &model)
 {
     AFX_MANAGE_STATE(AfxGetStaticModuleState());
     CConsoleDlg dlg(model);

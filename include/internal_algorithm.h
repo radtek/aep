@@ -58,6 +58,8 @@ public:
 
     virtual RC _stdcall Run();
 
+    virtual bool _stdcall IsEntrance();
+
 public:
     /** @brief À„∑®ID. */
     UINT32 m_Id;

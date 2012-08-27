@@ -15,7 +15,8 @@
 
 ImageAlgorithm::ImageAlgorithm()
 :
-m_FromAlgorithmOutputIndex(0)
+m_FromAlgorithmOutputIndex(0),
+m_IsEntrance(0)
 {
     m_Input1 = new IImageAlgorithmInput1;
     m_Input2 = new IImageAlgorithmInput2;
@@ -64,6 +65,8 @@ void ImageAlgorithm::Save(CArchive &ar)
     ar << CString(m_FuncName.c_str());
 
     ar << m_FromAlgorithmOutputIndex;
+
+    ar << m_IsEntrance;
 }
 
 void ImageAlgorithm::Load(CArchive &ar)
@@ -87,6 +90,8 @@ void ImageAlgorithm::Load(CArchive &ar)
     m_FuncName = str;
 
     ar >> m_FromAlgorithmOutputIndex;
+
+    ar >> m_IsEntrance;
 }
 
 void ImageAlgorithm::Destroy()
@@ -176,6 +181,12 @@ void ImageAlgorithm::GetAttributeList(AttributeList &attributeList)
     attribute.Type = Attribute::TYPE_INT;
     attributeList.push_back(attribute);
 
+    attribute.Id = AAID_IS_ENTRANCE;
+    name = TEXT("Èë¿ÚËã·¨");
+    attribute.Name = name;
+    attribute.Type = Attribute::TYPE_INT;
+    attributeList.push_back(attribute);
+
     for (UINT32 i = 0; i < m_OutputCount; ++i)
     {
         attribute.Id = i + AAID_FACTOR1;
@@ -224,6 +235,12 @@ RC ImageAlgorithm::GetAttribute(UINT32 aid, void *attr)
     if (aid == AAID_FROM_ALGORITHM_OUTPUT_INDEX)
     {
         *((UINT32 *)attr) = m_FromAlgorithmOutputIndex;
+        return rc;
+    }
+
+    if (aid == AAID_IS_ENTRANCE)
+    {
+        *((UINT32 *)attr) = m_IsEntrance;
         return rc;
     }
 
@@ -279,6 +296,12 @@ RC ImageAlgorithm::SetAttribute(UINT32 aid, void *attr)
         return rc;
     }
 
+    if (aid == AAID_IS_ENTRANCE)
+    {
+        m_IsEntrance = *((UINT32 *)attr);
+        return rc;
+    }
+
     for (UINT32 i = AAID_FACTOR1; i <= AAID_FACTOR5; ++i)
     {
         if (aid == i)
@@ -314,6 +337,8 @@ IComponent *ImageAlgorithm::Clone()
 
     imageAlgorithm->m_Id = m_Id;
     imageAlgorithm->m_Name = m_Name;
+
+    imageAlgorithm->m_IsEntrance = m_IsEntrance;
 
     return imageAlgorithm;
 }
@@ -513,6 +538,11 @@ RC ImageAlgorithm::Run()
     }
 
     return rc;
+}
+
+bool ImageAlgorithm::IsEntrance()
+{
+    return m_IsEntrance;
 }
 
 ImageAlgorithm *ImageAlgorithm::Factory()

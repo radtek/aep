@@ -174,7 +174,7 @@ RC CModelDoc::ExportModel(CArchive &ar)
     return rc;
 }
 
-Model CModelDoc::ExportModel()
+Model2 CModelDoc::ExportModel()
 {
     ComponentList componentList;
     for (ModelCtrlList::iterator it = m_ModelCtrlList.begin();
@@ -214,7 +214,7 @@ Model CModelDoc::ExportModel()
         }
     }
 
-    return Model(componentList, connectorList);
+    return Model2(componentList, connectorList);
 }
 
 RC CModelDoc::DrawData()

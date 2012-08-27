@@ -2,7 +2,7 @@
 
 #include "utility.h"
 
-BatchModelThread::BatchModelThread(CConsoleDlg &dlg, Model &model, const wstring &batchFile)
+BatchModelThread::BatchModelThread(CConsoleDlg &dlg, Model2 &model, const wstring &batchFile)
 : m_ConsoleDlg(dlg)
 , m_Model(model)
 , m_Batch(model)

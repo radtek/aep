@@ -29,20 +29,20 @@ namespace MatLabHelper
     /** @brief 实际在DLL中的算法销毁函数名前缀. */
     extern LPCSTR TerminateFuncPrefix;
 
-    Array *CreateDoubleArray(UINT32 x, UINT32 y,
+    Array *CreateDoubleArray(INT32 x, INT32 y,
         const char *content,
-        UINT32 width, UINT32 height,
-        UINT32 startX, UINT32 startY);
-    Array *CreateDoubleArray(UINT32 x, UINT32 y,
+        INT32 width, INT32 height,
+        INT32 startX, INT32 startY);
+    Array *CreateDoubleArray(INT32 x, INT32 y,
         const double *content,
-        UINT32 width, UINT32 height,
-        UINT32 startX, UINT32 startY);
-    Array *CreateDoubleArray(UINT32 x, UINT32 y,
+        INT32 width, INT32 height,
+        INT32 startX, INT32 startY);
+    Array *CreateDoubleArray(INT32 x, INT32 y,
         const char *content,
-        UINT32 size, UINT32 start);
-    Array *CreateDoubleArray(UINT32 x, UINT32 y,
+        INT32 size, INT32 start);
+    Array *CreateDoubleArray(INT32 x, INT32 y,
         const double *content,
-        UINT32 size, UINT32 start);
+        INT32 size, INT32 start);
     void DestroyArray(Array *a);
 
     RC RunFunc(wstring dllFileName, wstring funcName, vector<Array *> &outputList, vector<Array *> &inputList);

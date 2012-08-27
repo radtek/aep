@@ -19,10 +19,10 @@ LPCSTR MatLabHelper::PrintStackFuncPrefix = "PrintStackTrace";
 
 LPCSTR MatLabHelper::TerminateFuncPrefix = "Terminate";
 
-Array *MatLabHelper::CreateDoubleArray(UINT32 x, UINT32 y,
+Array *MatLabHelper::CreateDoubleArray(INT32 x, INT32 y,
                                        const char *content,
-                                       UINT32 width, UINT32 height,
-                                       UINT32 startX, UINT32 startY)
+                                       INT32 width, INT32 height,
+                                       INT32 startX, INT32 startY)
 {
     Array *a = mxCreateDoubleMatrix(x, y, mxREAL);
 
@@ -32,9 +32,9 @@ Array *MatLabHelper::CreateDoubleArray(UINT32 x, UINT32 y,
     {
         if (width && height)
         {
-            for (UINT32 yy = 0; yy < min(y, height - startY); ++yy)
+            for (INT32 yy = max(0, -startY); yy < min(y, height - startY); ++yy)
             {
-                for (UINT32 xx = 0; xx < min(x, width - startX); ++xx)
+                for (INT32 xx = max(0, -startX); xx < min(x, width - startX); ++xx)
                 {
                     p[yy * x + xx] = content[(startY + yy) * width + startX + xx];
                 }
@@ -42,7 +42,7 @@ Array *MatLabHelper::CreateDoubleArray(UINT32 x, UINT32 y,
         }
         else
         {
-            for (UINT32 i = 0; i < x * y; ++i)
+            for (INT32 i = 0; i < x * y; ++i)
             {
                 p[i] = content[i];
             }
@@ -52,10 +52,10 @@ Array *MatLabHelper::CreateDoubleArray(UINT32 x, UINT32 y,
     return a;
 }
 
-Array *MatLabHelper::CreateDoubleArray(UINT32 x, UINT32 y,
+Array *MatLabHelper::CreateDoubleArray(INT32 x, INT32 y,
                                        const double *content,
-                                       UINT32 width, UINT32 height,
-                                       UINT32 startX, UINT32 startY)
+                                       INT32 width, INT32 height,
+                                       INT32 startX, INT32 startY)
 {
     Array *a = mxCreateDoubleMatrix(x, y, mxREAL);
 
@@ -65,9 +65,9 @@ Array *MatLabHelper::CreateDoubleArray(UINT32 x, UINT32 y,
     {
         if (width && height)
         {
-            for (UINT32 yy = 0; yy < min(y, height - startY); ++yy)
+            for (INT32 yy = max(0, -startY); yy < min(y, height - startY); ++yy)
             {
-                for (UINT32 xx = 0; xx < min(x, width - startX); ++xx)
+                for (INT32 xx = max(0, -startX); xx < min(x, width - startX); ++xx)
                 {
                     p[yy * x + xx] = content[(startY + yy) * width + startX + xx];
                 }
@@ -75,7 +75,7 @@ Array *MatLabHelper::CreateDoubleArray(UINT32 x, UINT32 y,
         }
         else
         {
-            for (UINT32 i = 0; i < x * y; ++i)
+            for (INT32 i = 0; i < x * y; ++i)
             {
                 p[i] = content[i];
             }
@@ -85,9 +85,9 @@ Array *MatLabHelper::CreateDoubleArray(UINT32 x, UINT32 y,
     return a;
 }
 
-Array *MatLabHelper::CreateDoubleArray(UINT32 x, UINT32 y,
+Array *MatLabHelper::CreateDoubleArray(INT32 x, INT32 y,
                                        const char *content,
-                                       UINT32 size, UINT32 start)
+                                       INT32 size, INT32 start)
 {
     Array *a = mxCreateDoubleMatrix(x, y, mxREAL);
 
@@ -97,14 +97,14 @@ Array *MatLabHelper::CreateDoubleArray(UINT32 x, UINT32 y,
     {
         if (size)
         {
-            for (UINT32 i = 0; i < min(x * y, size - start); ++i)
+            for (INT32 i = max(0, -start); i < min(x * y, size - start); ++i)
             {
                 p[i] = content[start + i];
             }
         }
         else
         {
-            for (UINT32 i = 0; i < x * y; ++i)
+            for (INT32 i = 0; i < x * y; ++i)
             {
                 p[i] = content[i];
             }
@@ -114,9 +114,9 @@ Array *MatLabHelper::CreateDoubleArray(UINT32 x, UINT32 y,
     return a;
 }
 
-Array *MatLabHelper::CreateDoubleArray(UINT32 x, UINT32 y,
+Array *MatLabHelper::CreateDoubleArray(INT32 x, INT32 y,
                                        const double *content,
-                                       UINT32 size, UINT32 start)
+                                       INT32 size, INT32 start)
 {
     Array *a = mxCreateDoubleMatrix(x, y, mxREAL);
 
@@ -126,14 +126,14 @@ Array *MatLabHelper::CreateDoubleArray(UINT32 x, UINT32 y,
     {
         if (size)
         {
-            for (UINT32 i = 0; i < min(x * y, size - start); ++i)
+            for (INT32 i = max(0, -start); i < min(x * y, size - start); ++i)
             {
                 p[i] = content[start + i];
             }
         }
         else
         {
-            for (UINT32 i = 0; i < x * y; ++i)
+            for (INT32 i = 0; i < x * y; ++i)
             {
                 p[i] = content[i];
             }
