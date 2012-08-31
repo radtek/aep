@@ -4,13 +4,18 @@
 #include "external_data.h"
 #include "image.h"
 #include "dat_image.h"
-#include "image_scissor.h"
 #include "external_data_scissor.h"
+#include "image_scissor.h"
+#include "external_data_batch.h"
+#include "image_batch.h"
+#include "dat_image_batch.h"
 #include "image_algorithm.h"
 #include "add.h"
 #include "sub.h"
 #include "output_external_data.h"
 #include "output_image.h"
+#include "output_external_data_batch.h"
+#include "output_image_batch.h"
 
 extern "C" __declspec(dllexport) void RegisterInterfaceType(InterfaceTypeMap &interfaceTypeMap)
 {
@@ -58,6 +63,13 @@ extern "C" __declspec(dllexport) void RegisterComponentType(ComponentTypeMap &co
     componentType.DllHandle = DllHandle;
     componentTypeMap[componentType.TypeId] = componentType;
 
+    componentType.TypeId = ExternalDataScissor::s_ComponentId;
+    componentType.TypeName = ExternalDataScissor::s_ComponentName;
+    componentType.InterfaceId = CLIENT_CIID_EXTERNAL_DATA;
+    componentType.Factory = (ComponentFactory)ExternalDataScissor::Factory;
+    componentType.DllHandle = DllHandle;
+    componentTypeMap[componentType.TypeId] = componentType;
+
     componentType.TypeId = ImageScissor::s_ComponentId;
     componentType.TypeName = ImageScissor::s_ComponentName;
     componentType.InterfaceId = CLIENT_CIID_IMAGE;
@@ -65,10 +77,24 @@ extern "C" __declspec(dllexport) void RegisterComponentType(ComponentTypeMap &co
     componentType.DllHandle = DllHandle;
     componentTypeMap[componentType.TypeId] = componentType;
 
-    componentType.TypeId = ExternalDataScissor::s_ComponentId;
-    componentType.TypeName = ExternalDataScissor::s_ComponentName;
+    componentType.TypeId = ExternalDataBatch::s_ComponentId;
+    componentType.TypeName = ExternalDataBatch::s_ComponentName;
     componentType.InterfaceId = CLIENT_CIID_EXTERNAL_DATA;
-    componentType.Factory = (ComponentFactory)ExternalDataScissor::Factory;
+    componentType.Factory = (ComponentFactory)ExternalDataBatch::Factory;
+    componentType.DllHandle = DllHandle;
+    componentTypeMap[componentType.TypeId] = componentType;
+
+    componentType.TypeId = ImageBatch::s_ComponentId;
+    componentType.TypeName = ImageBatch::s_ComponentName;
+    componentType.InterfaceId = CLIENT_CIID_IMAGE;
+    componentType.Factory = (ComponentFactory)ImageBatch::Factory;
+    componentType.DllHandle = DllHandle;
+    componentTypeMap[componentType.TypeId] = componentType;
+
+    componentType.TypeId = DatImageBatch::s_ComponentId;
+    componentType.TypeName = DatImageBatch::s_ComponentName;
+    componentType.InterfaceId = CLIENT_CIID_IMAGE;
+    componentType.Factory = (ComponentFactory)DatImageBatch::Factory;
     componentType.DllHandle = DllHandle;
     componentTypeMap[componentType.TypeId] = componentType;
 
@@ -106,6 +132,20 @@ extern "C" __declspec(dllexport) void RegisterComponentType(ComponentTypeMap &co
     componentType.TypeName = OutputImage::s_ComponentName;
     componentType.InterfaceId = CLIENT_CIID_OUTPUT_FILE;
     componentType.Factory = (ComponentFactory)OutputImage::Factory;
+    componentType.DllHandle = DllHandle;
+    componentTypeMap[componentType.TypeId] = componentType;
+
+    componentType.TypeId = OutputExternalDataBatch::s_ComponentId;
+    componentType.TypeName = OutputExternalDataBatch::s_ComponentName;
+    componentType.InterfaceId = CLIENT_CIID_OUTPUT_FILE;
+    componentType.Factory = (ComponentFactory)OutputExternalDataBatch::Factory;
+    componentType.DllHandle = DllHandle;
+    componentTypeMap[componentType.TypeId] = componentType;
+
+    componentType.TypeId = OutputImageBatch::s_ComponentId;
+    componentType.TypeName = OutputImageBatch::s_ComponentName;
+    componentType.InterfaceId = CLIENT_CIID_OUTPUT_FILE;
+    componentType.Factory = (ComponentFactory)OutputImageBatch::Factory;
     componentType.DllHandle = DllHandle;
     componentTypeMap[componentType.TypeId] = componentType;
 }

@@ -555,3 +555,29 @@ bool Utility::CreateFileNested(LPCWSTR filePath)
 
     return true;
 }
+
+wstring Utility::GetExtName(const wstring &path, bool withDot)
+{
+    wstring fileName = StripFilePath(path.c_str());
+    wstring::size_type dotPos = fileName.rfind(wstring(TEXT(".")));
+    if (dotPos == wstring::npos)
+    {
+        return wstring();
+    }
+    if (withDot)
+    {
+        return fileName.substr(dotPos);
+    }
+    else
+    {
+        return fileName.substr(dotPos + 1);
+    }
+}
+
+wstring Utility::InsertNumToFileName(const wstring &path, UINT32 num)
+{
+    wstring extName = GetExtName(path, true);
+    CString mainName = path.substr(0, path.length() - extName.length()).c_str();
+    mainName.AppendFormat(TEXT("%u%s"), num, extName.c_str());
+    return wstring(mainName);
+}

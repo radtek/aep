@@ -378,7 +378,15 @@
 				>
 			</File>
 			<File
+				RelativePath=".\dat_image_batch.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\external_data.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\external_data_batch.cpp"
 				>
 			</File>
 			<File
@@ -418,6 +426,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\image_batch.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\image_output.cpp"
 				>
 			</File>
@@ -442,6 +454,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\output_external_data_batch.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\output_external_data_dlg.cpp"
 				>
 			</File>
@@ -451,6 +467,10 @@
 			</File>
 			<File
 				RelativePath=".\output_image.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\output_image_batch.cpp"
 				>
 			</File>
 			<File
@@ -504,7 +524,15 @@
 				>
 			</File>
 			<File
+				RelativePath=".\dat_image_batch.h"
+				>
+			</File>
+			<File
 				RelativePath=".\external_data.h"
+				>
+			</File>
+			<File
+				RelativePath=".\external_data_batch.h"
 				>
 			</File>
 			<File
@@ -532,6 +560,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\image_batch.h"
+				>
+			</File>
+			<File
 				RelativePath=".\image_processing_ifaces.h"
 				>
 			</File>
@@ -548,11 +580,19 @@
 				>
 			</File>
 			<File
+				RelativePath=".\output_external_data_batch.h"
+				>
+			</File>
+			<File
 				RelativePath=".\output_external_data_dlg.h"
 				>
 			</File>
 			<File
 				RelativePath=".\output_image.h"
+				>
+			</File>
+			<File
+				RelativePath=".\output_image_batch.h"
 				>
 			</File>
 			<File

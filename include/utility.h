@@ -63,4 +63,7 @@ namespace Utility
     wstring ModifyPathSpec(const wstring &path, bool addSpec);
     bool CreateDirectoryNested(LPCWSTR dirPath);
     bool CreateFileNested(LPCWSTR filePath);
+
+    wstring GetExtName(const wstring &path, bool withDot = false);
+    wstring InsertNumToFileName(const wstring &path, UINT32 num);
 };

@@ -249,6 +249,6 @@ DatImage *DatImage::Factory()
     return image;
 }
 
-LPCWSTR DatImage::s_ComponentName = TEXT("DATÊý¾Ý");
+LPCWSTR DatImage::s_ComponentName = TEXT("DATÍ¼Ïñ");
 
 UINT32 DatImage::s_Count = 0;

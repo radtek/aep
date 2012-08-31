@@ -48,7 +48,8 @@ public:
         AAID_FILE_PATH3,
         AAID_FILE_PATH4,
         AAID_FILE_PATH5,
-        AAID_DEPTH
+        AAID_DEPTH,
+        AAID_LAST,
     };
     virtual void _stdcall GetAttributeList(AttributeList &attributeList);
     virtual RC _stdcall GetAttribute(UINT32 aid, void *attr);

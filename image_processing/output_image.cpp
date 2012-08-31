@@ -362,7 +362,7 @@ RC OutputImage::SetInput(IData *input)
     IImageAlgorithmOutput *imageAlgorithmOutput = (IImageAlgorithmOutput *)(input->GetInterface(CLIENT_CIID_IMAGE_ALGORITHM_OUTPUT));
     if (NULL != imageAlgorithmOutput)
     {
-        m_Input->m_Array = imageAlgorithmOutput->m_Array;
+        memcpy(m_Input->m_Array, imageAlgorithmOutput->m_Array, m_OutputCount * sizeof(m_Input->m_Array[0]));
         for (UINT32 i = 0; i < m_OutputCount; ++i)
         {
             UINT32 outputId = m_OutputId[i];
