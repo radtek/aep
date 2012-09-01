@@ -2,10 +2,10 @@
 
 #include "utility.h"
 
-RunModelThread::RunModelThread(CConsoleDlg &dlg, Model &model, UINT32 startId)
+RunModelThread::RunModelThread(CConsoleDlg &dlg, Model2 &model, UINT32 loopCount)
 : m_ConsoleDlg(dlg)
 , m_Model(model)
-, m_StartId(startId)
+, m_LoopCount(loopCount)
 {
 }
 
@@ -23,17 +23,29 @@ HANDLE RunModelThread::Start()
 
 void RunModelThread::Run()
 {
-    m_ConsoleDlg.m_Progress.SetRange32(m_StartId, m_Model.GetAlgorithmCount());
-    m_ConsoleDlg.m_Progress.SetPos(m_StartId);
+    m_ConsoleDlg.m_Progress.SetRange32(0, m_Model.GetAlgorithmCount() * m_LoopCount);
+    m_ConsoleDlg.m_Progress.SetPos(0);
 
-    for (UINT32 i = m_StartId; i < m_Model.GetAlgorithmCount(); ++i)
+    for (UINT32 i = 0; i < m_LoopCount; ++i)
     {
-        m_ConsoleDlg.m_ModelCtrl.SetRunItem(i);
 
-        RC rc;
-        CHECK_RC_MSG_VOID(m_Model.RunSingleAlgorithm(i));
+        for (UINT32 j = 0; j < m_Model.GetAlgorithmCount(); ++j)
+        {
+            CString text = TEXT("正在运行循环");
+            text.AppendFormat(TEXT("%u算法%u..."), i + 1, j + 1);
+            m_ConsoleDlg.m_Status.SetWindowTextW(text);
 
-        m_ConsoleDlg.m_Progress.SetPos(i + 1);
+            m_ConsoleDlg.m_ModelCtrl.SetRunItem(j);
+
+            RC rc;
+            CHECK_RC_MSG_VOID(m_Model.RunSingleAlgorithm(j));
+
+            m_ConsoleDlg.m_Progress.SetPos(i * m_Model.GetAlgorithmCount() + j + 1);
+
+            text = TEXT("循环");
+            text.AppendFormat(TEXT("%u算法%u运行结束."), i + 1, j + 1);
+            m_ConsoleDlg.m_Status.SetWindowTextW(text);
+        }
     }
 }
 

@@ -33,8 +33,12 @@ void DrawItemCtrl::DrawBorder(CDC *dc)
         CPen pen;
         pen.CreatePen(PS_DASH, 1, RGB(0, 0, 0));
         CPen *oldPen = dc->SelectObject(&pen);
+        CBrush brush;
+        brush.CreateSolidBrush(s_RunningBkg);
+        CBrush *oldBrush = dc->SelectObject(&brush);
         dc->Rectangle(CRect(Left(), Top(), Right(), Bottom()));
         dc->SelectObject(oldPen);
+        dc->SelectObject(oldBrush);
     }
     else
     {
@@ -46,7 +50,16 @@ void DrawItemCtrl::DrawBorder(CDC *dc)
 
 void DrawItemCtrl::DrawTitle(CDC *dc)
 {
-    dc->TextOutW(Left(), Center().y, m_DrawItem->GetName().c_str());
+    if (m_IsRunning)
+    {
+        COLORREF oldColor = dc->SetBkColor(s_RunningBkg);
+        dc->TextOutW(Left(), Center().y, m_DrawItem->GetName().c_str());
+        dc->SetBkColor(oldColor);
+    }
+    else
+    {
+        dc->TextOutW(Left(), Center().y, m_DrawItem->GetName().c_str());
+    }
 }
 
 INT32 DrawItemCtrl::Left()

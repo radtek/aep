@@ -6,7 +6,7 @@
 class RunModelThread
 {
 public:
-    RunModelThread(CConsoleDlg &dlg, Model &model, UINT32 startId = 0);
+    RunModelThread(CConsoleDlg &dlg, Model2 &model, UINT32 loopCount);
 
     HANDLE Start();
 
@@ -17,8 +17,8 @@ private:
 
 private:
     CConsoleDlg &m_ConsoleDlg;
-    Model &m_Model;
-    UINT32 m_StartId;
+    Model2 &m_Model;
+    UINT32 m_LoopCount;
 
 private:
     static DWORD WINAPI Run(LPVOID lparam);

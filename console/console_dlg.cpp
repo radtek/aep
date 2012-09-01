@@ -9,6 +9,7 @@
 #include "massert.h"
 
 #include "run_model_thread.h"
+#include "loop_count_dlg.h"
 #include "step_model_thread.h"
 #include "batch_model_thread.h"
 
@@ -41,6 +42,7 @@ void CConsoleDlg::DoDataExchange(CDataExchange* pDX)
     DDX_Control(pDX, IDC_PROGRESS, m_Progress);
     DDX_Control(pDX, IDC_RESET_BUTTON, m_ResetButton);
     DDX_Control(pDX, IDC_BATCH_BUTTON, m_BatchButton);
+    DDX_Control(pDX, IDC_STATUS_STATIC, m_Status);
 }
 
 BOOL CConsoleDlg::OnInitDialog()
@@ -113,17 +115,23 @@ void CConsoleDlg::OnBatchThreadEnd()
 void CConsoleDlg::OnBnClickedRunButton()
 {
     // TODO: Add your control notification handler code here
+    UINT32 loopCount;
+    CLoopCountDlg dlg;
+    if(dlg.DoModal() == IDOK)
+    {
+        loopCount = dlg.m_LoopCount;
+    }
+    else
+    {
+        return;
+    }
+
     m_RunButton.EnableWindow(false);
     m_StepButton.EnableWindow(false);
     m_ResetButton.EnableWindow(false);
     m_BatchButton.EnableWindow(false);
 
-    if (m_CurrentAlgorithmId == m_Model.GetAlgorithmCount())
-    {
-        m_CurrentAlgorithmId = 0;
-    }
-
-    RunModelThread *runModelThread = new RunModelThread(*this, m_Model, m_CurrentAlgorithmId);
+    RunModelThread *runModelThread = new RunModelThread(*this, m_Model, loopCount);
 
     m_CurrentThreadHandle = runModelThread->Start();
     if (!m_CurrentThreadHandle)
@@ -162,6 +170,7 @@ void CConsoleDlg::OnBnClickedResetButton()
     m_CurrentAlgorithmId = 0;
     m_Progress.SetRange32(0, 0);
     m_Progress.SetPos(0);
+    m_Status.SetWindowTextW(TEXT(""));
     m_Model.Reset();
 }
 

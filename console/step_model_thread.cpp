@@ -25,6 +25,9 @@ void StepModelThread::Run()
 {
     m_ConsoleDlg.m_Progress.SetRange32(m_AlgorithmId, m_AlgorithmId + 1);
     m_ConsoleDlg.m_Progress.SetPos(m_AlgorithmId);
+    CString text = TEXT("正在运行算法");
+    text.AppendFormat(TEXT("%u..."), m_AlgorithmId + 1);
+    m_ConsoleDlg.m_Status.SetWindowTextW(text);
 
     m_ConsoleDlg.m_ModelCtrl.SetRunItem(m_AlgorithmId);
 
@@ -32,6 +35,9 @@ void StepModelThread::Run()
     CHECK_RC_MSG_VOID(m_Model.RunSingleAlgorithm(m_AlgorithmId));
 
     m_ConsoleDlg.m_Progress.SetPos(m_AlgorithmId + 1);
+    text = TEXT("算法");
+    text.AppendFormat(TEXT("%u运行结束."), m_AlgorithmId + 1);
+    m_ConsoleDlg.m_Status.SetWindowTextW(text);
 }
 
 void StepModelThread::Stop()

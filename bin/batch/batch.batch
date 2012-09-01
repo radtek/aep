@@ -1,0 +1,29 @@
+# batch.batch
+# 运行次数
+COUNT 10
+
+COMP 批量输出BMP图像1
+ATTR 输出BMP图像路径1
+1 ..\output\batch_output.bmp
+2 ..\output\batch_output.bmp
+3 ..\output\batch_output.bmp
+4 ..\output\batch_output.bmp
+5 ..\output\batch_output.bmp
+6 ..\output\batch_output.bmp
+7 ..\output\batch_output.bmp
+8 ..\output\batch_output.bmp
+9 ..\output\batch_output.bmp
+10 ..\output\batch_output.bmp
+
+COMP 批量输出DAT数据1
+ATTR 输出DAT数据文件路径1
+1 ..\output\batch_output.dat
+2 ..\output\batch_output.dat
+3 ..\output\batch_output.dat
+4 ..\output\batch_output.dat
+5 ..\output\batch_output.dat
+6 ..\output\batch_output.dat
+7 ..\output\batch_output.dat
+8 ..\output\batch_output.dat
+9 ..\output\batch_output.dat
+10 ..\output\batch_output.dat

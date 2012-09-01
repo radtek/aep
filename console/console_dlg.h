@@ -51,6 +51,7 @@ public:
     afx_msg void OnBnClickedPauseButton();
     CButton m_BatchButton;
     afx_msg void OnBnClickedBatchButton();
+    CStatic m_Status;
 };
 
 void __declspec(dllexport) ShowConsoleDlg(Model2 &model);

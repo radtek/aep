@@ -37,8 +37,17 @@ void BatchModelThread::Run()
 
         for (UINT32 j = 0; j < m_Model.GetAlgorithmCount(); ++j)
         {
+            CString text = TEXT("正在运行循环");
+            text.AppendFormat(TEXT("%u算法%u..."), i + 1, j + 1);
+            m_ConsoleDlg.m_Status.SetWindowTextW(text);
+            m_ConsoleDlg.m_ModelCtrl.SetRunItem(j);
+
             CHECK_RC_MSG_VOID(m_Model.RunSingleAlgorithm(j));
             m_ConsoleDlg.m_Progress.SetPos(i * m_Model.GetAlgorithmCount() + j + 1);
+
+            text = TEXT("循环");
+            text.AppendFormat(TEXT("%u算法%u运行结束."), i + 1, j + 1);
+            m_ConsoleDlg.m_Status.SetWindowTextW(text);
         }
     }
 }

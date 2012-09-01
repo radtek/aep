@@ -50,6 +50,9 @@ protected:
     bool m_IsRunning;
 
     DrawItem *m_DrawItem;
+
+private:
+    const static COLORREF s_RunningBkg = RGB(0.618 * 256, 0.618 * 256, 0.618 * 256);
 };
 
 typedef vector<DrawItemCtrl> DrawItemCtrlList;
