@@ -225,7 +225,12 @@ RC DatImage::Run()
         buf[i] = data;
     }
 
-    m_Output->m_Array = MatLabHelper::CreateDoubleArray(m_Width, m_Height, buf, size, 0);
+    if (m_Width != 0 || m_Height != 0)
+    {
+        width = m_Width;
+        height = m_Height;
+    }
+    m_Output->m_Array = MatLabHelper::CreateDoubleArray(width, height, buf, size, 0);
 
     delete[] buf;
     ifs.close();
