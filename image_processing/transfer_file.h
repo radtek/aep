@@ -1,4 +1,4 @@
-/**
+/*
 * @file
 * @brief 输出外部数据类头文件.
 * @author ruoxi
@@ -6,16 +6,16 @@
 * 定义了输出外部数据类.
 */
 
-#ifndef __OUTPUT_EXTERNAL_DATA_H__
-#define __OUTPUT_EXTERNAL_DATA_H__
+#ifndef __TRANSFER_FILE_H__
+#define __TRANSFER_FILE_H__
 
 #include "image_processing_ifaces.h"
 
-class OutputExternalData : public IOutputFile
+class TransferFile : public ITransfer
 {
 public:
-    OutputExternalData();
-    virtual ~OutputExternalData();
+    TransferFile();
+    virtual ~TransferFile();
 
     virtual UINT32 _stdcall GetTypeId();
     virtual void _stdcall Save(CArchive &ar);
@@ -28,26 +28,8 @@ public:
     virtual void _stdcall SetName(wstring name);
     enum AAID
     {
-        AAID_OUTPUT_ID1 = 0,
-        AAID_OUTPUT_ID2,
-        AAID_OUTPUT_ID3,
-        AAID_OUTPUT_ID4,
-        AAID_OUTPUT_ID5,
-        AAID_WIDTH1,
-        AAID_WIDTH2,
-        AAID_WIDTH3,
-        AAID_WIDTH4,
-        AAID_WIDTH5,
-        AAID_HEIGHT1,
-        AAID_HEIGHT2,
-        AAID_HEIGHT3,
-        AAID_HEIGHT4,
-        AAID_HEIGHT5,
-        AAID_FILE_PATH1,
-        AAID_FILE_PATH2,
-        AAID_FILE_PATH3,
-        AAID_FILE_PATH4,
-        AAID_FILE_PATH5,
+        AAID_SERVER_IP = 0,
+        AAID_SERVER_PORT,
         AAID_LAST,
     };
     virtual void _stdcall GetAttributeList(AttributeList &attributeList);
@@ -63,24 +45,20 @@ public:
     virtual RC _stdcall GetOutput(IData *&output);
 
 public:
-    static const UINT32 m_OutputCount = 5;
-    UINT32 m_OutputId[m_OutputCount];
-    UINT32 m_Width[m_OutputCount];
-    UINT32 m_Height[m_OutputCount];
-    wstring m_FilePath[m_OutputCount];
+    wstring m_HostName;
+    int m_Port;
 
     UINT32 m_Id;
     wstring m_Name;
 
 protected:
-    IOutputFileInput *m_Input;
-    IOutputFileOutput m_Output;
+    ITransferInput m_Input;
 
 public:
-    static const CLIENT_CCID s_ComponentId = CLIENT_CCID_OUTPUT_EXTERNAL_DATA;
-    static OutputExternalData *Factory();
+    static const CLIENT_CCID s_ComponentId = CLIENT_CCID_TRANSFER_FILE;
+    static TransferFile *Factory();
     static LPCWSTR s_ComponentName;
     static UINT32 s_Count;
 };
 
-#endif // __OUTPUT_EXTERNAL_DATA_H__
+#endif // __TRANSFER_FILE_H__

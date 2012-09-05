@@ -279,6 +279,7 @@ IComponent *OutputImage::Clone()
 void OutputImage::Reset()
 {
     m_Input->Reset();
+    m_Output.Reset();
 }
 
 RC OutputImage::Config()
@@ -384,6 +385,7 @@ RC OutputImage::Run()
 
     for (UINT32 i = 0; i < m_OutputCount; ++i)
     {
+        m_Output.m_Path.push_back(m_FilePath[i]);
         if (!m_Input->m_Array[i] || m_FilePath[i].empty())
         {
             continue;
@@ -422,7 +424,11 @@ RC OutputImage::Run()
 
 RC OutputImage::GetOutput(IData *&output)
 {
-    return RC::COMPONENT_GETOUTPUT_ERROR;
+    RC rc;
+
+    output = (IData *)(m_Output.GetInterface(CIID_IDATA));
+
+    return rc;
 }
 
 OutputImage *OutputImage::Factory()

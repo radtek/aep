@@ -382,6 +382,10 @@
 			ReferencedProjectIdentifier="{18877B69-B5A3-4D83-8EAE-165B217C1875}"
 			RelativePathToProject=".\image_processing\image_processing.vcproj"
 		/>
+		<ProjectReference
+			ReferencedProjectIdentifier="{5C99B807-8987-4F6D-AACF-DBBD50371873}"
+			RelativePathToProject=".\network\network.vcproj"
+		/>
 	</References>
 	<Files>
 		<Filter

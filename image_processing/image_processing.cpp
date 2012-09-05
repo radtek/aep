@@ -16,6 +16,7 @@
 #include "output_image.h"
 #include "output_external_data_batch.h"
 #include "output_image_batch.h"
+#include "transfer_file.h"
 
 extern "C" __declspec(dllexport) void RegisterInterfaceType(InterfaceTypeMap &interfaceTypeMap)
 {
@@ -35,6 +36,10 @@ extern "C" __declspec(dllexport) void RegisterInterfaceType(InterfaceTypeMap &in
 
     interfaceType.InterfaceId = CLIENT_CIID_OUTPUT_FILE;
     interfaceType.InterfaceName = TEXT("Êä³ö");
+    interfaceTypeMap[interfaceType.InterfaceId] = interfaceType;
+
+    interfaceType.InterfaceId = CLIENT_CIID_TRANSFER;
+    interfaceType.InterfaceName = TEXT("´«Êä");
     interfaceTypeMap[interfaceType.InterfaceId] = interfaceType;
 }
 
@@ -146,6 +151,13 @@ extern "C" __declspec(dllexport) void RegisterComponentType(ComponentTypeMap &co
     componentType.TypeName = OutputImageBatch::s_ComponentName;
     componentType.InterfaceId = CLIENT_CIID_OUTPUT_FILE;
     componentType.Factory = (ComponentFactory)OutputImageBatch::Factory;
+    componentType.DllHandle = DllHandle;
+    componentTypeMap[componentType.TypeId] = componentType;
+
+    componentType.TypeId = TransferFile::s_ComponentId;
+    componentType.TypeName = TransferFile::s_ComponentName;
+    componentType.InterfaceId = CLIENT_CIID_TRANSFER;
+    componentType.Factory = (ComponentFactory)TransferFile::Factory;
     componentType.DllHandle = DllHandle;
     componentTypeMap[componentType.TypeId] = componentType;
 }

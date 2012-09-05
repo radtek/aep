@@ -261,6 +261,7 @@ IComponent *OutputExternalData::Clone()
 void OutputExternalData::Reset()
 {
     m_Input->Reset();
+    m_Output.Reset();
 }
 
 RC OutputExternalData::Config()
@@ -364,6 +365,7 @@ RC OutputExternalData::Run()
 
     for (UINT32 i = 0; i < m_OutputCount; ++i)
     {
+        m_Output.m_Path.push_back(m_FilePath[i]);
         if (!m_Input->m_Array[i] ||
             m_FilePath[i].empty())
         {
@@ -425,7 +427,11 @@ RC OutputExternalData::Run()
 
 RC OutputExternalData::GetOutput(IData *&output)
 {
-    return RC::COMPONENT_GETOUTPUT_ERROR;
+    RC rc;
+
+    output = (IData *)(m_Output.GetInterface(CIID_IDATA));
+
+    return rc;
 }
 
 OutputExternalData *OutputExternalData::Factory()

@@ -366,6 +366,10 @@
 			ReferencedProjectIdentifier="{8ED092B5-70E1-47CE-9ED2-F7179AF1D009}"
 			RelativePathToProject=".\component\component.vcproj"
 		/>
+		<ProjectReference
+			ReferencedProjectIdentifier="{5C99B807-8987-4F6D-AACF-DBBD50371873}"
+			RelativePathToProject=".\network\network.vcproj"
+		/>
 	</References>
 	<Files>
 		<Filter
@@ -466,6 +470,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\output_file_output.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\output_image.cpp"
 				>
 			</File>
@@ -512,6 +520,14 @@
 						UsePrecompiledHeader="1"
 					/>
 				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\transfer_file.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\transfer_input.cpp"
+				>
 			</File>
 		</Filter>
 		<Filter
@@ -605,6 +621,10 @@
 			</File>
 			<File
 				RelativePath=".\stdafx.h"
+				>
+			</File>
+			<File
+				RelativePath=".\transfer_file.h"
 				>
 			</File>
 		</Filter>

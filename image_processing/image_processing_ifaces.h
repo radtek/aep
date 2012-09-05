@@ -24,7 +24,9 @@ BEGIN_CLIENT_CIID
     CLIENT_CIID_IMAGE_ALGORITHM_OUTPUT,
     CLIENT_CIID_OUTPUT_FILE,
     CLIENT_CIID_OUTPUT_FILE_INPUT,
-    CLIENT_CIID_EVALUATE,
+    CLIENT_CIID_OUTPUT_FILE_OUTPUT,
+    CLIENT_CIID_TRANSFER,
+    CLIENT_CIID_TRANSFER_INPUT,
 END_CLIENT_CIID
 
 BEGIN_CLIENT_CCID
@@ -44,6 +46,7 @@ BEGIN_CLIENT_CCID
     CLIENT_CCID_DAT_IMAGE_BATCH,
     CLIENT_CCID_OUTPUT_EXTERNAL_DATA_BATCH,
     CLIENT_CCID_OUTPUT_IMAGE_BATCH,
+    CLIENT_CCID_TRANSFER_FILE,
 END_CLIENT_CCID
 
 typedef mxArray Array;
@@ -108,6 +111,26 @@ struct IOutputFileInput : IData
     void Reset();
     Array **m_Array;
     UINT32 m_Size;
+};
+
+struct IOutputFileOutput : IData
+{
+    IOutputFileOutput();
+    virtual void * _stdcall GetInterface(UINT32 iid);
+    void Reset();
+    vector<wstring> m_Path;
+};
+
+struct ITransfer : IComponent
+{
+};
+
+struct ITransferInput : IData
+{
+    ITransferInput();
+    virtual void * _stdcall GetInterface(UINT32 iid);
+    void Reset();
+    vector<wstring> m_Path;
 };
 
 #endif // __IMAGE_PROCESSING_IFACES_H__

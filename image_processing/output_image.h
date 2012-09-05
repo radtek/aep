@@ -77,6 +77,7 @@ public:
 
 protected:
     IOutputFileInput *m_Input;
+    IOutputFileOutput m_Output;
 
 public:
     static const CLIENT_CCID s_ComponentId = CLIENT_CCID_OUTPUT_IMAGE;

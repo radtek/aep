@@ -9,6 +9,7 @@
 #include "model_view.h"
 
 #include "utility.h"
+#include "socket.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -61,6 +62,10 @@ BOOL CModelApp::InitInstance()
     else
     {
         engSetVisible(m_Engine, false);
+    }
+    if (OK != Socket::Init())
+    {
+        Utility::PromptErrorMessage(TEXT("初始化网络失败, 文件传输功能将不可用."));
     }
 	// InitCommonControlsEx() is required on Windows XP if an application
 	// manifest specifies use of ComCtl32.dll version 6 or later to enable
@@ -150,6 +155,8 @@ BOOL CModelApp::InitInstance()
 int CModelApp::ExitInstance() 
 {
 	BCGCBProCleanUp();
+
+    Socket::Shut();
 
     if (m_Engine)
     {
