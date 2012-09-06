@@ -66,7 +66,7 @@
 			>
 			<DebugSettings
 				Command="$(TargetPath)"
-				WorkingDirectory="../bin"
+				WorkingDirectory="..\bin"
 				CommandArguments=""
 				Attach="false"
 				DebuggerType="3"

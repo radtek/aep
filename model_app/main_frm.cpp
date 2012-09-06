@@ -414,7 +414,7 @@ BOOL CMainFrame::CreateShortcutsBar ()
 
 	CBCGPOutlookWnd *pShortcutsBarContainer = DYNAMIC_DOWNCAST (CBCGPOutlookWnd, 
 							m_wndShortcutsBar.GetUnderlinedWindow ());
-	if (m_ShortcutsBarContainer == NULL)
+	if ((m_ShortcutsBarContainer = pShortcutsBarContainer) == NULL)
 	{
 		TRACE0("Cannot get outlook bar container\n");
 		return FALSE;
