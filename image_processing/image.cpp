@@ -218,7 +218,7 @@ RC Image::Run()
         width = bitmap.bmWidthBytes;
         height = bitmap.bmHeight;
     }
-    m_Output->m_Array = MatLabHelper::CreateDoubleArray(width, height, (const char *)bitmap.bmBits, bitmap.bmWidthBytes, bitmap.bmHeight, 0, 0);
+    m_Output->m_Array = MatLabHelper::CreateDoubleArray(width, height, (const unsigned char *)bitmap.bmBits, bitmap.bmWidthBytes, bitmap.bmHeight, 0, 0);
     DeleteObject(hBitmap);
 
     return rc;

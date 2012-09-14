@@ -20,7 +20,7 @@ LPCSTR MatLabHelper::PrintStackFuncPrefix = "PrintStackTrace";
 LPCSTR MatLabHelper::TerminateFuncPrefix = "Terminate";
 
 Array *MatLabHelper::CreateDoubleArray(INT32 x, INT32 y,
-                                       const char *content,
+                                       const unsigned char *content,
                                        INT32 width, INT32 height,
                                        INT32 startX, INT32 startY)
 {
@@ -86,7 +86,7 @@ Array *MatLabHelper::CreateDoubleArray(INT32 x, INT32 y,
 }
 
 Array *MatLabHelper::CreateDoubleArray(INT32 x, INT32 y,
-                                       const char *content,
+                                       const unsigned char *content,
                                        INT32 size, INT32 start)
 {
     Array *a = mxCreateDoubleMatrix(x, y, mxREAL);

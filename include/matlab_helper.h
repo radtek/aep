@@ -30,7 +30,7 @@ namespace MatLabHelper
     extern LPCSTR TerminateFuncPrefix;
 
     Array *CreateDoubleArray(INT32 x, INT32 y,
-        const char *content,
+        const unsigned char *content,
         INT32 width, INT32 height,
         INT32 startX, INT32 startY);
     Array *CreateDoubleArray(INT32 x, INT32 y,
@@ -38,7 +38,7 @@ namespace MatLabHelper
         INT32 width, INT32 height,
         INT32 startX, INT32 startY);
     Array *CreateDoubleArray(INT32 x, INT32 y,
-        const char *content,
+        const unsigned char *content,
         INT32 size, INT32 start);
     Array *CreateDoubleArray(INT32 x, INT32 y,
         const double *content,
