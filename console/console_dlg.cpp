@@ -154,6 +154,11 @@ void CConsoleDlg::OnBnClickedStepButton()
         m_CurrentAlgorithmId = 0;
     }
 
+    if (m_CurrentAlgorithmId == 0)
+    {
+        m_Model.Reset();
+    }
+
     StepModelThread *stepModelThread = new StepModelThread(*this, m_Model, m_CurrentAlgorithmId);
 
     m_CurrentThreadHandle = stepModelThread->Start();

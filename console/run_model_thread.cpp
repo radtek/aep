@@ -28,7 +28,6 @@ void RunModelThread::Run()
 
     for (UINT32 i = 0; i < m_LoopCount; ++i)
     {
-
         for (UINT32 j = 0; j < m_Model.GetAlgorithmCount(); ++j)
         {
             CString text = TEXT("正在运行循环");
@@ -46,6 +45,7 @@ void RunModelThread::Run()
             text.AppendFormat(TEXT("%u算法%u运行结束."), i + 1, j + 1);
             m_ConsoleDlg.m_Status.SetWindowTextW(text);
         }
+        m_ConsoleDlg.m_Model.Reset();
     }
 }
 
