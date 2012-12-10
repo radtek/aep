@@ -2,9 +2,9 @@
 #include "component.h"
 #include "utility.h"
 
-ComponentTypeDataFile::ComponentTypeDataFile(wstring fileName)
-:
-DataFile(fileName)
+ComponentTypeDataFile::ComponentTypeDataFile(wstring fileName, PlatformService *platformService)
+: DataFile(fileName)
+, m_PlatformService(platformService)
 {
 }
 
@@ -58,6 +58,16 @@ RC ComponentTypeDataFile::ParseLine(const wstring &line)
     if (registerComponentTypeFunc)
     {
         registerComponentTypeFunc(m_ComponentTypeMap, componentDllHandle);
+    }
+
+    Component::SetPlatformServiceFunc setPlatformServiceFunc =
+        (Component::SetPlatformServiceFunc)GetProcAddress(
+        (HMODULE)componentDllHandle,
+        Component::SetPlatformServiceFuncName);
+
+    if (setPlatformServiceFunc)
+    {
+        setPlatformServiceFunc(m_PlatformService);
     }
 
     return rc;

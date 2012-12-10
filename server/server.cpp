@@ -132,7 +132,7 @@ RC Server::Listen()
         0,
         0);
 
-    if(handle == NULL)
+    if(handle == INVALID_HANDLE_VALUE)
     {
         return RC::THREAD_CREATE_ERROR;
     }
@@ -174,7 +174,7 @@ RC Server::RealListen()
             (LPVOID)thread,
             0,
             0);
-        if(handle == NULL)
+        if(handle == INVALID_HANDLE_VALUE)
         {
             return RC::THREAD_CREATE_ERROR;
         }

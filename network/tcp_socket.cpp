@@ -213,6 +213,13 @@ RC TcpSocket::Send(const void *buf, size_t size)
 RC TcpSocket::RecvFile(LPCWSTR fileName)
 {
     RC rc;
+    if (!Utility::FileExists(fileName))
+    {
+        if (!Utility::CreateFileNested(fileName))
+        {
+            return RC::FILE_OPEN_ERROR;
+        }
+    }
     HANDLE file = CreateFile(
         fileName,
         GENERIC_READ | GENERIC_WRITE,
@@ -221,7 +228,7 @@ RC TcpSocket::RecvFile(LPCWSTR fileName)
         CREATE_ALWAYS,
         FILE_ATTRIBUTE_NORMAL,
         NULL);
-    if (NULL == file)
+    if (INVALID_HANDLE_VALUE == file)
     {
         return RC::FILE_OPEN_ERROR;
     }

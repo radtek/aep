@@ -50,11 +50,6 @@ CModelApp theApp;
 
 BOOL CModelApp::InitInstance()
 {
-    if (OK != m_Platform.Init())
-    {
-        Utility::PromptErrorMessage(TEXT("初始化平台失败."));
-        return FALSE;
-    }
     if (!(m_Engine = engOpen(NULL)))
     {
         Utility::PromptErrorMessage(TEXT("Matlab引擎初始化失败, 绘图功能将不可用."));
@@ -63,10 +58,14 @@ BOOL CModelApp::InitInstance()
     {
         engSetVisible(m_Engine, false);
     }
-    if (OK != Socket::Init())
+
+
+    if (OK != m_Platform.Init())
     {
-        Utility::PromptErrorMessage(TEXT("初始化网络失败, 文件传输功能将不可用."));
+        Utility::PromptErrorMessage(TEXT("初始化平台失败."));
+        return FALSE;
     }
+
 	// InitCommonControlsEx() is required on Windows XP if an application
 	// manifest specifies use of ComCtl32.dll version 6 or later to enable
 	// visual styles.  Otherwise, any window creation will fail.

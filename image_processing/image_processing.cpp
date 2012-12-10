@@ -161,3 +161,10 @@ extern "C" __declspec(dllexport) void RegisterComponentType(ComponentTypeMap &co
     componentType.DllHandle = DllHandle;
     componentTypeMap[componentType.TypeId] = componentType;
 }
+
+PlatformService *g_PlatformService = NULL;
+
+extern "C" __declspec(dllexport) void SetPlatformService(PlatformService *platformService)
+{
+    g_PlatformService = platformService;
+}

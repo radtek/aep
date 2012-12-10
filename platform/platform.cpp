@@ -11,6 +11,7 @@
 #include "config_file.h"
 #include "algorithm_data_file.h"
 #include "component_type_data_file.h"
+#include "utility.h"
 
 /**
 * @return 平台类的唯一实例.
@@ -41,6 +42,10 @@ LPCWSTR Platform::s_CfgFileName = TEXT("platform.cfg");
 LPCWSTR Platform::s_ComponentDllFileNameKey = TEXT("COMPONENT_DLL_FILE_NAME");
 LPCWSTR Platform::s_ComponentCfgFileNameKey = TEXT("COMPONENT_CFG_FILE_NAME");
 LPCWSTR Platform::s_AlgorithmCfgFileNameKey = TEXT("ALGORITHM_CFG_FILE_NAME");
+LPCWSTR Platform::s_PlatformRootPathKey = TEXT("PLATFORM_ROOT_PATH");
+LPCWSTR Platform::s_PlatformRemoteHostKey = TEXT("PLATFORM_REMOTE_HOST");
+LPCWSTR Platform::s_PlatformRemotePortKey = TEXT("PLATFORM_REMOTE_PORT");
+LPCWSTR Platform::s_PlatformLocalPortKey = TEXT("PLATFORM_LOCAL_PORT");
 
 /*
 void GetComponentList(ComponentList &componentList)
@@ -65,9 +70,19 @@ RC Platform::Init()
 {
     RC rc;
 
+    CHECK_RC(Socket::Init());
+
     ConfigFile configFile(s_CfgFileName);
     m_ComponentCfgFileName = configFile.read<wstring>(s_ComponentCfgFileNameKey);
     m_AlgorithmCfgFileName = configFile.read<wstring>(s_AlgorithmCfgFileNameKey);
+    m_RootPath = configFile.read<wstring>(s_PlatformRootPathKey);
+    m_RemoteHost = Utility::Wstring2String(configFile.read<wstring>(s_PlatformRemoteHostKey));
+    m_RemotePort = configFile.read<int>(s_PlatformRemotePortKey);
+    m_LocalPort = configFile.read<int>(s_PlatformLocalPortKey);
+
+    CHECK_RC(m_PlatformService.Init(m_RootPath, m_RemoteHost.c_str(), m_RemotePort));
+    CHECK_RC(m_FileService.Init(m_RootPath.c_str(), "", m_LocalPort));
+    CHECK_RC(m_FileService.Listen());
 
     // CHECK_RC(LoadComponentDll());
     // CHECK_RC(RegisterInterfaceType());
@@ -232,7 +247,7 @@ RC Platform::RegisterComponentType()
 {
     RC rc;
 
-    ComponentTypeDataFile file(m_ComponentCfgFileName);
+    ComponentTypeDataFile file(m_ComponentCfgFileName, &m_PlatformService);
     file.Parse();
     m_InterfaceTypeMap = file.GetInterfaceTypeMap();
     m_ComponentTypeMap = file.GetComponentTypeMap();
@@ -332,4 +347,23 @@ RC Platform::UploadAlgorithm()
     RC rc;
     // FIXME
     return rc;
+}
+
+Platform::PlatformServiceImpl::PlatformServiceImpl()
+{
+}
+
+RC Platform::PlatformServiceImpl::Init(const wstring &rootPath, const char *remoteHost, int port)
+{
+    return m_FileService.Init(rootPath.c_str(), remoteHost, port);
+}
+
+RC Platform::PlatformServiceImpl::Shut()
+{
+    return m_FileService.Shut();
+}
+
+RC Platform::PlatformServiceImpl::DownloadFile(LPCWSTR filePath)
+{
+    return m_FileService.DownloadFile(filePath);
 }

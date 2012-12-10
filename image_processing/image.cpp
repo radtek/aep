@@ -197,6 +197,8 @@ RC Image::Run()
 {
     RC rc;
 
+    CHECK_RC(g_PlatformService->DownloadFile(m_FilePath.c_str()));
+
     HBITMAP hBitmap = (HBITMAP)::LoadImage(
         NULL,
         m_FilePath.c_str(),

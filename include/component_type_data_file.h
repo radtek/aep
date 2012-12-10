@@ -7,7 +7,7 @@
 class ComponentTypeDataFile : public DataFile
 {
 public:
-    ComponentTypeDataFile(wstring fileName);
+    ComponentTypeDataFile(wstring fileName, PlatformService *platformService);
     virtual ~ComponentTypeDataFile();
 
     InterfaceTypeMap &GetInterfaceTypeMap();
@@ -18,6 +18,7 @@ protected:
 protected:
     InterfaceTypeMap m_InterfaceTypeMap;
     ComponentTypeMap m_ComponentTypeMap;
+    PlatformService *m_PlatformService;
 };
 
 #endif // __COMPONENT_TYPE_DATA_FILE_H__

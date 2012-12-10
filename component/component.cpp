@@ -12,6 +12,8 @@ LPCSTR Component::RegisterInterfaceTypeFuncName = "RegisterInterfaceType";
 
 LPCSTR Component::RegisterComponentTypeFuncName = "RegisterComponentType";
 
+LPCSTR Component::SetPlatformServiceFuncName = "SetPlatformService";
+
 // LPCSTR Component::ValidateModelFuncName = "ValidateModel";
 
 // LPCSTR Component::RunModelFuncName = "RunModel";

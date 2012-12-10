@@ -89,3 +89,5 @@ DEFINE_ERROR(BATCH_CONFIG_MODEL_ERROR, "Couldn't find component in model.")
 DEFINE_ERROR(BATCH_CONFIG_COMPONENT_ERROR, "Couldn't find attribute in component.")
 
 DEFINE_ERROR(UTILITY_SAVE_IMAGE_ERROR, "Save image error.")
+
+DEFINE_ERROR(FILE_DIRECTORY_NOT_EXIST, "Directory not exists.")

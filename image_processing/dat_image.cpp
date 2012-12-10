@@ -202,6 +202,8 @@ RC DatImage::Run()
 {
     RC rc;
 
+    CHECK_RC(g_PlatformService->DownloadFile(m_FilePath.c_str()));
+
     wifstream ifs(m_FilePath.c_str());
     if (!ifs)
     {

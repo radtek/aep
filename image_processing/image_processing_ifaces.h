@@ -133,4 +133,6 @@ struct ITransferInput : IData
     vector<wstring> m_Path;
 };
 
+extern PlatformService *g_PlatformService;
+
 #endif // __IMAGE_PROCESSING_IFACES_H__

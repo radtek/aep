@@ -281,6 +281,10 @@
 			ReferencedProjectIdentifier="{8ED092B5-70E1-47CE-9ED2-F7179AF1D009}"
 			RelativePathToProject=".\component\component.vcproj"
 		/>
+		<ProjectReference
+			ReferencedProjectIdentifier="{5C99B807-8987-4F6D-AACF-DBBD50371873}"
+			RelativePathToProject=".\network\network.vcproj"
+		/>
 	</References>
 	<Files>
 		<Filter
@@ -314,6 +318,10 @@
 			</File>
 			<File
 				RelativePath=".\data_file.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\utility\file_service.cpp"
 				>
 			</File>
 			<File
@@ -380,6 +388,10 @@
 			</File>
 			<File
 				RelativePath="..\include\errors.h"
+				>
+			</File>
+			<File
+				RelativePath="..\include\file_service.h"
 				>
 			</File>
 			<File

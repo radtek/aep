@@ -22,6 +22,10 @@ namespace Component
     /** @brief 注册组件类型的函数名. */
     extern LPCSTR RegisterComponentTypeFuncName;
 
+    typedef void (*SetPlatformServiceFunc)(PlatformService *platformService);
+    /** @brief 注册组件类型的函数名. */
+    extern LPCSTR SetPlatformServiceFuncName;
+
     /*
     typedef bool (*ValidateModelFunc)();
     extern LPCSTR ValidateModelFuncName;

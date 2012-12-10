@@ -233,4 +233,10 @@ struct Connector
 
 typedef vector<Connector> ConnectorList;
 
+class PlatformService
+{
+public:
+    virtual RC DownloadFile(LPCWSTR filePath) = 0;
+};
+
 #endif // __INTERFACES_H__

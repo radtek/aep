@@ -14,6 +14,7 @@
 #include "interfaces.h"
 #include "algorithm.h"
 #include "internal_algorithm.h"
+#include "file_service.h"
 
 /**
 * @class Platform
@@ -123,6 +124,31 @@ private:
     static LPCWSTR s_ComponentCfgFileNameKey;
     /** @brief 用于在平台配置文件中查找算法配置文件名的关键字. */
     static LPCWSTR s_AlgorithmCfgFileNameKey;
+    /** @brief 用于在平台配置文件中查找算法配置文件名的关键字. */
+    static LPCWSTR s_PlatformRootPathKey;
+    static LPCWSTR s_PlatformRemoteHostKey;
+    static LPCWSTR s_PlatformRemotePortKey;
+    static LPCWSTR s_PlatformLocalPortKey;
+
+private:
+    wstring m_RootPath;
+    string m_RemoteHost;
+    int m_RemotePort;
+    int m_LocalPort;
+
+    class PlatformServiceImpl : public PlatformService
+    {
+    public:
+        PlatformServiceImpl();
+        RC Init(const wstring &rootPath, const char *remoteHost, int port);
+        RC Shut();
+
+        virtual RC DownloadFile(LPCWSTR filePath);
+    private:
+        FileService m_FileService;
+    } m_PlatformService;
+
+    FileService m_FileService;
 };
 
 #endif // __PLATFORM_H__
