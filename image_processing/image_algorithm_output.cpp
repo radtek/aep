@@ -1,8 +1,8 @@
 #include "image_processing_ifaces.h"
 
-IImageAlgorithmOutput::IImageAlgorithmOutput(UINT32 size)
-:
-m_Size(size)
+IImageAlgorithmOutput::IImageAlgorithmOutput(UINT32 size, IImageAlgorithm *imageAlgorithm)
+: m_Size(size)
+, m_ImageAlgorithm(imageAlgorithm)
 {
     m_Array = new Array *[m_Size];
     for (UINT32 i = 0; i < m_Size; ++i)

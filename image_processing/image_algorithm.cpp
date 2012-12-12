@@ -20,7 +20,7 @@ m_IsEntrance(0)
 {
     m_Input1 = new IImageAlgorithmInput1;
     m_Input2 = new IImageAlgorithmInput2;
-    m_Output = new IImageAlgorithmOutput(m_OutputCount);
+    m_Output = new IImageAlgorithmOutput(m_OutputCount, this);
     for (UINT32 i = 0; i < m_OutputCount; ++i)
     {
         m_Width[i] = 0;
@@ -445,7 +445,7 @@ RC ImageAlgorithm::GetOutput(IData *&output)
     return OK;
 }
 
-RC ImageAlgorithm::Run()
+RC ImageAlgorithm::InternalRun()
 {
     RC rc;
 

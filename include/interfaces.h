@@ -217,6 +217,18 @@ typedef map<UINT32, ComponentType> ComponentTypeMap;
 struct IAlgorithm : public IComponent
 {
     virtual bool _stdcall IsEntrance() = 0;
+    virtual RC _stdcall InternalRun() = 0;
+
+    virtual RC _stdcall Run();
+    virtual UINT64 _stdcall GetNS();
+    virtual UINT32 _stdcall GetMemoryUsageKB();
+    virtual UINT32 _stdcall GetCpuPercentage();
+
+private:
+    virtual void _stdcall BeforeRun();
+    virtual void _stdcall AfterRun();
+    UINT64 m_NS;
+    UINT32 m_MemoryUsageKB;
 };
 
 typedef vector<IAlgorithm *> AlgorithmList;

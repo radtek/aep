@@ -66,4 +66,10 @@ namespace Utility
 
     wstring GetExtName(const wstring &path, bool withDot = false);
     wstring InsertNumToFileName(const wstring &path, UINT32 num);
+
+    UINT64 GetNS();
+    UINT32 GetCpuPercentage();
+    UINT32 GetMemoryUsageKB();
+
+    extern const UINT32 CpuFrequencyMhz;
 };

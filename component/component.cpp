@@ -7,6 +7,7 @@
 */
 
 #include "component.h"
+#include "utility.h"
 
 LPCSTR Component::RegisterInterfaceTypeFuncName = "RegisterInterfaceType";
 
@@ -21,3 +22,46 @@ LPCSTR Component::SetPlatformServiceFuncName = "SetPlatformService";
 // Component::GetComponentListFunc Component::GetComponentList;
 
 // LPCSTR Component::RegisterGetComponentListFuncFuncName = "RegisterGetComponentListFunc";
+
+RC IAlgorithm::Run()
+{
+    RC rc;
+
+    BeforeRun();
+    rc = InternalRun();
+    AfterRun();
+
+    BeforeRun();
+
+    return rc;
+}
+
+// UINT64 IAlgorithm::m_NS;
+// UINT32 IAlgorithm::m_MemoryUsageKB;
+
+UINT64 IAlgorithm::GetNS()
+{
+    return m_NS;
+}
+
+UINT32 IAlgorithm::GetMemoryUsageKB()
+{
+    return m_MemoryUsageKB;
+}
+
+UINT32 IAlgorithm::GetCpuPercentage()
+{
+    return Utility::GetCpuPercentage();
+}
+
+void IAlgorithm::BeforeRun()
+{
+    m_NS = Utility::GetNS();
+    m_MemoryUsageKB = Utility::GetMemoryUsageKB();
+}
+
+void IAlgorithm::AfterRun()
+{
+    m_NS = Utility::GetNS() - m_NS;
+    m_MemoryUsageKB = Utility::GetMemoryUsageKB() - m_MemoryUsageKB;
+}

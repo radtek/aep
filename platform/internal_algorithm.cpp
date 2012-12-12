@@ -169,7 +169,7 @@ RC InternalAlgorithm::GetOutput(IData *&output)
     return rc;
 }
 
-RC InternalAlgorithm::Run()
+RC InternalAlgorithm::InternalRun()
 {
     RC rc;
 

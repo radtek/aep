@@ -59,7 +59,7 @@ public:
     virtual RC _stdcall SetInput(IData *input);
     virtual RC _stdcall GetOutput(IData *&output);
 
-    virtual RC _stdcall Run();
+    virtual RC _stdcall InternalRun();
 
     virtual bool _stdcall IsEntrance();
 

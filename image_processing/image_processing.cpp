@@ -16,6 +16,7 @@
 #include "output_image.h"
 #include "output_external_data_batch.h"
 #include "output_image_batch.h"
+#include "algorithm_evaluate.h"
 #include "transfer_file.h"
 
 extern "C" __declspec(dllexport) void RegisterInterfaceType(InterfaceTypeMap &interfaceTypeMap)
@@ -151,6 +152,13 @@ extern "C" __declspec(dllexport) void RegisterComponentType(ComponentTypeMap &co
     componentType.TypeName = OutputImageBatch::s_ComponentName;
     componentType.InterfaceId = CLIENT_CIID_OUTPUT_FILE;
     componentType.Factory = (ComponentFactory)OutputImageBatch::Factory;
+    componentType.DllHandle = DllHandle;
+    componentTypeMap[componentType.TypeId] = componentType;
+
+    componentType.TypeId = AlgorithmEvaluate::s_ComponentId;
+    componentType.TypeName = AlgorithmEvaluate::s_ComponentName;
+    componentType.InterfaceId = CLIENT_CIID_OUTPUT_FILE;
+    componentType.Factory = (ComponentFactory)AlgorithmEvaluate::Factory;
     componentType.DllHandle = DllHandle;
     componentTypeMap[componentType.TypeId] = componentType;
 

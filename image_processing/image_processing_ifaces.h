@@ -47,6 +47,7 @@ BEGIN_CLIENT_CCID
     CLIENT_CCID_OUTPUT_EXTERNAL_DATA_BATCH,
     CLIENT_CCID_OUTPUT_IMAGE_BATCH,
     CLIENT_CCID_TRANSFER_FILE,
+    CLIENT_CCID_ALGORITHM_EVALUATE,
 END_CLIENT_CCID
 
 typedef mxArray Array;
@@ -93,11 +94,12 @@ struct IImageAlgorithmInput2 : IData
 
 struct IImageAlgorithmOutput : IData
 {
-    IImageAlgorithmOutput(UINT32 size);
+    IImageAlgorithmOutput(UINT32 size, IImageAlgorithm *imageAlgorithm = NULL);
     virtual void * _stdcall GetInterface(UINT32 iid);
     void Reset();
     Array **m_Array;
     UINT32 m_Size;
+    IImageAlgorithm *m_ImageAlgorithm;
 };
 
 struct IOutputFile : IComponent
