@@ -1,0 +1,312 @@
+// evaluate_page.cpp : implementation file
+//
+
+#include "stdafx.h"
+#include "client_app.h"
+#include "evaluate_page.h"
+#include "utility.h"
+
+// CEvaluatePage dialog
+
+IMPLEMENT_DYNAMIC(CEvaluatePage, CBCGPPropertyPage)
+
+CEvaluatePage::CEvaluatePage()
+	: CBCGPPropertyPage(CEvaluatePage::IDD)
+    , m_AlgorithmName(_T(""))
+    , m_AlgorithmFile(_T(""))
+    , m_Evaluate(Evaluate::GetInstance())
+    , m_FactorName(_T(""))
+    , m_DllPath(_T(""))
+    , m_AlgorithmOutputStart(0)
+    , m_AlgorithmOutputEnd(0)
+    , m_OriginEnd(0)
+    , m_OriginStart(0)
+    , m_Origin(_T(""))
+{
+
+}
+
+CEvaluatePage::~CEvaluatePage()
+{
+}
+
+void CEvaluatePage::DoDataExchange(CDataExchange* pDX)
+{
+    CDialog::DoDataExchange(pDX);
+    DDX_Text(pDX, IDC_ALGORITHM_NAME, m_AlgorithmName);
+    DDX_Text(pDX, IDC_ALGORITHM_FILE_PATH, m_AlgorithmFile);
+    DDX_Control(pDX, IDC_ALGORITHM_LIST, m_AlgorithmListCtrl);
+    DDX_Text(pDX, IDC_FACTOR_NAME, m_FactorName);
+    DDX_Text(pDX, IDC_FACTOR_DLL_PATH, m_DllPath);
+    DDX_Text(pDX, IDC_FACTOR_ALGORITHM_OUTPUT, m_AlgorithmOutput);
+    DDX_Text(pDX, IDC_FACTOR_ALGORITHM_OUTPUT_START, m_AlgorithmOutputStart);
+    DDX_Text(pDX, IDC_FACTOR_ALGORITHM_OUTPUT_END, m_AlgorithmOutputEnd);
+    DDX_Text(pDX, IDC_FACTOR_ORIGIN, m_Origin);
+    DDX_Text(pDX, IDC_FACTOR_ORIGIN_END, m_OriginEnd);
+    DDX_Text(pDX, IDC_FACTOR_ORIGIN_START, m_OriginStart);
+    DDX_Control(pDX, IDC_FACTOR_LIST, m_FactorListCtrl);
+}
+
+
+BEGIN_MESSAGE_MAP(CEvaluatePage, CBCGPPropertyPage)
+    ON_BN_CLICKED(IDC_ALGORITHM_ADD_UPDATE, &CEvaluatePage::OnBnClickedAlgorithmAddUpdate)
+    ON_BN_CLICKED(IDC_ALGORITHM_DELETE, &CEvaluatePage::OnBnClickedAlgorithmDelete)
+    ON_NOTIFY(LVN_ITEMACTIVATE, IDC_ALGORITHM_LIST, &CEvaluatePage::OnLvnItemActivateAlgorithmList)
+    ON_BN_CLICKED(IDOK, &CEvaluatePage::OnBnClickedOk)
+    ON_BN_CLICKED(IDC_FACTOR_ADD_UPDATE, &CEvaluatePage::OnBnClickedFactorAddUpdate)
+    ON_BN_CLICKED(IDC_FACTOR_DELETE, &CEvaluatePage::OnBnClickedFactorDelete)
+    ON_NOTIFY(LVN_ITEMACTIVATE, IDC_FACTOR_LIST, &CEvaluatePage::OnLvnItemActivateFactorList)
+END_MESSAGE_MAP()
+
+
+// CEvaluatePage message handlers
+
+BOOL CEvaluatePage::OnInitDialog() 
+{
+    CBCGPPropertyPage::OnInitDialog();
+
+	LONG lStyle;
+	lStyle = GetWindowLong(m_AlgorithmListCtrl.m_hWnd, GWL_STYLE);
+	lStyle &= ~LVS_TYPEMASK;
+	lStyle |= LVS_REPORT;
+	SetWindowLong(m_AlgorithmListCtrl.m_hWnd, GWL_STYLE, lStyle);
+	DWORD dwStyle = m_AlgorithmListCtrl.GetExtendedStyle();
+	dwStyle |= LVS_EX_FULLROWSELECT;
+	dwStyle |= LVS_EX_GRIDLINES;
+	m_AlgorithmListCtrl.SetExtendedStyle(dwStyle);
+    
+	m_AlgorithmListCtrl.InsertColumn(0,_T("算法名称"),LVCFMT_CENTER, 60);
+	m_AlgorithmListCtrl.InsertColumn(1,_T("文件路径"),LVCFMT_CENTER, 60);
+	m_AlgorithmListCtrl.EnableWindow(TRUE);
+
+	lStyle = GetWindowLong(m_FactorListCtrl.m_hWnd, GWL_STYLE);
+	lStyle &= ~LVS_TYPEMASK;
+	lStyle |= LVS_REPORT;
+	SetWindowLong(m_FactorListCtrl.m_hWnd, GWL_STYLE, lStyle);
+	dwStyle = m_FactorListCtrl.GetExtendedStyle();
+	dwStyle |= LVS_EX_FULLROWSELECT;
+	dwStyle |= LVS_EX_GRIDLINES;
+	m_FactorListCtrl.SetExtendedStyle(dwStyle);
+    
+	m_FactorListCtrl.InsertColumn(0,_T("指标名称"),LVCFMT_CENTER, 60);
+	m_FactorListCtrl.InsertColumn(1,_T("DLL路径"),LVCFMT_CENTER, 60);
+	m_FactorListCtrl.InsertColumn(2,_T("算法输出"),LVCFMT_CENTER, 60);
+	m_FactorListCtrl.InsertColumn(3,_T("起始ID"),LVCFMT_CENTER, 60);
+	m_FactorListCtrl.InsertColumn(4,_T("结束ID"),LVCFMT_CENTER, 60);
+	m_FactorListCtrl.InsertColumn(5,_T("原始文件"),LVCFMT_CENTER, 60);
+	m_FactorListCtrl.InsertColumn(6,_T("起始ID"),LVCFMT_CENTER, 60);
+	m_FactorListCtrl.InsertColumn(7,_T("结束ID"),LVCFMT_CENTER, 60);
+	m_FactorListCtrl.EnableWindow(TRUE);
+
+    return TRUE;
+}
+
+void CEvaluatePage::AddAlgorithmItem()
+{
+    if (m_AlgorithmName == TEXT("") || m_AlgorithmFile == TEXT(""))
+    {
+        return;
+    }
+    int n = m_AlgorithmListCtrl.GetItemCount();
+    m_AlgorithmListCtrl.InsertItem(n, m_AlgorithmName);
+    m_AlgorithmListCtrl.SetItemText(n, 1, m_AlgorithmFile);
+}
+
+void CEvaluatePage::UpdateAlgorithmItem(int row)
+{
+    if (m_AlgorithmName == TEXT("") || m_AlgorithmFile == TEXT(""))
+    {
+        return;
+    }
+    m_AlgorithmListCtrl.SetItemText(row, 0, m_AlgorithmName);
+    m_AlgorithmListCtrl.SetItemText(row, 1, m_AlgorithmFile);
+}
+
+void CEvaluatePage::DeleteAlgorithmItem(int row)
+{
+    m_AlgorithmListCtrl.DeleteItem(row);
+}
+
+void CEvaluatePage::AddFactorItem()
+{
+    if (m_FactorName == TEXT("")
+        || m_DllPath == TEXT("")
+        || m_AlgorithmOutput == TEXT("")
+        || m_Origin == TEXT(""))
+    {
+        return;
+    }
+    int n = m_FactorListCtrl.GetItemCount();
+    m_FactorListCtrl.InsertItem(n, m_FactorName);
+    CString temp;
+    m_FactorListCtrl.SetItemText(n, 1, m_DllPath);
+    m_FactorListCtrl.SetItemText(n, 2, m_AlgorithmOutput);
+    temp = TEXT("");
+    temp.AppendFormat(TEXT("%u"), m_AlgorithmOutputStart);
+    m_FactorListCtrl.SetItemText(n, 3, temp);
+    temp = TEXT("");
+    temp.AppendFormat(TEXT("%u"), m_AlgorithmOutputEnd);
+    m_FactorListCtrl.SetItemText(n, 4, temp);
+    m_FactorListCtrl.SetItemText(n, 5, m_Origin);
+    temp = TEXT("");
+    temp.AppendFormat(TEXT("%u"), m_OriginStart);
+    m_FactorListCtrl.SetItemText(n, 6, temp);
+    temp = TEXT("");
+    temp.AppendFormat(TEXT("%u"), m_OriginEnd);
+    m_FactorListCtrl.SetItemText(n, 7, temp);
+}
+
+void CEvaluatePage::UpdateFactorItem(int row)
+{
+    if (m_FactorName == TEXT("")
+        || m_DllPath == TEXT("")
+        || m_AlgorithmOutput == TEXT("")
+        || m_Origin == TEXT(""))
+    {
+        return;
+    }
+    CString temp;
+    m_FactorListCtrl.SetItemText(row, 0, m_FactorName);
+    m_FactorListCtrl.SetItemText(row, 1, m_DllPath);
+    m_FactorListCtrl.SetItemText(row, 2, m_AlgorithmOutput);
+    temp = TEXT("");
+    temp.AppendFormat(TEXT("%u"), m_AlgorithmOutputStart);
+    m_FactorListCtrl.SetItemText(row, 3, temp);
+    temp = TEXT("");
+    temp.AppendFormat(TEXT("%u"), m_AlgorithmOutputEnd);
+    m_FactorListCtrl.SetItemText(row, 4, temp);
+    m_FactorListCtrl.SetItemText(row, 5, m_Origin);
+    temp = TEXT("");
+    temp.AppendFormat(TEXT("%u"), m_OriginStart);
+    m_FactorListCtrl.SetItemText(row, 6, temp);
+    temp = TEXT("");
+    temp.AppendFormat(TEXT("%u"), m_OriginEnd);
+    m_FactorListCtrl.SetItemText(row, 7, temp);
+}
+
+void CEvaluatePage::DeleteFactorItem(int row)
+{
+    m_FactorListCtrl.DeleteItem(row);
+}
+
+void CEvaluatePage::OnBnClickedAlgorithmAddUpdate()
+{
+    // TODO: Add your control notification handler code here
+    UpdateData();
+    POSITION pos = m_AlgorithmListCtrl.GetFirstSelectedItemPosition();
+    if (pos == NULL)
+    {
+        AddAlgorithmItem();
+    }
+    else
+    {
+        int row = (int)m_AlgorithmListCtrl.GetNextSelectedItem(pos);
+        UpdateAlgorithmItem(row);
+    }
+}
+
+void CEvaluatePage::OnBnClickedAlgorithmDelete()
+{
+    // TODO: Add your control notification handler code here
+    POSITION pos = m_AlgorithmListCtrl.GetFirstSelectedItemPosition();
+    if (pos != NULL)
+    {
+        int row = (int)m_AlgorithmListCtrl.GetNextSelectedItem(pos);
+        DeleteAlgorithmItem(row);
+    }
+}
+
+void CEvaluatePage::OnLvnItemActivateAlgorithmList(NMHDR *pNMHDR, LRESULT *pResult)
+{
+    LPNMITEMACTIVATE pNMIA = reinterpret_cast<LPNMITEMACTIVATE>(pNMHDR);
+    if (pNMIA == NULL)
+    {
+        return;
+    }
+    // TODO: Add your control notification handler code here
+    m_AlgorithmName = m_AlgorithmListCtrl.GetItemText(pNMIA->iItem, 0);
+    m_AlgorithmFile = m_AlgorithmListCtrl.GetItemText(pNMIA->iItem, 1);
+    UpdateData(0);
+    *pResult = 0;
+}
+
+void CEvaluatePage::OnBnClickedFactorAddUpdate()
+{
+    // TODO: Add your control notification handler code here
+    UpdateData();
+    POSITION pos = m_FactorListCtrl.GetFirstSelectedItemPosition();
+    if (pos == NULL)
+    {
+        AddFactorItem();
+    }
+    else
+    {
+        int row = (int)m_FactorListCtrl.GetNextSelectedItem(pos);
+        UpdateFactorItem(row);
+    }
+}
+
+void CEvaluatePage::OnBnClickedFactorDelete()
+{
+    // TODO: Add your control notification handler code here
+    POSITION pos = m_FactorListCtrl.GetFirstSelectedItemPosition();
+    if (pos != NULL)
+    {
+        int row = (int)m_FactorListCtrl.GetNextSelectedItem(pos);
+        DeleteFactorItem(row);
+    }
+}
+
+void CEvaluatePage::OnLvnItemActivateFactorList(NMHDR *pNMHDR, LRESULT *pResult)
+{
+    LPNMITEMACTIVATE pNMIA = reinterpret_cast<LPNMITEMACTIVATE>(pNMHDR);
+    if (pNMIA == NULL)
+    {
+        return;
+    }
+    // TODO: Add your control notification handler code here
+    m_FactorName = m_FactorListCtrl.GetItemText(pNMIA->iItem, 0);
+    m_DllPath = m_FactorListCtrl.GetItemText(pNMIA->iItem, 1);
+    m_AlgorithmOutput = m_FactorListCtrl.GetItemText(pNMIA->iItem, 2);
+    m_AlgorithmOutputStart = _ttoi(m_FactorListCtrl.GetItemText(pNMIA->iItem, 3));
+    m_AlgorithmOutputEnd = _ttoi(m_FactorListCtrl.GetItemText(pNMIA->iItem, 4));
+    m_Origin = m_FactorListCtrl.GetItemText(pNMIA->iItem, 5);
+    m_OriginStart = _ttoi(m_FactorListCtrl.GetItemText(pNMIA->iItem, 6));
+    m_OriginEnd = _ttoi(m_FactorListCtrl.GetItemText(pNMIA->iItem, 7));
+    UpdateData(0);
+    *pResult = 0;
+}
+
+void CEvaluatePage::OnBnClickedOk()
+{
+    // TODO: Add your control notification handler code here
+    vector<AlgorithmRuntime> algorithms;
+    for (int i = 0; i < m_AlgorithmListCtrl.GetItemCount(); ++i)
+    {
+        AlgorithmRuntime algorithm;
+        algorithm.Name = m_AlgorithmListCtrl.GetItemText(i, 0);
+        algorithm.FilePath = m_AlgorithmListCtrl.GetItemText(i, 1);
+        algorithms.push_back(algorithm);
+    }
+    vector<Factor> factors;
+    for (int i = 0; i < m_FactorListCtrl.GetItemCount(); ++i)
+    {
+        Factor factor;
+        factor.Name = m_FactorListCtrl.GetItemText(i, 0);
+        factor.DllPath = m_FactorListCtrl.GetItemText(i, 1);
+        factor.AlgorithmOutput = m_FactorListCtrl.GetItemText(i, 2);
+        factor.AlgorithmOutputStart = _ttoi(m_FactorListCtrl.GetItemText(i, 3));
+        factor.AlgorithmOutputEnd = _ttoi(m_FactorListCtrl.GetItemText(i, 4));
+        factor.Origin = m_FactorListCtrl.GetItemText(i, 5);
+        factor.OriginStart = _ttoi(m_FactorListCtrl.GetItemText(i, 6));
+        factor.OriginEnd = _ttoi(m_FactorListCtrl.GetItemText(i, 7));
+        factors.push_back(factor);
+    }
+
+    vector<AlgorithmRuntimeResult> algorithmResults;
+    vector<FactorResult> factorResults;
+    if (OK != m_Evaluate.DoEvaluate(algorithms, factors, algorithmResults, factorResults))
+    {
+        Utility::PromptErrorMessage(TEXT("评估错误"));
+    }
+}

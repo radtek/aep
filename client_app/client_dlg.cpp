@@ -49,6 +49,7 @@ IMPLEMENT_DYNAMIC(CClientDlg, CBCGPPropertySheet)
 CClientDlg::CClientDlg(CWnd* pParent /*=NULL*/)
 	: CBCGPPropertySheet(IDS_CLIENT_DIALOG_CAPTION, pParent)
     , m_Client(Client::GetInstance())
+    , m_Evaluate(Evaluate::GetInstance())
 {
 	SetLook (CBCGPPropertySheet::PropSheetLook_OutlookBar);
 	SetIconsList ((globalData.bIsWindows9x || globalData.bIsWindowsNT4) ? IDB_ICONS : IDB_ICONS_HC, 32);
@@ -59,8 +60,11 @@ CClientDlg::CClientDlg(CWnd* pParent /*=NULL*/)
     AddPage(&m_ModelPage);
 
 #ifdef __FILE_TRANSFER_PRESENT__
-    AddPage(&m_FileTransferPage);
+    // AddPage(&m_FileTransferPage);
 #endif
+
+    AddPage(&m_FileServicePage);
+    AddPage(&m_EvaluatePage);
 
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }
@@ -69,6 +73,9 @@ CClientDlg::~CClientDlg()
 {
     m_Client.Shut();
     Client::DestroyInstance();
+
+    m_Evaluate.Shut();
+    Evaluate::DestroyInstance();
 }
 
 BEGIN_MESSAGE_MAP(CClientDlg, CBCGPPropertySheet)

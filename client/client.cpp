@@ -82,7 +82,7 @@ RC Client::Init()
 
     CHECK_RC(Socket::Init());
 
-    CHECK_RC(m_Platform.Init());
+    // CHECK_RC(m_Platform.Init());
     CHECK_RC(m_Socket.Init());
 
     m_HostName = "localhost";

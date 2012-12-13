@@ -1,3 +1,6 @@
+#ifndef __FILE_SERVICE_H__
+#define __FILE_SERVICE_H__
+
 #include "tcp_socket.h"
 
 #include <vector>
@@ -25,13 +28,14 @@ public:
     class ServiceThread
     {
     public:
-        ServiceThread(TcpSocket *clientSocket);
+        ServiceThread(TcpSocket *clientSocket, const wstring &rootPath);
         ~ServiceThread();
 
         RC RealService();
 
     private:
         TcpSocket *m_ClientSocket;
+        wstring m_RootPath;
     };
 
 private:
@@ -49,3 +53,5 @@ private:
     HANDLE m_ListenThreadHandle;
     vector<HANDLE> m_ServiceThreadHandles;
 };
+
+#endif // __FILE_SERVICE_H__

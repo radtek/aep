@@ -10,6 +10,7 @@
 
 #include "platform.h"
 #include <engine.h>
+#include "file_service.h"
 
 // CModelApp:
 // See model_app.cpp for the implementation of this class

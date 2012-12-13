@@ -79,7 +79,7 @@ RC Server::Init()
 
     CHECK_RC(Socket::Init());
 
-    CHECK_RC(m_Platform.Init());
+    // CHECK_RC(m_Platform.Init());
     CHECK_RC(m_Socket.Init());
 
     m_Port = 10086;

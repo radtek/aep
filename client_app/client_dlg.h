@@ -4,11 +4,14 @@
 #pragma once
 
 #include "client.h"
+#include "evaluate.h"
 #include "server_config_page.h"
 #include "register_page.h"
 #include "login_page.h"
 #include "model_page.h"
 #include "file_transfer_page.h"
+#include "file_service_page.h"
+#include "evaluate_page.h"
 
 // CClientDlg dialog
 class CClientDlg : public CBCGPPropertySheet
@@ -35,10 +38,13 @@ public:
     CLoginPage m_LoginPage;
     CModelPage m_ModelPage;
     CFileTransferPage m_FileTransferPage;
+    CFileServicePage m_FileServicePage;
+    CEvaluatePage m_EvaluatePage;
 
 	HICON m_hIcon;
 
     Client &m_Client;
+    Evaluate &m_Evaluate;
 
 protected:
 

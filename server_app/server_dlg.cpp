@@ -55,6 +55,7 @@ CServerDlg::CServerDlg(CWnd* pParent /*=NULL*/)
 
     AddPage(&m_ControlPage);
     AddPage(&m_LogPage);
+    AddPage(&m_FileServerPage);
 
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }

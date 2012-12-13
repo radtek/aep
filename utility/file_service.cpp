@@ -19,11 +19,6 @@ RC FileService::Init(LPCWSTR rootPath, const char *remoteHost, int port)
     RC rc;
 
     m_RootPath = rootPath;
-    if (!SetCurrentDirectory(m_RootPath.c_str()))
-    {
-        Utility::PromptLastErrorMessage();
-        return RC::FILE_DIRECTORY_NOT_EXIST;
-    }
 
     m_RemoteHost = remoteHost;
     m_Port = port;
@@ -84,7 +79,7 @@ RC FileService::RealListen()
     {
         TcpSocket *clientSocket = new TcpSocket();
         CHECK_RC(m_ServerSocket.Accept(*clientSocket));
-        ServiceThread *thread = new ServiceThread(clientSocket);
+        ServiceThread *thread = new ServiceThread(clientSocket, m_RootPath);
         HANDLE handle;
         handle = CreateThread(NULL,
             NULL,
@@ -104,6 +99,14 @@ RC FileService::RealListen()
 
 RC FileService::DownloadFile(LPCWSTR filePath)
 {
+    wchar_t buf[1024];
+    GetCurrentDirectory(1024, buf);
+    if (!SetCurrentDirectory(m_RootPath.c_str()))
+    {
+        Utility::PromptLastErrorMessage();
+        return RC::FILE_DIRECTORY_NOT_EXIST;
+    }
+
     RC rc;
 
     if (!m_IsConnected)
@@ -120,11 +123,14 @@ RC FileService::DownloadFile(LPCWSTR filePath)
 
     CHECK_RC(m_ClientSocket.RecvFile(filePath));
 
+    SetCurrentDirectory(buf);
+
     return rc;
 }
 
-FileService::ServiceThread::ServiceThread(TcpSocket *clientSocket)
+FileService::ServiceThread::ServiceThread(TcpSocket *clientSocket, const wstring &rootPath)
 : m_ClientSocket(clientSocket)
+, m_RootPath(rootPath)
 {
 }
 
@@ -143,6 +149,14 @@ RC FileService::ServiceThread::RealService()
         wstring filePath;
         CHECK_RC(m_ClientSocket->RecvWString(filePath));
 
+        wchar_t buf[1024];
+        GetCurrentDirectory(1024, buf);
+        if (!SetCurrentDirectory(m_RootPath.c_str()))
+        {
+            Utility::PromptLastErrorMessage();
+            return RC::FILE_DIRECTORY_NOT_EXIST;
+        }
+
         RC _rc;
         if (!Utility::FileExists(filePath.c_str()))
         {
@@ -153,6 +167,8 @@ RC FileService::ServiceThread::RealService()
         CHECK_RC(m_ClientSocket->SendRC(_rc));
 
         CHECK_RC(m_ClientSocket->SendFile(filePath.c_str()));
+
+        SetCurrentDirectory(buf);
     }
 
     return rc;

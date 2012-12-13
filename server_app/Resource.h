@@ -15,10 +15,15 @@
 #define IDD_CONTROL_PAGE                132
 #define IDD_LOG_PAGE                    133
 #define IDD_SERVER_APP_DIALOG           134
+#define IDD_FILE_SERVER_PAGE            135
 #define IDB_CONTROL_START               1000
+#define IDC_SETTING_GROUP               1000
 #define IDC_CONTROL_PORT                1001
+#define IDC_PORT_STATIC                 1001
 #define IDC_LOG_GROUP                   1002
+#define IDC_PORT                        1002
 #define IDC_LOG                         1003
+#define IDC_ROOT_PATH                   1003
 #define IDC_CONTROL_PORT_TITLE          1004
 #define IDC_LOG_CLEAR                   1004
 #define IDB_LOG_CONTROL                 1005
@@ -29,7 +34,7 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        135
+#define _APS_NEXT_RESOURCE_VALUE        136
 #define _APS_NEXT_COMMAND_VALUE         32771
 #define _APS_NEXT_CONTROL_VALUE         1007
 #define _APS_NEXT_SYMED_VALUE           101

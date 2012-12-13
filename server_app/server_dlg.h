@@ -6,6 +6,7 @@
 #include "server.h"
 #include "control_page.h"
 #include "log_page.h"
+#include "file_server_page.h"
 
 // CServerDlg dialog
 class CServerDlg : public CBCGPPropertySheet
@@ -29,6 +30,7 @@ public:
 public:
     CControlPage m_ControlPage;
     CLogPage m_LogPage;
+    CFileServerPage m_FileServerPage;
 
 	HICON m_hIcon;
 
