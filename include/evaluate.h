@@ -13,8 +13,6 @@
 
 #include "interfaces.h"
 
-#include <engine.h>
-
 struct AlgorithmRuntime
 {
     wstring Name;
@@ -23,9 +21,9 @@ struct AlgorithmRuntime
 
 struct AlgorithmRuntimeResult
 {
-    UINT32 CpuPercentage;
-    UINT32 MemoryUsageKB;
-    UINT64 NS;
+    vector<UINT32> CpuPercentage;
+    vector<UINT32> MemoryUsageKB;
+    vector<UINT64> NS;
 };
 
 struct Factor
@@ -85,9 +83,6 @@ private:
     AlgorithmRuntimeResult EvaluateAlgorithmRuntime(const AlgorithmRuntime &algorithm);
     FactorResult EvaluateFactor(const Factor &factor);
 
-    void DrawAlgorithmRuntime(const AlgorithmRuntime &algorithm, const AlgorithmRuntimeResult &algorithmResult);
-    void DrawFactor(const Factor &factor, const FactorResult &factorResult);
-
     wstring m_RootPath;
 
     /** @brief 服务器主机名. */
@@ -101,7 +96,6 @@ private:
     int m_ModelPort;
 
     FileService m_FileServerFS, m_ModelFS;
-    Engine *m_Engine;
 
 public:
     /** @brief 获得Evaluate类实例. */

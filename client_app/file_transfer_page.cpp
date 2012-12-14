@@ -56,7 +56,7 @@ void CFileTransferPage::OnBnClickedUploadButton()
         return;
     }
 
-    CFileDialog dlg(TRUE, NULL, NULL, OFN_ALLOWMULTISELECT, TEXT("Model Files (*.mod)|*.mod|Data Files (*.dat)|*.dat|Dll Files (*.dll)|*.dll|All Files (*.*)|*.*||"));
+    CFileDialog dlg(TRUE, NULL, NULL, OFN_FILEMUSTEXIST, TEXT("Model Files (*.mod)|*.mod|Data Files (*.dat)|*.dat|Dll Files (*.dll)|*.dll|All Files (*.*)|*.*||"));
     const DWORD MAXFILE = 255;
     dlg.m_ofn.nMaxFile = MAXFILE;
     wchar_t *buf = new wchar_t[MAXFILE];

@@ -13,7 +13,7 @@ IMPLEMENT_DYNAMIC(CFileServerPage, CBCGPPropertyPage)
 CFileServerPage::CFileServerPage()
 	: CBCGPPropertyPage(CFileServerPage::IDD)
     , m_Port(10086)
-    , m_RootPath(_T("."))
+    , m_RootPath(_T("server_app"))
 {
 
 }

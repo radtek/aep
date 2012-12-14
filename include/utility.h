@@ -70,6 +70,7 @@ namespace Utility
     UINT64 GetNS();
     UINT32 GetCpuPercentage();
     UINT32 GetMemoryUsageKB();
+    UINT32 GetMaxMemoryUsageKB();
 
     extern const UINT32 CpuFrequencyMhz;
 };

@@ -388,6 +388,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\evaluate_result_dlg.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\file_service_page.cpp"
 				>
 			</File>
@@ -463,6 +467,10 @@
 			</File>
 			<File
 				RelativePath=".\evaluate_page.h"
+				>
+			</File>
+			<File
+				RelativePath=".\evaluate_result_dlg.h"
 				>
 			</File>
 			<File

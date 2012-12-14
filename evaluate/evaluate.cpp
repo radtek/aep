@@ -89,11 +89,6 @@ RC Evaluate::Init()
 
     CHECK_RC(Socket::Init());
 
-    if (!(m_Engine = engOpen(NULL)))
-    {
-        return RC::MODEL_MATLAB_ENGINE_ERROR;
-    }
-
     CHECK_RC(Algorithm::Init());
 
     m_FileServerFS.Init(m_RootPath.c_str(), m_FileServerHostName.c_str(), m_FileServerPort);
@@ -197,25 +192,12 @@ RC Evaluate::DoEvaluate(const vector<AlgorithmRuntime> &algorithms, const vector
         factorResults.push_back(EvaluateFactor(factor));
     }
 
-    for (UINT32 i = 0; i < algorithms.size(); ++i)
-    {
-        DrawAlgorithmRuntime(algorithms[i], algorithmResults[i]);
-    }
-
-    for (UINT32 i = 0; i < factors.size(); ++i)
-    {
-        DrawFactor(factors[i], factorResults[i]);
-    }
-
     return rc;
 }
 
 AlgorithmRuntimeResult Evaluate::EvaluateAlgorithmRuntime(const AlgorithmRuntime &algorithm)
 {
     AlgorithmRuntimeResult result;
-    result.CpuPercentage = 0;
-    result.MemoryUsageKB = 0;
-    result.NS = 0;
     if (OK != m_ModelFS.DownloadFile(algorithm.FilePath.c_str()))
     {
         return result;
@@ -225,7 +207,17 @@ AlgorithmRuntimeResult Evaluate::EvaluateAlgorithmRuntime(const AlgorithmRuntime
     {
         return result;
     }
-    ifs >> result.CpuPercentage >> result.MemoryUsageKB >> result.NS;
+    UINT32 n = 0;
+    ifs >> n;
+    for (UINT32 i = 0; i < n; ++i)
+    {
+        UINT32 cpuPercentage = 0, memoryUsageKB = 0;
+        UINT64 ns = 0;
+        ifs >> cpuPercentage >> memoryUsageKB >> ns;
+        result.CpuPercentage.push_back(cpuPercentage);
+        result.MemoryUsageKB.push_back(memoryUsageKB);
+        result.NS.push_back(ns);
+    }
     ifs.close();
     return result;
 }
@@ -285,30 +277,4 @@ FactorResult Evaluate::EvaluateFactor(const Factor &factor)
     result.Result = output[0];
 
     return result;
-}
-
-void Evaluate::DrawAlgorithmRuntime(const AlgorithmRuntime &algorithm, const AlgorithmRuntimeResult &algorithmResult)
-{
-}
-
-void Evaluate::DrawFactor(const Factor &factor, const FactorResult &factorResult)
-{
-    mwSize size = factor.AlgorithmOutputEnd - factor.AlgorithmOutputStart + 1;
-    Array *x = mxCreateDoubleMatrix(1, size, mxREAL);
-
-    double *p = mxGetPr(x);
-    for (UINT32 i = factor.AlgorithmOutputStart; i <= factor.AlgorithmOutputEnd; ++i)
-    {
-        p[i - factor.AlgorithmOutputStart] = i;
-    }
-
-    engPutVariable(m_Engine, "X", x);
-    engPutVariable(m_Engine, "Y", factorResult.Result);
-
-    engEvalString(m_Engine, "plot(X, Y);");
-    engEvalString(m_Engine, "xlabel('X');");
-    engEvalString(m_Engine, "ylabel('Y');");
-
-    mxDestroyArray(x);
-    mxDestroyArray(factorResult.Result);
 }

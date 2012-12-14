@@ -188,7 +188,14 @@ RC AlgorithmEvaluate::Run()
     {
         return RC::FILE_OPEN_ERROR;
     }
-    ofs << m_Input->m_ImageAlgorithm->GetCpuPercentage() << TEXT(' ') << m_Input->m_ImageAlgorithm->GetMemoryUsageKB() << TEXT(' ') << m_Input->m_ImageAlgorithm->GetNS() << endl;
+    const vector<UINT32> &cpuPercentage = m_Input->m_ImageAlgorithm->GetCpuPercentage();
+    const vector<UINT32> &memoryUsageKB = m_Input->m_ImageAlgorithm->GetMemoryUsageKB();
+    const vector<UINT64> &ns = m_Input->m_ImageAlgorithm->GetNS();
+    ofs << cpuPercentage.size() << endl;
+    for (UINT32 i = 0; i < cpuPercentage.size(); ++i)
+    {
+        ofs << cpuPercentage[i] << TEXT(' ') << memoryUsageKB[i] << TEXT(' ') << ns[i] << endl;
+    }
     ofs.close();
 
     return rc;

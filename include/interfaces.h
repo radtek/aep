@@ -220,15 +220,18 @@ struct IAlgorithm : public IComponent
     virtual RC _stdcall InternalRun() = 0;
 
     virtual RC _stdcall Run();
-    virtual UINT64 _stdcall GetNS();
-    virtual UINT32 _stdcall GetMemoryUsageKB();
-    virtual UINT32 _stdcall GetCpuPercentage();
+    virtual const vector<UINT64>& _stdcall GetNS();
+    virtual const vector<UINT32>& _stdcall GetMemoryUsageKB();
+    virtual const vector<UINT32>& _stdcall GetCpuPercentage();
 
 private:
     virtual void _stdcall BeforeRun();
     virtual void _stdcall AfterRun();
-    UINT64 m_NS;
-    UINT32 m_MemoryUsageKB;
+    UINT64 m_BeforeNS, m_AfterNS;
+    UINT32 m_BeforeMemoryUsageKB, m_AfterMemoryUsageKB;
+    UINT32 m_BeforeCpuPercentage, m_AfterCpuPercentage;
+    vector<UINT32> m_CpuPercentage, m_MemoryUsageKB;
+    vector<UINT64> m_NS;
 };
 
 typedef vector<IAlgorithm *> AlgorithmList;

@@ -54,10 +54,10 @@ CClientDlg::CClientDlg(CWnd* pParent /*=NULL*/)
 	SetLook (CBCGPPropertySheet::PropSheetLook_OutlookBar);
 	SetIconsList ((globalData.bIsWindows9x || globalData.bIsWindowsNT4) ? IDB_ICONS : IDB_ICONS_HC, 32);
 
-    AddPage(&m_ServerConfigPage);
-    AddPage(&m_RegisterPage);
-    AddPage(&m_LoginPage);
-    AddPage(&m_ModelPage);
+    // AddPage(&m_ServerConfigPage);
+    // AddPage(&m_RegisterPage);
+    // AddPage(&m_LoginPage);
+    // AddPage(&m_ModelPage);
 
 #ifdef __FILE_TRANSFER_PRESENT__
     // AddPage(&m_FileTransferPage);

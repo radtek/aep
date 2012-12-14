@@ -6,6 +6,13 @@
 #include "evaluate_page.h"
 #include "utility.h"
 
+#include "evaluate_result_dlg.h"
+
+#include <fstream>
+#include <iostream>
+
+using namespace std;
+
 // CEvaluatePage dialog
 
 IMPLEMENT_DYNAMIC(CEvaluatePage, CBCGPPropertyPage)
@@ -56,6 +63,8 @@ BEGIN_MESSAGE_MAP(CEvaluatePage, CBCGPPropertyPage)
     ON_BN_CLICKED(IDC_FACTOR_ADD_UPDATE, &CEvaluatePage::OnBnClickedFactorAddUpdate)
     ON_BN_CLICKED(IDC_FACTOR_DELETE, &CEvaluatePage::OnBnClickedFactorDelete)
     ON_NOTIFY(LVN_ITEMACTIVATE, IDC_FACTOR_LIST, &CEvaluatePage::OnLvnItemActivateFactorList)
+    ON_BN_CLICKED(IDC_LOAD, &CEvaluatePage::OnBnClickedLoad)
+    ON_BN_CLICKED(IDC_SAVE, &CEvaluatePage::OnBnClickedSave)
 END_MESSAGE_MAP()
 
 
@@ -64,6 +73,12 @@ END_MESSAGE_MAP()
 BOOL CEvaluatePage::OnInitDialog() 
 {
     CBCGPPropertyPage::OnInitDialog();
+
+    if (!(m_Engine = engOpen(NULL)))
+    {
+        Utility::PromptErrorMessage(TEXT("Matlab绘图引擎初始化失败."));
+        return FALSE;
+    }
 
 	LONG lStyle;
 	lStyle = GetWindowLong(m_AlgorithmListCtrl.m_hWnd, GWL_STYLE);
@@ -307,6 +322,103 @@ void CEvaluatePage::OnBnClickedOk()
     vector<FactorResult> factorResults;
     if (OK != m_Evaluate.DoEvaluate(algorithms, factors, algorithmResults, factorResults))
     {
-        Utility::PromptErrorMessage(TEXT("评估错误"));
+        Utility::PromptErrorMessage(TEXT("评估错误."));
+    }
+
+    CEvaluateResultDlg dlg(algorithms, algorithmResults, factors, factorResults, m_Engine);
+    dlg.DoModal();
+
+    for (UINT32 i = 0; i < factorResults.size(); ++i)
+    {
+        mxDestroyArray(factorResults[i].Result);
+    }
+}
+
+void CEvaluatePage::OnBnClickedLoad()
+{
+    // TODO: Add your control notification handler code here
+    CFileDialog dlg(TRUE, NULL, NULL, OFN_NOCHANGEDIR | OFN_FILEMUSTEXIST, TEXT("Evaluate Files (*.eva)|*.eva|All Files (*.*)|*.*||"));
+    INT_PTR ret = dlg.DoModal();
+    if (IDOK == ret)
+    {
+        CString filePath = dlg.GetPathName();
+        wifstream ifs(filePath);
+        ifs.imbue(locale("chs"));
+        if (!ifs)
+        {
+            Utility::PromptErrorMessage(TEXT("打开文件失败."));
+            return;
+        }
+        m_AlgorithmListCtrl.DeleteAllItems();
+        m_FactorListCtrl.DeleteAllItems();
+        int n = 0;
+        ifs >> n;
+        for (int i = 0; i < n; ++i)
+        {
+            wstring name, file;
+            ifs >> name >> file;
+            m_AlgorithmListCtrl.InsertItem(i, name.c_str());
+            m_AlgorithmListCtrl.SetItemText(i, 1, file.c_str());
+        }
+
+        ifs >> n;
+        for (int i = 0; i < n; ++i)
+        {
+            wstring name, path, output, outputStart, outputEnd, origin, originStart, originEnd;
+            ifs >> name >> path >> output >> outputStart >> outputEnd >> origin >> originStart >> originEnd;
+            m_FactorListCtrl.InsertItem(i, name.c_str());
+            m_FactorListCtrl.SetItemText(i, 1,path.c_str());
+            m_FactorListCtrl.SetItemText(i, 2, output.c_str());
+            m_FactorListCtrl.SetItemText(i, 3, outputStart.c_str());
+            m_FactorListCtrl.SetItemText(i, 4, outputEnd.c_str());
+            m_FactorListCtrl.SetItemText(i, 5, origin.c_str());
+            m_FactorListCtrl.SetItemText(i, 6, originStart.c_str());
+            m_FactorListCtrl.SetItemText(i, 7, originEnd.c_str());
+        }
+    }
+    else
+    {
+        return;
+    }
+}
+
+void CEvaluatePage::OnBnClickedSave()
+{
+    // TODO: Add your control notification handler code here
+    CFileDialog dlg(FALSE, NULL, NULL, OFN_NOCHANGEDIR | OFN_OVERWRITEPROMPT, TEXT("Evaluate Files (*.eva)|*.eva|All Files (*.*)|*.*||"));
+    INT_PTR ret = dlg.DoModal();
+    if (IDOK == ret)
+    {
+        CString filePath = dlg.GetPathName();
+        wofstream ofs(filePath);
+        ofs.imbue(locale("chs"));
+        if (!ofs)
+        {
+            Utility::PromptErrorMessage(TEXT("打开文件失败."));
+        }
+        ofs << m_AlgorithmListCtrl.GetItemCount() << endl;
+        for (int i = 0; i < m_AlgorithmListCtrl.GetItemCount(); ++i)
+        {
+            ofs << wstring(m_AlgorithmListCtrl.GetItemText(i, 0)) << TEXT(" ");
+            ofs << wstring(m_AlgorithmListCtrl.GetItemText(i, 1)) << endl;
+        }
+        ofs << endl;
+        ofs << m_FactorListCtrl.GetItemCount() << endl;
+        for (int i = 0; i < m_FactorListCtrl.GetItemCount(); ++i)
+        {
+            ofs << wstring(m_FactorListCtrl.GetItemText(i, 0)) << TEXT(" ");
+            ofs << wstring(m_FactorListCtrl.GetItemText(i, 1)) << TEXT(" ");
+            ofs << wstring(m_FactorListCtrl.GetItemText(i, 2)) << TEXT(" ");
+            ofs << wstring(m_FactorListCtrl.GetItemText(i, 3)) << TEXT(" ");
+            ofs << wstring(m_FactorListCtrl.GetItemText(i, 4)) << TEXT(" ");
+            ofs << wstring(m_FactorListCtrl.GetItemText(i, 5)) << TEXT(" ");
+            ofs << wstring(m_FactorListCtrl.GetItemText(i, 6)) << TEXT(" ");
+            ofs << wstring(m_FactorListCtrl.GetItemText(i, 7)) << endl;
+        }
+        ofs.close();
+    }
+    else
+    {
+        return;
     }
 }

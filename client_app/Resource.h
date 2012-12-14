@@ -21,6 +21,7 @@
 #define IDD_SERVER_CONFIG_PAGE          139
 #define IDD_FILE_SERIVCE_PAGE           140
 #define IDD_EVALUATE_PAGE               142
+#define IDD_EVALUTE_RESULT_DLG          143
 #define IDC_LOGIN_NAME                  1001
 #define IDC_LOGIN_PASSWORD              1002
 #define IDC_LOGIN_PASSWORD_TITLE        1003
@@ -80,17 +81,22 @@
 #define IDC_FACTOR_ORIGIN_END           1057
 #define IDC_FACTOR_ALGORITHM_OUTPUT_START_STATIC 1058
 #define IDC_FACTOR_ALGORITHM_OUTPUT_END_STATIC 1059
+#define IDC_ALGORITHM_RUNTIME_RESULT_GROUP 1059
 #define IDC_FACTOR_ORIGIN_START_STATIC  1060
-#define IDC_FACTOR_ALGORITHM_OUTPUT_END_STATIC2 1061
+#define IDC_ALGORITHM_RUNTIME_LIST      1060
 #define IDC_FACTOR_ORIGIN_END_STATIC    1061
+#define IDC_FACTOR_GROUP                1061
+#define IDC_BUTTON1                     1063
+#define IDC_LOAD                        1063
+#define IDC_SAVE                        1064
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        143
+#define _APS_NEXT_RESOURCE_VALUE        144
 #define _APS_NEXT_COMMAND_VALUE         32772
-#define _APS_NEXT_CONTROL_VALUE         1059
+#define _APS_NEXT_CONTROL_VALUE         1065
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

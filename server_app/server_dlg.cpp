@@ -53,8 +53,8 @@ CServerDlg::CServerDlg(CWnd* pParent /*=NULL*/)
 	SetLook (CBCGPPropertySheet::PropSheetLook_OutlookBar);
 	SetIconsList ((globalData.bIsWindows9x || globalData.bIsWindowsNT4) ? IDB_ICONS : IDB_ICONS_HC, 32);
 
-    AddPage(&m_ControlPage);
-    AddPage(&m_LogPage);
+    // AddPage(&m_ControlPage);
+    // AddPage(&m_LogPage);
     AddPage(&m_FileServerPage);
 
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);

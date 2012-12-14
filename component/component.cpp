@@ -39,29 +39,35 @@ RC IAlgorithm::Run()
 // UINT64 IAlgorithm::m_NS;
 // UINT32 IAlgorithm::m_MemoryUsageKB;
 
-UINT64 IAlgorithm::GetNS()
+const vector<UINT64>& IAlgorithm::GetNS()
 {
     return m_NS;
 }
 
-UINT32 IAlgorithm::GetMemoryUsageKB()
+const vector<UINT32>& IAlgorithm::GetMemoryUsageKB()
 {
     return m_MemoryUsageKB;
 }
 
-UINT32 IAlgorithm::GetCpuPercentage()
+const vector<UINT32>& IAlgorithm::GetCpuPercentage()
 {
-    return Utility::GetCpuPercentage();
+    return m_CpuPercentage;
 }
 
 void IAlgorithm::BeforeRun()
 {
-    m_NS = Utility::GetNS();
-    m_MemoryUsageKB = Utility::GetMemoryUsageKB();
+    m_BeforeNS = Utility::GetNS();
+    m_BeforeMemoryUsageKB = Utility::GetMemoryUsageKB();
+    m_BeforeCpuPercentage = Utility::GetCpuPercentage();
 }
 
 void IAlgorithm::AfterRun()
 {
-    m_NS = Utility::GetNS() - m_NS;
-    m_MemoryUsageKB = Utility::GetMemoryUsageKB() - m_MemoryUsageKB;
+    m_AfterNS = Utility::GetNS();
+    m_AfterMemoryUsageKB = Utility::GetMaxMemoryUsageKB();
+    m_AfterCpuPercentage = Utility::GetCpuPercentage();
+
+    m_NS.push_back(m_AfterNS - m_BeforeNS);
+    m_MemoryUsageKB.push_back(m_AfterMemoryUsageKB - m_BeforeMemoryUsageKB);
+    m_CpuPercentage.push_back(m_AfterCpuPercentage);
 }

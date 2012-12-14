@@ -709,9 +709,16 @@ UINT32 Utility::GetCpuPercentage()
     return get_cpu_usage(GetCurrentProcess());
 }
 
-UINT32 Utility::GetMemoryUsageKB()
+UINT32 Utility::GetMaxMemoryUsageKB()
 {
     PROCESS_MEMORY_COUNTERS pmc;
     GetProcessMemoryInfo(GetCurrentProcess(), &pmc, sizeof(pmc));
     return pmc.PeakWorkingSetSize / 1024;
+}
+
+UINT32 Utility::GetMemoryUsageKB()
+{
+    PROCESS_MEMORY_COUNTERS pmc;
+    GetProcessMemoryInfo(GetCurrentProcess(), &pmc, sizeof(pmc));
+    return pmc.WorkingSetSize / 1024;
 }

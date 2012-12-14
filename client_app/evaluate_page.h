@@ -3,6 +3,7 @@
 
 #include "evaluate.h"
 #include "afxwin.h"
+#include "engine.h"
 
 // CEvaluatePage dialog
 
@@ -37,6 +38,7 @@ private:
     void UpdateFactorItem(int row);
     void DeleteFactorItem(int row);
     Evaluate &m_Evaluate;
+    Engine *m_Engine;
 public:
     afx_msg void OnLvnItemActivateAlgorithmList(NMHDR *pNMHDR, LRESULT *pResult);
     afx_msg void OnBnClickedOk();
@@ -52,4 +54,6 @@ public:
     afx_msg void OnBnClickedFactorAddUpdate();
     afx_msg void OnBnClickedFactorDelete();
     afx_msg void OnLvnItemActivateFactorList(NMHDR *pNMHDR, LRESULT *pResult);
+    afx_msg void OnBnClickedLoad();
+    afx_msg void OnBnClickedSave();
 };
