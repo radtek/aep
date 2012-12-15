@@ -400,6 +400,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\image_show_dlg.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\login_page.cpp"
 				>
 			</File>
@@ -479,6 +483,10 @@
 			</File>
 			<File
 				RelativePath=".\file_transfer_page.h"
+				>
+			</File>
+			<File
+				RelativePath=".\image_show_dlg.h"
 				>
 			</File>
 			<File

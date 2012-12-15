@@ -22,6 +22,7 @@
 #define IDD_FILE_SERIVCE_PAGE           140
 #define IDD_EVALUATE_PAGE               142
 #define IDD_EVALUTE_RESULT_DLG          143
+#define IDD_IMAGE_SHOW_DLG              144
 #define IDC_LOGIN_NAME                  1001
 #define IDC_LOGIN_PASSWORD              1002
 #define IDC_LOGIN_PASSWORD_TITLE        1003
@@ -86,17 +87,26 @@
 #define IDC_ALGORITHM_RUNTIME_LIST      1060
 #define IDC_FACTOR_ORIGIN_END_STATIC    1061
 #define IDC_FACTOR_GROUP                1061
-#define IDC_BUTTON1                     1063
 #define IDC_LOAD                        1063
 #define IDC_SAVE                        1064
+#define IDC_IMAGE_SHOW_GROUP            1065
+#define IDC_IMAGE                       1066
+#define IDC_SELECT_PATH                 1067
+#define IDC_FILE_NAME_STATIC            1068
+#define IDC_START_PAUSE_BUTTON          1069
+#define IDC_INTERVAL                    1070
+#define IDC_INTERVAL_STATIC             1071
+#define IDC_NEXT_BUTTON                 1072
+#define IDC_NEXT_BUTTON2                1073
+#define IDC_PREV_BUTTON                 1073
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        144
+#define _APS_NEXT_RESOURCE_VALUE        145
 #define _APS_NEXT_COMMAND_VALUE         32772
-#define _APS_NEXT_CONTROL_VALUE         1065
+#define _APS_NEXT_CONTROL_VALUE         1073
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

@@ -12,6 +12,7 @@
 #include "file_transfer_page.h"
 #include "file_service_page.h"
 #include "evaluate_page.h"
+#include "image_show_dlg.h"
 
 // CClientDlg dialog
 class CClientDlg : public CBCGPPropertySheet
@@ -40,6 +41,7 @@ public:
     CFileTransferPage m_FileTransferPage;
     CFileServicePage m_FileServicePage;
     CEvaluatePage m_EvaluatePage;
+    CImageShowDlg m_ImageShowPage;
 
 	HICON m_hIcon;
 

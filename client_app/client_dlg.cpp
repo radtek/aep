@@ -65,6 +65,7 @@ CClientDlg::CClientDlg(CWnd* pParent /*=NULL*/)
 
     AddPage(&m_FileServicePage);
     AddPage(&m_EvaluatePage);
+    AddPage(&m_ImageShowPage);
 
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }
