@@ -269,7 +269,8 @@ FactorResult Evaluate::EvaluateFactor(const Factor &factor)
     }
     input.push_back(origin);
 
-    if (OK != MatLabHelper::RunFunc(factor.DllPath, TEXT("evaluate"), output, input))
+    wstring funcName = Utility::StripExt(Utility::StripFilePath(factor.DllPath.c_str()));
+    if (OK != MatLabHelper::RunFunc(factor.DllPath, funcName, output, input))
     {
         return result;
     }

@@ -31,8 +31,6 @@ RC IAlgorithm::Run()
     rc = InternalRun();
     AfterRun();
 
-    BeforeRun();
-
     return rc;
 }
 
@@ -56,16 +54,16 @@ const vector<UINT32>& IAlgorithm::GetCpuPercentage()
 
 void IAlgorithm::BeforeRun()
 {
-    m_BeforeNS = Utility::GetNS();
     m_BeforeMemoryUsageKB = Utility::GetMemoryUsageKB();
     m_BeforeCpuPercentage = Utility::GetCpuPercentage();
+    m_BeforeNS = Utility::GetNS();
 }
 
 void IAlgorithm::AfterRun()
 {
     m_AfterNS = Utility::GetNS();
-    m_AfterMemoryUsageKB = Utility::GetMaxMemoryUsageKB();
     m_AfterCpuPercentage = Utility::GetCpuPercentage();
+    m_AfterMemoryUsageKB = Utility::GetMaxMemoryUsageKB();
 
     m_NS.push_back(m_AfterNS - m_BeforeNS);
     m_MemoryUsageKB.push_back(m_AfterMemoryUsageKB - m_BeforeMemoryUsageKB);

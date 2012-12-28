@@ -45,8 +45,8 @@ namespace MatLabHelper
         INT32 size, INT32 start);
     void DestroyArray(Array *a);
 
-    RC RunFunc(wstring dllFileName, wstring funcName, vector<Array *> &outputList, vector<Array *> &inputList);
-    RC RealRunFunc(HINSTANCE algorithmDllHandle, string fullFuncName, vector<Array *> &outputList, vector<Array *> &inputList, bool &result);
+    RC RunFunc(const wstring &dllFileName, const wstring &funcName, vector<Array *> &outputList, vector<Array *> &inputList);
+    RC RealRunFunc(HINSTANCE algorithmDllHandle, const string &fullFuncName, vector<Array *> &outputList, vector<Array *> &inputList, bool &result);
 };
 
 #endif // __MATLAB_HELPER_H__

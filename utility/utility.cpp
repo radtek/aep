@@ -237,6 +237,21 @@ wstring Utility::StripFilePath(LPCWSTR pathName)
     return fileName;
 }
 
+/**
+* @param pathName 文件路径.
+*
+* 从文件路径中提取文件名.
+*/
+wstring Utility::StripExt(const wstring &fileName)
+{
+    wstring::size_type dotPos = fileName.rfind(wstring(TEXT(".")));
+    if (dotPos == wstring::npos)
+    {
+        return fileName;
+    }
+    return fileName.substr(0, dotPos);
+}
+
 RC Utility::SaveBmpFile(CString fileName, UINT32 x, UINT32 y,
                         // const char *content,
                         const double *content,
@@ -679,7 +694,7 @@ UINT32 get_cpu_usage(HANDLE hProcess)
     // HANDLE hProcess = ph; // OpenProcess(PROCESS_ALL_ACCESS, false, pid);
     if (!GetProcessTimes(hProcess, &creation_time, &exit_time, &kernel_time, &user_time))
     {
-        return -1;
+        return 0;
     }
     system_time = (file_time_2_utc(&kernel_time) + file_time_2_utc(&user_time)) 
         / processor_count_;  
@@ -689,14 +704,17 @@ UINT32 get_cpu_usage(HANDLE hProcess)
     {
         last_system_time_ = system_time;
         last_time_ = time;
-        return -1;
+        return 0;
     }
  
     system_time_delta = system_time - last_system_time_;
     time_delta = time - last_time_;
+
+    if (system_time_delta == 0)
+        return 0;
  
     if (time_delta == 0)
-        return -1;
+        return 0;
  
     cpu = (UINT32)((system_time_delta * 100 + time_delta / 2) / time_delta);
     last_system_time_ = system_time;

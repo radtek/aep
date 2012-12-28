@@ -148,7 +148,7 @@ void MatLabHelper::DestroyArray(Array *a)
     mxDestroyArray(a);
 }
 
-RC MatLabHelper::RunFunc(wstring dllFileName, wstring funcName, vector<Array *> &outputList, vector<Array *> &inputList)
+RC MatLabHelper::RunFunc(const wstring &dllFileName, const wstring &funcName, vector<Array *> &outputList, vector<Array *> &inputList)
 {
     RC rc;
 
@@ -270,7 +270,7 @@ RC MatLabHelper::RunFunc(wstring dllFileName, wstring funcName, vector<Array *> 
 * 实现对参数列表无差别调用(目前最大支持5个参数, 如有需要可随意增加),
 * 并且记录算法调用结果.
 */
-RC MatLabHelper::RealRunFunc(HINSTANCE algorithmDllHandle, string fullFuncName, vector<Array *> &outputList, vector<Array *> &inputList, bool &result)
+RC MatLabHelper::RealRunFunc(HINSTANCE algorithmDllHandle, const string &fullFuncName, vector<Array *> &outputList, vector<Array *> &inputList, bool &result)
 {
     UINT32 outputCount = outputList.size();
     UINT32 inputCount = inputList.size();
