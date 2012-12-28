@@ -649,25 +649,25 @@ static int get_processor_number()
     return (int)info.dwNumberOfProcessors;
 }
  
-int get_cpu_usage(HANDLE hProcess)
+UINT32 get_cpu_usage(HANDLE hProcess)
 {  
     //cpu数量
     static int processor_count_ = -1;
     //上一次的时间
-    static int64_t last_time_ = 0;
-    static int64_t last_system_time_ = 0;
+    static uint64_t last_time_ = 0;
+    static uint64_t last_system_time_ = 0;
  
     FILETIME now;
     FILETIME creation_time;
     FILETIME exit_time;
     FILETIME kernel_time;
     FILETIME user_time;
-    int64_t system_time;
-    int64_t time;
-    int64_t system_time_delta;
-    int64_t time_delta;
+    uint64_t system_time;
+    uint64_t time;
+    uint64_t system_time_delta;
+    uint64_t time_delta;
  
-    int cpu = -1;
+    UINT32 cpu = -1;
  
     if(processor_count_ == -1)
     {
@@ -698,7 +698,7 @@ int get_cpu_usage(HANDLE hProcess)
     if (time_delta == 0)
         return -1;
  
-    cpu = (int)((system_time_delta * 100 + time_delta / 2) / time_delta);
+    cpu = (UINT32)((system_time_delta * 100 + time_delta / 2) / time_delta);
     last_system_time_ = system_time;
     last_time_ = time;
     return cpu;
