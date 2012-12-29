@@ -124,8 +124,8 @@ void CEvaluateResultDlg::AddAlgorithm(const AlgorithmRuntime &algorithm, const A
 
 void CEvaluateResultDlg::AddFactor(const Factor &factor, const FactorResult &result)
 {
-    int n = m_FactorList.GetItemCount();
-    m_FactorList.InsertItem(n, factor.Name.c_str());
+    int row = m_FactorList.GetItemCount();
+    m_FactorList.InsertItem(row, factor.Name.c_str());
     if (result.Result != NULL)
     {
         UINT32 m = mxGetM(result.Result);
@@ -135,7 +135,7 @@ void CEvaluateResultDlg::AddFactor(const Factor &factor, const FactorResult &res
             double *p = mxGetPr(result.Result);
             CString temp;
             temp.AppendFormat(TEXT("%f"), *p);
-            m_FactorList.SetItemText(n, 1, temp);
+            m_FactorList.SetItemText(row, 1, temp);
         }
     }
 }
