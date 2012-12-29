@@ -29,6 +29,7 @@ CEvaluatePage::CEvaluatePage()
     , m_OriginEnd(0)
     , m_OriginStart(0)
     , m_Origin(_T(""))
+    , m_TrueValue(_T(""))
 {
 
 }
@@ -52,6 +53,7 @@ void CEvaluatePage::DoDataExchange(CDataExchange* pDX)
     DDX_Text(pDX, IDC_FACTOR_ORIGIN_END, m_OriginEnd);
     DDX_Text(pDX, IDC_FACTOR_ORIGIN_START, m_OriginStart);
     DDX_Control(pDX, IDC_FACTOR_LIST, m_FactorListCtrl);
+    DDX_Text(pDX, IDC_FACTOR_TRUE_VALUE, m_TrueValue);
 }
 
 
@@ -111,6 +113,7 @@ BOOL CEvaluatePage::OnInitDialog()
 	m_FactorListCtrl.InsertColumn(5,_T("原始文件"),LVCFMT_CENTER, 60);
 	m_FactorListCtrl.InsertColumn(6,_T("起始ID"),LVCFMT_CENTER, 60);
 	m_FactorListCtrl.InsertColumn(7,_T("结束ID"),LVCFMT_CENTER, 60);
+	m_FactorListCtrl.InsertColumn(8,_T("真实值"),LVCFMT_CENTER, 60);
 	m_FactorListCtrl.EnableWindow(TRUE);
 
     return TRUE;
@@ -169,6 +172,7 @@ void CEvaluatePage::AddFactorItem()
     temp = TEXT("");
     temp.AppendFormat(TEXT("%u"), m_OriginEnd);
     m_FactorListCtrl.SetItemText(n, 7, temp);
+    m_FactorListCtrl.SetItemText(n, 8, m_TrueValue);
 }
 
 void CEvaluatePage::UpdateFactorItem(int row)
@@ -197,6 +201,7 @@ void CEvaluatePage::UpdateFactorItem(int row)
     temp = TEXT("");
     temp.AppendFormat(TEXT("%u"), m_OriginEnd);
     m_FactorListCtrl.SetItemText(row, 7, temp);
+    m_FactorListCtrl.SetItemText(row, 8, m_TrueValue);
 }
 
 void CEvaluatePage::DeleteFactorItem(int row)
@@ -288,6 +293,7 @@ void CEvaluatePage::OnLvnItemActivateFactorList(NMHDR *pNMHDR, LRESULT *pResult)
     m_Origin = m_FactorListCtrl.GetItemText(pNMIA->iItem, 5);
     m_OriginStart = _ttoi(m_FactorListCtrl.GetItemText(pNMIA->iItem, 6));
     m_OriginEnd = _ttoi(m_FactorListCtrl.GetItemText(pNMIA->iItem, 7));
+    m_TrueValue = m_FactorListCtrl.GetItemText(pNMIA->iItem, 8);
     UpdateData(0);
     *pResult = 0;
 }
@@ -315,6 +321,7 @@ void CEvaluatePage::OnBnClickedOk()
         factor.Origin = m_FactorListCtrl.GetItemText(i, 5);
         factor.OriginStart = _ttoi(m_FactorListCtrl.GetItemText(i, 6));
         factor.OriginEnd = _ttoi(m_FactorListCtrl.GetItemText(i, 7));
+        factor.TrueValue = m_FactorListCtrl.GetItemText(i, 8);
         factors.push_back(factor);
     }
 
@@ -364,8 +371,8 @@ void CEvaluatePage::OnBnClickedLoad()
         ifs >> n;
         for (int i = 0; i < n; ++i)
         {
-            wstring name, path, output, outputStart, outputEnd, origin, originStart, originEnd;
-            ifs >> name >> path >> output >> outputStart >> outputEnd >> origin >> originStart >> originEnd;
+            wstring name, path, output, outputStart, outputEnd, origin, originStart, originEnd, trueValue;
+            ifs >> name >> path >> output >> outputStart >> outputEnd >> origin >> originStart >> originEnd >> trueValue;
             m_FactorListCtrl.InsertItem(i, name.c_str());
             m_FactorListCtrl.SetItemText(i, 1,path.c_str());
             m_FactorListCtrl.SetItemText(i, 2, output.c_str());
@@ -374,6 +381,7 @@ void CEvaluatePage::OnBnClickedLoad()
             m_FactorListCtrl.SetItemText(i, 5, origin.c_str());
             m_FactorListCtrl.SetItemText(i, 6, originStart.c_str());
             m_FactorListCtrl.SetItemText(i, 7, originEnd.c_str());
+            m_FactorListCtrl.SetItemText(i, 8, trueValue.c_str());
         }
     }
     else
@@ -413,7 +421,8 @@ void CEvaluatePage::OnBnClickedSave()
             ofs << wstring(m_FactorListCtrl.GetItemText(i, 4)) << TEXT(" ");
             ofs << wstring(m_FactorListCtrl.GetItemText(i, 5)) << TEXT(" ");
             ofs << wstring(m_FactorListCtrl.GetItemText(i, 6)) << TEXT(" ");
-            ofs << wstring(m_FactorListCtrl.GetItemText(i, 7)) << endl;
+            ofs << wstring(m_FactorListCtrl.GetItemText(i, 7)) << TEXT(" ");
+            ofs << wstring(m_FactorListCtrl.GetItemText(i, 8)) << endl;
         }
         ofs.close();
     }

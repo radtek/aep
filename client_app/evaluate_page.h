@@ -56,4 +56,5 @@ public:
     afx_msg void OnLvnItemActivateFactorList(NMHDR *pNMHDR, LRESULT *pResult);
     afx_msg void OnBnClickedLoad();
     afx_msg void OnBnClickedSave();
+    CString m_TrueValue;
 };

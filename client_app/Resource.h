@@ -87,9 +87,12 @@
 #define IDC_ALGORITHM_RUNTIME_LIST      1060
 #define IDC_FACTOR_ORIGIN_END_STATIC    1061
 #define IDC_FACTOR_GROUP                1061
+#define IDC_FACTOR_TRUE_VALUE_STATIC    1062
 #define IDC_LOAD                        1063
 #define IDC_SAVE                        1064
 #define IDC_IMAGE_SHOW_GROUP            1065
+#define IDC_FACTOR_ORIGIN2              1065
+#define IDC_FACTOR_TRUE_VALUE           1065
 #define IDC_IMAGE                       1066
 #define IDC_SELECT_PATH                 1067
 #define IDC_FILE_NAME_STATIC            1068
@@ -97,7 +100,6 @@
 #define IDC_INTERVAL                    1070
 #define IDC_INTERVAL_STATIC             1071
 #define IDC_NEXT_BUTTON                 1072
-#define IDC_NEXT_BUTTON2                1073
 #define IDC_PREV_BUTTON                 1073
 
 // Next default values for new objects

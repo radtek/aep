@@ -81,6 +81,7 @@ BOOL CEvaluateResultDlg::OnInitDialog()
 	m_FactorList.SetExtendedStyle(dwStyle);
     
 	m_FactorList.InsertColumn(0,_T("指标名称"),LVCFMT_CENTER, 60);
+	m_FactorList.InsertColumn(1,_T("指标值"),LVCFMT_CENTER, 60);
 
     for (UINT32 i = 0; i < m_Factors.size(); ++i)
     {
@@ -125,6 +126,18 @@ void CEvaluateResultDlg::AddFactor(const Factor &factor, const FactorResult &res
 {
     int n = m_FactorList.GetItemCount();
     m_FactorList.InsertItem(n, factor.Name.c_str());
+    if (result.Result != NULL)
+    {
+        UINT32 m = mxGetM(result.Result);
+        UINT32 n = mxGetN(result.Result);
+        if (m == 1 && n == 1)
+        {
+            double *p = mxGetPr(result.Result);
+            CString temp;
+            temp.AppendFormat(TEXT("%f"), *p);
+            m_FactorList.SetItemText(n, 1, temp);
+        }
+    }
 }
 
 void CEvaluateResultDlg::DrawFactor(const Factor &factor, const FactorResult &factorResult)
@@ -162,6 +175,17 @@ void CEvaluateResultDlg::OnLvnItemActivateFactorList(NMHDR *pNMHDR, LRESULT *pRe
 
     const Factor &factor = m_Factors[pNMIA->iItem];
     const FactorResult &result = m_FactorResults[pNMIA->iItem];
+
+    if (result.Result != NULL)
+    {
+        UINT32 m = mxGetM(result.Result);
+        UINT32 n = mxGetN(result.Result);
+        if (m == 1 && n == 1)
+        {
+            *pResult = 0;
+            return;
+        }
+    }
 
     DrawFactor(factor, result);
 

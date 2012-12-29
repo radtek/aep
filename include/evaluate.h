@@ -36,6 +36,7 @@ struct Factor
     wstring Origin;
     UINT32 OriginStart;
     UINT32 OriginEnd;
+    wstring TrueValue;
 };
 
 typedef mxArray Array;
