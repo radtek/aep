@@ -284,7 +284,7 @@ RC Model2::RunOutputTree(ComponentNode *outputTree)
     RC rc;
 
     IComponent *source = outputTree->data;
-    CHECK_RC(source->Run());
+    CHECK_RC(source->Run(false));
     for (UINT32 i = 0; i < outputTree->leaf.size(); ++i)
     {
         ComponentNode *node = outputTree->leaf[i];

@@ -25,7 +25,8 @@ m_CenterX(0),
 m_CenterY(0),
 m_DeltaX(0),
 m_DeltaY(0),
-m_FromAlgorithmOutputIndex(4)
+m_FromAlgorithmOutputIndex(4),
+m_FirstRun(true)
 {
     m_ExternalDataInput = new IExternalDataOutput;
     m_Output = new IExternalDataOutput;
@@ -52,6 +53,7 @@ void ExternalDataScissor::Save(CArchive &ar)
         << m_Height
         << m_CenterX
         << m_CenterY
+        << CString(m_OutputFile.c_str())
         << m_FromAlgorithmOutputIndex;
 }
 
@@ -63,7 +65,9 @@ void ExternalDataScissor::Load(CArchive &ar)
     ar >> str;
     m_Name = str;
 
-    ar >> m_Width >> m_Height >> m_CenterX >> m_CenterY >> m_FromAlgorithmOutputIndex;
+    // ar >> m_Width >> m_Height >> m_CenterX >> m_CenterY >> m_FromAlgorithmOutputIndex;
+    ar >> m_Width >> m_Height >> m_CenterX >> m_CenterY >> str >> m_FromAlgorithmOutputIndex;
+    m_OutputFile = str;
 }
 
 void ExternalDataScissor::Destroy()
@@ -134,6 +138,11 @@ void ExternalDataScissor::GetAttributeList(AttributeList &attributeList)
     attribute.Type = Attribute::TYPE_INT;
     attributeList.push_back(attribute);
 
+    attribute.Id = AAID_OUTPUT_FILE;
+    attribute.Name = TEXT("输出文件");
+    attribute.Type = Attribute::TYPE_STRING;
+    attributeList.push_back(attribute);
+
     attribute.Id = AAID_FROM_ALGORITHM_OUTPUT_INDEX;
     attribute.Name = TEXT("从前一算法获得输入ID");
     attribute.Type = Attribute::TYPE_INT;
@@ -157,6 +166,9 @@ RC ExternalDataScissor::GetAttribute(UINT32 aid, void *attr)
         break;
     case AAID_CENTER_Y:
         *((UINT32 *)attr) = m_CenterY;
+        break;
+    case AAID_OUTPUT_FILE:
+        *((wstring *)attr) = m_OutputFile;
         break;
     case AAID_FROM_ALGORITHM_OUTPUT_INDEX:
         *((UINT32 *)attr) = m_FromAlgorithmOutputIndex;
@@ -183,6 +195,9 @@ RC ExternalDataScissor::SetAttribute(UINT32 aid, void *attr)
         break;
     case AAID_CENTER_Y:
         m_CenterY = *((UINT32 *)attr);
+        break;
+    case AAID_OUTPUT_FILE:
+        m_OutputFile = *((wstring *)attr);
         break;
     case AAID_FROM_ALGORITHM_OUTPUT_INDEX:
         m_FromAlgorithmOutputIndex = *((UINT32 *)attr);
@@ -213,9 +228,11 @@ IComponent *ExternalDataScissor::Clone()
     scissor->m_CenterY = m_CenterY;
     scissor->m_DeltaX = m_DeltaX;
     scissor->m_DeltaY = m_DeltaY;
+    scissor->m_OutputFile = m_OutputFile;
     scissor->m_FromAlgorithmOutputIndex = m_FromAlgorithmOutputIndex;
     scissor->m_Id = m_Id;
     scissor->m_Name = m_Name;
+    scissor->m_FirstRun = m_FirstRun;
     return scissor;
 }
 
@@ -259,11 +276,39 @@ RC ExternalDataScissor::SetInput(IData *input)
     return RC::COMPONENT_SETINPUT_ERROR;
 }
 
-RC ExternalDataScissor::Run()
+RC ExternalDataScissor::Run(bool input)
 {
     RC rc;
 
     INT32 startX = m_CenterX + m_DeltaX - m_Width / 2, startY = m_CenterY + m_DeltaY - m_Height / 2;
+
+    if (!m_OutputFile.empty() && input)
+    {
+        if (!Utility::FileExists(m_OutputFile.c_str()))
+        {
+            if (!Utility::CreateFileNested(m_OutputFile.c_str()))
+            {
+                return RC::FILE_OPEN_ERROR;
+            }
+        }
+
+        wofstream ofs;
+        if (m_FirstRun)
+        {
+            ofs.open(m_OutputFile.c_str());
+            m_FirstRun = false;
+        }
+        else
+        {
+            ofs.open(m_OutputFile.c_str(), wofstream::app);
+        }
+        if (!ofs)
+        {
+            return RC::FILE_OPEN_ERROR;
+        }
+        ofs << (m_CenterX + m_DeltaX) << TEXT(" ") << (m_CenterY + m_DeltaY) << endl;
+        ofs.close();
+    }
 
     m_Output->m_Array = MatLabHelper::CreateDoubleArray(m_Width, m_Height, mxGetPr(m_ExternalDataInput->m_Array), mxGetM(m_ExternalDataInput->m_Array), mxGetN(m_ExternalDataInput->m_Array), startX, startY);
 

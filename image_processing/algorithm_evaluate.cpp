@@ -172,7 +172,7 @@ RC AlgorithmEvaluate::SetInput(IData *input)
     return RC::COMPONENT_SETINPUT_ERROR;
 }
 
-RC AlgorithmEvaluate::Run()
+RC AlgorithmEvaluate::Run(bool input)
 {
     RC rc;
 

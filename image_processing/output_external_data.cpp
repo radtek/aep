@@ -359,7 +359,7 @@ RC OutputExternalData::SetInput(IData *input)
     return RC::COMPONENT_SETINPUT_ERROR;
 }
 
-RC OutputExternalData::Run()
+RC OutputExternalData::Run(bool input)
 {
     RC rc;
 

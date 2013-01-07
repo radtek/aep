@@ -30,6 +30,7 @@ CEvaluatePage::CEvaluatePage()
     , m_OriginStart(0)
     , m_Origin(_T(""))
     , m_TrueValue(_T(""))
+    , m_WindowCenter(_T(""))
 {
 
 }
@@ -54,6 +55,7 @@ void CEvaluatePage::DoDataExchange(CDataExchange* pDX)
     DDX_Text(pDX, IDC_FACTOR_ORIGIN_START, m_OriginStart);
     DDX_Control(pDX, IDC_FACTOR_LIST, m_FactorListCtrl);
     DDX_Text(pDX, IDC_FACTOR_TRUE_VALUE, m_TrueValue);
+    DDX_Text(pDX, IDC_FACTOR_WINDOW_CENTER, m_WindowCenter);
 }
 
 
@@ -114,6 +116,7 @@ BOOL CEvaluatePage::OnInitDialog()
 	m_FactorListCtrl.InsertColumn(6,_T("起始ID"),LVCFMT_CENTER, 60);
 	m_FactorListCtrl.InsertColumn(7,_T("结束ID"),LVCFMT_CENTER, 60);
 	m_FactorListCtrl.InsertColumn(8,_T("真实值"),LVCFMT_CENTER, 60);
+	m_FactorListCtrl.InsertColumn(9,_T("中心坐标"),LVCFMT_CENTER, 60);
 	m_FactorListCtrl.EnableWindow(TRUE);
 
     return TRUE;
@@ -173,6 +176,7 @@ void CEvaluatePage::AddFactorItem()
     temp.AppendFormat(TEXT("%u"), m_OriginEnd);
     m_FactorListCtrl.SetItemText(n, 7, temp);
     m_FactorListCtrl.SetItemText(n, 8, m_TrueValue);
+    m_FactorListCtrl.SetItemText(n, 9, m_WindowCenter);
 }
 
 void CEvaluatePage::UpdateFactorItem(int row)
@@ -202,6 +206,7 @@ void CEvaluatePage::UpdateFactorItem(int row)
     temp.AppendFormat(TEXT("%u"), m_OriginEnd);
     m_FactorListCtrl.SetItemText(row, 7, temp);
     m_FactorListCtrl.SetItemText(row, 8, m_TrueValue);
+    m_FactorListCtrl.SetItemText(row, 8, m_WindowCenter);
 }
 
 void CEvaluatePage::DeleteFactorItem(int row)
@@ -294,6 +299,7 @@ void CEvaluatePage::OnLvnItemActivateFactorList(NMHDR *pNMHDR, LRESULT *pResult)
     m_OriginStart = _ttoi(m_FactorListCtrl.GetItemText(pNMIA->iItem, 6));
     m_OriginEnd = _ttoi(m_FactorListCtrl.GetItemText(pNMIA->iItem, 7));
     m_TrueValue = m_FactorListCtrl.GetItemText(pNMIA->iItem, 8);
+    m_WindowCenter = m_FactorListCtrl.GetItemText(pNMIA->iItem, 9);
     UpdateData(0);
     *pResult = 0;
 }
@@ -322,6 +328,7 @@ void CEvaluatePage::OnBnClickedOk()
         factor.OriginStart = _ttoi(m_FactorListCtrl.GetItemText(i, 6));
         factor.OriginEnd = _ttoi(m_FactorListCtrl.GetItemText(i, 7));
         factor.TrueValue = m_FactorListCtrl.GetItemText(i, 8);
+        factor.WindowCenter = m_FactorListCtrl.GetItemText(i, 9);
         factors.push_back(factor);
     }
 

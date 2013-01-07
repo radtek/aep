@@ -137,7 +137,7 @@ RC DatImageBatch::Config()
     return rc;
 }
 
-RC DatImageBatch::Run()
+RC DatImageBatch::Run(bool input)
 {
     RC rc;
 

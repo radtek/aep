@@ -142,7 +142,7 @@ RC OutputExternalDataBatch::Config()
     return rc;
 }
 
-RC OutputExternalDataBatch::Run()
+RC OutputExternalDataBatch::Run(bool input)
 {
     RC rc;
 

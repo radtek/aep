@@ -91,10 +91,12 @@
 #define IDC_LOAD                        1063
 #define IDC_SAVE                        1064
 #define IDC_IMAGE_SHOW_GROUP            1065
-#define IDC_FACTOR_ORIGIN2              1065
 #define IDC_FACTOR_TRUE_VALUE           1065
 #define IDC_IMAGE                       1066
+#define IDC_FACTOR_WINDOW_CENTER_STATIC 1066
 #define IDC_SELECT_PATH                 1067
+#define IDC_FACTOR_TRUE_VALUE2          1067
+#define IDC_FACTOR_WINDOW_CENTER        1067
 #define IDC_FILE_NAME_STATIC            1068
 #define IDC_START_PAUSE_BUTTON          1069
 #define IDC_INTERVAL                    1070

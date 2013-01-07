@@ -132,7 +132,7 @@ RC ImageBatch::Config()
     return rc;
 }
 
-RC ImageBatch::Run()
+RC ImageBatch::Run(bool input)
 {
     RC rc;
 

@@ -276,6 +276,13 @@ FactorResult Evaluate::EvaluateFactor(const Factor &factor)
     Array *a = mxCreateString(Utility::Wstring2String(factor.TrueValue).c_str());
     input.push_back(a);
 
+    if (OK != m_FileServerFS.DownloadFile(factor.WindowCenter.c_str()))
+    {
+        return result;
+    }
+    a = mxCreateString(Utility::Wstring2String(factor.WindowCenter).c_str());
+    input.push_back(a);
+
     wstring funcName = Utility::StripExt(Utility::StripFilePath(factor.DllPath.c_str()));
     if (OK != MatLabHelper::RunFunc(factor.DllPath, funcName, output, input))
     {

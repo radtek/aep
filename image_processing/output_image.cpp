@@ -379,7 +379,7 @@ RC OutputImage::SetInput(IData *input)
     return RC::COMPONENT_SETINPUT_ERROR;
 }
 
-RC OutputImage::Run()
+RC OutputImage::Run(bool input)
 {
     RC rc;
 

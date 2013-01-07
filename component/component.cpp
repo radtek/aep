@@ -23,7 +23,7 @@ LPCSTR Component::SetPlatformServiceFuncName = "SetPlatformService";
 
 // LPCSTR Component::RegisterGetComponentListFuncFuncName = "RegisterGetComponentListFunc";
 
-RC IAlgorithm::Run()
+RC IAlgorithm::Run(bool input)
 {
     RC rc;
 

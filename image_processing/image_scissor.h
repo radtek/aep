@@ -32,6 +32,7 @@ public:
         AAID_HEIGHT,
         AAID_CENTER_X,
         AAID_CENTER_Y,
+        AAID_OUTPUT_FILE,
         AAID_FROM_ALGORITHM_OUTPUT_INDEX,
     };
     virtual void _stdcall GetAttributeList(AttributeList &attributeList);
@@ -42,7 +43,7 @@ public:
     virtual IComponent * _stdcall Clone();
     virtual void _stdcall Reset();
     virtual RC _stdcall Config();
-    virtual RC _stdcall Run();
+    virtual RC _stdcall Run(bool input = true);
     virtual RC _stdcall SetInput(IData *input);
     virtual RC _stdcall GetOutput(IData *&output);
 
@@ -53,10 +54,13 @@ public:
     INT32 m_CenterY;
     INT32 m_DeltaX;
     INT32 m_DeltaY;
+    wstring m_OutputFile;
     UINT32 m_FromAlgorithmOutputIndex;
 
     UINT32 m_Id;
     wstring m_Name;
+
+    bool m_FirstRun;
 
 protected:
     IImageOutput *m_ImageInput;

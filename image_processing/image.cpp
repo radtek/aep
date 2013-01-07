@@ -193,7 +193,7 @@ RC Image::SetInput(IData *input)
     return RC::COMPONENT_SETINPUT_ERROR;
 }
 
-RC Image::Run()
+RC Image::Run(bool input)
 {
     RC rc;
 

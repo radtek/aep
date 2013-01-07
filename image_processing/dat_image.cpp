@@ -198,7 +198,7 @@ RC DatImage::SetInput(IData *input)
     return RC::COMPONENT_SETINPUT_ERROR;
 }
 
-RC DatImage::Run()
+RC DatImage::Run(bool input)
 {
     RC rc;
 

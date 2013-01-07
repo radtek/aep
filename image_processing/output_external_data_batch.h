@@ -32,7 +32,7 @@ public:
 
     virtual IComponent * _stdcall Clone();
     virtual RC _stdcall Config();
-    virtual RC _stdcall Run();
+    virtual RC _stdcall Run(bool input = true);
 
 public:
     UINT32 m_StartId, m_EndId, m_CurrentId;

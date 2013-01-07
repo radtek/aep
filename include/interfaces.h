@@ -154,7 +154,7 @@ struct IComponent
     virtual RC _stdcall Config() = 0;
     virtual RC _stdcall SetInput(IData *input) = 0;
     /** @brief 运行组件. */
-    virtual RC _stdcall Run() = 0;
+    virtual RC _stdcall Run(bool input = true) = 0;
     virtual RC _stdcall GetOutput(IData *&output) = 0;
 };
 
@@ -219,7 +219,7 @@ struct IAlgorithm : public IComponent
     virtual bool _stdcall IsEntrance() = 0;
     virtual RC _stdcall InternalRun() = 0;
 
-    virtual RC _stdcall Run();
+    virtual RC _stdcall Run(bool input = true);
     virtual const vector<UINT64>& _stdcall GetNS();
     virtual const vector<UINT32>& _stdcall GetMemoryUsageKB();
     virtual const vector<UINT32>& _stdcall GetCpuPercentage();

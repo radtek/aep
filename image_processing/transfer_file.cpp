@@ -190,7 +190,7 @@ RC TransferFile::SetInput(IData *input)
     return RC::COMPONENT_SETINPUT_ERROR;
 }
 
-RC TransferFile::Run()
+RC TransferFile::Run(bool input)
 {
     RC rc;
     TcpSocket m_Socket;
