@@ -2,11 +2,12 @@
 
 #include "utility.h"
 
-BatchModelThread::BatchModelThread(CConsoleDlg &dlg, Model2 &model, const wstring &batchFile)
+BatchModelThread::BatchModelThread(CConsoleDlg &dlg, Model2 &model, const wstring &batchFile, TcpSocket *socket)
 : m_ConsoleDlg(dlg)
 , m_Model(model)
 , m_Batch(model)
 , m_BatchFile(batchFile)
+, m_Socket(socket)
 {
 }
 
@@ -49,6 +50,16 @@ void BatchModelThread::Run()
             text.AppendFormat(TEXT("%u算法%u运行结束."), i + 1, j + 1);
             m_ConsoleDlg.m_Status.SetWindowTextW(text);
         }
+
+        if (m_Socket)
+        {
+            m_Socket->SendCommand(CC::EVALUATE_COMMAND);
+        }
+    }
+
+    if (m_Socket)
+    {
+        m_Socket->SendCommand(CC::EXIT_COMMAND);
     }
 }
 

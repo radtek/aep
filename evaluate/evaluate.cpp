@@ -195,6 +195,25 @@ RC Evaluate::DoEvaluate(const vector<AlgorithmRuntime> &algorithms, const vector
     return rc;
 }
 
+RC Evaluate::DoSingleEvaluate(const vector<AlgorithmRuntime> &algorithms, const vector<Factor> &factors, vector<AlgorithmRuntimeResult> &algorithmResults, UINT32 i)
+{
+    RC rc;
+
+    for (UINT32 i = 0; i < algorithms.size(); ++i)
+    {
+        const AlgorithmRuntime &algorithm = algorithms[i];
+        algorithmResults.push_back(EvaluateAlgorithmRuntime(algorithm));
+    }
+
+    for (UINT32 i = 0; i < factors.size(); ++i)
+    {
+        const Factor &factor = factors[i];
+        CHECK_RC(EvaluateSingleFactor(factor, i));
+    }
+
+    return rc;
+}
+
 AlgorithmRuntimeResult Evaluate::EvaluateAlgorithmRuntime(const AlgorithmRuntime &algorithm)
 {
     AlgorithmRuntimeResult result;
@@ -220,6 +239,18 @@ AlgorithmRuntimeResult Evaluate::EvaluateAlgorithmRuntime(const AlgorithmRuntime
     }
     ifs.close();
     return result;
+}
+
+RC Evaluate::EvaluateSingleFactor(const Factor &factor, UINT32 i)
+{
+    RC rc;
+
+    wstring filePath = Utility::InsertNumToFileName(factor.AlgorithmOutput, factor.AlgorithmOutputStart + i);
+    CHECK_RC(m_ModelFS.DownloadFile(filePath.c_str()));
+    filePath = Utility::InsertNumToFileName(factor.Origin, factor.OriginStart + i);
+    CHECK_RC(m_FileServerFS.DownloadFile(filePath.c_str()));
+
+    return rc;
 }
 
 FactorResult Evaluate::EvaluateFactor(const Factor &factor)

@@ -7,6 +7,7 @@
 #include "utility.h"
 
 #include "evaluate_result_dlg.h"
+#include "evaluate_show_dlg.h"
 
 #include <fstream>
 #include <iostream>
@@ -332,8 +333,13 @@ void CEvaluatePage::OnBnClickedOk()
         factors.push_back(factor);
     }
 
+    CEvaluateShowDlg dlg(algorithms, factors, m_Engine);
+    dlg.DoModal();
+
+#if 0
     vector<AlgorithmRuntimeResult> algorithmResults;
     vector<FactorResult> factorResults;
+
     if (OK != m_Evaluate.DoEvaluate(algorithms, factors, algorithmResults, factorResults))
     {
         Utility::PromptErrorMessage(TEXT("ÆÀ¹À´íÎó."));
@@ -346,6 +352,7 @@ void CEvaluatePage::OnBnClickedOk()
     {
         mxDestroyArray(factorResults[i].Result);
     }
+#endif
 }
 
 void CEvaluatePage::OnBnClickedLoad()

@@ -10,6 +10,7 @@
 #define __MODEL_2_H__
 
 #include "model.h"
+#include "tcp_socket.h"
 
 struct ComponentNode
 {

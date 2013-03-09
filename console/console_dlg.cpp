@@ -24,6 +24,7 @@ CConsoleDlg::CConsoleDlg(Model2 &model, CWnd* pParent /*=NULL*/)
     , m_CurrentAlgorithmId(0)
     , m_Paused(false)
     , m_CurrentThreadHandle(NULL)
+    , m_Connected(false)
 {
 
 }
@@ -53,6 +54,22 @@ BOOL CConsoleDlg::OnInitDialog()
     CRect rect;
     m_ModelCtrl.GetClientRect(&rect);
     m_ModelCtrl.Init(rect);
+
+    if (OK != m_Socket.Init())
+    {
+        Utility::PromptErrorMessage(TEXT("Ì×½Ó×Ö³õÊ¼»¯Ê§°Ü."));
+    }
+    else
+    {
+        if (OK != m_Socket.Connect("localhost", 10088))
+        {
+            Utility::PromptErrorMessage(TEXT("Á¬½ÓÏÔÊ¾¶ËÊ§°Ü.."));
+        }
+        else
+        {
+            m_Connected = true;
+        }
+    }
 
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }
@@ -131,7 +148,7 @@ void CConsoleDlg::OnBnClickedRunButton()
     m_ResetButton.EnableWindow(false);
     m_BatchButton.EnableWindow(false);
 
-    RunModelThread *runModelThread = new RunModelThread(*this, m_Model, loopCount);
+    RunModelThread *runModelThread = new RunModelThread(*this, m_Model, loopCount, m_Connected ? &m_Socket : NULL);
 
     m_CurrentThreadHandle = runModelThread->Start();
     if (!m_CurrentThreadHandle)
@@ -220,7 +237,7 @@ void CConsoleDlg::OnBnClickedBatchButton()
     m_ResetButton.EnableWindow(false);
     m_BatchButton.EnableWindow(false);
 
-    BatchModelThread *batchModelThread = new BatchModelThread(*this, m_Model, batchFile);
+    BatchModelThread *batchModelThread = new BatchModelThread(*this, m_Model, batchFile, m_Connected ? &m_Socket : NULL);
 
     m_CurrentThreadHandle = batchModelThread->Start();
     if (!m_CurrentThreadHandle)

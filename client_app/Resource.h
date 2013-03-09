@@ -23,6 +23,7 @@
 #define IDD_EVALUATE_PAGE               142
 #define IDD_EVALUTE_RESULT_DLG          143
 #define IDD_IMAGE_SHOW_DLG              144
+#define IDD_EVALUTE_SHOW_DLG            145
 #define IDC_LOGIN_NAME                  1001
 #define IDC_LOGIN_PASSWORD              1002
 #define IDC_LOGIN_PASSWORD_TITLE        1003
@@ -95,7 +96,6 @@
 #define IDC_IMAGE                       1066
 #define IDC_FACTOR_WINDOW_CENTER_STATIC 1066
 #define IDC_SELECT_PATH                 1067
-#define IDC_FACTOR_TRUE_VALUE2          1067
 #define IDC_FACTOR_WINDOW_CENTER        1067
 #define IDC_FILE_NAME_STATIC            1068
 #define IDC_START_PAUSE_BUTTON          1069
@@ -103,6 +103,22 @@
 #define IDC_INTERVAL_STATIC             1071
 #define IDC_NEXT_BUTTON                 1072
 #define IDC_PREV_BUTTON                 1073
+#define IDC_ALGORITHM_RUNTIME_GRP       1073
+#define IDC_ALGORITHM_INFO              1074
+#define IDC_IMG_0_0                     1075
+#define IDC_IMG_0_1                     1076
+#define IDC_IMG_1_0                     1077
+#define IDC_IMG_1_1                     1078
+#define IDC_ALGORITHM_INPUT_OUTPUT_GRP  1079
+#define IDC_TIME_STC                    1080
+#define IDC_TIME_TEXT                   1081
+#define IDC_CPU_STC                     1082
+#define IDC_CPU_TEXT                    1083
+#define IDC_MEMORY_STC                  1084
+#define IDC_MEMORY_TEXT                 1085
+#define IDC_NS_STC                      1086
+#define IDC_CPU_TEXT3                   1087
+#define IDC_NS_TEXT                     1087
 
 // Next default values for new objects
 // 
@@ -110,7 +126,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        145
 #define _APS_NEXT_COMMAND_VALUE         32772
-#define _APS_NEXT_CONTROL_VALUE         1073
+#define _APS_NEXT_CONTROL_VALUE         1084
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

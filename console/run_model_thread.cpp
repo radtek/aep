@@ -2,10 +2,11 @@
 
 #include "utility.h"
 
-RunModelThread::RunModelThread(CConsoleDlg &dlg, Model2 &model, UINT32 loopCount)
+RunModelThread::RunModelThread(CConsoleDlg &dlg, Model2 &model, UINT32 loopCount, TcpSocket *socket)
 : m_ConsoleDlg(dlg)
 , m_Model(model)
 , m_LoopCount(loopCount)
+, m_Socket(socket)
 {
 }
 
@@ -46,6 +47,16 @@ void RunModelThread::Run()
             m_ConsoleDlg.m_Status.SetWindowTextW(text);
         }
         m_ConsoleDlg.m_Model.Reset();
+
+        if (m_Socket)
+        {
+            m_Socket->SendCommand(CC::EVALUATE_COMMAND);
+        }
+    }
+
+    if (m_Socket)
+    {
+        m_Socket->SendCommand(CC::EXIT_COMMAND);
     }
 }
 

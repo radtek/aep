@@ -8,7 +8,7 @@
 class BatchModelThread
 {
 public:
-    BatchModelThread(CConsoleDlg &dlg, Model2 &model, const wstring &batchFile);
+    BatchModelThread(CConsoleDlg &dlg, Model2 &model, const wstring &batchFile, TcpSocket *socket);
 
     HANDLE Start();
 
@@ -22,6 +22,8 @@ private:
     Model2 &m_Model;
     Batch m_Batch;
     wstring m_BatchFile;
+
+    TcpSocket *m_Socket;
 
 private:
     static DWORD WINAPI Run(LPVOID lparam);

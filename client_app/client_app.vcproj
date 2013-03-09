@@ -392,6 +392,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\evaluate_show_dlg.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\file_service_page.cpp"
 				>
 			</File>
@@ -475,6 +479,10 @@
 			</File>
 			<File
 				RelativePath=".\evaluate_result_dlg.h"
+				>
+			</File>
+			<File
+				RelativePath=".\evaluate_show_dlg.h"
 				>
 			</File>
 			<File

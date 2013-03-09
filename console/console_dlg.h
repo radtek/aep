@@ -6,6 +6,8 @@
 #include "afxwin.h"
 #include "afxcmn.h"
 
+#include "tcp_socket.h"
+
 // CConsoleDlg dialog
 
 class __declspec(dllexport) CConsoleDlg : public CDialog
@@ -30,6 +32,10 @@ public:
     HANDLE m_CurrentThreadHandle;
 
     bool m_Paused;
+
+private:
+    TcpSocket m_Socket;
+    bool m_Connected;
 
 public:
     void OnRunThreadEnd();

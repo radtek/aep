@@ -1,6 +1,8 @@
 #ifndef __FILE_SERVICE_H__
 #define __FILE_SERVICE_H__
 
+#include "afxmt.h"
+
 #include "tcp_socket.h"
 
 #include <vector>
@@ -52,6 +54,8 @@ private:
 
     HANDLE m_ListenThreadHandle;
     vector<HANDLE> m_ServiceThreadHandles;
+
+    static CCriticalSection s_CS;
 };
 
 #endif // __FILE_SERVICE_H__

@@ -1,6 +1,8 @@
 #include "utility.h"
 #include "file_service.h"
 
+CCriticalSection FileService::s_CS;
+
 FileService::FileService()
 : m_RootPath(TEXT("."))
 , m_RemoteHost("localhost")
@@ -149,6 +151,7 @@ RC FileService::ServiceThread::RealService()
         wstring filePath;
         CHECK_RC(m_ClientSocket->RecvWString(filePath));
 
+        s_CS.Lock();
         wchar_t buf[1024];
         GetCurrentDirectory(1024, buf);
         if (!SetCurrentDirectory(m_RootPath.c_str()))
@@ -169,6 +172,7 @@ RC FileService::ServiceThread::RealService()
         CHECK_RC(m_ClientSocket->SendFile(filePath.c_str()));
 
         SetCurrentDirectory(buf);
+        s_CS.Unlock();
     }
 
     return rc;
