@@ -307,7 +307,7 @@ FactorResult Evaluate::EvaluateFactor(const Factor &factor)
     Array *a = mxCreateString(Utility::Wstring2String(factor.TrueValue).c_str());
     input.push_back(a);
 
-    if (OK != m_FileServerFS.DownloadFile(factor.WindowCenter.c_str()))
+    if (OK != m_ModelFS.DownloadFile(factor.WindowCenter.c_str()))
     {
         return result;
     }

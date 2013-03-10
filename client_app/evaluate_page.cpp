@@ -207,7 +207,7 @@ void CEvaluatePage::UpdateFactorItem(int row)
     temp.AppendFormat(TEXT("%u"), m_OriginEnd);
     m_FactorListCtrl.SetItemText(row, 7, temp);
     m_FactorListCtrl.SetItemText(row, 8, m_TrueValue);
-    m_FactorListCtrl.SetItemText(row, 8, m_WindowCenter);
+    m_FactorListCtrl.SetItemText(row, 9, m_WindowCenter);
 }
 
 void CEvaluatePage::DeleteFactorItem(int row)
@@ -385,8 +385,8 @@ void CEvaluatePage::OnBnClickedLoad()
         ifs >> n;
         for (int i = 0; i < n; ++i)
         {
-            wstring name, path, output, outputStart, outputEnd, origin, originStart, originEnd, trueValue;
-            ifs >> name >> path >> output >> outputStart >> outputEnd >> origin >> originStart >> originEnd >> trueValue;
+            wstring name, path, output, outputStart, outputEnd, origin, originStart, originEnd, trueValue, windowCenter;
+            ifs >> name >> path >> output >> outputStart >> outputEnd >> origin >> originStart >> originEnd >> trueValue >> windowCenter;
             m_FactorListCtrl.InsertItem(i, name.c_str());
             m_FactorListCtrl.SetItemText(i, 1,path.c_str());
             m_FactorListCtrl.SetItemText(i, 2, output.c_str());
@@ -396,6 +396,7 @@ void CEvaluatePage::OnBnClickedLoad()
             m_FactorListCtrl.SetItemText(i, 6, originStart.c_str());
             m_FactorListCtrl.SetItemText(i, 7, originEnd.c_str());
             m_FactorListCtrl.SetItemText(i, 8, trueValue.c_str());
+            m_FactorListCtrl.SetItemText(i, 9, windowCenter.c_str());
         }
     }
     else
@@ -436,7 +437,8 @@ void CEvaluatePage::OnBnClickedSave()
             ofs << wstring(m_FactorListCtrl.GetItemText(i, 5)) << TEXT(" ");
             ofs << wstring(m_FactorListCtrl.GetItemText(i, 6)) << TEXT(" ");
             ofs << wstring(m_FactorListCtrl.GetItemText(i, 7)) << TEXT(" ");
-            ofs << wstring(m_FactorListCtrl.GetItemText(i, 8)) << endl;
+            ofs << wstring(m_FactorListCtrl.GetItemText(i, 8)) << TEXT(" ");
+            ofs << wstring(m_FactorListCtrl.GetItemText(i, 9)) << endl;
         }
         ofs.close();
     }
