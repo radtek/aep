@@ -25,6 +25,7 @@ enum CIID
     CIID_ICOMPONENT,
     CIID_IPARAM,
     CIID_IALGORITHM,
+    CIID_IGLOBAL_VAR,
     CIID_LAST,
 };
 
@@ -211,6 +212,8 @@ typedef struct
 
 typedef map<UINT32, ComponentType> ComponentTypeMap;
 
+class IGlobalVar;
+
 /**
 * @class IAlgorithm
 * @brief IAlgorithmËã·¨½Ó¿Ú.
@@ -220,6 +223,8 @@ typedef map<UINT32, ComponentType> ComponentTypeMap;
 */
 struct IAlgorithm : public IComponent
 {
+    virtual RC _stdcall SetGlobalVar(IGlobalVar *var) = 0;
+
     virtual bool _stdcall IsEntrance() = 0;
     virtual RC _stdcall InternalRun() = 0;
 
@@ -239,6 +244,14 @@ private:
 };
 
 typedef vector<IAlgorithm *> AlgorithmList;
+
+typedef mxArray Array;
+
+struct IGlobalVar : public IComponent
+{
+    virtual Array * _stdcall GetData() = 0;
+    virtual void _stdcall SetData(Array *data) = 0;
+};
 
 struct Connector
 {

@@ -56,6 +56,7 @@ protected:
     /** @brief 将模型内部的组件相互关联. */
     void Connect(UINT32 sourceId, UINT32 targetId);
     bool Connect(IComponent *source, IComponent *target);
+    IGlobalVar *GetGlobalVar();
     IAlgorithm *GetEntryAlgorithm();
     IAlgorithm *GetNextAlgorithm(IAlgorithm *algorithm);
     ComponentList GetInputList(IAlgorithm *algorithm);
@@ -68,6 +69,7 @@ protected:
     ComponentList m_ComponentList;
     ConnectorList m_ConnectorList;
 
+    IGlobalVar *m_GlobalVar;
     AlgorithmList m_AlgorithmList;
     vector<ComponentList> m_InputList;
     vector<ComponentList> m_OutputList;

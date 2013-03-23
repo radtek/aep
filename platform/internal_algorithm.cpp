@@ -183,6 +183,13 @@ RC InternalAlgorithm::InternalRun()
     return rc;
 }
 
+RC InternalAlgorithm::SetGlobalVar(IGlobalVar *var)
+{
+    RC rc;
+
+    return rc;
+}
+
 bool InternalAlgorithm::IsEntrance()
 {
     return false;

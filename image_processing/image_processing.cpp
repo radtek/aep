@@ -18,6 +18,7 @@
 #include "output_image_batch.h"
 #include "algorithm_evaluate.h"
 #include "transfer_file.h"
+#include "global_var.h"
 
 extern "C" __declspec(dllexport) void RegisterInterfaceType(InterfaceTypeMap &interfaceTypeMap)
 {
@@ -46,6 +47,11 @@ extern "C" __declspec(dllexport) void RegisterInterfaceType(InterfaceTypeMap &in
     interfaceType.InterfaceId = CLIENT_CIID_TRANSFER;
     interfaceType.InterfaceName = TEXT("传输");
     interfaceType.InterfaceColor = ColorTable[4 % sizeof(ColorTable)];
+    interfaceTypeMap[interfaceType.InterfaceId] = interfaceType;
+
+    interfaceType.InterfaceId = CIID_IGLOBAL_VAR;
+    interfaceType.InterfaceName = TEXT("全局变量");
+    interfaceType.InterfaceColor = ColorTable[5 % sizeof(ColorTable)];
     interfaceTypeMap[interfaceType.InterfaceId] = interfaceType;
 }
 
@@ -171,6 +177,13 @@ extern "C" __declspec(dllexport) void RegisterComponentType(ComponentTypeMap &co
     componentType.TypeName = TransferFile::s_ComponentName;
     componentType.InterfaceId = CLIENT_CIID_TRANSFER;
     componentType.Factory = (ComponentFactory)TransferFile::Factory;
+    componentType.DllHandle = DllHandle;
+    componentTypeMap[componentType.TypeId] = componentType;
+
+    componentType.TypeId = GlobalVar::s_ComponentId;
+    componentType.TypeName = GlobalVar::s_ComponentName;
+    componentType.InterfaceId = CIID_IGLOBAL_VAR;
+    componentType.Factory = (ComponentFactory)GlobalVar::Factory;
     componentType.DllHandle = DllHandle;
     componentTypeMap[componentType.TypeId] = componentType;
 }

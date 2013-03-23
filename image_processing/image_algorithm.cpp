@@ -509,7 +509,21 @@ RC ImageAlgorithm::InternalRun()
         Array *a = MatLabHelper::CreateDoubleArray(1, 1, &m_Factor[i], 0, 0, 0, 0);
         input.push_back(a);
     }
-    vector<Array *> output(m_OutputCount);
+
+    // Global variable.
+    Array *tempGlobalVar = NULL;
+    if (m_GlobalVar)
+    {
+        input.push_back(m_GlobalVar->GetData());
+    }
+    else
+    {
+        mwSize dim[3] = {1, 1, 1};
+        tempGlobalVar = mxCreateCellArray(3, dim);
+        input.push_back(tempGlobalVar);
+    }
+
+    vector<Array *> output(m_OutputCount + 1);
     // Array *output[1] = {m_Output->m_Array[i]};
     CHECK_RC(MatLabHelper::RunFunc(m_DllFileName, m_FuncName, output/*&m_Output->m_Array[0]*/, input));
     //memcpy(&m_Output->m_Array[0], &output[0], m_OutputCount * sizeof(Array *));
@@ -521,6 +535,11 @@ RC ImageAlgorithm::InternalRun()
     {
         MatLabHelper::DestroyArray(tempInput2);
     }
+    if (tempGlobalVar != NULL)
+    {
+        MatLabHelper::DestroyArray(tempGlobalVar);
+    }
+
     for (UINT32 i = 0; i < m_OutputCount; ++i)
     {
         if (m_Output->m_Array[i] != NULL)
@@ -541,6 +560,22 @@ RC ImageAlgorithm::InternalRun()
         MatLabHelper::DestroyArray(input[i + 2]);
         MatLabHelper::DestroyArray(output[i]);
     }
+
+#if 1
+    if (m_GlobalVar)
+    {
+        m_GlobalVar->SetData(output[m_OutputCount]);
+    }
+#endif
+
+    return rc;
+}
+
+RC ImageAlgorithm::SetGlobalVar(IGlobalVar *var)
+{
+    RC rc;
+
+    m_GlobalVar = var;
 
     return rc;
 }

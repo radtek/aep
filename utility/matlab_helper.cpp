@@ -285,38 +285,6 @@ RC MatLabHelper::RealRunFunc(HINSTANCE algorithmDllHandle, const string &fullFun
         return RC::ALGORITHM_GETPROC_ERROR;
     }
     result = func(outputCount, &outputList[0], inputCount, &inputList[0]);
-    /*
-    switch (outputCount)
-    {
-    case 1:
-        {
-            SWITCH_INPUT_COUNT(outputList[0])
-            break;
-        }
-    case 2:
-        {
-            SWITCH_INPUT_COUNT(outputList[0], outputList[1])
-            break;
-        }
-    case 3:
-        {
-            SWITCH_INPUT_COUNT(outputList[0], outputList[1], outputList[2])
-            break;
-        }
-    case 4:
-        {
-            SWITCH_INPUT_COUNT(outputList[0], outputList[1], outputList[2], outputList[3])
-            break;
-        }
-    case 5:
-        {
-            SWITCH_INPUT_COUNT(outputList[0], outputList[1], outputList[2], outputList[3], outputList[4])
-            break;
-        }
-    default:
-        return RC::ALGORITHM_OVERMAXOUTPUT_ERROR;
-    }
-    */
 
     return OK;
 }

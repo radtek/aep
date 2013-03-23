@@ -406,6 +406,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\global_var.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\iarc.cpp"
 				>
 			</File>
@@ -561,6 +565,10 @@
 			</File>
 			<File
 				RelativePath=".\external_data_scissor.h"
+				>
+			</File>
+			<File
+				RelativePath=".\global_var.h"
 				>
 			</File>
 			<File

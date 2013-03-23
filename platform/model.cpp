@@ -287,6 +287,21 @@ bool Model::Connect(IComponent *source, IComponent *target)
     return true;
 }
 
+IGlobalVar *Model::GetGlobalVar()
+{
+    for (UINT32 i = 0; i < m_ComponentList.size(); ++i)
+    {
+        IComponent *component = m_ComponentList[i];
+        IGlobalVar *globalVar = (IGlobalVar *)component->GetInterface(CIID_IGLOBAL_VAR);
+        if (globalVar != NULL)
+        {
+            return globalVar;
+        }
+    }
+
+    return NULL;
+}
+
 IAlgorithm *Model::GetEntryAlgorithm()
 {
     for (UINT32 i = 0; i < m_ComponentList.size(); ++i)

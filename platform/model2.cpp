@@ -29,6 +29,13 @@ Model2::~Model2()
 RC Model2::Analyze()
 {
     RC rc;
+
+    // 找到全局变量.
+    m_GlobalVar = GetGlobalVar();
+    if (m_GlobalVar)
+    {
+        CHECK_RC(m_GlobalVar->Run());
+    }
     
     // 找到入口函数.
     IAlgorithm *algorithm;
@@ -78,6 +85,8 @@ RC Model2::RunSingleAlgorithm(UINT32 id)
             return RC::MODEL_ALGORITHM_INPUT_ERROR;
         }
     }
+
+    CHECK_RC(algorithm->SetGlobalVar(m_GlobalVar));
 
     CHECK_RC(algorithm->Run());
 

@@ -60,6 +60,8 @@ public:
     virtual RC _stdcall SetInput(IData *input);
     virtual RC _stdcall GetOutput(IData *&output);
 
+    virtual RC _stdcall SetGlobalVar(IGlobalVar *var);
+
     virtual RC _stdcall InternalRun();
 
     virtual bool _stdcall IsEntrance();
@@ -67,6 +69,7 @@ public:
 protected:
     IImageAlgorithmInput1 *m_Input1;
     IImageAlgorithmInput2 *m_Input2;
+    IGlobalVar *m_GlobalVar;
     static const UINT32 m_OutputCount = 5;
     IImageAlgorithmOutput *m_Output;
     UINT32 m_Width[m_OutputCount], m_Height[m_OutputCount];
