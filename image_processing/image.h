@@ -17,6 +17,7 @@ public:
     Image();
     virtual ~Image();
 
+    virtual UINT32 _stdcall GetInterfaceTypeId();
     virtual UINT32 _stdcall GetTypeId();
     virtual void _stdcall Save(CArchive &ar);
     virtual void _stdcall Load(CArchive &ar);
@@ -57,6 +58,7 @@ protected:
     IImageOutput *m_Output;
 
 public:
+    static const CLIENT_CIID s_InterfaceId = CLIENT_CIID_IMAGE;
     static const CLIENT_CCID s_ComponentId = CLIENT_CCID_IMAGE;
     static Image *Factory();
     static LPCWSTR s_ComponentName;

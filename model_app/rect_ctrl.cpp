@@ -13,7 +13,8 @@ using namespace std;
 
 RectCtrl::RectCtrl(CPoint position)
 :
-m_Position(position)
+m_Position(position),
+m_Color(RGB(255, 255, 255))
 {
 }
 
@@ -35,7 +36,7 @@ void RectCtrl::Draw(CDC *dc)
 {
     CPoint oldPosition = dc->MoveTo(m_Position);
 
-    DrawBorder(dc);
+    DrawRect(dc);
     DrawTitle(dc);
 
     dc->MoveTo(oldPosition);
@@ -59,8 +60,12 @@ void RectCtrl::Move(CPoint point)
     }
 }
 
-void RectCtrl::DrawBorder(CDC *dc)
+void RectCtrl::DrawRect(CDC *dc)
 {
+    CBrush brush;
+    brush.CreateSolidBrush(m_Color);
+    CBrush *oldBrush = dc->SelectObject(&brush);
+
     if (m_IsSelected)
     {
         CPen pen;
@@ -73,11 +78,35 @@ void RectCtrl::DrawBorder(CDC *dc)
     {
         dc->Rectangle(CRect(Left(), Top(), Right(), Bottom()));
     }
+
+    dc->SelectObject(oldBrush);
 }
 
 void RectCtrl::DrawTitle(CDC *dc)
 {
-    dc->TextOutW(Left(), Center().y, GetTitle().c_str());
+    COLORREF oldColor = dc->SetBkColor(m_Color);
+
+    CFont font;
+    // font.CreatePointFont(90, TEXT("Î¢ÈíÑÅºÚ"));
+    font.CreateFont(16, 0, 0, 0, m_IsSelected ? FW_BOLD : FW_NORMAL,
+        FALSE, FALSE, 0, ANSI_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH | FF_SWISS,
+        TEXT("Î¢ÈíÑÅºÚ"));
+    CFont *pOldFont = (CFont *)dc->SelectObject(&font);
+
+    CSize sz = dc->GetTextExtent(GetTitle().c_str());
+    if (sz.cx > s_Width - 2 * s_Margin)
+    {
+        sz.cx = s_Width - 2 * s_Margin;
+    }
+
+    UINT32 startX = Left() + s_Margin + (s_Width - 2 * s_Margin - sz.cx) / 2;
+    UINT32 startY = Top() + (s_Height - sz.cy) / 2;
+
+    // dc->TextOutW(startX, startY, GetTitle().c_str());
+    dc->DrawText(GetTitle().c_str(), CRect(startX, startY, startX + sz.cx, startY + sz.cy), 0);
+
+    dc->SelectObject(pOldFont);
+    dc->SetBkColor(oldColor);
 }
 
 CPoint RectCtrl::GetAttachPoint(CPoint point)

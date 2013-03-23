@@ -23,6 +23,11 @@ TransferFile::~TransferFile()
 {
 }
 
+UINT32 TransferFile::GetInterfaceTypeId()
+{
+    return s_InterfaceId;
+}
+
 UINT32 TransferFile::GetTypeId()
 {
     return s_ComponentId;

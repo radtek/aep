@@ -30,7 +30,7 @@ public:
     virtual wstring GetTitle() = 0;
 
 protected:
-    virtual void DrawBorder(CDC *dc);
+    virtual void DrawRect(CDC *dc);
     virtual void DrawTitle(CDC *dc);
 
 public:
@@ -57,9 +57,12 @@ protected:
     CPoint m_Position;
     CPoint m_LastPosition;
 
+    COLORREF m_Color;
+
 protected:
     static const UINT32 s_Width = 100;
     static const UINT32 s_Height = 75;
+    static const UINT32 s_Margin = 5;
 };
 
 #endif // __RECT_CTRL_H__

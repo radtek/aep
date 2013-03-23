@@ -17,6 +17,7 @@ public:
     ExternalData();
     virtual ~ExternalData();
 
+    virtual UINT32 _stdcall GetInterfaceTypeId();
     virtual UINT32 _stdcall GetTypeId();
     virtual void _stdcall Save(CArchive &ar);
     virtual void _stdcall Load(CArchive &ar);
@@ -57,6 +58,7 @@ protected:
     IExternalDataOutput *m_Output;
 
 public:
+    static const CLIENT_CIID s_InterfaceId = CLIENT_CIID_EXTERNAL_DATA;
     static const CLIENT_CCID s_ComponentId = CLIENT_CCID_EXTERNAL_DATA;
     static ExternalData *Factory();
     static LPCWSTR s_ComponentName;

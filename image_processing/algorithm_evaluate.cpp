@@ -26,6 +26,11 @@ AlgorithmEvaluate::~AlgorithmEvaluate()
     delete m_Input;
 }
 
+UINT32 AlgorithmEvaluate::GetInterfaceTypeId()
+{
+    return s_InterfaceId;
+}
+
 UINT32 AlgorithmEvaluate::GetTypeId()
 {
     return s_ComponentId;

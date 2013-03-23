@@ -45,6 +45,11 @@ InternalAlgorithm::~InternalAlgorithm()
 {
 }
 
+UINT32 InternalAlgorithm::GetInterfaceTypeId()
+{
+    return CIID_IALGORITHM;
+}
+
 UINT32 InternalAlgorithm::GetTypeId()
 {
     return s_ComponentId;

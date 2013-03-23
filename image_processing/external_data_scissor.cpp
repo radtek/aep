@@ -39,6 +39,11 @@ ExternalDataScissor::~ExternalDataScissor()
     delete m_Output;
 }
 
+UINT32 ExternalDataScissor::GetInterfaceTypeId()
+{
+    return s_InterfaceId;
+}
+
 UINT32 ExternalDataScissor::GetTypeId()
 {
     return s_ComponentId;

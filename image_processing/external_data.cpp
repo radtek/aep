@@ -31,6 +31,11 @@ ExternalData::~ExternalData()
     delete m_Output;
 }
 
+UINT32 ExternalData::GetInterfaceTypeId()
+{
+    return s_InterfaceId;
+}
+
 UINT32 ExternalData::GetTypeId()
 {
     return s_ComponentId;

@@ -17,6 +17,7 @@ public:
     ImageAlgorithm();
     virtual ~ImageAlgorithm();
 
+    virtual UINT32 _stdcall GetInterfaceTypeId();
     virtual UINT32 _stdcall GetTypeId();
     virtual void _stdcall Save(CArchive &ar);
     virtual void _stdcall Load(CArchive &ar);
@@ -82,6 +83,7 @@ public:
     wstring m_Name;
 
 public:
+    static const CLIENT_CIID s_InterfaceId = CLIENT_CIID_IMAGE_ALGORITHM;
     static const CLIENT_CCID s_ComponentId = CLIENT_CCID_IMAGE_ALGORITHM;
     static ImageAlgorithm *Factory();
     static LPCWSTR s_ComponentName;

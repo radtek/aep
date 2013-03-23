@@ -10,6 +10,11 @@ ComponentCtrl::ComponentCtrl(IComponent *component, CPoint position)
 RectCtrl(position),
 m_Component(component)
 {
+    if (m_Component)
+    {
+        InterfaceType &interfaceType = theApp.m_Platform.GetInterfaceTypeMap()[m_Component->GetInterfaceTypeId()];
+        m_Color = interfaceType.InterfaceColor;
+    }
 }
 
 ComponentCtrl::~ComponentCtrl()
@@ -35,6 +40,9 @@ void ComponentCtrl::Load(CArchive &ar)
 
     m_Component = theApp.m_Platform.GetComponentTypeMap()[componentId].Factory();
     m_Component->Load(ar);
+
+    InterfaceType &interfaceType = theApp.m_Platform.GetInterfaceTypeMap()[m_Component->GetInterfaceTypeId()];
+    m_Color = interfaceType.InterfaceColor;
 }
 
 void ComponentCtrl::Export(CArchive &ar)

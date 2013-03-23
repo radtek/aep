@@ -31,6 +31,11 @@ DatImage::~DatImage()
     delete m_Output;
 }
 
+UINT32 DatImage::GetInterfaceTypeId()
+{
+    return s_InterfaceId;
+}
+
 UINT32 DatImage::GetTypeId()
 {
     return s_ComponentId;

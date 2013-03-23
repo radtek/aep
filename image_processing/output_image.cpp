@@ -31,6 +31,11 @@ OutputImage::~OutputImage()
     delete m_Input;
 }
 
+UINT32 OutputImage::GetInterfaceTypeId()
+{
+    return s_InterfaceId;
+}
+
 UINT32 OutputImage::GetTypeId()
 {
     return s_ComponentId;

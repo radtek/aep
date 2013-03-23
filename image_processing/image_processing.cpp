@@ -25,22 +25,27 @@ extern "C" __declspec(dllexport) void RegisterInterfaceType(InterfaceTypeMap &in
 
     interfaceType.InterfaceId = CLIENT_CIID_EXTERNAL_DATA;
     interfaceType.InterfaceName = TEXT("数据");
+    interfaceType.InterfaceColor = ColorTable[0 % sizeof(ColorTable)];
     interfaceTypeMap[interfaceType.InterfaceId] = interfaceType;
 
     interfaceType.InterfaceId = CLIENT_CIID_IMAGE;
     interfaceType.InterfaceName = TEXT("图像");
+    interfaceType.InterfaceColor = ColorTable[1 % sizeof(ColorTable)];
     interfaceTypeMap[interfaceType.InterfaceId] = interfaceType;
 
     interfaceType.InterfaceId = CLIENT_CIID_IMAGE_ALGORITHM;
     interfaceType.InterfaceName = TEXT("图像算法");
+    interfaceType.InterfaceColor = ColorTable[2 % sizeof(ColorTable)];
     interfaceTypeMap[interfaceType.InterfaceId] = interfaceType;
 
     interfaceType.InterfaceId = CLIENT_CIID_OUTPUT_FILE;
     interfaceType.InterfaceName = TEXT("输出");
+    interfaceType.InterfaceColor = ColorTable[3 % sizeof(ColorTable)];
     interfaceTypeMap[interfaceType.InterfaceId] = interfaceType;
 
     interfaceType.InterfaceId = CLIENT_CIID_TRANSFER;
     interfaceType.InterfaceName = TEXT("传输");
+    interfaceType.InterfaceColor = ColorTable[4 % sizeof(ColorTable)];
     interfaceTypeMap[interfaceType.InterfaceId] = interfaceType;
 }
 

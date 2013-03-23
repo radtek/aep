@@ -36,6 +36,7 @@ public:
     /** @brief InternalAlgorithmÎö¹¹º¯Êý. */
     virtual ~InternalAlgorithm();
 
+    virtual UINT32 _stdcall GetInterfaceTypeId();
     virtual UINT32 _stdcall GetTypeId();
     virtual void _stdcall Save(CArchive &ar);
     virtual void _stdcall Load(CArchive &ar);

@@ -17,6 +17,7 @@ public:
     TransferFile();
     virtual ~TransferFile();
 
+    virtual UINT32 _stdcall GetInterfaceTypeId();
     virtual UINT32 _stdcall GetTypeId();
     virtual void _stdcall Save(CArchive &ar);
     virtual void _stdcall Load(CArchive &ar);
@@ -55,6 +56,7 @@ protected:
     ITransferInput m_Input;
 
 public:
+    static const CLIENT_CIID s_InterfaceId = CLIENT_CIID_TRANSFER;
     static const CLIENT_CCID s_ComponentId = CLIENT_CCID_TRANSFER_FILE;
     static TransferFile *Factory();
     static LPCWSTR s_ComponentName;

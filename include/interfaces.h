@@ -71,6 +71,8 @@ typedef struct
     UINT32 InterfaceId;
     /** @brief 接口名称. */
     LPCWSTR InterfaceName;
+    /** @brief 接口绘制颜色. */
+    COLORREF InterfaceColor;
 } InterfaceType;
 
 typedef map<UINT32, InterfaceType> InterfaceTypeMap;
@@ -121,6 +123,8 @@ struct IData
 struct IComponent
 {
     // virtual RC _stdcall Config() = 0;
+    /** @brief 获得接口类型ID. */
+    virtual UINT32 _stdcall GetInterfaceTypeId() = 0;
     /** @brief 获得组件类型ID. */
     virtual UINT32 _stdcall GetTypeId() = 0;
     /** @brief 将组件保存至二进制文件. */
@@ -252,6 +256,19 @@ class PlatformService
 {
 public:
     virtual RC DownloadFile(LPCWSTR filePath) = 0;
+};
+
+static COLORREF ColorTable[] = 
+{
+    RGB(0xFF, 0x99, 0xCC),
+    RGB(0xCC, 0xFF, 0x99),
+    RGB(0x99, 0xCC, 0xFF),
+    RGB(0xFF, 0x99, 0x99),
+    RGB(0x99, 0xFF, 0x99),
+    RGB(0x99, 0x99, 0xFF),
+    RGB(0xFF, 0xCC, 0x99),
+    RGB(0x99, 0xFF, 0xCC),
+    RGB(0xCC, 0x99, 0xFF),
 };
 
 #endif // __INTERFACES_H__

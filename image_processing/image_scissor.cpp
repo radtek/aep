@@ -39,6 +39,11 @@ ImageScissor::~ImageScissor()
     delete m_Output;
 }
 
+UINT32 ImageScissor::GetInterfaceTypeId()
+{
+    return s_InterfaceId;
+}
+
 UINT32 ImageScissor::GetTypeId()
 {
     return s_ComponentId;
