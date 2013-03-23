@@ -10,8 +10,10 @@
 #include "component_ctrl.h"
 #include "internal_algorithm_ctrl.h"
 #include "connector_ctrl.h"
-#include "poly_connector_ctrl.h"
+#include "hor_poly_connector_ctrl.h"
+#include "ver_poly_connector_ctrl.h"
 
+#include "utility.h"
 #include "massert.h"
 
 #ifdef _DEBUG
@@ -189,17 +191,22 @@ void CModelView::OnLButtonDown(UINT nFlags, CPoint point)
     else if (GetDocument()->m_CurrentState == CModelDoc::STATE_NEW_CONNECTOR)
     {
         ConnectorCtrl *connectorCtrl = NULL;
-        if (GetDocument()->m_CurrentConnectorId == 0)
+        if (GetDocument()->m_CurrentConnectorId == ID_CONNECTOR)
         {
             connectorCtrl = new ConnectorCtrl(point);
         }
-        else if (GetDocument()->m_CurrentConnectorId == 1)
+        else if (GetDocument()->m_CurrentConnectorId == ID_HOR_POLY_CONNECTOR)
         {
-            connectorCtrl = new PolyConnectorCtrl(point);
+            connectorCtrl = new HorPolyConnectorCtrl(point);
+        }
+        else if (GetDocument()->m_CurrentConnectorId == ID_VER_POLY_CONNECTOR)
+        {
+            connectorCtrl = new VerPolyConnectorCtrl(point);
         }
         else
         {
-            MASSERT(TEXT("非法的连接线."));
+            Utility::PromptErrorMessage(TEXT("读取模型文件失败."));
+            return;
         }
         GetDocument()->AddConnectorCtrl(connectorCtrl);
         GetDocument()->m_CurrentState = CModelDoc::STATE_NORMAL;

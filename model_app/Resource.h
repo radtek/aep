@@ -19,6 +19,9 @@
 #define ID_EXTERNAL_ALGORITHM_BEGIN     12001
 #define ID_EXTERNAL_ALGORITHM_END       13000
 #define ID_CONNECTOR_BEGIN              13001
+#define ID_CONNECTOR                    13001
+#define ID_HOR_POLY_CONNECTOR           13002
+#define ID_VER_POLY_CONNECTOR           13003
 #define ID_CONNECTOR_END                14000
 #define ID_PANE_BEGIN                   14001
 #define ID_PANE_END                     15000

@@ -367,7 +367,7 @@ void CMainFrame::OnUpdateExternalAlgorithmUI(CCmdUI *cmdUI)
 
 void CMainFrame::OnConnector(UINT id)
 {
-    UINT32 connectorId = id - ID_CONNECTOR_BEGIN;
+    UINT32 connectorId = id;
     CModelDoc *doc = DYNAMIC_DOWNCAST(CModelDoc, GetActiveDocument());
     if (doc->m_CurrentState == CModelDoc::STATE_NEW_CONNECTOR &&
         connectorId == doc->m_CurrentConnectorId)
@@ -485,8 +485,9 @@ BOOL CMainFrame::CreateShortcutsBar ()
     connectorPane->SetOwner (this);
     connectorPane->EnableTextLabels ();
     connectorPane->EnableDocking (CBRS_ALIGN_ANY);
-    connectorPane->AddButton (images.ExtractIcon (interfaceTypeMap.size() + 2), TEXT("连接线"), ID_CONNECTOR_BEGIN);
-    connectorPane->AddButton (images.ExtractIcon (interfaceTypeMap.size() + 2), TEXT("折线连接线"), ID_CONNECTOR_BEGIN + 1);
+    connectorPane->AddButton (images.ExtractIcon (interfaceTypeMap.size() + 2), TEXT("连接线"), ID_CONNECTOR);
+    connectorPane->AddButton (images.ExtractIcon (interfaceTypeMap.size() + 2), TEXT("水平弯折连接线"), ID_HOR_POLY_CONNECTOR);
+    connectorPane->AddButton (images.ExtractIcon (interfaceTypeMap.size() + 2), TEXT("竖直弯折连接线"), ID_VER_POLY_CONNECTOR);
     pShortcutsBarContainer->AddTab (connectorPane, TEXT("连接线"), -1, FALSE);
     connectorPane->EnableDocking (CBRS_ALIGN_ANY);
 

@@ -12,6 +12,8 @@
 #include "component_ctrl.h"
 #include "internal_algorithm_ctrl.h"
 #include "connector_ctrl.h"
+#include "hor_poly_connector_ctrl.h"
+#include "ver_poly_connector_ctrl.h"
 
 #include "utility.h"
 
@@ -91,6 +93,7 @@ void CModelDoc::Serialize(CArchive& ar)
             it != m_ConnectorCtrlList.end(); ++it)
         {
             ConnectorCtrl *connectorCtrl = (*it);
+            ar << connectorCtrl->GetTypeId();
             connectorCtrl->Save(ar);
         }
 
@@ -139,7 +142,27 @@ void CModelDoc::Serialize(CArchive& ar)
 
         for (UINT32 i = 0; i < connectorCtrlListSize; ++i)
         {
-            ConnectorCtrl *connectorCtrl = new ConnectorCtrl();
+            UINT32 typeId = -1;
+            ar >> typeId;
+
+            ConnectorCtrl *connectorCtrl = NULL;
+            if (typeId == ID_CONNECTOR)
+            {
+                connectorCtrl = new ConnectorCtrl();
+            }
+            else if (typeId == ID_HOR_POLY_CONNECTOR)
+            {
+                connectorCtrl = new HorPolyConnectorCtrl();
+            }
+            else if (typeId == ID_VER_POLY_CONNECTOR)
+            {
+                connectorCtrl = new VerPolyConnectorCtrl();
+            }
+            else
+            {
+                Utility::PromptErrorMessage(TEXT("读取模型文件失败."));
+                return;
+            }
             connectorCtrl->Load(ar, *this);
 
             m_ConnectorCtrlList.push_back(connectorCtrl);

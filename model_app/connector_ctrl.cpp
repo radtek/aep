@@ -25,6 +25,11 @@ ConnectorCtrl::~ConnectorCtrl()
 {
 }
 
+UINT32 ConnectorCtrl::GetTypeId()
+{
+    return ID_CONNECTOR;
+}
+
 void ConnectorCtrl::Save(CArchive &ar)
 {
     ar << m_Start
@@ -39,6 +44,8 @@ void ConnectorCtrl::Save(CArchive &ar)
 
 void ConnectorCtrl::Load(CArchive &ar, CModelDoc &doc)
 {
+    // No read m_ConnectorTypeId;
+
     ar >> m_Start
         >> m_End;
 

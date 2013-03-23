@@ -18,6 +18,8 @@ public:
     ConnectorCtrl(CPoint point = CPoint(0, 0));
     virtual ~ConnectorCtrl();
 
+    virtual UINT32 GetTypeId();
+
     void Save(CArchive &ar);
     void Load(CArchive &ar, CModelDoc &doc);
     void Export(CArchive &ar);

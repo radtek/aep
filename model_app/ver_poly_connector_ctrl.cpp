@@ -3,33 +3,34 @@
 
 #include "model_ctrl.h"
 #include "connector_ctrl.h"
-#include "poly_connector_ctrl.h"
-
-#include "model_doc.h"
+#include "ver_poly_connector_ctrl.h"
 
 #include "utility.h"
-#include "massert.h"
 
-#include <math.h>
-
-PolyConnectorCtrl::PolyConnectorCtrl(CPoint point)
+VerPolyConnectorCtrl::VerPolyConnectorCtrl(CPoint point)
 :
 ConnectorCtrl(point)
 {
+    m_End.y += s_Length;
 }
 
-PolyConnectorCtrl::~PolyConnectorCtrl()
+VerPolyConnectorCtrl::~VerPolyConnectorCtrl()
 {
 }
 
-void PolyConnectorCtrl::Draw(CDC *dc)
+UINT32 VerPolyConnectorCtrl::GetTypeId()
+{
+    return ID_VER_POLY_CONNECTOR;
+}
+
+void VerPolyConnectorCtrl::Draw(CDC *dc)
 {
     CPoint oldPosition = dc->MoveTo(m_Start);
 
     CPoint center1, center2;
-    center1.x = center2.x = (m_Start.x + m_End.x) / 2;
-    center1.y = m_Start.y;
-    center2.y = m_End.y;
+    center1.x = m_Start.x;
+    center2.x = m_End.x;
+    center1.y = center2.y = (m_Start.y + m_End.y) / 2;
 
     if (m_CurrentSelectMode != CSM_NONE)
     {
@@ -53,12 +54,12 @@ void PolyConnectorCtrl::Draw(CDC *dc)
     dc->MoveTo(oldPosition);
 }
 
-double PolyConnectorCtrl::Distance(CPoint point)
+double VerPolyConnectorCtrl::Distance(CPoint point)
 {
     CPoint center1, center2;
-    center1.x = center2.x = (m_Start.x + m_End.x) / 2;
-    center1.y = m_Start.y;
-    center2.y = m_End.y;
+    center1.x = m_Start.x;
+    center2.x = m_End.x;
+    center1.y = center2.y = (m_Start.y + m_End.y) / 2;
 
     return min(Utility::DistanceToEdge(m_Start, center1, point), min(Utility::DistanceToEdge(center1, center2, point), Utility::DistanceToEdge(center2, m_End, point)));
 }

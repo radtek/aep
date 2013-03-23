@@ -410,6 +410,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\hor_poly_connector_ctrl.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\internal_algorithm_ctrl.cpp"
 				>
 			</File>
@@ -431,10 +435,6 @@
 			</File>
 			<File
 				RelativePath=".\model_view.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\poly_connector_ctrl.cpp"
 				>
 			</File>
 			<File
@@ -477,6 +477,10 @@
 					/>
 				</FileConfiguration>
 			</File>
+			<File
+				RelativePath=".\ver_poly_connector_ctrl.cpp"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -497,6 +501,10 @@
 			</File>
 			<File
 				RelativePath=".\connector_ctrl.h"
+				>
+			</File>
+			<File
+				RelativePath=".\hor_poly_connector_ctrl.h"
 				>
 			</File>
 			<File
@@ -524,10 +532,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\poly_connector_ctrl.h"
-				>
-			</File>
-			<File
 				RelativePath=".\rect_ctrl.h"
 				>
 			</File>
@@ -537,6 +541,10 @@
 			</File>
 			<File
 				RelativePath=".\stdafx.h"
+				>
+			</File>
+			<File
+				RelativePath=".\ver_poly_connector_ctrl.h"
 				>
 			</File>
 		</Filter>
