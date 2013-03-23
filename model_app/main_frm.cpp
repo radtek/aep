@@ -486,6 +486,7 @@ BOOL CMainFrame::CreateShortcutsBar ()
     connectorPane->EnableTextLabels ();
     connectorPane->EnableDocking (CBRS_ALIGN_ANY);
     connectorPane->AddButton (images.ExtractIcon (interfaceTypeMap.size() + 2), TEXT("连接线"), ID_CONNECTOR_BEGIN);
+    connectorPane->AddButton (images.ExtractIcon (interfaceTypeMap.size() + 2), TEXT("折线连接线"), ID_CONNECTOR_BEGIN + 1);
     pShortcutsBarContainer->AddTab (connectorPane, TEXT("连接线"), -1, FALSE);
     connectorPane->EnableDocking (CBRS_ALIGN_ANY);
 

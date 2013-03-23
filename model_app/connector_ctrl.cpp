@@ -102,16 +102,16 @@ void ConnectorCtrl::Draw(CDC *dc)
         dc->LineTo(m_End);
     }
 
-    DrawArrow(dc, 30, 7);
+    DrawArrow(dc, m_Start, m_End, 30, 7);
 
     dc->MoveTo(oldPosition);
 }
 
-void ConnectorCtrl::DrawArrow(CDC *dc, double theta, UINT32 length)
+void ConnectorCtrl::DrawArrow(CDC *dc, CPoint start, CPoint end, double theta, UINT32 length)
 {
     double xx, yy, p1x, p1y, p2x, p2y;
-    xx = m_Start.x - m_End.x;
-    yy = m_Start.y - m_End.y;
+    xx = start.x - end.x;
+    yy = start.y - end.y;
     theta = 3.1415926 * theta / 180;
     p1x = xx * cos(theta) - yy * sin(theta);
     p1y = xx * sin(theta) + yy * cos(theta);
@@ -127,14 +127,14 @@ void ConnectorCtrl::DrawArrow(CDC *dc, double theta, UINT32 length)
     p2x = p2x * length / p2;
     p2y = p2y * length / p2;
 
-    p1x = p1x + m_End.x;
-    p1y = p1y + m_End.y;
+    p1x = p1x + end.x;
+    p1y = p1y + end.y;
 
-    p2x = p2x + m_End.x;
-    p2y = p2y + m_End.y;
+    p2x = p2x + end.x;
+    p2y = p2y + end.y;
 
     POINT triangle[3];
-    triangle[0] = m_End;
+    triangle[0] = end;
     triangle[1].x = p1x + 0.5;
     triangle[1].y = p1y + 0.5;
     triangle[2].x = p2x + 0.5;

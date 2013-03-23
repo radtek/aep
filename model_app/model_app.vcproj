@@ -434,6 +434,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\poly_connector_ctrl.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\rect_ctrl.cpp"
 				>
 			</File>
@@ -517,6 +521,10 @@
 			</File>
 			<File
 				RelativePath=".\model_view.h"
+				>
+			</File>
+			<File
+				RelativePath=".\poly_connector_ctrl.h"
 				>
 			</File>
 			<File

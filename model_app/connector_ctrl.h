@@ -25,8 +25,7 @@ public:
     ModelCtrl *GetTarget();
 
 public:
-    void Draw(CDC *dc);
-    void DrawArrow(CDC *dc, double theta, UINT32 length);
+    virtual void Draw(CDC *dc);
 
     enum ConnectorCtrlSelectMode
     {
@@ -49,10 +48,12 @@ public:
     // bool Connect();
 
 protected:
-    bool InBound(CPoint point);
-    double Distance(CPoint point);
-    double DistanceToStart(CPoint point);
-    double DistanceToEnd(CPoint point);
+    void DrawArrow(CDC *dc, CPoint start, CPoint end, double theta, UINT32 length);
+
+    virtual bool InBound(CPoint point);
+    virtual double Distance(CPoint point);
+    virtual double DistanceToStart(CPoint point);
+    virtual double DistanceToEnd(CPoint point);
 
 protected:
     ModelCtrl *m_Source, *m_Target;

@@ -10,6 +10,9 @@
 #include "component_ctrl.h"
 #include "internal_algorithm_ctrl.h"
 #include "connector_ctrl.h"
+#include "poly_connector_ctrl.h"
+
+#include "massert.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -185,7 +188,19 @@ void CModelView::OnLButtonDown(UINT nFlags, CPoint point)
     }
     else if (GetDocument()->m_CurrentState == CModelDoc::STATE_NEW_CONNECTOR)
     {
-        ConnectorCtrl *connectorCtrl = new ConnectorCtrl(point);
+        ConnectorCtrl *connectorCtrl = NULL;
+        if (GetDocument()->m_CurrentConnectorId == 0)
+        {
+            connectorCtrl = new ConnectorCtrl(point);
+        }
+        else if (GetDocument()->m_CurrentConnectorId == 1)
+        {
+            connectorCtrl = new PolyConnectorCtrl(point);
+        }
+        else
+        {
+            MASSERT(TEXT("非法的连接线."));
+        }
         GetDocument()->AddConnectorCtrl(connectorCtrl);
         GetDocument()->m_CurrentState = CModelDoc::STATE_NORMAL;
         GetDocument()->UnSelectAll();
