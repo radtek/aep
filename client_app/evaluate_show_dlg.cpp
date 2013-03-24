@@ -118,7 +118,7 @@ RC CEvaluateShowDlg::RealListen()
                     {
                         DeleteObject(m_OutputBmp[i]);
                     }
-                    wstring filePath = Utility::InsertNumToFileName(m_Factors[i].AlgorithmOutput, m_Factors[i].AlgorithmOutputStart + index);
+                    wstring filePath = Utility::InsertNumToFileName(m_Factors[i].Origin, m_Factors[i].OriginStart + index);
                     m_OrigBmp[i] = (HBITMAP)::LoadImage(AfxGetInstanceHandle(),
                         filePath.c_str(),
                         IMAGE_BITMAP,
