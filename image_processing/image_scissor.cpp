@@ -272,8 +272,8 @@ RC ImageScissor::SetInput(IData *input)
         if (imageAlgorithmOutput->m_Array[m_FromAlgorithmOutputIndex] != 0)
         {
             double *p = mxGetPr(imageAlgorithmOutput->m_Array[m_FromAlgorithmOutputIndex]);
-            m_DeltaX += (INT32)(p[0] + 0.5);
-            m_DeltaY += (INT32)(p[1] + 0.5);
+            m_DeltaX += (INT32)(p[0] < 0 ? p[0] - 0.5 : p[0] + 0.5);
+            m_DeltaY += (INT32)(p[1] < 0 ? p[1] - 0.5 : p[1] + 0.5);
         }
         return OK;
     }
