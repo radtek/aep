@@ -190,11 +190,13 @@ IComponent *GlobalVar::Clone()
 
 void GlobalVar::Reset()
 {
+#if 0
     if (m_Array)
     {
         MatLabHelper::DestroyArray(m_Array);
         m_Array = 0;
     }
+#endif
 }
 
 RC GlobalVar::SetInput(IData *input)
