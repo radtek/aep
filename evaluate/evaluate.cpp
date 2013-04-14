@@ -195,7 +195,7 @@ RC Evaluate::DoEvaluate(const vector<AlgorithmRuntime> &algorithms, const vector
     return rc;
 }
 
-RC Evaluate::DoSingleEvaluate(const vector<AlgorithmRuntime> &algorithms, const vector<Factor> &factors, vector<AlgorithmRuntimeResult> &algorithmResults, UINT32 i)
+RC Evaluate::DoSingleEvaluate(const vector<AlgorithmRuntime> &algorithms, const vector<Factor> &factors, vector<AlgorithmRuntimeResult> &algorithmResults, UINT32 index)
 {
     RC rc;
 
@@ -208,7 +208,7 @@ RC Evaluate::DoSingleEvaluate(const vector<AlgorithmRuntime> &algorithms, const 
     for (UINT32 i = 0; i < factors.size(); ++i)
     {
         const Factor &factor = factors[i];
-        CHECK_RC(EvaluateSingleFactor(factor, i));
+        CHECK_RC(EvaluateSingleFactor(factor, index));
     }
 
     return rc;
@@ -241,13 +241,13 @@ AlgorithmRuntimeResult Evaluate::EvaluateAlgorithmRuntime(const AlgorithmRuntime
     return result;
 }
 
-RC Evaluate::EvaluateSingleFactor(const Factor &factor, UINT32 i)
+RC Evaluate::EvaluateSingleFactor(const Factor &factor, UINT32 index)
 {
     RC rc;
 
-    wstring filePath = Utility::InsertNumToFileName(factor.AlgorithmOutput, factor.AlgorithmOutputStart + i);
+    wstring filePath = Utility::InsertNumToFileName(factor.AlgorithmOutput, factor.AlgorithmOutputStart + index);
     CHECK_RC(m_ModelFS.DownloadFile(filePath.c_str()));
-    filePath = Utility::InsertNumToFileName(factor.Origin, factor.OriginStart + i);
+    filePath = Utility::InsertNumToFileName(factor.Origin, factor.OriginStart + index);
     CHECK_RC(m_FileServerFS.DownloadFile(filePath.c_str()));
 
     return rc;

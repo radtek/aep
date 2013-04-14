@@ -80,12 +80,12 @@ public:
     RC SetModelPort(int port);
 
     RC DoEvaluate(const vector<AlgorithmRuntime> &algorithms, const vector<Factor> &factors, vector<AlgorithmRuntimeResult> &algorithmResults, vector<FactorResult> &factorResults);
-    RC DoSingleEvaluate(const vector<AlgorithmRuntime> &algorithms, const vector<Factor> &factors, vector<AlgorithmRuntimeResult> &algorithmResults, UINT32 i);
+    RC DoSingleEvaluate(const vector<AlgorithmRuntime> &algorithms, const vector<Factor> &factors, vector<AlgorithmRuntimeResult> &algorithmResults, UINT32 index);
 
 private:
     AlgorithmRuntimeResult EvaluateAlgorithmRuntime(const AlgorithmRuntime &algorithm);
     FactorResult EvaluateFactor(const Factor &factor);
-    RC EvaluateSingleFactor(const Factor &factor, UINT32 i);
+    RC EvaluateSingleFactor(const Factor &factor, UINT32 index);
 
     wstring m_RootPath;
 
