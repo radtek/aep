@@ -117,8 +117,20 @@
 #define IDC_MEMORY_STC                  1084
 #define IDC_MEMORY_TEXT                 1085
 #define IDC_NS_STC                      1086
-#define IDC_CPU_TEXT3                   1087
 #define IDC_NS_TEXT                     1087
+#define IDC_IMG_4_0                     1092
+#define IDC_IMG_4_1                     1093
+#define IDC_IMG_5_0                     1094
+#define IDC_IMG_5_1                     1095
+#define IDC_IMG_2_0                     1104
+#define IDC_IMG_2_1                     1105
+#define IDC_IMG_6_0                     1106
+#define IDC_IMG_6_1                     1107
+#define IDC_IMG_3_0                     1108
+#define IDC_IMG_3_1                     1109
+#define IDC_IMG_7_0                     1110
+#define IDC_IMG_1_11                    1111
+#define IDC_IMG_7_1                     1111
 
 // Next default values for new objects
 // 
@@ -126,7 +138,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        145
 #define _APS_NEXT_COMMAND_VALUE         32772
-#define _APS_NEXT_CONTROL_VALUE         1084
+#define _APS_NEXT_CONTROL_VALUE         1092
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

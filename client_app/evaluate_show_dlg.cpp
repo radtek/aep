@@ -30,11 +30,35 @@ CEvaluateShowDlg::CEvaluateShowDlg(const vector<AlgorithmRuntime> &algorithms,
     m_OutputImg[0] = &m_Img01;
     m_OrigImg[1] = &m_Img10;
     m_OutputImg[1] = &m_Img11;
+    m_OrigImg[2] = &m_Img20;
+    m_OutputImg[2] = &m_Img21;
+    m_OrigImg[3] = &m_Img30;
+    m_OutputImg[3] = &m_Img31;
+    m_OrigImg[4] = &m_Img40;
+    m_OutputImg[4] = &m_Img41;
+    m_OrigImg[5] = &m_Img50;
+    m_OutputImg[5] = &m_Img51;
+    m_OrigImg[6] = &m_Img60;
+    m_OutputImg[6] = &m_Img61;
+    m_OrigImg[7] = &m_Img70;
+    m_OutputImg[7] = &m_Img71;
 
     m_OrigBmp[0] = 0;
-    m_OrigBmp[1] = 0;
     m_OutputBmp[0] = 0;
+    m_OrigBmp[1] = 0;
     m_OutputBmp[1] = 0;
+    m_OrigBmp[2] = 0;
+    m_OutputBmp[2] = 0;
+    m_OrigBmp[3] = 0;
+    m_OutputBmp[3] = 0;
+    m_OrigBmp[4] = 0;
+    m_OutputBmp[4] = 0;
+    m_OrigBmp[5] = 0;
+    m_OutputBmp[5] = 0;
+    m_OrigBmp[6] = 0;
+    m_OutputBmp[6] = 0;
+    m_OrigBmp[7] = 0;
+    m_OutputBmp[7] = 0;
 }
 
 CEvaluateShowDlg::~CEvaluateShowDlg()
@@ -55,6 +79,18 @@ void CEvaluateShowDlg::DoDataExchange(CDataExchange* pDX)
     DDX_Control(pDX, IDC_IMG_0_1, m_Img01);
     DDX_Control(pDX, IDC_IMG_1_0, m_Img10);
     DDX_Control(pDX, IDC_IMG_1_1, m_Img11);
+    DDX_Control(pDX, IDC_IMG_2_0, m_Img20);
+    DDX_Control(pDX, IDC_IMG_2_1, m_Img21);
+    DDX_Control(pDX, IDC_IMG_3_0, m_Img30);
+    DDX_Control(pDX, IDC_IMG_3_1, m_Img31);
+    DDX_Control(pDX, IDC_IMG_4_0, m_Img40);
+    DDX_Control(pDX, IDC_IMG_4_1, m_Img41);
+    DDX_Control(pDX, IDC_IMG_5_0, m_Img50);
+    DDX_Control(pDX, IDC_IMG_5_1, m_Img51);
+    DDX_Control(pDX, IDC_IMG_6_0, m_Img60);
+    DDX_Control(pDX, IDC_IMG_6_1, m_Img61);
+    DDX_Control(pDX, IDC_IMG_7_0, m_Img70);
+    DDX_Control(pDX, IDC_IMG_7_1, m_Img71);
 }
 
 RC CEvaluateShowDlg::Listen()
@@ -108,7 +144,7 @@ RC CEvaluateShowDlg::RealListen()
                 m_Ns.Empty();
                 m_Ns.AppendFormat(TEXT("%uNS"), algorithmResults[0].NS.back());
 
-                for (UINT32 i = 0; i < min(m_Factors.size(), 2); ++i)
+                for (UINT32 i = 0; i < min(8, m_Factors.size()); ++i)
                 {
                     if (m_OrigBmp[i])
                     {
@@ -119,7 +155,7 @@ RC CEvaluateShowDlg::RealListen()
                         DeleteObject(m_OutputBmp[i]);
                     }
                     wstring filePath = Utility::InsertNumToFileName(m_Factors[i].Origin, m_Factors[i].OriginStart + index);
-                    m_OrigBmp[i] = (HBITMAP)::LoadImage(AfxGetInstanceHandle(),
+                    HBITMAP hBitmap = (HBITMAP)::LoadImage(AfxGetInstanceHandle(),
                         filePath.c_str(),
                         IMAGE_BITMAP,
                         0,
