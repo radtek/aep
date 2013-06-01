@@ -27,6 +27,7 @@ void CFileServerPage::DoDataExchange(CDataExchange* pDX)
     CDialog::DoDataExchange(pDX);
     DDX_Text(pDX, IDC_PORT, m_Port);
     DDX_Text(pDX, IDC_ROOT_PATH, m_RootPath);
+    DDX_Control(pDX, IDOK, m_ButtonOK);
 }
 
 
@@ -53,5 +54,9 @@ void CFileServerPage::OnBnClickedOk()
     if (OK != m_FileService.Listen())
     {
         Utility::PromptErrorMessage(TEXT("文件服务失败."));
+    }
+    else
+    {
+        m_ButtonOK.EnableWindow(FALSE);
     }
 }

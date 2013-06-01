@@ -34,6 +34,7 @@ void CFileServicePage::DoDataExchange(CDataExchange* pDX)
     DDX_Text(pDX, IDC_FILE_SERVICE_MODEL_IP, m_ModelHostName);
     DDX_Text(pDX, IDC_FILE_SERVICE_MODEL_PORT, m_ModelPort);
     DDX_Text(pDX, IDC_FILE_SERVICE_ROOT_PATH, m_RootPath);
+    DDX_Control(pDX, IDOK, m_ButtonOK);
 }
 
 
@@ -65,5 +66,9 @@ void CFileServicePage::OnBnClickedOk()
     if (OK != m_Evaluate.Init())
     {
         Utility::PromptErrorMessage(TEXT("文件服务失败."));
+    }
+    else
+    {
+        m_ButtonOK.EnableWindow(FALSE);
     }
 }

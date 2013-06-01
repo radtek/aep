@@ -1,6 +1,7 @@
 #pragma once
 
 #include "file_service.h"
+#include "afxwin.h"
 
 // CFileServerPage dialog
 
@@ -27,4 +28,6 @@ public:
 
 private:
     FileService m_FileService;
+public:
+    CButton m_ButtonOK;
 };

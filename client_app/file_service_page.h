@@ -1,6 +1,7 @@
 #pragma once
 
 #include "evaluate.h"
+#include "afxwin.h"
 
 // CFileServicePage dialog
 
@@ -32,4 +33,5 @@ private:
 public:
     afx_msg void OnBnClickedOk();
     CString m_RootPath;
+    CButton m_ButtonOK;
 };
