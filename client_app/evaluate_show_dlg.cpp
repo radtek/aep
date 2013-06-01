@@ -149,13 +149,15 @@ RC CEvaluateShowDlg::RealListen()
                     if (m_OrigBmp[i])
                     {
                         DeleteObject(m_OrigBmp[i]);
+                        m_OrigBmp[i] = 0;
                     }
                     if (m_OutputBmp[i])
                     {
                         DeleteObject(m_OutputBmp[i]);
+                        m_OutputBmp[i] = 0;
                     }
                     wstring filePath = Utility::InsertNumToFileName(m_Factors[i].Origin, m_Factors[i].OriginStart + index);
-                    HBITMAP hBitmap = (HBITMAP)::LoadImage(AfxGetInstanceHandle(),
+                    m_OrigBmp[i] = (HBITMAP)::LoadImage(AfxGetInstanceHandle(),
                         filePath.c_str(),
                         IMAGE_BITMAP,
                         0,
