@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="gb2312"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="8.00"
+	Version="9.00"
 	Name="model_app"
 	ProjectGUID="{1E72F093-1462-4F9B-B822-23DA7C82E785}"
 	RootNamespace="model_app"
 	Keyword="MFCProj"
+	TargetFrameworkVersion="131072"
 	>
 	<Platforms>
 		<Platform
@@ -76,6 +77,8 @@
 				LinkIncremental="2"
 				GenerateDebugInformation="true"
 				SubSystem="2"
+				RandomizedBaseAddress="1"
+				DataExecutionPrevention="0"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -95,9 +98,6 @@
 			/>
 			<Tool
 				Name="VCAppVerifierTool"
-			/>
-			<Tool
-				Name="VCWebDeploymentTool"
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
@@ -161,6 +161,8 @@
 				LinkIncremental="2"
 				GenerateDebugInformation="true"
 				SubSystem="2"
+				RandomizedBaseAddress="1"
+				DataExecutionPrevention="0"
 				TargetMachine="17"
 			/>
 			<Tool
@@ -180,9 +182,6 @@
 			/>
 			<Tool
 				Name="VCAppVerifierTool"
-			/>
-			<Tool
-				Name="VCWebDeploymentTool"
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
@@ -247,6 +246,8 @@
 				SubSystem="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
+				RandomizedBaseAddress="1"
+				DataExecutionPrevention="0"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -266,9 +267,6 @@
 			/>
 			<Tool
 				Name="VCAppVerifierTool"
-			/>
-			<Tool
-				Name="VCWebDeploymentTool"
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
@@ -333,6 +331,8 @@
 				SubSystem="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
+				RandomizedBaseAddress="1"
+				DataExecutionPrevention="0"
 				TargetMachine="17"
 			/>
 			<Tool
@@ -354,9 +354,6 @@
 				Name="VCAppVerifierTool"
 			/>
 			<Tool
-				Name="VCWebDeploymentTool"
-			/>
-			<Tool
 				Name="VCPostBuildEventTool"
 			/>
 		</Configuration>
@@ -364,27 +361,21 @@
 	<References>
 		<ProjectReference
 			ReferencedProjectIdentifier="{93CCAD86-BF04-4030-BC21-589BCAD64A2C}"
-			RelativePathToProject=".\platform\platform.vcproj"
 		/>
 		<ProjectReference
 			ReferencedProjectIdentifier="{93D88E15-25A1-4BF1-838E-51EF18949D9D}"
-			RelativePathToProject=".\console\console.vcproj"
 		/>
 		<ProjectReference
 			ReferencedProjectIdentifier="{3209C5E4-A0D1-4203-9F2D-1BF6290D72A9}"
-			RelativePathToProject=".\aircraft_component\aircraft_component.vcproj"
 		/>
 		<ProjectReference
 			ReferencedProjectIdentifier="{DB88E729-4C1F-4D0D-8DE8-78B8E8EF1151}"
-			RelativePathToProject=".\aircraft_component_target\aircraft_component_target.vcproj"
 		/>
 		<ProjectReference
 			ReferencedProjectIdentifier="{18877B69-B5A3-4D83-8EAE-165B217C1875}"
-			RelativePathToProject=".\image_processing\image_processing.vcproj"
 		/>
 		<ProjectReference
 			ReferencedProjectIdentifier="{5C99B807-8987-4F6D-AACF-DBBD50371873}"
-			RelativePathToProject=".\network\network.vcproj"
 		/>
 	</References>
 	<Files>

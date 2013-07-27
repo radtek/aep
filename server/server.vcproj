@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="gb2312"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="8.00"
+	Version="9.00"
 	Name="server"
 	ProjectGUID="{EC3BFFF0-D7FB-48B7-B814-D14BEAAF8D9E}"
 	RootNamespace="server"
 	Keyword="Win32Proj"
+	TargetFrameworkVersion="131072"
 	>
 	<Platforms>
 		<Platform
@@ -284,11 +285,9 @@
 	<References>
 		<ProjectReference
 			ReferencedProjectIdentifier="{5C99B807-8987-4F6D-AACF-DBBD50371873}"
-			RelativePathToProject=".\network\network.vcproj"
 		/>
 		<ProjectReference
 			ReferencedProjectIdentifier="{93CCAD86-BF04-4030-BC21-589BCAD64A2C}"
-			RelativePathToProject=".\platform\platform.vcproj"
 		/>
 	</References>
 	<Files>
