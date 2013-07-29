@@ -69,6 +69,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalDependencies="mclmcrrt.lib libmx.lib libmat.lib libeng.lib"
 				LinkIncremental="2"
 				ModuleDefinitionFile=".\console.def"
 				GenerateDebugInformation="true"
@@ -150,6 +151,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalDependencies="mclmcrrt.lib libmx.lib libmat.lib libeng.lib"
 				LinkIncremental="1"
 				ModuleDefinitionFile=".\console.def"
 				GenerateDebugInformation="true"
@@ -186,6 +188,7 @@
 	<References>
 		<ProjectReference
 			ReferencedProjectIdentifier="{93CCAD86-BF04-4030-BC21-589BCAD64A2C}"
+			RelativePathToProject=".\platform\platform.vcproj"
 		/>
 	</References>
 	<Files>

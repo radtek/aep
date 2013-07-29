@@ -72,7 +72,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="mclmcrrt.lib"
+				AdditionalDependencies="mclmcrrt.lib libmx.lib libmat.lib libeng.lib"
 				LinkIncremental="2"
 				ModuleDefinitionFile=".\image_processing.def"
 				GenerateDebugInformation="true"
@@ -239,7 +239,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="mclmcrrt.lib"
+				AdditionalDependencies="mclmcrrt.lib libmx.lib libmat.lib libeng.lib"
 				LinkIncremental="1"
 				ModuleDefinitionFile=".\image_processing.def"
 				GenerateDebugInformation="true"
@@ -361,9 +361,11 @@
 	<References>
 		<ProjectReference
 			ReferencedProjectIdentifier="{8ED092B5-70E1-47CE-9ED2-F7179AF1D009}"
+			RelativePathToProject=".\component\component.vcproj"
 		/>
 		<ProjectReference
 			ReferencedProjectIdentifier="{5C99B807-8987-4F6D-AACF-DBBD50371873}"
+			RelativePathToProject=".\network\network.vcproj"
 		/>
 	</References>
 	<Files>

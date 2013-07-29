@@ -73,6 +73,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalDependencies="mclmcrrt.lib libmx.lib libmat.lib libeng.lib"
 				LinkIncremental="2"
 				GenerateDebugInformation="true"
 				SubSystem="2"
@@ -238,6 +239,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalDependencies="mclmcrrt.lib libmx.lib libmat.lib libeng.lib"
 				LinkIncremental="1"
 				GenerateDebugInformation="true"
 				SubSystem="2"
@@ -357,6 +359,7 @@
 	<References>
 		<ProjectReference
 			ReferencedProjectIdentifier="{EC3BFFF0-D7FB-48B7-B814-D14BEAAF8D9E}"
+			RelativePathToProject=".\server\server.vcproj"
 		/>
 	</References>
 	<Files>
