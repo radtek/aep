@@ -13,6 +13,7 @@ IMPLEMENT_DYNAMIC(CEvaluateShowDlg, CDialog)
 
 CEvaluateShowDlg::CEvaluateShowDlg(const vector<AlgorithmRuntime> &algorithms,
                                    const vector<Factor> &factors,
+                                   const vector<ImageMonitor> &imageMonitors,
                                    Engine *engine,
                                    CWnd* pParent /*=NULL*/)
 	: CDialog(CEvaluateShowDlg::IDD, pParent)
@@ -22,6 +23,7 @@ CEvaluateShowDlg::CEvaluateShowDlg(const vector<AlgorithmRuntime> &algorithms,
     , m_Ns(_T("-"))
     , m_Algorithms(algorithms)
     , m_Factors(factors)
+    , m_ImageMonitors(imageMonitors)
     , m_Evaluate(Evaluate::GetInstance())
     , m_Port(10088)
     , m_Engine(engine)

@@ -47,6 +47,13 @@ struct FactorResult
     Array *Result;
 };
 
+struct ImageMonitor
+{
+    wstring Path;
+    UINT32 Start;
+    UINT32 End;
+};
+
 /**
 * @class Evaluate
 * @brief EvaluateøÕªß∂À¿‡.

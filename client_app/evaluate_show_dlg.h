@@ -14,6 +14,7 @@ class CEvaluateShowDlg : public CDialog
 public:
 	CEvaluateShowDlg(const vector<AlgorithmRuntime> &algorithms,
         const vector<Factor> &factors,
+        const vector<ImageMonitor> &imageMonitors,
         Engine *engine,
         CWnd* pParent = NULL);   // standard constructor
 	virtual ~CEvaluateShowDlg();
@@ -26,6 +27,7 @@ protected:
 
     const vector<AlgorithmRuntime> &m_Algorithms;
     const vector<Factor> &m_Factors;
+    const vector<ImageMonitor> &m_ImageMonitors;
 
 	DECLARE_MESSAGE_MAP()
 

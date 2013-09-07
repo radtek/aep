@@ -37,6 +37,9 @@ private:
     void AddFactorItem();
     void UpdateFactorItem(int row);
     void DeleteFactorItem(int row);
+    void AddImageMonitorItem();
+    void UpdateImageMonitorItem(int row);
+    void DeleteImageMonitorItem(int row);
     Evaluate &m_Evaluate;
     Engine *m_Engine;
 public:
@@ -58,4 +61,10 @@ public:
     afx_msg void OnBnClickedSave();
     CString m_TrueValue;
     CString m_WindowCenter;
+    CString m_ImageMonitorPath;
+    UINT m_ImageMonitorStart;
+    UINT m_ImageMonitorEnd;
+    afx_msg void OnBnClickedImgAddUpdate();
+    afx_msg void OnBnClickedImgDelete();
+    CListCtrl m_ImageMonitorListCtrl;
 };
