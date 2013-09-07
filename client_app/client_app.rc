@@ -13,7 +13,7 @@
 #undef APSTUDIO_READONLY_SYMBOLS
 
 /////////////////////////////////////////////////////////////////////////////
-// Neutral (Sys. Default) resources
+// 非特定语言(系统默认值) resources
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_NEUSD)
 #ifdef _WIN32
@@ -110,12 +110,12 @@ BEGIN
     EDITTEXT        IDC_FILE_SERVICE_ROOT_PATH,127,107,80,20,ES_AUTOHSCROLL
 END
 
-IDD_EVALUATE_PAGE DIALOGEX 0, 0, 457, 301
+IDD_EVALUATE_PAGE DIALOGEX 0, 0, 621, 301
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "算法评估"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
-    DEFPUSHBUTTON   "评估",IDOK,399,280,51,14
+    DEFPUSHBUTTON   "评估",IDOK,563,280,51,14
     CONTROL         "",IDC_ALGORITHM_LIST,"SysListView32",LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP,16,93,118,174
     GROUPBOX        "算法效率评估",IDC_RUNTIME_GROUP,7,7,136,268
     LTEXT           "算法名称：",IDC_ALGORITHM_NAME_STATIC,16,20,45,14
@@ -124,8 +124,8 @@ BEGIN
     EDITTEXT        IDC_ALGORITHM_FILE_PATH,72,47,62,12,ES_AUTOHSCROLL
     PUSHBUTTON      "添加/更新",IDC_ALGORITHM_ADD_UPDATE,16,78,50,14
     PUSHBUTTON      "删除",IDC_ALGORITHM_DELETE,84,78,50,14
-    GROUPBOX        "算法评估指标",IDC_EVALUATE_GROUP,154,7,296,268
-    CONTROL         "",IDC_FACTOR_LIST,"SysListView32",LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP,164,93,276,174
+    GROUPBOX        "算法评估指标",IDC_EVALUATE_GROUP,154,7,295,268
+    CONTROL         "",IDC_IMG_LIST,"SysListView32",LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP,471,93,134,174
     PUSHBUTTON      "添加/更新",IDC_FACTOR_ADD_UPDATE,164,78,50,14
     PUSHBUTTON      "删除",IDC_FACTOR_DELETE,390,78,50,14
     LTEXT           "指标名称：",IDC_FACTOR_NAME_STATIC,164,20,41,14
@@ -141,7 +141,7 @@ BEGIN
     EDITTEXT        IDC_FACTOR_ORIGIN_START,318,47,46,14,ES_AUTOHSCROLL | ES_NUMBER
     EDITTEXT        IDC_FACTOR_ORIGIN_END,399,47,41,14,ES_AUTOHSCROLL | ES_NUMBER
     LTEXT           "起始ID：",IDC_FACTOR_ALGORITHM_OUTPUT_START_STATIC,276,34,42,13
-    LTEXT           "结束ID：",IDC_FACTOR_ALGORITHM_OUTPUT_END_STATIC,364,34,35,13
+    LTEXT           "结束ID：",IDC_IMG_END_STATIC,471,65,35,13
     LTEXT           "起始ID：",IDC_FACTOR_ORIGIN_START_STATIC,276,47,42,13
     LTEXT           "结束ID：",IDC_FACTOR_ORIGIN_END_STATIC,364,47,35,13
     PUSHBUTTON      "读取",IDC_LOAD,7,280,50,14
@@ -150,6 +150,16 @@ BEGIN
     EDITTEXT        IDC_FACTOR_TRUE_VALUE,205,59,53,14,ES_AUTOHSCROLL
     LTEXT           "中心坐标：",IDC_FACTOR_WINDOW_CENTER_STATIC,276,59,41,12
     EDITTEXT        IDC_FACTOR_WINDOW_CENTER,317,59,53,14,ES_AUTOHSCROLL
+    GROUPBOX        "实时图像显示",IDC_IMG_GROUP,461,7,153,268
+    LTEXT           "监控图像路径：",IDC_IMG__PATH_STATIC,471,22,60,12
+    EDITTEXT        IDC_IMG_PATH,537,20,60,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_IMG_START,537,40,49,14,ES_AUTOHSCROLL | ES_NUMBER
+    EDITTEXT        IDC_IMG_END,537,64,49,14,ES_AUTOHSCROLL | ES_NUMBER
+    LTEXT           "起始ID：",IDC_IMG_START_STATIC,471,41,42,13
+    LTEXT           "结束ID：",IDC_FACTOR_ALGORITHM_OUTPUT_END_STATIC2,364,34,35,13
+    PUSHBUTTON      "添加/更新",IDC_IMG_ADD_UPDATE,471,79,50,14
+    PUSHBUTTON      "删除",IDC_IMG_DELETE,555,78,50,14
+    CONTROL         "",IDC_FACTOR_LIST,"SysListView32",LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP,164,93,276,174
 END
 
 IDD_EVALUTE_RESULT_DLG DIALOGEX 0, 0, 482, 293
@@ -345,7 +355,7 @@ BEGIN
     IDD_EVALUATE_PAGE, DIALOG
     BEGIN
         LEFTMARGIN, 7
-        RIGHTMARGIN, 450
+        RIGHTMARGIN, 614
         VERTGUIDE, 16
         VERTGUIDE, 61
         VERTGUIDE, 72
@@ -360,6 +370,11 @@ BEGIN
         VERTGUIDE, 364
         VERTGUIDE, 399
         VERTGUIDE, 440
+        VERTGUIDE, 461
+        VERTGUIDE, 471
+        VERTGUIDE, 537
+        VERTGUIDE, 586
+        VERTGUIDE, 605
         TOPMARGIN, 7
         BOTTOMMARGIN, 294
         HORZGUIDE, 20
@@ -421,12 +436,12 @@ BEGIN
 END
 #endif    // APSTUDIO_INVOKED
 
-#endif    // Neutral (Sys. Default) resources
+#endif    // 非特定语言(系统默认值) resources
 /////////////////////////////////////////////////////////////////////////////
 
 
 /////////////////////////////////////////////////////////////////////////////
-// Chinese (P.R.C.) resources
+// 中文(中华人民共和国) resources
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)
 #ifdef _WIN32
@@ -539,12 +554,12 @@ BEGIN
     IDS_CLIENT_DIALOG_CAPTION "客户端"
 END
 
-#endif    // Chinese (P.R.C.) resources
+#endif    // 中文(中华人民共和国) resources
 /////////////////////////////////////////////////////////////////////////////
 
 
 /////////////////////////////////////////////////////////////////////////////
-// English (U.S.) resources
+// 英语(美国) resources
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
 #ifdef _WIN32
@@ -610,7 +625,7 @@ IDB_ICONS               BITMAP                  "res\\icons.bmp"
 //
 
 IDB_ICONS_HC            PNG                     "res\\icons.png"
-#endif    // English (U.S.) resources
+#endif    // 英语(美国) resources
 /////////////////////////////////////////////////////////////////////////////
 
 

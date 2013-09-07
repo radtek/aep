@@ -32,6 +32,9 @@ CEvaluatePage::CEvaluatePage()
     , m_Origin(_T(""))
     , m_TrueValue(_T(""))
     , m_WindowCenter(_T(""))
+    , m_ImageMonitorPath(_T(""))
+    , m_ImageMonitorStart(0)
+    , m_ImageMonitorEnd(0)
 {
 
 }
@@ -57,6 +60,10 @@ void CEvaluatePage::DoDataExchange(CDataExchange* pDX)
     DDX_Control(pDX, IDC_FACTOR_LIST, m_FactorListCtrl);
     DDX_Text(pDX, IDC_FACTOR_TRUE_VALUE, m_TrueValue);
     DDX_Text(pDX, IDC_FACTOR_WINDOW_CENTER, m_WindowCenter);
+    DDX_Text(pDX, IDC_IMG_PATH, m_ImageMonitorPath);
+    DDX_Text(pDX, IDC_IMG_START, m_ImageMonitorStart);
+    DDX_Text(pDX, IDC_IMG_END, m_ImageMonitorEnd);
+    DDX_Control(pDX, IDC_IMG_LIST, m_ImageMonitorListCtrl);
 }
 
 
@@ -70,6 +77,8 @@ BEGIN_MESSAGE_MAP(CEvaluatePage, CBCGPPropertyPage)
     ON_NOTIFY(LVN_ITEMACTIVATE, IDC_FACTOR_LIST, &CEvaluatePage::OnLvnItemActivateFactorList)
     ON_BN_CLICKED(IDC_LOAD, &CEvaluatePage::OnBnClickedLoad)
     ON_BN_CLICKED(IDC_SAVE, &CEvaluatePage::OnBnClickedSave)
+    ON_BN_CLICKED(IDC_IMG_ADD_UPDATE, &CEvaluatePage::OnBnClickedImgAddUpdate)
+    ON_BN_CLICKED(IDC_IMG_DELETE, &CEvaluatePage::OnBnClickedImgDelete)
 END_MESSAGE_MAP()
 
 
@@ -119,6 +128,20 @@ BOOL CEvaluatePage::OnInitDialog()
 	m_FactorListCtrl.InsertColumn(8,_T("真实值"),LVCFMT_CENTER, 60);
 	m_FactorListCtrl.InsertColumn(9,_T("中心坐标"),LVCFMT_CENTER, 60);
 	m_FactorListCtrl.EnableWindow(TRUE);
+
+    lStyle = GetWindowLong(m_ImageMonitorListCtrl.m_hWnd, GWL_STYLE);
+	lStyle &= ~LVS_TYPEMASK;
+	lStyle |= LVS_REPORT;
+	SetWindowLong(m_ImageMonitorListCtrl.m_hWnd, GWL_STYLE, lStyle);
+	dwStyle = m_ImageMonitorListCtrl.GetExtendedStyle();
+	dwStyle |= LVS_EX_FULLROWSELECT;
+	dwStyle |= LVS_EX_GRIDLINES;
+	m_ImageMonitorListCtrl.SetExtendedStyle(dwStyle);
+    
+	m_ImageMonitorListCtrl.InsertColumn(0,_T("监控图像路径"),LVCFMT_CENTER, 60);
+	m_ImageMonitorListCtrl.InsertColumn(1,_T("起始ID"),LVCFMT_CENTER, 60);
+	m_ImageMonitorListCtrl.InsertColumn(2,_T("结束ID"),LVCFMT_CENTER, 60);
+	m_ImageMonitorListCtrl.EnableWindow(TRUE);
 
     return TRUE;
 }
@@ -213,6 +236,43 @@ void CEvaluatePage::UpdateFactorItem(int row)
 void CEvaluatePage::DeleteFactorItem(int row)
 {
     m_FactorListCtrl.DeleteItem(row);
+}
+
+void CEvaluatePage::AddImageMonitorItem()
+{
+    if (m_ImageMonitorPath == TEXT(""))
+    {
+        return;
+    }
+    int n = m_ImageMonitorListCtrl.GetItemCount();
+    m_ImageMonitorListCtrl.InsertItem(n, m_ImageMonitorPath);
+    CString temp;
+    temp.AppendFormat(TEXT("%u"), m_ImageMonitorStart);
+    m_ImageMonitorListCtrl.SetItemText(n, 1, temp);
+    temp = TEXT("");
+    temp.AppendFormat(TEXT("%u"), m_ImageMonitorEnd);
+    m_ImageMonitorListCtrl.SetItemText(n, 2, temp);
+}
+
+void CEvaluatePage::UpdateImageMonitorItem(int row)
+{
+    if (m_ImageMonitorPath == TEXT(""))
+    {
+        return;
+    }
+    CString temp;
+    m_ImageMonitorListCtrl.SetItemText(row, 0, m_ImageMonitorPath);
+    temp = TEXT("");
+    temp.AppendFormat(TEXT("%u"), m_ImageMonitorStart);
+    m_ImageMonitorListCtrl.SetItemText(row, 1, temp);
+    temp = TEXT("");
+    temp.AppendFormat(TEXT("%u"), m_ImageMonitorEnd);
+    m_ImageMonitorListCtrl.SetItemText(row, 2, temp);
+}
+
+void CEvaluatePage::DeleteImageMonitorItem(int row)
+{
+    m_ImageMonitorListCtrl.DeleteItem(row);
 }
 
 void CEvaluatePage::OnBnClickedAlgorithmAddUpdate()
@@ -332,8 +392,17 @@ void CEvaluatePage::OnBnClickedOk()
         factor.WindowCenter = m_FactorListCtrl.GetItemText(i, 9);
         factors.push_back(factor);
     }
+    vector<ImageMonitor> imageMonitors;
+    for (int i = 0; i < m_ImageMonitorListCtrl.GetItemCount(); ++i)
+    {
+        ImageMonitor imageMonitor;
+        imageMonitor.Path = m_ImageMonitorListCtrl.GetItemText(i, 0);
+        imageMonitor.Start = _ttoi(m_ImageMonitorListCtrl.GetItemText(i, 1));
+        imageMonitor.End = _ttoi(m_ImageMonitorListCtrl.GetItemText(i, 2));
+        imageMonitors.push_back(imageMonitor);
+    }
 
-    CEvaluateShowDlg dlg(algorithms, factors, m_Engine);
+    CEvaluateShowDlg dlg(algorithms, factors, imageMonitors, m_Engine);
     dlg.DoModal();
 
 #if 0
@@ -388,7 +457,7 @@ void CEvaluatePage::OnBnClickedLoad()
             wstring name, path, output, outputStart, outputEnd, origin, originStart, originEnd, trueValue, windowCenter;
             ifs >> name >> path >> output >> outputStart >> outputEnd >> origin >> originStart >> originEnd >> trueValue >> windowCenter;
             m_FactorListCtrl.InsertItem(i, name.c_str());
-            m_FactorListCtrl.SetItemText(i, 1,path.c_str());
+            m_FactorListCtrl.SetItemText(i, 1, path.c_str());
             m_FactorListCtrl.SetItemText(i, 2, output.c_str());
             m_FactorListCtrl.SetItemText(i, 3, outputStart.c_str());
             m_FactorListCtrl.SetItemText(i, 4, outputEnd.c_str());
@@ -398,6 +467,18 @@ void CEvaluatePage::OnBnClickedLoad()
             m_FactorListCtrl.SetItemText(i, 8, trueValue.c_str());
             m_FactorListCtrl.SetItemText(i, 9, windowCenter.c_str());
         }
+
+#if 0
+        ifs >> n;
+        for (int i = 0; i < n; ++i)
+        {
+            wstring path, start, end;
+            ifs >> path >> start >> end;
+            m_ImageMonitorListCtrl.InsertItem(i, path.c_str());
+            m_ImageMonitorListCtrl.SetItemText(i, 1, start.c_str());
+            m_ImageMonitorListCtrl.SetItemText(i, 2, end.c_str());
+        }
+#endif
     }
     else
     {
@@ -440,10 +521,45 @@ void CEvaluatePage::OnBnClickedSave()
             ofs << wstring(m_FactorListCtrl.GetItemText(i, 8)) << TEXT(" ");
             ofs << wstring(m_FactorListCtrl.GetItemText(i, 9)) << endl;
         }
+        ofs << endl;
+        ofs << m_ImageMonitorListCtrl.GetItemCount() << endl;
+        for (int i = 0; i < m_ImageMonitorListCtrl.GetItemCount(); ++i)
+        {
+            ofs << wstring(m_ImageMonitorListCtrl.GetItemText(i, 0)) << TEXT(" ");
+            ofs << wstring(m_ImageMonitorListCtrl.GetItemText(i, 1)) << TEXT(" ");
+            ofs << wstring(m_ImageMonitorListCtrl.GetItemText(i, 1)) << endl;
+        }
         ofs.close();
     }
     else
     {
         return;
+    }
+}
+
+void CEvaluatePage::OnBnClickedImgAddUpdate()
+{
+    // TODO: 在此添加控件通知处理程序代码
+    UpdateData();
+    POSITION pos = m_ImageMonitorListCtrl.GetFirstSelectedItemPosition();
+    if (pos == NULL)
+    {
+        AddImageMonitorItem();
+    }
+    else
+    {
+        int row = (int)m_ImageMonitorListCtrl.GetNextSelectedItem(pos);
+        UpdateImageMonitorItem(row);
+    }
+}
+
+void CEvaluatePage::OnBnClickedImgDelete()
+{
+    // TODO: 在此添加控件通知处理程序代码
+    POSITION pos = m_ImageMonitorListCtrl.GetFirstSelectedItemPosition();
+    if (pos != NULL)
+    {
+        int row = (int)m_ImageMonitorListCtrl.GetNextSelectedItem(pos);
+        DeleteImageMonitorItem(row);
     }
 }

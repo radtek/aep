@@ -84,6 +84,7 @@
 #define IDC_FACTOR_ALGORITHM_OUTPUT_START_STATIC 1058
 #define IDC_FACTOR_ALGORITHM_OUTPUT_END_STATIC 1059
 #define IDC_ALGORITHM_RUNTIME_RESULT_GROUP 1059
+#define IDC_IMG_END_STATIC              1059
 #define IDC_FACTOR_ORIGIN_START_STATIC  1060
 #define IDC_ALGORITHM_RUNTIME_LIST      1060
 #define IDC_FACTOR_ORIGIN_END_STATIC    1061
@@ -98,15 +99,25 @@
 #define IDC_SELECT_PATH                 1067
 #define IDC_FACTOR_WINDOW_CENTER        1067
 #define IDC_FILE_NAME_STATIC            1068
+#define IDC_IMG__PATH_STATIC            1068
 #define IDC_START_PAUSE_BUTTON          1069
+#define IDC_IMG_PATH                    1069
 #define IDC_INTERVAL                    1070
+#define IDC_IMG_START                   1070
 #define IDC_INTERVAL_STATIC             1071
+#define IDC_IMG_END                     1071
 #define IDC_NEXT_BUTTON                 1072
+#define IDC_IMG_START_STATIC            1072
 #define IDC_PREV_BUTTON                 1073
 #define IDC_ALGORITHM_RUNTIME_GRP       1073
+#define IDC_FACTOR_ALGORITHM_OUTPUT_END_STATIC2 1073
 #define IDC_ALGORITHM_INFO              1074
+#define IDC_IMG_ADD_UPDATE              1074
 #define IDC_IMG_0_0                     1075
+#define IDC_FACTOR_DELETE2              1075
+#define IDC_IMG_DELETE                  1075
 #define IDC_IMG_0_1                     1076
+#define IDC_FACTOR_LIST2                1076
 #define IDC_IMG_1_0                     1077
 #define IDC_IMG_1_1                     1078
 #define IDC_ALGORITHM_INPUT_OUTPUT_GRP  1079
@@ -119,7 +130,9 @@
 #define IDC_NS_STC                      1086
 #define IDC_NS_TEXT                     1087
 #define IDC_IMG_4_0                     1092
+#define IDC_IMG_GROUP                   1092
 #define IDC_IMG_4_1                     1093
+#define IDC_IMG_LIST                    1093
 #define IDC_IMG_5_0                     1094
 #define IDC_IMG_5_1                     1095
 #define IDC_IMG_2_0                     1104
@@ -138,7 +151,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        145
 #define _APS_NEXT_COMMAND_VALUE         32772
-#define _APS_NEXT_CONTROL_VALUE         1092
+#define _APS_NEXT_CONTROL_VALUE         1094
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif
