@@ -44,8 +44,7 @@ protected:
 
     HANDLE m_Handle;
 
-    HBITMAP m_OrigBmp[8];
-    HBITMAP m_OutputBmp[8];
+    HBITMAP m_Bmp[4];
 
 public:
     BOOL OnInitDialog();
@@ -55,25 +54,12 @@ public:
     CString m_Cpu;
     CString m_Memory;
     CString m_Ns;
-    CStatic m_Img00;
-    CStatic m_Img01;
-    CStatic m_Img10;
-    CStatic m_Img11;
-    CStatic m_Img20;
-    CStatic m_Img21;
-    CStatic m_Img30;
-    CStatic m_Img31;
-    CStatic m_Img40;
-    CStatic m_Img41;
-    CStatic m_Img50;
-    CStatic m_Img51;
-    CStatic m_Img60;
-    CStatic m_Img61;
-    CStatic m_Img70;
-    CStatic m_Img71;
+    CStatic m_Img0;
+    CStatic m_Img1;
+    CStatic m_Img2;
+    CStatic m_Img3;
 
-    CStatic *m_OrigImg[8];
-    CStatic *m_OutputImg[8];
+    CStatic *m_Img[4];
     enum
     {
         WM_UPDATE_ALL = WM_USER + 1,

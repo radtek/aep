@@ -116,9 +116,11 @@
 #define IDC_IMG_0_0                     1075
 #define IDC_FACTOR_DELETE2              1075
 #define IDC_IMG_DELETE                  1075
+#define IDC_IMG_0                       1075
 #define IDC_IMG_0_1                     1076
 #define IDC_FACTOR_LIST2                1076
 #define IDC_IMG_1_0                     1077
+#define IDC_IMG_1                       1077
 #define IDC_IMG_1_1                     1078
 #define IDC_ALGORITHM_INPUT_OUTPUT_GRP  1079
 #define IDC_TIME_STC                    1080
@@ -136,10 +138,12 @@
 #define IDC_IMG_5_0                     1094
 #define IDC_IMG_5_1                     1095
 #define IDC_IMG_2_0                     1104
+#define IDC_IMG_2                       1104
 #define IDC_IMG_2_1                     1105
 #define IDC_IMG_6_0                     1106
 #define IDC_IMG_6_1                     1107
 #define IDC_IMG_3_0                     1108
+#define IDC_IMG_3                       1108
 #define IDC_IMG_3_1                     1109
 #define IDC_IMG_7_0                     1110
 #define IDC_IMG_1_11                    1111
