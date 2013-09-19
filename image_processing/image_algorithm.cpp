@@ -556,7 +556,7 @@ RC ImageAlgorithm::InternalRun()
         {
             y = n;
         }
-        m_Output->m_Array[i] = MatLabHelper::CreateDoubleArray(x, y, mxGetPr(output[i]), m, n, 0, 0);
+        m_Output->m_Array[i] = MatLabHelper::CreateDoubleArray(x, y + EXTRA_HEIGHT, mxGetPr(output[i]), m, n, 0, 0);
         MatLabHelper::DestroyArray(input[i + 2]);
         MatLabHelper::DestroyArray(output[i]);
     }

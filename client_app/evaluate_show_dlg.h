@@ -64,4 +64,23 @@ public:
     {
         WM_UPDATE_ALL = WM_USER + 1,
     };
+    CString m_ImageMonitorTitle0;
+    CString m_ImageMonitorTitle1;
+    CString m_ImageMonitorTitle2;
+    CString m_ImageMonitorTitle3;
+
+    CString *m_ImageMonitorTitle[4];
+
+    CString m_Param0;
+    CString m_Param1;
+    CString m_Param2;
+    CString m_Param3;
+    CString m_Param4;
+    CString m_Param5;
+    CString m_Param6;
+    CString m_Param7;
+    CString m_Param8;
+    CString m_Param9;
+
+    CString *m_Param[10];
 };

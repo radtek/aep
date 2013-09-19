@@ -315,7 +315,7 @@ RC ImageScissor::Run(bool input)
         ofs.close();
     }
 
-    m_Output->m_Array = MatLabHelper::CreateDoubleArray(m_Width, m_Height, mxGetPr(m_ImageInput->m_Array), mxGetM(m_ImageInput->m_Array), mxGetN(m_ImageInput->m_Array), startX, startY);
+    m_Output->m_Array = MatLabHelper::CreateDoubleArray(m_Width, m_Height + EXTRA_HEIGHT, mxGetPr(m_ImageInput->m_Array), mxGetM(m_ImageInput->m_Array), mxGetN(m_ImageInput->m_Array), startX, startY);
 
     return rc;
 }

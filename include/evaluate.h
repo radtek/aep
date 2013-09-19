@@ -52,6 +52,7 @@ struct ImageMonitor
     wstring Path;
     UINT32 Start;
     UINT32 End;
+    wstring Title;
 };
 
 /**
@@ -88,6 +89,9 @@ public:
 
     RC DoEvaluate(const vector<AlgorithmRuntime> &algorithms, const vector<Factor> &factors, vector<AlgorithmRuntimeResult> &algorithmResults, vector<FactorResult> &factorResults);
     RC DoSingleEvaluate(const vector<AlgorithmRuntime> &algorithms, const vector<Factor> &factors, vector<AlgorithmRuntimeResult> &algorithmResults, UINT32 index);
+
+    FileService &GetFileServicerFS() { return m_FileServerFS; }
+    FileService &GetModelFS() { return m_FileServerFS; }
 
 private:
     AlgorithmRuntimeResult EvaluateAlgorithmRuntime(const AlgorithmRuntime &algorithm);

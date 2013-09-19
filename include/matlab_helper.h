@@ -13,6 +13,8 @@
 
 typedef mxArray Array;
 
+#define EXTRA_HEIGHT 20
+
 namespace MatLabHelper
 {
     typedef bool (*InitializeFunc)(void);

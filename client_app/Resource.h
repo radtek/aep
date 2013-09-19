@@ -119,8 +119,10 @@
 #define IDC_IMG_0                       1075
 #define IDC_IMG_0_1                     1076
 #define IDC_FACTOR_LIST2                1076
+#define IDC_IMG_TITLE_STATIC            1076
 #define IDC_IMG_1_0                     1077
 #define IDC_IMG_1                       1077
+#define IDC_IMG_TITLE                   1077
 #define IDC_IMG_1_1                     1078
 #define IDC_ALGORITHM_INPUT_OUTPUT_GRP  1079
 #define IDC_TIME_STC                    1080
@@ -136,15 +138,29 @@
 #define IDC_IMG_4_1                     1093
 #define IDC_IMG_LIST                    1093
 #define IDC_IMG_5_0                     1094
+#define IDC_IMG0_TITLE                  1094
 #define IDC_IMG_5_1                     1095
+#define IDC_IMG1_TITLE                  1095
+#define IDC_IMG2_TITLE                  1096
+#define IDC_IMG3_TITLE                  1097
+#define IDC_PARAM_0                     1098
+#define IDC_PARAM_1                     1099
+#define IDC_PARAM_2                     1100
+#define IDC_PARAM_3                     1101
+#define IDC_PARAM_4                     1102
+#define IDC_PARAM_5                     1103
 #define IDC_IMG_2_0                     1104
 #define IDC_IMG_2                       1104
 #define IDC_IMG_2_1                     1105
+#define IDC_PARAM_6                     1105
 #define IDC_IMG_6_0                     1106
+#define IDC_PARAM_7                     1106
 #define IDC_IMG_6_1                     1107
+#define IDC_PARAM_8                     1107
 #define IDC_IMG_3_0                     1108
 #define IDC_IMG_3                       1108
 #define IDC_IMG_3_1                     1109
+#define IDC_PARAM_9                     1109
 #define IDC_IMG_7_0                     1110
 #define IDC_IMG_1_11                    1111
 #define IDC_IMG_7_1                     1111
@@ -155,7 +171,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        145
 #define _APS_NEXT_COMMAND_VALUE         32772
-#define _APS_NEXT_CONTROL_VALUE         1094
+#define _APS_NEXT_CONTROL_VALUE         1099
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

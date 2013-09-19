@@ -35,6 +35,7 @@ CEvaluatePage::CEvaluatePage()
     , m_ImageMonitorPath(_T(""))
     , m_ImageMonitorStart(0)
     , m_ImageMonitorEnd(0)
+    , m_ImageMonitorTitle(_T(""))
 {
 
 }
@@ -64,6 +65,7 @@ void CEvaluatePage::DoDataExchange(CDataExchange* pDX)
     DDX_Text(pDX, IDC_IMG_START, m_ImageMonitorStart);
     DDX_Text(pDX, IDC_IMG_END, m_ImageMonitorEnd);
     DDX_Control(pDX, IDC_IMG_LIST, m_ImageMonitorListCtrl);
+    DDX_Text(pDX, IDC_IMG_TITLE, m_ImageMonitorTitle);
 }
 
 
@@ -141,6 +143,7 @@ BOOL CEvaluatePage::OnInitDialog()
 	m_ImageMonitorListCtrl.InsertColumn(0,_T("监控图像路径"),LVCFMT_CENTER, 60);
 	m_ImageMonitorListCtrl.InsertColumn(1,_T("起始ID"),LVCFMT_CENTER, 60);
 	m_ImageMonitorListCtrl.InsertColumn(2,_T("结束ID"),LVCFMT_CENTER, 60);
+    m_ImageMonitorListCtrl.InsertColumn(3,_T("标题"),LVCFMT_CENTER, 60);
 	m_ImageMonitorListCtrl.EnableWindow(TRUE);
 
     return TRUE;
@@ -252,6 +255,7 @@ void CEvaluatePage::AddImageMonitorItem()
     temp = TEXT("");
     temp.AppendFormat(TEXT("%u"), m_ImageMonitorEnd);
     m_ImageMonitorListCtrl.SetItemText(n, 2, temp);
+    m_ImageMonitorListCtrl.SetItemText(n, 3, m_ImageMonitorTitle);
 }
 
 void CEvaluatePage::UpdateImageMonitorItem(int row)
@@ -268,6 +272,7 @@ void CEvaluatePage::UpdateImageMonitorItem(int row)
     temp = TEXT("");
     temp.AppendFormat(TEXT("%u"), m_ImageMonitorEnd);
     m_ImageMonitorListCtrl.SetItemText(row, 2, temp);
+    m_ImageMonitorListCtrl.SetItemText(row, 3, m_ImageMonitorTitle);
 }
 
 void CEvaluatePage::DeleteImageMonitorItem(int row)
@@ -399,6 +404,7 @@ void CEvaluatePage::OnBnClickedOk()
         imageMonitor.Path = m_ImageMonitorListCtrl.GetItemText(i, 0);
         imageMonitor.Start = _ttoi(m_ImageMonitorListCtrl.GetItemText(i, 1));
         imageMonitor.End = _ttoi(m_ImageMonitorListCtrl.GetItemText(i, 2));
+        imageMonitor.Title = m_ImageMonitorListCtrl.GetItemText(i, 3);
         imageMonitors.push_back(imageMonitor);
     }
 
@@ -472,11 +478,12 @@ void CEvaluatePage::OnBnClickedLoad()
         ifs >> n;
         for (int i = 0; i < n; ++i)
         {
-            wstring path, start, end;
-            ifs >> path >> start >> end;
+            wstring path, start, end, title;
+            ifs >> path >> start >> end >> title;
             m_ImageMonitorListCtrl.InsertItem(i, path.c_str());
             m_ImageMonitorListCtrl.SetItemText(i, 1, start.c_str());
             m_ImageMonitorListCtrl.SetItemText(i, 2, end.c_str());
+            m_ImageMonitorListCtrl.SetItemText(i, 3, title.c_str());
         }
 #endif
     }
@@ -527,7 +534,8 @@ void CEvaluatePage::OnBnClickedSave()
         {
             ofs << wstring(m_ImageMonitorListCtrl.GetItemText(i, 0)) << TEXT(" ");
             ofs << wstring(m_ImageMonitorListCtrl.GetItemText(i, 1)) << TEXT(" ");
-            ofs << wstring(m_ImageMonitorListCtrl.GetItemText(i, 1)) << endl;
+            ofs << wstring(m_ImageMonitorListCtrl.GetItemText(i, 2)) << TEXT(" ");
+            ofs << wstring(m_ImageMonitorListCtrl.GetItemText(i, 3)) << endl;
         }
         ofs.close();
     }

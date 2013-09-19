@@ -237,7 +237,7 @@ RC ExternalData::Run(bool input)
         width = m_Width;
         height = m_Height;
     }
-    m_Output->m_Array = MatLabHelper::CreateDoubleArray(width, height, buf, size, 0);
+    m_Output->m_Array = MatLabHelper::CreateDoubleArray(width, height + EXTRA_HEIGHT, buf, size, 0);
 
     delete[] buf;
     ifs.close();

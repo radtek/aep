@@ -67,4 +67,5 @@ public:
     afx_msg void OnBnClickedImgAddUpdate();
     afx_msg void OnBnClickedImgDelete();
     CListCtrl m_ImageMonitorListCtrl;
+    CString m_ImageMonitorTitle;
 };
